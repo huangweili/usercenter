@@ -3,6 +3,7 @@ package com.hwlcn;
 
 /**
  * 系统异常基础
+
  */
 public class HwlcnException extends RuntimeException {
 
