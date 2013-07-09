@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 package com.hwlcn.security.authc.credential;
 
 import com.hwlcn.security.crypto.hash.DefaultHashService;
@@ -27,21 +10,11 @@ import com.hwlcn.security.crypto.hash.Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Default implementation of the {@link PasswordService} interface that relies on an internal
- * {@link com.hwlcn.security.crypto.hash.HashService}, {@link com.hwlcn.security.crypto.hash.format.HashFormat}, and {@link com.hwlcn.security.crypto.hash.format.HashFormatFactory} to function:
- * <h2>Hashing Passwords</h2>
- *
- * <h2>Comparing Passwords</h2>
- * All hashing operations are performed by the internal {@link #getHashService() hashService}.  After the hash
- * is computed, it is formatted into a String value via the internal {@link #getHashFormat() hashFormat}.
- *
- * @since 1.2
- */
+
 public class DefaultPasswordService implements HashingPasswordService {
 
     public static final String DEFAULT_HASH_ALGORITHM = "SHA-256";
-    public static final int DEFAULT_HASH_ITERATIONS = 500000; //500,000
+    public static final int DEFAULT_HASH_ITERATIONS = 500000;
 
     private static final Logger log = LoggerFactory.getLogger(DefaultPasswordService.class);
 
@@ -49,7 +22,7 @@ public class DefaultPasswordService implements HashingPasswordService {
     private HashFormat hashFormat;
     private HashFormatFactory hashFormatFactory;
 
-    private volatile boolean hashFormatWarned; //used to avoid excessive log noise
+    private volatile boolean hashFormatWarned;
 
     public DefaultPasswordService() {
         this.hashFormatWarned = false;
@@ -57,10 +30,10 @@ public class DefaultPasswordService implements HashingPasswordService {
         DefaultHashService hashService = new DefaultHashService();
         hashService.setHashAlgorithmName(DEFAULT_HASH_ALGORITHM);
         hashService.setHashIterations(DEFAULT_HASH_ITERATIONS);
-        hashService.setGeneratePublicSalt(true); //always want generated salts for user passwords to be most secure
+        hashService.setGeneratePublicSalt(true);
         this.hashService = hashService;
 
-        this.hashFormat = new Shiro1CryptFormat();
+        this.hashFormat = new SecurityCryptFormat();
         this.hashFormatFactory = new DefaultHashFormatFactory();
     }
 

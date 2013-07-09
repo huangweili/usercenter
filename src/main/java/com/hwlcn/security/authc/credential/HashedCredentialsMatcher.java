@@ -5,7 +5,6 @@ import com.hwlcn.security.authc.AuthenticationToken;
 import com.hwlcn.security.authc.SaltedAuthenticationInfo;
 import com.hwlcn.security.codec.Base64;
 import com.hwlcn.security.codec.Hex;
-import com.hwlcn.security.crypto.hash.AbstractHash;
 import com.hwlcn.security.crypto.hash.Hash;
 import com.hwlcn.security.crypto.hash.SimpleHash;
 import com.hwlcn.security.util.StringUtils;

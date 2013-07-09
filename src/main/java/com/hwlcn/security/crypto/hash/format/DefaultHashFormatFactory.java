@@ -1,21 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+
 package com.hwlcn.security.crypto.hash.format;
 
 import com.hwlcn.security.util.StringUtils;
@@ -27,72 +10,28 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * This default {@code HashFormatFactory} implementation heuristically determines a {@code HashFormat} class to
- * instantiate based on the input argument and returns a new instance of the discovered class.  The heuristics are
- * detailed in the {@link #getInstance(String) getInstance} method documentation.
- *
- * @since 1.2
- */
 public class DefaultHashFormatFactory implements HashFormatFactory {
 
-    private Map<String, String> formatClassNames; //id - to - fully qualified class name
+    private Map<String, String> formatClassNames;
 
-    private Set<String> searchPackages; //packages to search for HashFormat implementations
+    private Set<String> searchPackages;
 
     public DefaultHashFormatFactory() {
         this.searchPackages = new HashSet<String>();
         this.formatClassNames = new HashMap<String, String>();
     }
 
-    /**
-     * Returns a {@code hashFormatAlias}-to-<code>fullyQualifiedHashFormatClassNameImplementation</code> map.
-     * <p/>
-     * This map will be used by the {@link #getInstance(String) getInstance} implementation:  that method's argument
-     * will be used as a lookup key to this map.  If the map returns a value, that value will be used to instantiate
-     * and return a new {@code HashFormat} instance.
-     * <h3>Defaults</h3>
-     * Shiro's default HashFormat implementations (as listed by the {@link ProvidedHashFormat} enum) will
-     * be searched automatically independently of this map.  You only need to populate this map with custom
-     * {@code HashFormat} implementations that are <em>not</em> already represented by a {@code ProvidedHashFormat}.
-     * <h3>Efficiency</h3>
-     * Populating this map will be more efficient than configuring {@link #getSearchPackages() searchPackages},
-     * but search packages may be more convenient depending on the number of {@code HashFormat} implementations that
-     * need to be supported by this factory.
-     *
-     * @return a {@code hashFormatAlias}-to-<code>fullyQualifiedHashFormatClassNameImplementation</code> map.
-     */
+
     public Map<String, String> getFormatClassNames() {
         return formatClassNames;
     }
 
-    /**
-     * Sets the {@code hash-format-alias}-to-{@code fullyQualifiedHashFormatClassNameImplementation} map to be used in
-     * the {@link #getInstance(String)} implementation.  See the {@link #getFormatClassNames()} JavaDoc for more
-     * information.
-     * <h3>Efficiency</h3>
-     * Populating this map will be more efficient than configuring {@link #getSearchPackages() searchPackages},
-     * but search packages may be more convenient depending on the number of {@code HashFormat} implementations that
-     * need to be supported by this factory.
-     *
-     * @param formatClassNames the {@code hash-format-alias}-to-{@code fullyQualifiedHashFormatClassNameImplementation}
-     *                         map to be used in the {@link #getInstance(String)} implementation.
-     */
+
     public void setFormatClassNames(Map<String, String> formatClassNames) {
         this.formatClassNames = formatClassNames;
     }
 
-    /**
-     * Returns a set of package names that can be searched for {@link HashFormat} implementations according to
-     * heuristics defined in the {@link #getHashFormatClass(String, String) getHashFormat(packageName, token)} JavaDoc.
-     * <h3>Efficiency</h3>
-     * Configuring this property is not as efficient as configuring a {@link #getFormatClassNames() formatClassNames}
-     * map, but it may be more convenient depending on the number of {@code HashFormat} implementations that
-     * need to be supported by this factory.
-     *
-     * @return a set of package names that can be searched for {@link HashFormat} implementations
-     * @see #getHashFormatClass(String, String)
-     */
+
     public Set<String> getSearchPackages() {
         return searchPackages;
     }
