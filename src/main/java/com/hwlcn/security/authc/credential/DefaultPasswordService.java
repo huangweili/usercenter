@@ -107,11 +107,6 @@ public class DefaultPasswordService implements HashingPasswordService {
             }
         }
 
-        //First check to see if we can reconstitute the original hash - this allows us to
-        //perform password hash comparisons even for previously saved passwords that don't
-        //match the current HashService configuration values.  This is a very nice feature
-        //for password comparisons because it ensures backwards compatibility even after
-        //configuration changes.
         HashFormat discoveredFormat = this.hashFormatFactory.getInstance(saved);
 
         if (discoveredFormat != null && discoveredFormat instanceof ParsableHashFormat) {
@@ -122,14 +117,6 @@ public class DefaultPasswordService implements HashingPasswordService {
             return passwordsMatch(submittedPlaintext, savedHash);
         }
 
-        //If we're at this point in the method's execution, We couldn't reconstitute the original hash.
-        //So, we need to hash the submittedPlaintext using current HashService configuration and then
-        //compare the formatted output with the saved string.  This will correctly compare passwords,
-        //but does not allow changing the HashService configuration without breaking previously saved
-        //passwords:
-
-        //The saved text value can't be reconstituted into a Hash instance.  We need to format the
-        //submittedPlaintext and then compare this formatted value with the saved value:
         HashRequest request = createHashRequest(plaintextBytes);
         Hash computed = this.hashService.computeHash(request);
         String formatted = this.hashFormat.format(computed);
@@ -138,9 +125,7 @@ public class DefaultPasswordService implements HashingPasswordService {
     }
 
     protected HashRequest buildHashRequest(ByteSource plaintext, Hash saved) {
-        //keep everything from the saved hash except for the source:
         return new HashRequest.Builder().setSource(plaintext)
-                //now use the existing saved data:
                 .setAlgorithmName(saved.getAlgorithmName())
                 .setSalt(saved.getSalt())
                 .setIterations(saved.getIterations())
