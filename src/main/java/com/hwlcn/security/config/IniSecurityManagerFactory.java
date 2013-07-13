@@ -95,10 +95,7 @@ public class IniSecurityManagerFactory extends IniFactorySupport<com.hwlcn.secur
         boolean autoApplyRealms = isAutoApplyRealms(securityManager);
 
         if (autoApplyRealms) {
-            //realms and realm factory might have been created - pull them out first so we can
-            //initialize the securityManager:
             Collection<Realm> realms = getRealms(objects);
-            //set them on the SecurityManager
             if (!CollectionUtils.isEmpty(realms)) {
                 applyRealmsToSecurityManager(realms, securityManager);
             }
@@ -150,15 +147,18 @@ public class IniSecurityManagerFactory extends IniFactorySupport<com.hwlcn.secur
                 addToRealms(realms, (RealmFactory) value);
             } else if (value instanceof Realm) {
                 Realm realm = (Realm) value;
-                //set the name if null:
                 String existingName = realm.getName();
                 if (existingName == null || existingName.startsWith(realm.getClass().getName())) {
                     if (realm instanceof Nameable) {
                         ((Nameable) realm).setName(name);
-                        log.debug("Applied name '{}' to Nameable realm instance {}", name, realm);
+                        if (log.isDebugEnabled()) {
+                            log.debug("Applied name '{}' to Nameable realm instance {}", name, realm);
+                        }
                     } else {
-                        log.info("Realm does not implement the {} interface.  Configured name will not be applied.",
-                                Nameable.class.getName());
+                        if (log.isInfoEnabled()) {
+                            log.info("Realm does not implement the {} interface.  Configured name will not be applied.",
+                                    Nameable.class.getName());
+                        }
                     }
                 }
                 realms.add(realm);

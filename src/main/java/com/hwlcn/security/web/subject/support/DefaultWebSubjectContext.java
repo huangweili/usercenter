@@ -9,12 +9,7 @@ import com.hwlcn.security.web.subject.WebSubjectContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-/**
- * Default {@code WebSubjectContext} implementation that provides for additional storage and retrieval of
- * a {@link javax.servlet.ServletRequest} and {@link javax.servlet.ServletResponse}.
- *
- * @since 1.0
- */
+
 public class DefaultWebSubjectContext extends DefaultSubjectContext implements WebSubjectContext {
 
     private static final long serialVersionUID = 8188555355305827739L;
@@ -54,8 +49,6 @@ public class DefaultWebSubjectContext extends DefaultSubjectContext implements W
     public ServletRequest resolveServletRequest() {
 
         ServletRequest request = getServletRequest();
-
-        //fall back on existing subject instance if it exists:
         if (request == null) {
             Subject existing = getSubject();
             if (existing instanceof WebSubject) {
@@ -79,8 +72,6 @@ public class DefaultWebSubjectContext extends DefaultSubjectContext implements W
     public ServletResponse resolveServletResponse() {
 
         ServletResponse response = getServletResponse();
-
-        //fall back on existing subject instance if it exists:
         if (response == null) {
             Subject existing = getSubject();
             if (existing instanceof WebSubject) {

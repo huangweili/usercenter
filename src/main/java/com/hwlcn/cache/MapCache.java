@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package com.hwlcn.security.cache;
+package com.hwlcn.cache;
 
 import com.hwlcn.security.util.CollectionUtils;
 
@@ -33,14 +33,9 @@ import java.util.Set;
  */
 public class MapCache<K, V> implements Cache<K, V> {
 
-    /**
-     * Backing instance.
-     */
+
     private final Map<K, V> map;
 
-    /**
-     * The name of this cache.
-     */
     private final String name;
 
     public MapCache(String name, Map<K, V> backingMap) {

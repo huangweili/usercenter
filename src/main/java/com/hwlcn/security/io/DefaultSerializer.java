@@ -1,40 +1,11 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.io;
 
 import java.io.*;
 
-/**
- * Serializer implementation that uses the default JVM serialization mechanism (Object Input/Output Streams).
- *
- * @since 0.9
- */
+
 public class DefaultSerializer<T> implements Serializer<T> {
 
-    /**
-     * This implementation serializes the Object by using an {@link java.io.ObjectOutputStream} backed by a
-     * {@link java.io.ByteArrayOutputStream}.  The {@code ByteArrayOutputStream}'s backing byte array is returned.
-     *
-     * @param o the Object to convert into a byte[] array.
-     * @return the bytes representing the serialized object using standard JVM serialization.
-     * @throws SerializationException wrapping a {@link java.io.IOException} if something goes wrong with the streams.
-     */
+
     public byte[] serialize(T o) throws SerializationException {
         if (o == null) {
             String msg = "argument cannot be null.";
@@ -56,14 +27,7 @@ public class DefaultSerializer<T> implements Serializer<T> {
         }
     }
 
-    /**
-     * This implementation deserializes the byte array using a {@link java.io.ObjectInputStream} using a source
-     * {@link java.io.ByteArrayInputStream} constructed with the argument byte array.
-     *
-     * @param serialized the raw data resulting from a previous {@link #serialize(Object) serialize} call.
-     * @return the deserialized/reconstituted object based on the given byte array
-     * @throws SerializationException if anything goes wrong using the streams.
-     */
+
     public T deserialize(byte[] serialized) throws SerializationException {
         if (serialized == null) {
             String msg = "argument cannot be null.";

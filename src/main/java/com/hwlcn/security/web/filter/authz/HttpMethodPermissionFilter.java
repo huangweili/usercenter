@@ -80,7 +80,6 @@ public class HttpMethodPermissionFilter extends PermissionsAuthorizationFilter {
 
         String[] mappedPerms = new String[configuredPerms.length];
 
-        // loop and append :action
         for (int i = 0; i < configuredPerms.length; i++) {
             mappedPerms[i] = configuredPerms[i] + ":" + action;
         }

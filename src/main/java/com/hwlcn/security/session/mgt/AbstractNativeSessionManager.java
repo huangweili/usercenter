@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.session.mgt;
 
 import com.hwlcn.security.authz.AuthorizationException;
@@ -29,13 +11,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 
-/**
- * Abstract implementation supporting the {@link NativeSessionManager NativeSessionManager} interface, supporting
- * {@link com.hwlcn.security.session.SessionListener SessionListener}s and application of the
- * {@link #getGlobalSessionTimeout() globalSessionTimeout}.
- *
- * @since 1.0
- */
+
 public abstract class AbstractNativeSessionManager extends AbstractSessionManager implements NativeSessionManager {
 
     private static final Logger log = LoggerFactory.getLogger(AbstractSessionManager.class);
@@ -64,20 +40,6 @@ public abstract class AbstractNativeSessionManager extends AbstractSessionManage
         return createExposedSession(session, context);
     }
 
-    /**
-     * Creates a new {@code Session Session} instance based on the specified (possibly {@code null})
-     * initialization data.  Implementing classes must manage the persistent state of the returned session such that it
-     * could later be acquired via the {@link #getSession(SessionKey)} method.
-     *
-     * @param context the initialization data that can be used by the implementation or underlying
-     *                {@link SessionFactory} when instantiating the internal {@code Session} instance.
-     * @return the new {@code Session} instance.
-     * @throws com.hwlcn.security.authz.HostUnauthorizedException
-     *                                if the system access control policy restricts access based
-     *                                on client location/IP and the specified hostAddress hasn't been enabled.
-     * @throws com.hwlcn.security.authz.AuthorizationException if the system access control policy does not allow the currently executing
-     *                                caller to start sessions.
-     */
     protected abstract Session createSession(SessionContext context) throws AuthorizationException;
 
     protected void applyGlobalSessionTimeout(Session session) {
@@ -85,14 +47,6 @@ public abstract class AbstractNativeSessionManager extends AbstractSessionManage
         onChange(session);
     }
 
-    /**
-     * Template method that allows subclasses to react to a new session being created.
-     * <p/>
-     * This method is invoked <em>before</em> any session listeners are notified.
-     *
-     * @param session the session that was just {@link #createSession created}.
-     * @param context the {@link SessionContext SessionContext} that was used to start the session.
-     */
     protected void onStart(Session session, SessionContext context) {
     }
 
@@ -127,28 +81,10 @@ public abstract class AbstractNativeSessionManager extends AbstractSessionManage
         return new DelegatingSession(this, new DefaultSessionKey(session.getId()));
     }
 
-    /**
-     * Returns the session instance to use to pass to registered {@code SessionListener}s for notification
-     * that the session has been invalidated (stopped or expired).
-     * <p/>
-     * The default implementation returns an {@link ImmutableProxiedSession ImmutableProxiedSession} instance to ensure
-     * that the specified {@code session} argument is not modified by any listeners.
-     *
-     * @param session the {@code Session} object being invalidated.
-     * @return the {@code Session} instance to use to pass to registered {@code SessionListener}s for notification.
-     */
     protected Session beforeInvalidNotification(Session session) {
         return new ImmutableProxiedSession(session);
     }
 
-    /**
-     * Notifies any interested {@link SessionListener}s that a Session has started.  This method is invoked
-     * <em>after</em> the {@link #onStart onStart} method is called.
-     *
-     * @param session the session that has just started that will be delivered to any
-     *                {@link #setSessionListeners(java.util.Collection) registered} session listeners.
-     * @see SessionListener#onStart(com.hwlcn.security.session.Session)
-     */
     protected void notifyStart(Session session) {
         for (SessionListener listener : this.listeners) {
             listener.onStart(session);
@@ -263,7 +199,6 @@ public abstract class AbstractNativeSessionManager extends AbstractSessionManage
     }
 
     public void checkValid(SessionKey key) throws InvalidSessionException {
-        //just try to acquire it.  If there is a problem, an exception will be thrown:
         lookupRequiredSession(key);
     }
 

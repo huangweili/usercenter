@@ -44,7 +44,6 @@ public class SecurityCryptFormat implements ModularCryptFormat, ParsableHashForm
             return null;
         }
         if (!formatted.startsWith(MCF_PREFIX)) {
-            //TODO create a HashFormatException class
             String msg = "The argument is not a valid '" + ID + "' formatted hash.";
             throw new IllegalArgumentException(msg);
         }

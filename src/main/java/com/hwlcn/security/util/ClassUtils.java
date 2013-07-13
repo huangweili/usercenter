@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.util;
 
 import org.slf4j.Logger;
@@ -26,24 +8,11 @@ import java.lang.*;
 import java.lang.reflect.Constructor;
 
 
-/**
- * Utility method library used to conveniently interact with <code>Class</code>es, such as acquiring them from the
- * application <code>ClassLoader</code>s and instantiating Objects from them.
- *
- * @since 0.1
- */
 public class ClassUtils {
 
-    //TODO - complete JavaDoc
 
-    /**
-     * Private internal log instance.
-     */
     private static final Logger log = LoggerFactory.getLogger(ClassUtils.class);
 
-    /**
-     * @since 1.0
-     */
     private static final ClassLoaderAccessor THREAD_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
@@ -51,9 +20,6 @@ public class ClassUtils {
         }
     };
 
-    /**
-     * @since 1.0
-     */
     private static final ClassLoaderAccessor CLASS_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
@@ -61,9 +27,6 @@ public class ClassUtils {
         }
     };
 
-    /**
-     * @since 1.0
-     */
     private static final ClassLoaderAccessor SYSTEM_CL_ACCESSOR = new ExceptionIgnoringAccessor() {
         @Override
         protected ClassLoader doGetClassLoader() throws Throwable {
@@ -71,18 +34,6 @@ public class ClassUtils {
         }
     };
 
-    /**
-     * Returns the specified resource by checking the current thread's
-     * {@link Thread#getContextClassLoader() context class loader}, then the
-     * current ClassLoader (<code>ClassUtils.class.getClassLoader()</code>), then the system/application
-     * ClassLoader (<code>ClassLoader.getSystemClassLoader()</code>, in that order, using
-     * {@link ClassLoader#getResourceAsStream(String) getResourceAsStream(name)}.
-     *
-     * @param name the name of the resource to acquire from the classloader(s).
-     * @return the InputStream of the resource found, or <code>null</code> if the resource cannot be found from any
-     *         of the three mentioned ClassLoaders.
-     * @since 0.9
-     */
     public static InputStream getResourceAsStream(String name) {
 
         InputStream is = THREAD_CL_ACCESSOR.getResourceStream(name);
@@ -111,18 +62,6 @@ public class ClassUtils {
         return is;
     }
 
-    /**
-     * Attempts to load the specified class name from the current thread's
-     * {@link Thread#getContextClassLoader() context class loader}, then the
-     * current ClassLoader (<code>ClassUtils.class.getClassLoader()</code>), then the system/application
-     * ClassLoader (<code>ClassLoader.getSystemClassLoader()</code>, in that order.  If any of them cannot locate
-     * the specified class, an <code>UnknownClassException</code> is thrown (our RuntimeException equivalent of
-     * the JRE's <code>ClassNotFoundException</code>.
-     *
-     * @param fqcn the fully qualified class name to load
-     * @return the located class
-     * @throws UnknownClassException if the class cannot be found.
-     */
     public static Class forName(String fqcn) throws UnknownClassException {
 
         Class clazz = THREAD_CL_ACCESSOR.loadClass(fqcn);
@@ -192,7 +131,7 @@ public class ClassUtils {
 
     public static Constructor getConstructor(Class clazz, Class... argTypes) {
         try {
-            return clazz.getConstructor(argTypes);
+            return clazz.getConstructor(argTypes);       //获取匹配参数的 构造函数
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
@@ -208,17 +147,13 @@ public class ClassUtils {
         }
     }
 
-    /**
-     * @since 1.0
-     */
+
     private static interface ClassLoaderAccessor {
         Class loadClass(String fqcn);
         InputStream getResourceStream(String name);
     }
 
-    /**
-     * @since 1.0
-     */
+
     private static abstract class ExceptionIgnoringAccessor implements ClassLoaderAccessor {
 
         public Class loadClass(String fqcn) {

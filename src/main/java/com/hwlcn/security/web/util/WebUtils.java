@@ -27,11 +27,11 @@ public class WebUtils {
 
     private static final Logger log = LoggerFactory.getLogger(WebUtils.class);
 
-    public static final String SERVLET_REQUEST_KEY = ServletRequest.class.getName() + "_HWLCN_THREAD_CONTEXT_KEY";
-    public static final String SERVLET_RESPONSE_KEY = ServletResponse.class.getName() + "_HWLCN_THREAD_CONTEXT_KEY";
+    public static final String SERVLET_REQUEST_KEY = ServletRequest.class.getName() + "_SECURITY_THREAD_CONTEXT_KEY";
+    public static final String SERVLET_RESPONSE_KEY = ServletResponse.class.getName() + "_SECURITY_THREAD_CONTEXT_KEY";
 
 
-    public static final String SAVED_REQUEST_KEY = "hwlcnSavedRequest";
+    public static final String SAVED_REQUEST_KEY = "securitySavedRequest";
 
     //servlet 2.3+处理
     public static final String INCLUDE_REQUEST_URI_ATTRIBUTE = "javax.servlet.include.request_uri";

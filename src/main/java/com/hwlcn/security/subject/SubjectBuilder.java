@@ -8,11 +8,6 @@ import com.hwlcn.security.util.StringUtils;
 
 import java.io.Serializable;
 
-/**
- * User: HuangWeili
- * Date: 13-7-8
- * Time: 下午10:17
- */
 public class SubjectBuilder {
     private final SubjectContext subjectContext;
 

@@ -1,87 +1,19 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.crypto.hash;
 
 import com.hwlcn.security.util.ByteSource;
 
-/**
- * A {@code HashRequest} is composed of data that will be used by a {@link HashService} to compute a hash (aka
- * 'digest').  While you can instantiate a concrete {@code HashRequest} class directly, most will find using the
- * {@link HashRequest.Builder} more convenient.
- *
- * @see HashRequest.Builder
- * @since 1.2
- */
+
 public interface HashRequest {
 
-    /**
-     * Returns the source data that will be hashed by a {@link HashService}. For example, this might be a
-     * {@code ByteSource} representation of a password, or file, etc.
-     *
-     * @return the source data that will be hashed by a {@link HashService}.
-     */
     ByteSource getSource();
 
-    /**
-     * Returns a salt to be used by the {@link HashService} during hash computation, or {@code null} if no salt is
-     * provided as part of the request.
-     * <p/>
-     * Note that a {@code null} value does not necessarily mean a salt won't be used at all - it just
-     * means that the request didn't include one.  The servicing {@link HashService} is free to provide a salting
-     * strategy for a request, even if the request did not specify one.
-     *
-     * @return a salt to be used by the {@link HashService} during hash computation, or {@code null} if no salt is
-     *         provided as part of the request.
-     */
     ByteSource getSalt();
 
-    /**
-     * Returns the number of requested hash iterations to be performed when computing the final {@code Hash} result.
-     * A non-positive (0 or less) indicates that the {@code HashService}'s default iteration configuration should
-     * be used.  A positive value overrides the {@code HashService}'s configuration for a single request.
-     * <p/>
-     * Note that a {@code HashService} is free to ignore this number if it determines the number is not sufficient
-     * to meet a desired level of security.
-     *
-     * @return the number of requested hash iterations to be performed when computing the final {@code Hash} result.
-     */
+
     int getIterations();
 
-    /**
-     * Returns the name of the hash algorithm the {@code HashService} should use when computing the {@link Hash}, or
-     * {@code null} if the default algorithm configuration of the {@code HashService} should be used.  A non-null value
-     * overrides the {@code HashService}'s configuration for a single request.
-     * <p/>
-     * Note that a {@code HashService} is free to ignore this value if it determines that the algorithm is not
-     * sufficient to meet a desired level of security.
-     *
-     * @return the name of the hash algorithm the {@code HashService} should use when computing the {@link Hash}, or
-     *         {@code null} if the default algorithm configuration of the {@code HashService} should be used.
-     */
     String getAlgorithmName();
 
-    /**
-     * A Builder class representing the Builder design pattern for constructing {@link HashRequest} instances.
-     *
-     * @see SimpleHashRequest
-     * @since 1.2
-     */
     public static class Builder {
 
         private ByteSource source;

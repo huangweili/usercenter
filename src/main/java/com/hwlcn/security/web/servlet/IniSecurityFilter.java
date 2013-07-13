@@ -24,7 +24,7 @@ public class IniSecurityFilter extends AbstractSecurityFilter {
     public static final String CONFIG_INIT_PARAM_NAME = "config";
     public static final String CONFIG_PATH_INIT_PARAM_NAME = "configPath";
 
-    public static final String DEFAULT_WEB_INI_RESOURCE_PATH = "/WEB-INF/shiro.ini";
+    public static final String DEFAULT_WEB_INI_RESOURCE_PATH = "/WEB-INF/security.ini";
 
     private static final Logger log = LoggerFactory.getLogger(IniSecurityFilter.class);
 

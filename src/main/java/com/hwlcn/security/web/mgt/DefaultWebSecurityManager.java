@@ -117,10 +117,14 @@ public class DefaultWebSecurityManager extends DefaultSecurityManager implements
 
     protected SessionManager createSessionManager(String sessionMode) {
         if (sessionMode == null || !sessionMode.equalsIgnoreCase(NATIVE_SESSION_MODE)) {
+            if(log.isInfoEnabled()){
             log.info("{} mode - enabling ServletContainerSessionManager (HTTP-only Sessions)", HTTP_SESSION_MODE);
+            }
             return new ServletContainerSessionManager();
         } else {
+            if(log.isInfoEnabled()){
             log.info("{} mode - enabling DefaultWebSessionManager (non-HTTP and HTTP Sessions)", NATIVE_SESSION_MODE);
+            }
             return new DefaultWebSessionManager();
         }
     }

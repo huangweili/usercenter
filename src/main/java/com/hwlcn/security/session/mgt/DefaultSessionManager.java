@@ -18,8 +18,8 @@
  */
 package com.hwlcn.security.session.mgt;
 
-import com.hwlcn.security.cache.CacheManager;
-import com.hwlcn.security.cache.CacheManagerAware;
+import com.hwlcn.cache.CacheManager;
+import com.hwlcn.cache.CacheManagerAware;
 import com.hwlcn.security.session.Session;
 import com.hwlcn.security.session.mgt.eis.MemorySessionDAO;
 import com.hwlcn.security.session.mgt.eis.SessionDAO;
@@ -135,10 +135,10 @@ public class DefaultSessionManager extends AbstractValidatingSessionManager impl
 
     /**
      * Sets the internal {@code CacheManager} on the {@code SessionDAO} if it implements the
-     * {@link com.hwlcn.security.cache.CacheManagerAware CacheManagerAware} interface.
+     * {@link com.hwlcn.cache.CacheManagerAware CacheManagerAware} interface.
      * <p/>
      * This method is called after setting a cacheManager via the
-     * {@link #setCacheManager(com.hwlcn.security.cache.CacheManager) setCacheManager} method <em>em</em> when
+     * {@link #setCacheManager(com.hwlcn.cache.CacheManager) setCacheManager} method <em>em</em> when
      * setting a {@code SessionDAO} via the {@link #setSessionDAO} method to allow it to be propagated
      * in either case.
      *

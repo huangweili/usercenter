@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.realm.text;
 
 import com.hwlcn.security.util.CollectionUtils;
@@ -24,24 +6,7 @@ import com.hwlcn.security.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A {@link com.hwlcn.security.realm.Realm Realm} implementation that creates
- * {@link com.hwlcn.security.authc.SimpleAccount SimpleAccount} instances based on
- * {@link Ini} configuration.
- * <p/>
- * This implementation looks for two {@link Ini.Section sections} in the {@code Ini} configuration:
- * <pre>
- * [users]
- * # One or more {@link TextConfigurationRealm#setUserDefinitions(String) user definitions}
- * ...
- * [roles]
- * # One or more {@link TextConfigurationRealm#setRoleDefinitions(String) role definitions}</pre>
- * <p/>
- * This class also supports setting the {@link #setResourcePath(String) resourcePath} property to create account
- * data from an .ini resource.  This will only be used if there isn't already account data in the Realm.
- *
- * @since 1.0
- */
+
 public class IniRealm extends TextConfigurationRealm {
 
     public static final String USERS_SECTION_NAME = "users";
@@ -50,44 +15,17 @@ public class IniRealm extends TextConfigurationRealm {
     private static transient final Logger log = LoggerFactory.getLogger(IniRealm.class);
 
     private String resourcePath;
-    private Ini ini; //reference added in 1.2 for SHIRO-322
+    private Ini ini;
 
     public IniRealm() {
         super();
     }
 
-    /**
-     * This constructor will immediately process the definitions in the {@code Ini} argument.  If you need to perform
-     * additional configuration before processing (e.g. setting a permissionResolver, etc), do not call this
-     * constructor.  Instead, do the following:
-     * <ol>
-     * <li>Call the default no-arg constructor</li>
-     * <li>Set the Ini instance you wish to use via {@code #setIni}</li>
-     * <li>Set any other configuration properties</li>
-     * <li>Call {@link #init()}</li>
-     * </ol>
-     *
-     * @param ini the Ini instance which will be inspected to create accounts, groups and permissions for this realm.
-     */
     public IniRealm(Ini ini) {
         this();
         processDefinitions(ini);
     }
 
-    /**
-     * This constructor will immediately process the definitions in the {@code Ini} resolved from the specified
-     * {@code resourcePath}.  If you need to perform additional configuration before processing (e.g. setting a
-     * permissionResolver, etc), do not call this constructor.  Instead, do the following:
-     * <ol>
-     * <li>Call the default no-arg constructor</li>
-     * <li>Set the Ini instance you wish to use via {@code #setIni}</li>
-     * <li>Set any other configuration properties</li>
-     * <li>Call {@link #init()}</li>
-     * </ol>
-     *
-     * @param resourcePath the resource path of the Ini config which will be inspected to create accounts, groups and
-     *                     permissions for this realm.
-     */
     public IniRealm(String resourcePath) {
         this();
         Ini ini = Ini.fromResourcePath(resourcePath);
@@ -104,22 +42,10 @@ public class IniRealm extends TextConfigurationRealm {
         this.resourcePath = resourcePath;
     }
 
-    /**
-     * Returns the Ini instance used to configure this realm.  Provided for JavaBeans-style configuration of this
-     * realm, particularly useful in Dependency Injection environments.
-     * 
-     * @return the Ini instance which will be inspected to create accounts, groups and permissions for this realm.
-     */
     public Ini getIni() {
         return ini;
     }
 
-    /**
-     * Sets the Ini instance used to configure this realm.  Provided for JavaBeans-style configuration of this
-     * realm, particularly useful in Dependency Injection environments.
-     * 
-     * @param ini the Ini instance which will be inspected to create accounts, groups and permissions for this realm.
-     */
     public void setIni(Ini ini) {
         this.ini = ini;
     }
@@ -128,9 +54,6 @@ public class IniRealm extends TextConfigurationRealm {
     protected void onInit() {
         super.onInit();
 
-        // This is an in-memory realm only - no need for an additional cache when we're already
-        // as memory-efficient as we can be.
-        
         Ini ini = getIni();
         String resourcePath = getResourcePath();
                 

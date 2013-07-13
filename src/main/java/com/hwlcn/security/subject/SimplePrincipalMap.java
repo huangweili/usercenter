@@ -87,7 +87,6 @@ public class SimplePrincipalMap implements PrincipalMap {
     }
 
     public Object getPrimaryPrincipal() {
-        //heuristic - just use the first one we come across:
         return !CollectionUtils.isEmpty(this.combinedPrincipals) ?
                 this.combinedPrincipals.values().iterator().next() :
                 null;

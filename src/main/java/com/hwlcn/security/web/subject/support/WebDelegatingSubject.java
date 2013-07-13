@@ -29,7 +29,7 @@ public class WebDelegatingSubject extends DelegatingSubject implements WebSubjec
         this(principals, authenticated, host, session, true, request, response, securityManager);
     }
 
-    //since 1.2
+
     public WebDelegatingSubject(PrincipalCollection principals, boolean authenticated,
                                 String host, Session session, boolean sessionEnabled,
                                 ServletRequest request, ServletResponse response,

@@ -19,8 +19,8 @@
 package com.hwlcn.security.mgt;
 
 import com.hwlcn.security.util.LifecycleUtils;
-import com.hwlcn.security.cache.CacheManager;
-import com.hwlcn.security.cache.CacheManagerAware;
+import com.hwlcn.cache.CacheManager;
+import com.hwlcn.cache.CacheManagerAware;
 import com.hwlcn.security.realm.Realm;
 
 import java.util.ArrayList;
@@ -96,10 +96,10 @@ public abstract class RealmSecurityManager extends CachingSecurityManager {
 
     /**
      * Sets the internal {@link #getCacheManager CacheManager} on any internal configured
-     * {@link #getRealms Realms} that implement the {@link com.hwlcn.security.cache.CacheManagerAware CacheManagerAware} interface.
+     * {@link #getRealms Realms} that implement the {@link com.hwlcn.cache.CacheManagerAware CacheManagerAware} interface.
      * <p/>
      * This method is called after setting a cacheManager on this securityManager via the
-     * {@link #setCacheManager(com.hwlcn.security.cache.CacheManager) setCacheManager} method to allow it to be propagated
+     * {@link #setCacheManager(com.hwlcn.cache.CacheManager) setCacheManager} method to allow it to be propagated
      * down to all the internal Realms that would need to use it.
      * <p/>
      * It is also called after setting one or more realms via the {@link #setRealm setRealm} or
@@ -120,7 +120,7 @@ public abstract class RealmSecurityManager extends CachingSecurityManager {
 
     /**
      * Simply calls {@link #applyCacheManagerToRealms() applyCacheManagerToRealms()} to allow the
-     * newly set {@link com.hwlcn.security.cache.CacheManager CacheManager} to be propagated to the internal collection of <code>Realm</code>
+     * newly set {@link com.hwlcn.cache.CacheManager CacheManager} to be propagated to the internal collection of <code>Realm</code>
      * that would need to use it.
      */
     protected void afterCacheManagerSet() {

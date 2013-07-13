@@ -44,12 +44,17 @@ public class IniWebEnvironment extends ResourceBasedWebEnvironment implements In
         }
 
         if (CollectionUtils.isEmpty(ini)) {
-            log.debug("Checking any specified config locations.");
+
+            if (log.isDebugEnabled()) {
+                log.debug("Checking any specified config locations.");
+            }
             ini = getSpecifiedIni(configLocations);
         }
 
         if (CollectionUtils.isEmpty(ini)) {
-            log.debug("No INI instance or config locations specified.  Trying default config locations.");
+            if (log.isDebugEnabled()) {
+                log.debug("No INI instance or config locations specified.  Trying default config locations.");
+            }
             ini = getDefaultIni();
         }
 
@@ -83,9 +88,11 @@ public class IniWebEnvironment extends ResourceBasedWebEnvironment implements In
         if (configLocations != null && configLocations.length > 0) {
 
             if (configLocations.length > 1) {
-                log.warn("More than one Security .ini config location has been specified.  Only the first will be " +
-                        "used for configuration as the {} implementation does not currently support multiple " +
-                        "files.  This may be supported in the future however.", IniWebEnvironment.class.getName());
+                if (log.isWarnEnabled()) {
+                    log.warn("More than one Security .ini config location has been specified.  Only the first will be " +
+                            "used for configuration as the {} implementation does not currently support multiple " +
+                            "files.  This may be supported in the future however.", IniWebEnvironment.class.getName());
+                }
             }
 
             ini = createIni(configLocations[0], true);
@@ -103,8 +110,11 @@ public class IniWebEnvironment extends ResourceBasedWebEnvironment implements In
             for (String location : configLocations) {
                 ini = createIni(location, false);
                 if (!CollectionUtils.isEmpty(ini)) {
+                    if(log.isDebugEnabled()){
                     log.debug("Discovered non-empty INI configuration at location '{}'.  Using for configuration.",
                             location);
+                    }
+
                     break;
                 }
             }

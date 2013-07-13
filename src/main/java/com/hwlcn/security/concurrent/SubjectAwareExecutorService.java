@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.concurrent;
 
 import com.hwlcn.security.subject.Subject;
@@ -25,36 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
-/**
- * {@code ExecutorService} implementation that will automatically first associate any argument
- * {@link Runnable} or {@link java.util.concurrent.Callable} instances with the {@link #getSubject currently available subject} and then
- * dispatch the Subject-enabled runnable or callable to an underlying delegate
- * {@link java.util.concurrent.ExecutorService ExecutorService} instance.  The principle is the same as the
- * parent {@link SubjectAwareExecutor} class, but enables the richer {@link java.util.concurrent.ExecutorService} API.
- * <p/>
- * This is a simplification for applications that want to execute code as the currently
- * executing {@code Subject} on another thread, but don't want or need to call the
- * {@link com.hwlcn.security.subject.Subject#associateWith(Runnable)} or {@link com.hwlcn.security.subject.Subject#associateWith(java.util.concurrent.Callable)} methods and dispatch them to a
- * Thread manually.  This simplifies code and reduces Shiro dependencies across application source code.
- * <p/>
- * Consider this code that could be repeated in many places across an application:
- * <pre>
- * {@link java.util.concurrent.Callable Callable} applicationWork = //instantiate or acquire Callable from somewhere
- * {@link com.hwlcn.security.subject.Subject Subject} subject = {@link com.hwlcn.security.SecurityUtils SecurityUtils}.{@link com.hwlcn.security.SecurityUtils#getSubject() getSubject()};
- * {@link java.util.concurrent.Callable Callable} work = subject.{@link com.hwlcn.security.subject.Subject#associateWith(java.util.concurrent.Callable) associateWith(applicationWork)};
- * {@link java.util.concurrent.ExecutorService anExecutorService}.{@link java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable) submit(work)};
- * </pre>
- * Instead, if the {@code ExecutorService} instance used at runtime is an instance of this class
- * (which delegates to the target ExecutorService that you want), all places in code like the above reduce to this:
- * <pre>
- * {@link java.util.concurrent.Callable Callable} applicationWork = //instantiate or acquire Callable from somewhere
- * {@link java.util.concurrent.ExecutorService anExecutorService}.{@link java.util.concurrent.ExecutorService#submit(java.util.concurrent.Callable) submit(work)};
- * </pre>
- * Notice there is no use of the Shiro API in the 2nd code block, encouraging the principle of loose coupling across
- * your codebase.
- *
- * @since 1.0
- */
+
 public class SubjectAwareExecutorService extends SubjectAwareExecutor implements ExecutorService {
 
     private ExecutorService targetExecutorService;

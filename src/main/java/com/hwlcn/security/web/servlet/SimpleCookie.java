@@ -52,7 +52,7 @@ public class SimpleCookie implements Cookie {
     public SimpleCookie() {
         this.maxAge = DEFAULT_MAX_AGE;
         this.version = DEFAULT_VERSION;
-        this.httpOnly = true; //most of the cookies ever used by Shiro should be as secure as possible.
+        this.httpOnly = true;
     }
 
     public SimpleCookie(String name) {

@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.util;
 
 import com.hwlcn.security.authz.Permission;
@@ -27,13 +9,14 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 
-/**
- * Utility class to help with String-to-Permission object resolution.
- *
- * @since 0.1
- */
 public class PermissionUtils {
 
+    /**
+     * 根据权限的解析类解析字符串权限
+     * @param s
+     * @param permissionResolver
+     * @return
+     */
     public static Set<Permission> resolveDelimitedPermissions(String s, PermissionResolver permissionResolver) {
         Set<String> permStrings = toPermissionStrings(s);
         return resolvePermissions(permStrings, permissionResolver);

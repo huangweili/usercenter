@@ -69,14 +69,7 @@ public class H64 {
         return val;
     }
 
-    /**
-     * Appends the specified character into the buffer, rethrowing any encountered
-     * {@link java.io.IOException} as an {@link IllegalStateException} (since this method is used for internal
-     * implementation needs and we only ever use StringBuilders, we should never encounter an IOException).
-     *
-     * @param buf the buffer to append to
-     * @param c   the character to append.
-     */
+
     private static void append(Appendable buf, char c) {
         try {
             buf.append(c);

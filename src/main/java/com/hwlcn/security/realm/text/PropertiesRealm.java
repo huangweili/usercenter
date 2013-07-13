@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.realm.text;
 
 import com.hwlcn.HwlcnException;
@@ -34,68 +16,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A {@link TextConfigurationRealm} that defers all logic to the parent class, but just enables
- * {@link java.util.Properties Properties} based configuration in addition to the parent class's String configuration.
- * <p/>
- * This class allows processing of a single .properties file for user, role, and
- * permission configuration.
- * <p/>
- * The {@link #setResourcePath resourcePath} <em>MUST</em> be set before this realm can be initialized.  You
- * can specify any resource path supported by
- * {@link com.hwlcn.security.io.ResourceUtils#getInputStreamForPath(String) ResourceUtils.getInputStreamForPath} method.
- * <p/>
- * The Properties format understood by this implementation must be written as follows:
- * <p/>
- * Each line's key/value pair represents either a user-to-role(s) mapping <em>or</em> a role-to-permission(s)
- * mapping.
- * <p/>
- * The user-to-role(s) lines have this format:</p>
- * <p/>
- * <code><b>user.</b><em>username</em> = <em>password</em>,role1,role2,...</code></p>
- * <p/>
- * Note that each key is prefixed with the token <b>{@code user.}</b>  Each value must adhere to the
- * the {@link #setUserDefinitions(String) setUserDefinitions(String)} JavaDoc.
- * <p/>
- * The role-to-permission(s) lines have this format:</p>
- * <p/>
- * <code><b>role.</b><em>rolename</em> = <em>permissionDefinition1</em>, <em>permissionDefinition2</em>, ...</code>
- * <p/>
- * where each key is prefixed with the token <b>{@code role.}</b> and the value adheres to the format specified in
- * the {@link #setRoleDefinitions(String) setRoleDefinitions(String)} JavaDoc.
- * <p/>
- * Here is an example of a very simple properties definition that conforms to the above format rules and corresponding
- * method JavaDocs:
- * <p/>
- * <code>user.root = <em>rootPassword</em>,administrator<br/>
- * user.jsmith = <em>jsmithPassword</em>,manager,engineer,employee<br/>
- * user.abrown = <em>abrownPassword</em>,qa,employee<br/>
- * user.djones = <em>djonesPassword</em>,qa,contractor<br/>
- * <br/>
- * role.administrator = *<br/>
- * role.manager = &quot;user:read,write&quot;, file:execute:/usr/local/emailManagers.sh<br/>
- * role.engineer = &quot;file:read,execute:/usr/local/tomcat/bin/startup.sh&quot;<br/>
- * role.employee = application:use:wiki<br/>
- * role.qa = &quot;server:view,start,shutdown,restart:someQaServer&quot;, server:view:someProductionServer<br/>
- * role.contractor = application:use:timesheet</code>
- *
- * @since 0.2
- */
 public class PropertiesRealm extends TextConfigurationRealm implements Destroyable, Runnable {
 
-    //TODO - complete JavaDoc
-
-    /*-------------------------------------------
-    |             C O N S T A N T S             |
-    ============================================*/
     private static final int DEFAULT_RELOAD_INTERVAL_SECONDS = 10;
     private static final String USERNAME_PREFIX = "user.";
     private static final String ROLENAME_PREFIX = "role.";
-    private static final String DEFAULT_RESOURCE_PATH = "classpath:shiro-users.properties";
+    private static final String DEFAULT_RESOURCE_PATH = "classpath:security-users.properties";
 
-    /*-------------------------------------------
-    |    I N S T A N C E   V A R I A B L E S    |
-    ============================================*/
     private static final Logger log = LoggerFactory.getLogger(PropertiesRealm.class);
 
     protected ExecutorService scheduler = null;
@@ -108,68 +35,32 @@ public class PropertiesRealm extends TextConfigurationRealm implements Destroyab
         super();
     }
 
-    /*--------------------------------------------
-    |  A C C E S S O R S / M O D I F I E R S    |
-    ============================================*/
-
-    /**
-     * Determines whether or not the properties XML format should be used.  For more information, see
-     * {@link java.util.Properties#loadFromXML(java.io.InputStream)}
-     *
-     * @param useXmlFormat true to use XML or false to use the normal format.  Defaults to false.
-     */
     public void setUseXmlFormat(boolean useXmlFormat) {
         this.useXmlFormat = useXmlFormat;
     }
 
-    /**
-     * Sets the path of the properties file to load user, role, and permission information from.  The properties
-     * file will be loaded using {@link com.hwlcn.security.io.ResourceUtils#getInputStreamForPath(String)} so any convention recongized
-     * by that method is accepted here.  For example, to load a file from the classpath use
-     * {@code classpath:myfile.properties}; to load a file from disk simply specify the full path; to load
-     * a file from a URL use {@code url:www.mysite.com/myfile.properties}.
-     *
-     * @param resourcePath the path to load the properties file from.  This is a required property.
-     */
     public void setResourcePath(String resourcePath) {
         this.resourcePath = resourcePath;
     }
 
-    /**
-     * Sets the interval in seconds at which the property file will be checked for changes and reloaded.  If this is
-     * set to zero or less, property file reloading will be disabled.  If it is set to 1 or greater, then a
-     * separate thread will be created to monitor the propery file for changes and reload the file if it is updated.
-     *
-     * @param reloadIntervalSeconds the interval in seconds at which the property file should be examined for changes.
-     *                              If set to zero or less, reloading is disabled.
-     */
     public void setReloadIntervalSeconds(int reloadIntervalSeconds) {
         this.reloadIntervalSeconds = reloadIntervalSeconds;
     }
 
-    /*--------------------------------------------
-    |               M E T H O D S               |
-    ============================================*/
-
     @Override
     public void onInit() {
         super.onInit();
-        //TODO - cleanup - this method shouldn't be necessary
         afterRoleCacheSet();
     }
 
     protected void afterRoleCacheSet() {
         loadProperties();
-        //we can only determine if files have been modified at runtime (not classpath entries or urls), so only
-        //start the thread in this case:
         if (this.resourcePath.startsWith(ResourceUtils.FILE_PREFIX) && scheduler == null) {
             startReloadThread();
         }
     }
 
-    /**
-     * Destroy reload scheduler if one exists.
-     */
+
     public void destroy() {
         try {
             if (scheduler != null) {
@@ -260,12 +151,10 @@ public class PropertiesRealm extends TextConfigurationRealm implements Destroyab
     }
 
     private boolean isSourceModified() {
-        //we can only check last modified times on files - classpath and URL entries can't tell us modification times
         return this.resourcePath.startsWith(ResourceUtils.FILE_PREFIX) && isFileModified();
     }
 
     private boolean isFileModified() {
-        //SHIRO-394: strip file prefix before constructing the File instance:
         String fileNameWithoutPrefix = this.resourcePath.substring(this.resourcePath.indexOf(":") + 1);
         File propertyFile = new File(fileNameWithoutPrefix);
         long currentLastModified = propertyFile.lastModified();

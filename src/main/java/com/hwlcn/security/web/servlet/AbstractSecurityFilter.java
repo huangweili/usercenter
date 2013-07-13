@@ -8,6 +8,7 @@ import com.hwlcn.security.web.filter.mgt.FilterChainResolver;
 import com.hwlcn.security.web.mgt.DefaultWebSecurityManager;
 import com.hwlcn.security.web.mgt.WebSecurityManager;
 import com.hwlcn.security.web.subject.WebSubject;
+import com.hwlcn.security.web.subject.WebSubjectBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,15 +130,15 @@ public abstract class AbstractSecurityFilter extends OncePerRequestFilter {
     }
 
     protected WebSubject createSubject(ServletRequest request, ServletResponse response) {
-        return new WebSubject.Builder(getSecurityManager(), request, response).buildWebSubject();
+        return new WebSubjectBuilder(getSecurityManager(), request, response).buildWebSubject();
     }
 
 
     @SuppressWarnings({"UnusedDeclaration"})
     protected void updateSessionLastAccessTime(ServletRequest request, ServletResponse response) {
-        if (!isHttpSessions()) { //'native' sessions
+        if (!isHttpSessions()) {
             Subject subject = SecurityUtils.getSubject();
-            //Subject should never _ever_ be null, but just in case:
+
             if (subject != null) {
                 Session session = subject.getSession(false);
                 if (session != null) {
@@ -195,13 +196,7 @@ public abstract class AbstractSecurityFilter extends OncePerRequestFilter {
         }
     }
 
-    /**
-     * @param request   the incoming ServletRequest
-     * @param response  the outgoing ServletResponse
-     * @param origChain the original {@code FilterChain} provided by the Servlet Container
-     * @return the {@link javax.servlet.FilterChain} to execute for the given request
-     * @since 1.0
-     */
+
     protected FilterChain getExecutionChain(ServletRequest request, ServletResponse response, FilterChain origChain) {
         FilterChain chain = origChain;
 

@@ -29,7 +29,6 @@ public class WebIniSecurityManagerFactory extends IniSecurityManagerFactory {
     @Override
     protected Map<String, ?> createDefaults(Ini ini, Ini.Section mainSection) {
         Map defaults = super.createDefaults(ini, mainSection);
-        //add the default filters:
         Map<String, Filter> defaultFilters = DefaultFilter.createInstanceMap(null);
         defaults.putAll(defaultFilters);
         return defaults;

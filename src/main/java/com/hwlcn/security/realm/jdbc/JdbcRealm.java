@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.realm.jdbc;
 
 import com.hwlcn.security.authc.*;
@@ -40,20 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 
-/**
- * Realm that allows authentication and authorization via JDBC calls.  The default queries suggest a potential schema
- * for retrieving the user's password for authentication, and querying for a user's roles and permissions.  The
- * default queries can be overridden by setting the query properties of the realm.
- * <p/>
- * If the default implementation
- * of authentication and authorization cannot handle your schema, this class can be subclassed and the
- * appropriate methods overridden. (usually {@link #doGetAuthenticationInfo(com.hwlcn.security.authc.AuthenticationToken)},
- * {@link #getRoleNamesForUser(java.sql.Connection,String)}, and/or {@link #getPermissions(java.sql.Connection,String,java.util.Collection)}
- * <p/>
- * This realm supports caching by extending from {@link com.hwlcn.security.realm.AuthorizingRealm}.
- *
- * @since 0.2
- */
+
 public class JdbcRealm extends AuthorizingRealm {
 
     //TODO - complete JavaDoc

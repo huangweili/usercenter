@@ -70,7 +70,6 @@ public class IniFilterChainResolverFactory extends IniFactorySupport<FilterChain
     }
 
     protected void buildChains(FilterChainManager manager, Ini ini) {
-        //filters section:
         Ini.Section section = ini.getSection(FILTERS);
 
         if (!CollectionUtils.isEmpty(section)) {

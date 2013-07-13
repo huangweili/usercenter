@@ -27,20 +27,11 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.util.*;
 
-/**
- * A class representing the <a href="http://en.wikipedia.org/wiki/INI_file">INI</a> text configuration format.
- * <p/>
- * An Ini instance is a map of {@link Ini.Section Section}s, keyed by section name.  Each
- * {@code Section} is itself a map of {@code String} name/value pairs.  Name/value pairs are guaranteed to be unique
- * within each {@code Section} only - not across the entire {@code Ini} instance.
- *
- * @since 1.0
- */
 public class Ini implements Map<String, Ini.Section> {
 
     private static transient final Logger log = LoggerFactory.getLogger(Ini.class);
 
-    public static final String DEFAULT_SECTION_NAME = ""; //empty string means the first unnamed section
+    public static final String DEFAULT_SECTION_NAME = "";
     public static final String DEFAULT_CHARSET_NAME = "UTF-8";
 
     public static final String COMMENT_POUND = "#";
@@ -52,18 +43,11 @@ public class Ini implements Map<String, Ini.Section> {
 
     private final Map<String, Section> sections;
 
-    /**
-     * Creates a new empty {@code Ini} instance.
-     */
+
     public Ini() {
         this.sections = new LinkedHashMap<String, Section>();
     }
 
-    /**
-     * Creates a new {@code Ini} instance with the specified defaults.
-     *
-     * @param defaults the default sections and/or key-value pairs to copy into the new instance.
-     */
     public Ini(Ini defaults) {
         this();
         if (defaults == null) {
@@ -75,13 +59,6 @@ public class Ini implements Map<String, Ini.Section> {
         }
     }
 
-    /**
-     * Returns {@code true} if no sections have been configured, or if there are sections, but the sections themselves
-     * are all empty, {@code false} otherwise.
-     *
-     * @return {@code true} if no sections have been configured, or if there are sections, but the sections themselves
-     *         are all empty, {@code false} otherwise.
-     */
     public boolean isEmpty() {
         Collection<Section> sections = this.sections.values();
         if (!sections.isEmpty()) {
@@ -94,45 +71,19 @@ public class Ini implements Map<String, Ini.Section> {
         return true;
     }
 
-    /**
-     * Returns the names of all sections managed by this {@code Ini} instance or an empty collection if there are
-     * no sections.
-     *
-     * @return the names of all sections managed by this {@code Ini} instance or an empty collection if there are
-     *         no sections.
-     */
     public Set<String> getSectionNames() {
         return Collections.unmodifiableSet(sections.keySet());
     }
 
-    /**
-     * Returns the sections managed by this {@code Ini} instance or an empty collection if there are
-     * no sections.
-     *
-     * @return the sections managed by this {@code Ini} instance or an empty collection if there are
-     *         no sections.
-     */
     public Collection<Section> getSections() {
         return Collections.unmodifiableCollection(sections.values());
     }
 
-    /**
-     * Returns the {@link Ini.Section} with the given name or {@code null} if no section with that name exists.
-     *
-     * @param sectionName the name of the section to retrieve.
-     * @return the {@link Ini.Section} with the given name or {@code null} if no section with that name exists.
-     */
     public Section getSection(String sectionName) {
         String name = cleanName(sectionName);
         return sections.get(name);
     }
 
-    /**
-     * Ensures a section with the specified name exists, adding a new one if it does not yet exist.
-     *
-     * @param sectionName the name of the section to ensure existence
-     * @return the section created if it did not yet exist, or the existing Section that already existed.
-     */
     public Section addSection(String sectionName) {
         String name = cleanName(sectionName);
         Section section = getSection(name);
@@ -143,12 +94,6 @@ public class Ini implements Map<String, Ini.Section> {
         return section;
     }
 
-    /**
-     * Removes the section with the specified name and returns it, or {@code null} if the section did not exist.
-     *
-     * @param sectionName the name of the section to remove.
-     * @return the section with the specified name or {@code null} if the section did not exist.
-     */
     public Section removeSection(String sectionName) {
         String name = cleanName(sectionName);
         return this.sections.remove(name);
@@ -157,21 +102,15 @@ public class Ini implements Map<String, Ini.Section> {
     private static String cleanName(String sectionName) {
         String name = StringUtils.clean(sectionName);
         if (name == null) {
-            log.trace("Specified name was null or empty.  Defaulting to the default section (name = \"\")");
+            if (log.isTraceEnabled()) {
+                log.trace("Specified name was null or empty.  Defaulting to the default section (name = \"\")");
+            }
             name = DEFAULT_SECTION_NAME;
         }
         return name;
     }
 
-    /**
-     * Sets a name/value pair for the section with the given {@code sectionName}.  If the section does not yet exist,
-     * it will be created.  If the {@code sectionName} is null or empty, the name/value pair will be placed in the
-     * default (unnamed, empty string) section.
-     *
-     * @param sectionName   the name of the section to add the name/value pair
-     * @param propertyName  the name of the property to add
-     * @param propertyValue the property value
-     */
+
     public void setSectionProperty(String sectionName, String propertyName, String propertyValue) {
         String name = cleanName(sectionName);
         Section section = getSection(name);
@@ -181,42 +120,16 @@ public class Ini implements Map<String, Ini.Section> {
         section.put(propertyName, propertyValue);
     }
 
-    /**
-     * Returns the value of the specified section property, or {@code null} if the section or property do not exist.
-     *
-     * @param sectionName  the name of the section to retrieve to acquire the property value
-     * @param propertyName the name of the section property for which to return the value
-     * @return the value of the specified section property, or {@code null} if the section or property do not exist.
-     */
     public String getSectionProperty(String sectionName, String propertyName) {
         Section section = getSection(sectionName);
         return section != null ? section.get(propertyName) : null;
     }
 
-    /**
-     * Returns the value of the specified section property, or the {@code defaultValue} if the section or
-     * property do not exist.
-     *
-     * @param sectionName  the name of the section to add the name/value pair
-     * @param propertyName the name of the property to add
-     * @param defaultValue the default value to return if the section or property do not exist.
-     * @return the value of the specified section property, or the {@code defaultValue} if the section or
-     *         property do not exist.
-     */
     public String getSectionProperty(String sectionName, String propertyName, String defaultValue) {
         String value = getSectionProperty(sectionName, propertyName);
         return value != null ? value : defaultValue;
     }
 
-    /**
-     * Creates a new {@code Ini} instance loaded with the INI-formatted data in the resource at the given path.  The
-     * resource path may be any value interpretable by the
-     * {@link com.hwlcn.security.io.ResourceUtils#getInputStreamForPath(String) ResourceUtils.getInputStreamForPath} method.
-     *
-     * @param resourcePath the resource location of the INI data to load when creating the {@code Ini} instance.
-     * @return a new {@code Ini} instance loaded with the INI-formatted data in the resource at the given path.
-     * @throws ConfigurationException if the path cannot be loaded into an {@code Ini} instance.
-     */
     public static Ini fromResourcePath(String resourcePath) throws ConfigurationException {
         if (!StringUtils.hasLength(resourcePath)) {
             throw new IllegalArgumentException("Resource Path argument cannot be null or empty.");
@@ -226,14 +139,6 @@ public class Ini implements Map<String, Ini.Section> {
         return ini;
     }
 
-    /**
-     * Loads data from the specified resource path into this current {@code Ini} instance.  The
-     * resource path may be any value interpretable by the
-     * {@link com.hwlcn.security.io.ResourceUtils#getInputStreamForPath(String) ResourceUtils.getInputStreamForPath} method.
-     *
-     * @param resourcePath the resource location of the INI data to load into this instance.
-     * @throws ConfigurationException if the path cannot be loaded
-     */
     public void loadFromPath(String resourcePath) throws ConfigurationException {
         InputStream is;
         try {
@@ -244,24 +149,10 @@ public class Ini implements Map<String, Ini.Section> {
         load(is);
     }
 
-    /**
-     * Loads the specified raw INI-formatted text into this instance.
-     *
-     * @param iniConfig the raw INI-formatted text to load into this instance.
-     * @throws ConfigurationException if the text cannot be loaded
-     */
     public void load(String iniConfig) throws ConfigurationException {
         load(new Scanner(iniConfig));
     }
 
-    /**
-     * Loads the INI-formatted text backed by the given InputStream into this instance.  This implementation will
-     * close the input stream after it has finished loading.  It is expected that the stream's contents are
-     * UTF-8 encoded.
-     *
-     * @param is the {@code InputStream} from which to read the INI-formatted text
-     * @throws ConfigurationException if unable
-     */
     public void load(InputStream is) throws ConfigurationException {
         if (is == null) {
             throw new NullPointerException("InputStream argument cannot be null.");
@@ -275,12 +166,6 @@ public class Ini implements Map<String, Ini.Section> {
         load(isr);
     }
 
-    /**
-     * Loads the INI-formatted text backed by the given Reader into this instance.  This implementation will close the
-     * reader after it has finished loading.
-     *
-     * @param reader the {@code Reader} from which to read the INI-formatted text
-     */
     public void load(Reader reader) {
         Scanner scanner = new Scanner(reader);
         try {
@@ -307,12 +192,6 @@ public class Ini implements Map<String, Ini.Section> {
         }
     }
 
-    /**
-     * Loads the INI-formatted text backed by the given Scanner.  This implementation will close the
-     * scanner after it has finished loading.
-     *
-     * @param scanner the {@code Scanner} from which to read the INI-formatted text
-     */
     public void load(Scanner scanner) {
 
         String sectionName = DEFAULT_SECTION_NAME;
@@ -324,16 +203,14 @@ public class Ini implements Map<String, Ini.Section> {
             String line = StringUtils.clean(rawLine);
 
             if (line == null || line.startsWith(COMMENT_POUND) || line.startsWith(COMMENT_SEMICOLON)) {
-                //skip empty lines and comments:
                 continue;
             }
 
             String newSectionName = getSectionName(line);
             if (newSectionName != null) {
-                //found a new section - convert the currently buffered one into a Section object
                 addSection(sectionName, sectionContent);
 
-                //reset the buffer for the new section:
+
                 sectionContent = new StringBuilder();
 
                 sectionName = newSectionName;
@@ -342,12 +219,12 @@ public class Ini implements Map<String, Ini.Section> {
                     log.debug("Parsing " + SECTION_PREFIX + sectionName + SECTION_SUFFIX);
                 }
             } else {
-                //normal line - add it to the existing content buffer:
+
                 sectionContent.append(rawLine).append("\n");
             }
         }
 
-        //finish any remaining buffered content:
+
         addSection(sectionName, sectionContent);
     }
 
@@ -438,10 +315,6 @@ public class Ini implements Map<String, Ini.Section> {
         return Collections.unmodifiableSet(this.sections.entrySet());
     }
 
-    /**
-     * An {@code Ini.Section} is String-key-to-String-value Map, identifiable by a
-     * {@link #getName() name} unique within an {@link Ini} instance.
-     */
     public static class Section implements Map<String, String> {
         private final String name;
         private final Map<String, String> props;
@@ -459,16 +332,16 @@ public class Ini implements Map<String, Ini.Section> {
                 throw new NullPointerException("name");
             }
             this.name = name;
-            Map<String,String> props;
-            if (StringUtils.hasText(sectionContent) ) {
+            Map<String, String> props;
+            if (StringUtils.hasText(sectionContent)) {
                 props = toMapProps(sectionContent);
             } else {
-                props = new LinkedHashMap<String,String>();
+                props = new LinkedHashMap<String, String>();
             }
-            if ( props != null ) {
+            if (props != null) {
                 this.props = props;
             } else {
-                this.props = new LinkedHashMap<String,String>();
+                this.props = new LinkedHashMap<String, String>();
             }
         }
 
@@ -477,15 +350,11 @@ public class Ini implements Map<String, Ini.Section> {
             putAll(defaults.props);
         }
 
-        //Protected to access in a test case - NOT considered part of Shiro's public API
-
         protected static boolean isContinued(String line) {
             if (!StringUtils.hasText(line)) {
                 return false;
             }
             int length = line.length();
-            //find the number of backslashes at the end of the line.  If an even number, the
-            //backslashes are considered escaped.  If an odd number, the line is considered continued on the next line
             int backslashCount = 0;
             for (int i = length - 1; i > 0; i--) {
                 if (line.charAt(i) == ESCAPE_TOKEN) {
@@ -505,7 +374,6 @@ public class Ini implements Map<String, Ini.Section> {
             return index > 0 && s.charAt(index - 1) == ESCAPE_TOKEN;
         }
 
-        //Protected to access in a test case - NOT considered part of Shiro's public API
         protected static String[] splitKeyValue(String keyValueLine) {
             String line = StringUtils.clean(keyValueLine);
             if (line == null) {
@@ -514,20 +382,18 @@ public class Ini implements Map<String, Ini.Section> {
             StringBuilder keyBuffer = new StringBuilder();
             StringBuilder valueBuffer = new StringBuilder();
 
-            boolean buildingKey = true; //we'll build the value next:
-
+            boolean buildingKey = true;
             for (int i = 0; i < line.length(); i++) {
                 char c = line.charAt(i);
 
                 if (buildingKey) {
                     if (isKeyValueSeparatorChar(c) && !isCharEscaped(line, i)) {
-                        buildingKey = false;//now start building the value
+                        buildingKey = false;
                     } else {
                         keyBuffer.append(c);
                     }
                 } else {
                     if (valueBuffer.length() == 0 && isKeyValueSeparatorChar(c) && !isCharEscaped(line, i)) {
-                        //swallow the separator chars before we start building the value
                     } else {
                         valueBuffer.append(c);
                     }
@@ -542,8 +408,9 @@ public class Ini implements Map<String, Ini.Section> {
                 throw new IllegalArgumentException(msg);
             }
 
-            log.trace("Discovered key/value pair: {}={}", key, value);
-
+            if (log.isTraceEnabled()) {
+                log.trace("Discovered key/value pair: {}={}", key, value);
+            }
             return new String[]{key, value};
         }
 
@@ -555,7 +422,6 @@ public class Ini implements Map<String, Ini.Section> {
             while (scanner.hasNextLine()) {
                 line = StringUtils.clean(scanner.nextLine());
                 if (isContinued(line)) {
-                    //strip off the last continuation backslash:
                     line = line.substring(0, line.length() - 1);
                     lineBuffer.append(line);
                     continue;

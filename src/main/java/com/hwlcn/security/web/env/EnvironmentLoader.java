@@ -13,9 +13,9 @@ import javax.servlet.ServletContext;
 
 public class EnvironmentLoader {
 
-    public static final String ENVIRONMENT_CLASS_PARAM = "hwlcnEnvironmentClass";
+    public static final String ENVIRONMENT_CLASS_PARAM = "securityEnvironmentClass";
 
-    public static final String CONFIG_LOCATIONS_PARAM = "hwlcnConfigLocations";
+    public static final String CONFIG_LOCATIONS_PARAM = "securityConfigLocations";
 
     public static final String ENVIRONMENT_ATTRIBUTE_KEY = EnvironmentLoader.class.getName() + ".ENVIRONMENT_ATTRIBUTE_KEY";
 
@@ -24,14 +24,14 @@ public class EnvironmentLoader {
     public WebEnvironment initEnvironment(ServletContext servletContext) throws IllegalStateException {
 
         if (servletContext.getAttribute(ENVIRONMENT_ATTRIBUTE_KEY) != null) {
-            String msg = "There is already a Hwlcn environment associated with the current ServletContext.  " +
+            String msg = "There is already a Security environment associated with the current ServletContext.  " +
                     "Check if you have multiple EnvironmentLoader* definitions in your web.xml!";
             throw new IllegalStateException(msg);
         }
 
-        servletContext.log("Initializing Shiro environment");
+        servletContext.log("Initializing Security environment");
         if (log.isInfoEnabled()) {
-            log.info("Starting Hwlcn environment initialization.");
+            log.info("Starting Security environment initialization.");
         }
         long startTime = System.currentTimeMillis();
 
@@ -42,16 +42,16 @@ public class EnvironmentLoader {
 
             if (log.isInfoEnabled()) {
                 long elapsed = System.currentTimeMillis() - startTime;
-                log.info("Hwlcn environment initialized in {} ms.", elapsed);
+                log.info("Security environment initialized in {} ms.", elapsed);
             }
 
             return environment;
         } catch (RuntimeException ex) {
-            log.error("Hwlcn environment initialization failed", ex);
+            log.error("Security environment initialization failed", ex);
             servletContext.setAttribute(ENVIRONMENT_ATTRIBUTE_KEY, ex);
             throw ex;
         } catch (Error err) {
-            log.error("Hwlcn environment initialization failed", err);
+            log.error("Security environment initialization failed", err);
             servletContext.setAttribute(ENVIRONMENT_ATTRIBUTE_KEY, err);
             throw err;
         }
@@ -111,7 +111,7 @@ public class EnvironmentLoader {
 
 
     public void destroyEnvironment(ServletContext servletContext) {
-        servletContext.log("Cleaning up Hwlcn Environment");
+        servletContext.log("Cleaning up Security Environment");
         try {
             Object environment = servletContext.getAttribute(ENVIRONMENT_ATTRIBUTE_KEY);
             LifecycleUtils.destroy(environment);

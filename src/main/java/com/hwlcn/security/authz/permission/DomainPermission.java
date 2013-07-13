@@ -1,35 +1,10 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.authz.permission;
 
 import com.hwlcn.security.util.StringUtils;
 
 import java.util.Set;
 
-/**
- * Provides a base Permission class from which type-safe/domain-specific subclasses may extend.  Can be used
- * as a base class for JPA/Hibernate persisted permissions that wish to store the parts of the permission string
- * in separate columns (e.g. 'domain', 'actions' and 'targets' columns), which can be used in querying
- * strategies.
- *
- * @since 1.0
- */
+
 public class DomainPermission extends WildcardPermission {
 
     private String domain;
@@ -38,9 +13,6 @@ public class DomainPermission extends WildcardPermission {
 
     private static final long serialVersionUID = 1l;
 
-    /**
-     * Creates a domain permission with *all* actions for *all* targets;
-     */
     public DomainPermission() {
         this.domain = getDomain(getClass());
         setParts(getDomain(getClass()));

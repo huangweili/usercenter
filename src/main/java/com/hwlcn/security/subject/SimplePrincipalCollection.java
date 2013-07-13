@@ -1,21 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 package com.hwlcn.security.subject;
 
 import com.hwlcn.security.util.CollectionUtils;
@@ -27,23 +9,11 @@ import java.io.ObjectOutputStream;
 import java.util.*;
 
 
-/**
- * A simple implementation of the {@link MutablePrincipalCollection} interface that tracks principals internally
- * by storing them in a {@link java.util.LinkedHashMap}.
- *
- * @since 0.9
- */
-@SuppressWarnings({"unchecked"})
 public class SimplePrincipalCollection implements MutablePrincipalCollection {
 
-    // Serialization reminder:
-    // You _MUST_ change this number if you introduce a change to this class
-    // that is NOT serialization backwards compatible.  Serialization-compatible
-    // changes do not require a change to this number.  If you need to generate
-    // a new number in this case, use the JDK's 'serialver' program to generate it.
+
     private static final long serialVersionUID = -6305224034025797558L;
 
-    //TODO - complete JavaDoc
 
     private Map<String, Set> realmPrincipals;
 
@@ -80,15 +50,6 @@ public class SimplePrincipalCollection implements MutablePrincipalCollection {
         return principals;
     }
 
-    /**
-     * Returns the first available principal from any of the {@code Realm} principals, or {@code null} if there are
-     * no principals yet.
-     * <p/>
-     * The 'first available principal' is interpreted as the principal that would be returned by
-     * <code>{@link #iterator() iterator()}.{@link java.util.Iterator#next() next()}.</code>
-     *
-     * @inheritDoc
-     */
     public Object getPrimaryPrincipal() {
         if (isEmpty()) {
             return null;
@@ -241,12 +202,6 @@ public class SimplePrincipalCollection implements MutablePrincipalCollection {
         return super.hashCode();
     }
 
-    /**
-     * Returns a simple string representation suitable for printing.
-     *
-     * @return a simple string representation suitable for printing.
-     * @since 1.0
-     */
     public String toString() {
         if (this.cachedToString == null) {
             Set<Object> principals = asSet();
@@ -260,16 +215,6 @@ public class SimplePrincipalCollection implements MutablePrincipalCollection {
     }
 
 
-    /**
-     * Serialization write support.
-     * <p/>
-     * NOTE: Don't forget to change the serialVersionUID constant at the top of this class
-     * if you make any backwards-incompatible serializatoin changes!!!
-     * (use the JDK 'serialver' program for this)
-     *
-     * @param out output stream provided by Java serialization
-     * @throws java.io.IOException if there is a stream error
-     */
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         boolean principalsExist = !CollectionUtils.isEmpty(realmPrincipals);
@@ -279,18 +224,6 @@ public class SimplePrincipalCollection implements MutablePrincipalCollection {
         }
     }
 
-    /**
-     * Serialization read support - reads in the Map principals collection if it exists in the
-     * input stream.
-     * <p/>
-     * NOTE: Don't forget to change the serialVersionUID constant at the top of this class
-     * if you make any backwards-incompatible serializatoin changes!!!
-     * (use the JDK 'serialver' program for this)
-     *
-     * @param in input stream provided by
-     * @throws java.io.IOException            if there is an input/output problem
-     * @throws ClassNotFoundException if the underlying Map implementation class is not available to the classloader.
-     */
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         boolean principalsExist = in.readBoolean();

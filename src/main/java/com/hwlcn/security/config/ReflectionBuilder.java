@@ -106,7 +106,7 @@ public class ReflectionBuilder {
                     "Redefining this object as a new instance of type {}", name, value);
         }
 
-        Object instance;//name with no property, assume right hand side of equals sign is the class name:
+        Object instance;
         try {
             instance = ClassUtils.newInstance(value);
             if (instance instanceof Nameable) {
@@ -202,7 +202,9 @@ public class ReflectionBuilder {
 
     protected Object resolveReference(String reference) {
         String id = getId(reference);
-        log.debug("Encountered object reference '{}'.  Looking up object with id '{}'", reference, id);
+        if (log.isDebugEnabled()) {
+            log.debug("Encountered object reference '{}'.  Looking up object with id '{}'", reference, id);
+        }
         final Object referencedObject = getReferencedObject(id);
         if (referencedObject instanceof Factory) {
             return ((Factory) referencedObject).getInstance();
@@ -224,7 +226,7 @@ public class ReflectionBuilder {
             Class propertyClazz = descriptor.getPropertyType();
             return clazz.isAssignableFrom(propertyClazz);
         } catch (ConfigurationException ce) {
-            //let it propagate:
+
             throw ce;
         } catch (Exception e) {
             String msg = "Unable to determine if property [" + propertyName + "] represents a " + clazz.getName();
@@ -238,7 +240,7 @@ public class ReflectionBuilder {
             return null;
         }
 
-        //SHIRO-423: check to see if the value is a referenced Set already, and if so, return it immediately:
+
         if (tokens.length == 1 && isReference(tokens[0])) {
             Object reference = resolveReference(tokens[0]);
             if (reference instanceof Set) {
@@ -248,7 +250,6 @@ public class ReflectionBuilder {
 
         Set<String> setTokens = new LinkedHashSet<String>(Arrays.asList(tokens));
 
-        //now convert into correct values and/or references:
         Set<Object> values = new LinkedHashSet<Object>(setTokens.size());
         for (String token : setTokens) {
             Object value = resolveValue(token);
@@ -264,7 +265,6 @@ public class ReflectionBuilder {
             return null;
         }
 
-        //SHIRO-423: check to see if the value is a referenced Map already, and if so, return it immediately:
         if (tokens.length == 1 && isReference(tokens[0])) {
             Object reference = resolveReference(tokens[0]);
             if (reference instanceof Map) {
@@ -284,7 +284,6 @@ public class ReflectionBuilder {
             mapTokens.put(kvPair[0], kvPair[1]);
         }
 
-        //now convert into correct values and/or references:
         Map<Object, Object> map = new LinkedHashMap<Object, Object>(mapTokens.size());
         for (Map.Entry<String, String> entry : mapTokens.entrySet()) {
             Object key = resolveValue(entry.getKey());
@@ -294,8 +293,6 @@ public class ReflectionBuilder {
         return map;
     }
 
-    // @since 1.2.2
-    // TODO: make protected in 1.3+
     private Collection<?> toCollection(String sValue) {
 
         String[] tokens = StringUtils.split(sValue);
@@ -303,7 +300,6 @@ public class ReflectionBuilder {
             return null;
         }
 
-        //SHIRO-423: check to see if the value is a referenced Collection already, and if so, return it immediately:
         if (tokens.length == 1 && isReference(tokens[0])) {
             Object reference = resolveReference(tokens[0]);
             if (reference instanceof Collection) {
@@ -311,7 +307,6 @@ public class ReflectionBuilder {
             }
         }
 
-        //now convert into correct values and/or references:
         List<Object> values = new ArrayList<Object>(tokens.length);
         for (String token : tokens) {
             Object value = resolveValue(token);
@@ -326,7 +321,6 @@ public class ReflectionBuilder {
             return null;
         }
 
-        //SHIRO-423: check to see if the value is a referenced List already, and if so, return it immediately:
         if (tokens.length == 1 && isReference(tokens[0])) {
             Object reference = resolveReference(tokens[0]);
             if (reference instanceof List) {
@@ -334,7 +328,6 @@ public class ReflectionBuilder {
             }
         }
 
-        //now convert into correct values and/or references:
         List<Object> values = new ArrayList<Object>(tokens.length);
         for (String token : tokens) {
             Object value = resolveValue(token);
@@ -352,7 +345,6 @@ public class ReflectionBuilder {
             String hex = sValue.substring(HEX_BEGIN_TOKEN.length());
             bytes = Hex.decode(hex);
         } else {
-            //assume base64 encoded:
             bytes = Base64.decode(sValue);
         }
         return bytes;
@@ -372,11 +364,9 @@ public class ReflectionBuilder {
         if (stringValue == null) {
             return null;
         }
-        //check if the value is the actual literal string 'null' (expected to be wrapped in quotes):
         if (stringValue.equals("\"null\"")) {
             return NULL_VALUE_TOKEN;
         }
-        //or the actual literal string of two quotes '""' (expected to be wrapped in quotes):
         else if (stringValue.equals("\"\"\"\"")) {
             return EMPTY_STRING_VALUE_TOKEN;
         } else {
@@ -394,14 +384,9 @@ public class ReflectionBuilder {
         String remaining = null;
 
         if (mapBegin >= 0) {
-            //a map is being referenced in the overall property path.  Find just the map's path:
             mapPropertyPath = propertyPath.substring(0, mapBegin);
-            //find the end of the map reference:
             mapEnd = propertyPath.indexOf(MAP_PROPERTY_END_TOKEN, mapBegin);
-            //find the token in between the [ and the ] (the map/array key or index):
             keyString = propertyPath.substring(mapBegin + 1, mapEnd);
-
-            //find out if there is more path reference to follow.  If not, we're at a terminal of the OGNL expression
             if (propertyPath.length() > (mapEnd + 1)) {
                 remaining = propertyPath.substring(mapEnd + 1);
                 if (remaining.startsWith(".")) {
@@ -411,33 +396,25 @@ public class ReflectionBuilder {
         }
 
         if (remaining == null) {
-            //we've terminated the OGNL expression.  Check to see if we're assigning a property or a map entry:
             if (keyString == null) {
-                //not a map or array value assignment - assign the property directly:
                 setProperty(object, propertyPath, value);
             } else {
-                //we're assigning a map or array entry.  Check to see which we should call:
                 if (isTypedProperty(object, mapPropertyPath, Map.class)) {
                     Map map = (Map) getProperty(object, mapPropertyPath);
                     Object mapKey = resolveValue(keyString);
-                    //noinspection unchecked
                     map.put(mapKey, value);
                 } else {
-                    //must be an array property.  Convert the key string to an index:
                     int index = Integer.valueOf(keyString);
                     setIndexedProperty(object, mapPropertyPath, index, value);
                 }
             }
         } else {
-            //property is being referenced as part of a nested path.  Find the referenced map/array entry and
-            //recursively call this method with the remaining property path
             Object referencedValue = null;
             if (isTypedProperty(object, mapPropertyPath, Map.class)) {
                 Map map = (Map) getProperty(object, mapPropertyPath);
                 Object mapKey = resolveValue(keyString);
                 referencedValue = map.get(mapKey);
             } else {
-                //must be an array property:
                 int index = Integer.valueOf(keyString);
                 referencedValue = getIndexedProperty(object, mapPropertyPath, index);
             }
