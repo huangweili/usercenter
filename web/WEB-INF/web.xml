@@ -1,9 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-		  http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-         version="3.0">
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <display-name>ldap</display-name>
 
     <context-param>
@@ -25,12 +22,7 @@
             <param-value>classpath:spring/admin_servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-        <async-supported>true</async-supported>
-        <multipart-config>
-            <max-file-size>2097152</max-file-size>
-            <max-request-size>2097152</max-request-size>
-            <file-size-threshold>0</file-size-threshold>
-        </multipart-config>
+
     </servlet>
 
     <servlet-mapping>
@@ -48,12 +40,6 @@
             <param-value>classpath:spring/font_servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
-        <async-supported>true</async-supported>
-        <multipart-config>
-            <max-file-size>2097152</max-file-size>
-            <max-request-size>2097152</max-request-size>
-            <file-size-threshold>0</file-size-threshold>
-        </multipart-config>
     </servlet>
 
     <servlet-mapping>
