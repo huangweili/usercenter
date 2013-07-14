@@ -13,37 +13,23 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <!--配置Admin分类 -->
-    <servlet>
-        <servlet-name>admin-servlet</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/admin_servlet.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>admin-servlet</servlet-name>
-        <url-pattern>/admin/*</url-pattern>
-    </servlet-mapping>
-
-
-    <!--配置Admin分类 -->
     <servlet>
         <servlet-name>font-servlet</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/font_servlet.xml</param-value>
+            <param-value>classpath:spring/controller_servlet.xml</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>font-servlet</servlet-name>
-        <url-pattern>/font/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
+    
+    
+    <welcome-file-list>
+        <welcome-file>/index.html</welcome-file>
+    </welcome-file-list>
 </web-app>

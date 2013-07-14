@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 下午4:49
  */
 @Controller
+@RequestMapping("/admin")
 public class DomainController {
 
     @Autowired
@@ -31,12 +32,12 @@ public class DomainController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "addDomain.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/addDomain.html", method = RequestMethod.GET)
     public String addDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "addDomain";
+        return "admin/addDomain";
     }
 
-    @RequestMapping(value = "addDomain.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/addDomain.html", method = RequestMethod.POST)
     @ResponseBody
     public String addedDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
 
@@ -52,13 +53,13 @@ public class DomainController {
      * @return
      */
 
-    @RequestMapping(value = "editDomain.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/editDomain.html", method = RequestMethod.GET)
     public String editDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "editDomain";
     }
 
 
-    @RequestMapping(value = "editDomain.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/editDomain.html", method = RequestMethod.POST)
     @ResponseBody
     public String editedDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -73,7 +74,7 @@ public class DomainController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "deleteDomain.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteDomain.html", method = RequestMethod.POST)
     @ResponseBody
     public String deleteDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -88,7 +89,7 @@ public class DomainController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "testDomain.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/testDomain.html", method = RequestMethod.POST)
     @ResponseBody
     public String testDomain(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";

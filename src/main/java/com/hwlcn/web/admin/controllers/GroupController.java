@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 下午3:25
  */
 @Controller
+@RequestMapping("/admin")
 public class GroupController {
 
 
@@ -23,12 +24,12 @@ public class GroupController {
      *
      * @return
      */
-    @RequestMapping(value = "createGroup.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/createGroup.html", method = RequestMethod.GET)
     public String createGroup(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "createGroup";
+        return "admin/createGroup";
     }
 
-    @RequestMapping(value = "createGroup.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/createGroup.html", method = RequestMethod.POST)
     @ResponseBody
     public String createdGroup(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -42,12 +43,12 @@ public class GroupController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "editGroup.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/editGroup.html", method = RequestMethod.GET)
     public String editGroup(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "editgroup";
+        return "admin/editgroup";
     }
 
-    @RequestMapping(value = "editGroup.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/editGroup.html", method = RequestMethod.POST)
     @ResponseBody
     public String editedGroup(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -61,7 +62,7 @@ public class GroupController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "deleteGroup.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteGroup.html", method = RequestMethod.POST)
     @ResponseBody
     public String deletedGroup(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";

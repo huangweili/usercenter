@@ -9,8 +9,8 @@
 
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:property-placeholder location="classpath:property/admin_*.properties"/>
-    <context:component-scan base-package="com.hwlcn.web.admin.controllers"/>
+    <context:property-placeholder location="classpath:property/*.properties"/>
+    <context:component-scan base-package="com.hwlcn.web.*.controllers"/>
 
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
@@ -19,8 +19,9 @@
                 <constructor-arg value="UTF-8"/>
             </bean>
         </mvc:message-converters>
-
     </mvc:annotation-driven>
+
+    <mvc:resources mapping="/resource/**" location="resource/"></mvc:resources>
 
     <!-- 请求中断配置-->
     <mvc:interceptors>
@@ -32,7 +33,7 @@
 
     <!-- 配置模版 -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/templates/admin/"/>
+        <property name="templateLoaderPath" value="/templates/"/>
         <property name="freemarkerSettings">
             <props>
                 <prop key="template_update_delay">0</prop>

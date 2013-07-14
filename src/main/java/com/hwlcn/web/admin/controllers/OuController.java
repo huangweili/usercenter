@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 下午3:39
  */
 @Controller
+@RequestMapping("/admin")
 public class OuController {
 
     /**
@@ -26,13 +27,13 @@ public class OuController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "createOu.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/createOu.html", method = RequestMethod.GET)
     public String createOu(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "createOu";
+        return "admin/createOu";
     }
 
 
-    @RequestMapping(value = "createdOu.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/createdOu.html", method = RequestMethod.POST)
     @ResponseBody
     public String createdOu(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -46,12 +47,12 @@ public class OuController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "editOu.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/editOu.html", method = RequestMethod.GET)
     public String editOu(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "editOu";
+        return "admin/editOu";
     }
 
-    @RequestMapping(value = "editOu.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/editOu.html", method = RequestMethod.POST)
     @ResponseBody
     public String editedOu(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -65,7 +66,7 @@ public class OuController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "deleteOu.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteOu.html", method = RequestMethod.GET)
     public String deletedOu(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
     }

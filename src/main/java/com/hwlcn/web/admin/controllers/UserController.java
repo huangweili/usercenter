@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
+@RequestMapping("/admin")
 public class UserController {
 
     /**
@@ -23,12 +24,12 @@ public class UserController {
      *
      * @return
      */
-    @RequestMapping(value = "createUser.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/createUser.html", method = RequestMethod.GET)
     public String createUser(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "createUser";
+        return "admin/createUser";
     }
 
-    @RequestMapping(value = "createUser.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/createUser.html", method = RequestMethod.POST)
     @ResponseBody
     public String createdUser(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -42,12 +43,12 @@ public class UserController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "editUser.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/editUser.html", method = RequestMethod.GET)
     public String editUser(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "editUser";
+        return "admin/editUser";
     }
 
-    @RequestMapping(value = "editUser.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/editUser.html", method = RequestMethod.POST)
     @ResponseBody
     public String editedUser(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";
@@ -61,7 +62,7 @@ public class UserController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "deleteUser.html", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteUser.html", method = RequestMethod.POST)
     @ResponseBody
     public String deletedUser(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "";

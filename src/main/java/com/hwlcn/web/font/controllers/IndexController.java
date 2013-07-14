@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  * Time: 下午11:02
  */
 
-@Controller
+@Controller("indexController")
 public class IndexController {
 
 
@@ -26,8 +26,7 @@ public class IndexController {
      */
     @RequestMapping(value = {"/", "", "index.html"}, method = RequestMethod.GET)
     public String index() {
-
-        return "index";
+        return "font/index";
     }
 
     /**
@@ -37,7 +36,7 @@ public class IndexController {
      */
     @RequestMapping(value = "edit.html", method = RequestMethod.GET)
     public String edit() {
-        return "edit";
+        return "font/edit";
     }
 
 
@@ -50,7 +49,7 @@ public class IndexController {
     @RequestMapping(value = "edit.html", method = RequestMethod.POST)
     @ResponseBody
     public String edited() {
-        return "edited";
+        return "font/edited";
     }
 
 
@@ -61,13 +60,13 @@ public class IndexController {
      */
     @RequestMapping(value = "login.html", method = RequestMethod.GET)
     public String login() {
-        return "login";
+        return "font/login";
     }
 
 
     @RequestMapping(value = "login.html", method = RequestMethod.POST)
     public String logined() {
-        return "index";
+        return "font/index";
     }
 
     /**
@@ -77,7 +76,7 @@ public class IndexController {
      */
     @RequestMapping(value = "search.html", method = RequestMethod.GET)
     public String search() {
-        return "search";
+        return "font/search";
     }
 
 
@@ -94,7 +93,7 @@ public class IndexController {
      */
     @RequestMapping(value = "changepassword.html", method = RequestMethod.GET)
     public String changePassword() {
-        return "changePassword";
+        return "font/changePassword";
     }
 
     @RequestMapping(value = "changepassword.html", method = RequestMethod.POST)
@@ -111,7 +110,7 @@ public class IndexController {
      */
     @RequestMapping(value = "forgetpassword.html", method = RequestMethod.GET)
     public String forgetpassword() {
-        return "forgetpassword";
+        return "font/forgetpassword";
     }
 
     @RequestMapping(value = "forgetpassword.html", method = RequestMethod.POST)

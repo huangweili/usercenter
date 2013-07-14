@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class CommonController {
-    @RequestMapping(value = "resubmit.html", method = RequestMethod.GET)
+    @RequestMapping(value = "/resubmit.html", method = RequestMethod.GET)
     public String resubmit(HttpServletRequest request, HttpServletResponse response, Model model) {
-        return "resubmit";
+        return "font/resubmit";
     }
 
 }
