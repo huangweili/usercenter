@@ -1,9 +1,11 @@
 package com.hwlcn.web.font.controllers;
 
+import com.hwlcn.security.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,8 +67,10 @@ public class IndexController {
 
 
     @RequestMapping(value = "login.html", method = RequestMethod.POST)
-    public String logined() {
-        return "font/index";
+    public String loginFail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model) {
+        //登录错误
+        model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
+        return "font/login";
     }
 
     /**

@@ -45,7 +45,7 @@
 <!--登录内容 -->
 <div class="account-container stacked">
     <div class="content clearfix">
-        <form action="/admin/login.html" method="post">
+        <form action="/login.html" method="post">
             <h1>登录</h1>
 
             <div class="login-fields">
@@ -53,7 +53,7 @@
 
                 <div class="field">
                     <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="" placeholder="用户名"
+                    <input type="text" id="username" name="username" value="${username!''}" placeholder="用户名"
                            class="login username-field"/>
                 </div>
                 <!-- /field -->
@@ -68,7 +68,7 @@
             <div class="login-actions">
 
 				<span class="login-checkbox">
-					<input id="Field" name="Field" type="checkbox" class="field login-checkbox" value="First Choice"
+					<input id="rememberMe" name="rememberMe" type="checkbox" class="field login-checkbox" value="First Choice"
                            tabindex="4"/>
 					<label class="choice" for="Field">记住我</label>
 				</span>

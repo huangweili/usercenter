@@ -17,12 +17,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pmd.failurePriority>3</pmd.failurePriority>
         <mysql.version>5.1.25</mysql.version>
-        <org.freemarker.version>2.3.19</org.freemarker.version>
+        <org.freemarker.version>2.3.20</org.freemarker.version>
         <org.mybatis.version>3.2.2</org.mybatis.version>
         <logback.classic.version>1.0.13</logback.classic.version>
         <mybatis.spring.version>1.2.0</mybatis.spring.version>
         <commons.langs.version>3.1</commons.langs.version>
-        <fastjson.version>1.1.31</fastjson.version>
+        <fastjson.version>1.1.33</fastjson.version>
         <junit.version>4.11</junit.version>
         <commons.beanutils.version>1.8.3</commons.beanutils.version>
         <commons.collections.version>3.2.1</commons.collections.version>

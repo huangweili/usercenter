@@ -101,7 +101,7 @@ public class FormAuthenticationFilter extends AuthenticatingFilter {
         }
     }
 
-    @SuppressWarnings({"UnusedDeclaration"})
+
     protected boolean isLoginSubmission(ServletRequest request, ServletResponse response) {
         return (request instanceof HttpServletRequest) && WebUtils.toHttp(request).getMethod().equalsIgnoreCase(POST_METHOD);
     }
