@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+
+    <bean id="securityFilter" class="com.hwlcn.security.spring.web.SecurityFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.html"/>
+        <property name="successUrl" value="/index.html"/>
+        <property name="unauthorizedUrl" value="/unauthorized.html"/>
+        <property name="filterChainDefinitions">
+            <value>
+                /resource/**=anon
+                /login.html=authc
+                /admin/** = authc,roles[admin]
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+
+    <bean id="securityManager" class="com.hwlcn.security.web.mgt.DefaultWebSecurityManager">
+    </bean>
+
+
+    <bean id="lifecycleBeanPostProcessor" class="com.hwlcn.security.spring.LifecycleBeanPostProcessor"/>
+
+</beans>

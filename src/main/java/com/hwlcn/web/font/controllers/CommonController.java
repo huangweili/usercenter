@@ -13,11 +13,16 @@ import javax.servlet.http.HttpServletResponse;
  * Date: 13-6-23
  * Time: 下午4:39
  */
-@Controller
+@Controller("commonController")
 public class CommonController {
     @RequestMapping(value = "/resubmit.html", method = RequestMethod.GET)
     public String resubmit(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "font/resubmit";
+    }
+
+    @RequestMapping(value = "/unauthorized.html")
+    public String unauthorized(HttpServletRequest request,HttpServletResponse response,Model model){
+        return "font/unauthorized";
     }
 
 }
