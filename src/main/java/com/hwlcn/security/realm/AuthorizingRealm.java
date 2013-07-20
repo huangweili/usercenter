@@ -25,7 +25,10 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
     private static final AtomicInteger INSTANCE_COUNT = new AtomicInteger();
 
     private boolean authorizationCachingEnabled;
+
     private Cache<Object, AuthorizationInfo> authorizationCache;
+
+
     private String authorizationCacheName;
 
     private PermissionResolver permissionResolver;
@@ -112,6 +115,8 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
     public void setRolePermissionResolver(RolePermissionResolver permissionRoleResolver) {
         this.permissionRoleResolver = permissionRoleResolver;
     }
+
+
     protected void onInit() {
         super.onInit();
         getAvailableAuthorizationCache();
@@ -157,6 +162,10 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
         }
         return cache;
     }
+
+
+
+
     protected AuthorizationInfo getAuthorizationInfo(PrincipalCollection principals) {
 
         if (principals == null) {
@@ -170,6 +179,7 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
         }
 
         Cache<Object, AuthorizationInfo> cache = getAvailableAuthorizationCache();
+
         if (cache != null) {
             if (log.isTraceEnabled()) {
                 log.trace("Attempting to retrieve the AuthorizationInfo from cache.");
@@ -217,6 +227,8 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
 
     protected abstract AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals);
 
+
+
     private Collection<Permission> getPermissions(AuthorizationInfo info) {
         Set<Permission> permissions = new HashSet<Permission>();
 
@@ -225,15 +237,20 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
             if (!CollectionUtils.isEmpty(perms)) {
                 permissions.addAll(perms);
             }
+
+
             perms = resolvePermissions(info.getStringPermissions());
             if (!CollectionUtils.isEmpty(perms)) {
                 permissions.addAll(perms);
             }
 
+
             perms = resolveRolePermissions(info.getRoles());
             if (!CollectionUtils.isEmpty(perms)) {
                 permissions.addAll(perms);
             }
+
+
         }
 
         if (permissions.isEmpty()) {
@@ -242,6 +259,8 @@ public abstract class AuthorizingRealm extends AuthenticatingRealm
             return Collections.unmodifiableSet(permissions);
         }
     }
+
+
 
     private Collection<Permission> resolvePermissions(Collection<String> stringPerms) {
         Collection<Permission> perms = Collections.emptySet();

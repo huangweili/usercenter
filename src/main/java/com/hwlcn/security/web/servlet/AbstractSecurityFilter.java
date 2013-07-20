@@ -166,7 +166,9 @@ public abstract class AbstractSecurityFilter extends OncePerRequestFilter {
         Throwable t = null;
 
         try {
+            //处理标准请求
             final ServletRequest request = prepareServletRequest(servletRequest, servletResponse, chain);
+            //处理标准请求
             final ServletResponse response = prepareServletResponse(request, servletResponse, chain);
 
             final Subject subject = createSubject(request, response);

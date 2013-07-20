@@ -267,7 +267,6 @@ public class DelegatingSubject implements Subject {
 
         if (this.session == null && create) {
 
-            //added in 1.2:
             if (!isSessionCreationEnabled()) {
                 String msg = "Session creation has been disabled for the current subject.  This exception indicates " +
                         "that there is either a programming error (using a session when it should never be " +
@@ -277,7 +276,9 @@ public class DelegatingSubject implements Subject {
                 throw new DisabledSessionException(msg);
             }
 
-            log.trace("Starting session for host {}", getHost());
+            if (log.isTraceEnabled()) {
+                log.trace("Starting session for host {}", getHost());
+            }
             SessionContext sessionContext = createSessionContext();
             Session session = this.securityManager.start(sessionContext);
             this.session = decorate(session);
@@ -294,7 +295,6 @@ public class DelegatingSubject implements Subject {
     }
 
     private void clearRunAsIdentitiesInternal() {
-        //try/catch added for SHIRO-298
         try {
             clearRunAsIdentities();
         } catch (SessionException se) {

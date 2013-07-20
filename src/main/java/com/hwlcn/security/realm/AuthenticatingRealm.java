@@ -1,13 +1,13 @@
 package com.hwlcn.security.realm;
 
-import com.hwlcn.security.authc.*;
-import com.hwlcn.security.authc.credential.AllowAllCredentialsMatcher;
-import com.hwlcn.security.util.CollectionUtils;
-import com.hwlcn.security.authc.credential.CredentialsMatcher;
-import com.hwlcn.security.authc.credential.SimpleCredentialsMatcher;
 import com.hwlcn.cache.Cache;
 import com.hwlcn.cache.CacheManager;
+import com.hwlcn.security.authc.*;
+import com.hwlcn.security.authc.credential.AllowAllCredentialsMatcher;
+import com.hwlcn.security.authc.credential.CredentialsMatcher;
+import com.hwlcn.security.authc.credential.SimpleCredentialsMatcher;
 import com.hwlcn.security.subject.PrincipalCollection;
+import com.hwlcn.security.util.CollectionUtils;
 import com.hwlcn.security.util.Initializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +91,7 @@ public abstract class AuthenticatingRealm extends CachingRealm implements Initia
     public String getAuthenticationCacheName() {
         return this.authenticationCacheName;
     }
+
     public void setAuthenticationCacheName(String authenticationCacheName) {
         this.authenticationCacheName = authenticationCacheName;
     }
@@ -178,7 +179,7 @@ public abstract class AuthenticatingRealm extends CachingRealm implements Initia
 
     private void cacheAuthenticationInfoIfPossible(AuthenticationToken token, AuthenticationInfo info) {
         if (!isAuthenticationCachingEnabled(token, info)) {
-            if(log.isDebugEnabled()){
+            if (log.isDebugEnabled()) {
                 log.debug("AuthenticationInfo caching is disabled for info [{}].  Submitted token: [{}].", info, token);
             }
             return;
@@ -188,8 +189,8 @@ public abstract class AuthenticatingRealm extends CachingRealm implements Initia
         if (cache != null) {
             Object key = getAuthenticationCacheKey(token);
             cache.put(key, info);
-            if(log.isTraceEnabled()){
-            log.trace("Cached AuthenticationInfo for continued authentication.  key=[{}], value=[{}].", key, info);
+            if (log.isTraceEnabled()) {
+                log.trace("Cached AuthenticationInfo for continued authentication.  key=[{}], value=[{}].", key, info);
             }
         }
     }
@@ -209,13 +210,17 @@ public abstract class AuthenticatingRealm extends CachingRealm implements Initia
                 cacheAuthenticationInfoIfPossible(token, info);
             }
         } else {
-            log.debug("Using cached authentication info [{}] to perform credentials matching.", info);
+            if (log.isDebugEnabled()) {
+                log.debug("Using cached authentication info [{}] to perform credentials matching.", info);
+            }
         }
 
         if (info != null) {
             assertCredentialsMatch(token, info);
         } else {
-            log.debug("No AuthenticationInfo found for submitted AuthenticationToken [{}].  Returning null.", token);
+            if (log.isDebugEnabled()) {
+                log.debug("No AuthenticationInfo found for submitted AuthenticationToken [{}].  Returning null.", token);
+            }
         }
 
         return info;
@@ -243,7 +248,7 @@ public abstract class AuthenticatingRealm extends CachingRealm implements Initia
         return getAvailablePrincipal(principals);
     }
 
-  @Override
+    @Override
     protected void doClearCache(PrincipalCollection principals) {
         super.doClearCache(principals);
         clearCachedAuthenticationInfo(principals);

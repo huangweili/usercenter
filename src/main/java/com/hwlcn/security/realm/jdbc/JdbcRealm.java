@@ -25,14 +25,7 @@ import java.util.Set;
 
 public class JdbcRealm extends AuthorizingRealm {
 
-    //TODO - complete JavaDoc
 
-    /*--------------------------------------------
-    |             C O N S T A N T S             |
-    ============================================*/
-    /**
-     * The default query used to retrieve account data for the user.
-     */
     protected static final String DEFAULT_AUTHENTICATION_QUERY = "select password from users where username = ?";
     
     /**
@@ -77,86 +70,32 @@ public class JdbcRealm extends AuthorizingRealm {
     
     protected SaltStyle saltStyle = SaltStyle.NO_SALT;
 
-    /*--------------------------------------------
-    |         C O N S T R U C T O R S           |
-    ============================================*/
 
-    /*--------------------------------------------
-    |  A C C E S S O R S / M O D I F I E R S    |
-    ============================================*/
-    
-    /**
-     * Sets the datasource that should be used to retrieve connections used by this realm.
-     *
-     * @param dataSource the SQL data source.
-     */
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    /**
-     * Overrides the default query used to retrieve a user's password during authentication.  When using the default
-     * implementation, this query must take the user's username as a single parameter and return a single result
-     * with the user's password as the first column.  If you require a solution that does not match this query
-     * structure, you can override {@link #doGetAuthenticationInfo(com.hwlcn.security.authc.AuthenticationToken)} or
-     * just {@link #getPasswordForUser(java.sql.Connection,String)}
-     *
-     * @param authenticationQuery the query to use for authentication.
-     * @see #DEFAULT_AUTHENTICATION_QUERY
-     */
+
     public void setAuthenticationQuery(String authenticationQuery) {
         this.authenticationQuery = authenticationQuery;
     }
 
-    /**
-     * Overrides the default query used to retrieve a user's roles during authorization.  When using the default
-     * implementation, this query must take the user's username as a single parameter and return a row
-     * per role with a single column containing the role name.  If you require a solution that does not match this query
-     * structure, you can override {@link #doGetAuthorizationInfo(PrincipalCollection)} or just
-     * {@link #getRoleNamesForUser(java.sql.Connection,String)}
-     *
-     * @param userRolesQuery the query to use for retrieving a user's roles.
-     * @see #DEFAULT_USER_ROLES_QUERY
-     */
+
     public void setUserRolesQuery(String userRolesQuery) {
         this.userRolesQuery = userRolesQuery;
     }
 
-    /**
-     * Overrides the default query used to retrieve a user's permissions during authorization.  When using the default
-     * implementation, this query must take a role name as the single parameter and return a row
-     * per permission with three columns containing the fully qualified name of the permission class, the permission
-     * name, and the permission actions (in that order).  If you require a solution that does not match this query
-     * structure, you can override {@link #doGetAuthorizationInfo(com.hwlcn.security.subject.PrincipalCollection)} or just
-     * {@link #getPermissions(java.sql.Connection,String,java.util.Collection)}</p>
-     * <p/>
-     * <b>Permissions are only retrieved if you set {@link #permissionsLookupEnabled} to true.  Otherwise,
-     * this query is ignored.</b>
-     *
-     * @param permissionsQuery the query to use for retrieving permissions for a role.
-     * @see #DEFAULT_PERMISSIONS_QUERY
-     * @see #setPermissionsLookupEnabled(boolean)
-     */
+
     public void setPermissionsQuery(String permissionsQuery) {
         this.permissionsQuery = permissionsQuery;
     }
 
-    /**
-     * Enables lookup of permissions during authorization.  The default is "false" - meaning that only roles
-     * are associated with a user.  Set this to true in order to lookup roles <b>and</b> permissions.
-     *
-     * @param permissionsLookupEnabled true if permissions should be looked up during authorization, or false if only
-     *                                 roles should be looked up.
-     */
+
     public void setPermissionsLookupEnabled(boolean permissionsLookupEnabled) {
         this.permissionsLookupEnabled = permissionsLookupEnabled;
     }
     
-    /**
-     * Sets the salt style.  See {@link #saltStyle}.
-     * 
-     * @param saltStyle new SaltStyle to set.
-     */
+
     public void setSaltStyle(SaltStyle saltStyle) {
         this.saltStyle = saltStyle;
         if (saltStyle == SaltStyle.COLUMN && authenticationQuery.equals(DEFAULT_AUTHENTICATION_QUERY)) {
@@ -164,22 +103,19 @@ public class JdbcRealm extends AuthorizingRealm {
         }
     }
 
-    /*--------------------------------------------
-    |               M E T H O D S               |
-    ============================================*/
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
         UsernamePasswordToken upToken = (UsernamePasswordToken) token;
         String username = upToken.getUsername();
 
-        // Null username is invalid
         if (username == null) {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
 
         Connection conn = null;
         SimpleAuthenticationInfo info = null;
+
         try {
             conn = dataSource.getConnection();
 
@@ -190,9 +126,7 @@ public class JdbcRealm extends AuthorizingRealm {
                 password = getPasswordForUser(conn, username)[0];
                 break;
             case CRYPT:
-                // TODO: separate password and hash from getPasswordForUser[0]
                 throw new ConfigurationException("Not implemented yet");
-                //break;
             case COLUMN:
                 String[] queryResults = getPasswordForUser(conn, username);
                 password = queryResults[0];
@@ -219,7 +153,6 @@ public class JdbcRealm extends AuthorizingRealm {
                 log.error(message, e);
             }
 
-            // Rethrow any SQL errors as an authentication exception
             throw new AuthenticationException(message, e);
         } finally {
             JdbcUtils.closeConnection(conn);
@@ -249,14 +182,11 @@ public class JdbcRealm extends AuthorizingRealm {
             ps = conn.prepareStatement(authenticationQuery);
             ps.setString(1, username);
 
-            // Execute query
             rs = ps.executeQuery();
 
-            // Loop over results - although we are only expecting one result, since usernames should be unique
             boolean foundResult = false;
             while (rs.next()) {
 
-                // Check to ensure only one row is processed
                 if (foundResult) {
                     throw new AuthenticationException("More than one user row found for user [" + username + "]. Usernames must be unique.");
                 }
@@ -276,12 +206,7 @@ public class JdbcRealm extends AuthorizingRealm {
         return result;
     }
 
-    /**
-     * This implementation of the interface expects the principals collection to return a String username keyed off of
-     * this realm's {@link #getName() name}
-     *
-     * @see #getAuthorizationInfo(com.hwlcn.security.subject.PrincipalCollection)
-     */
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
@@ -330,15 +255,13 @@ public class JdbcRealm extends AuthorizingRealm {
             ps = conn.prepareStatement(userRolesQuery);
             ps.setString(1, username);
 
-            // Execute query
+
             rs = ps.executeQuery();
 
-            // Loop over results and add each returned role to a set
             while (rs.next()) {
 
                 String roleName = rs.getString(1);
 
-                // Add the role to the list of names if it isn't null
                 if (roleName != null) {
                     roleNames.add(roleName);
                 } else {
@@ -366,15 +289,9 @@ public class JdbcRealm extends AuthorizingRealm {
                 ResultSet rs = null;
 
                 try {
-                    // Execute query
                     rs = ps.executeQuery();
-
-                    // Loop over results and add each returned role to a set
                     while (rs.next()) {
-
                         String permissionString = rs.getString(1);
-
-                        // Add the permission to the set of permissions
                         permissions.add(permissionString);
                     }
                 } finally {

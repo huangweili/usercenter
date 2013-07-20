@@ -46,7 +46,7 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
 
     public SecurityFilterFactoryBean() {
         this.filters = new LinkedHashMap<String, Filter>();
-        this.filterChainDefinitionMap = new LinkedHashMap<String, String>(); //order matters!
+        this.filterChainDefinitionMap = new LinkedHashMap<String, String>();
     }
 
     public SecurityManager getSecurityManager() {
@@ -178,7 +178,6 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
         FilterChainManager manager = createFilterChainManager();
         PathMatchingFilterChainResolver chainResolver = new PathMatchingFilterChainResolver();
         chainResolver.setFilterChainManager(manager);
-
 
         return new SpringSecurityFilter((WebSecurityManager) securityManager, chainResolver);
     }

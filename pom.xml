@@ -26,6 +26,8 @@
         <junit.version>4.11</junit.version>
         <commons.beanutils.version>1.8.3</commons.beanutils.version>
         <commons.collections.version>3.2.1</commons.collections.version>
+        <tomcat.dbcp.version>7.0.42</tomcat.dbcp.version>
+        <commons.codec.version>1.8</commons.codec.version>
     </properties>
 
     <repositories>
@@ -36,7 +38,23 @@
         </repository>
     </repositories>
 
+
+
     <dependencies>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.dbcp.version}</version>
+        </dependency>
+
+
         <!--基础类配置 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -181,6 +199,8 @@
             <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
+
+
 
         <dependency>
             <groupId>junit</groupId>
