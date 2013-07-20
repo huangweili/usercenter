@@ -1,6 +1,5 @@
 package com.hwlcn.domain.repository;
 
-import com.hwlcn.DB.DBMapper;
 import com.hwlcn.domain.entity.Account;
 
 /**

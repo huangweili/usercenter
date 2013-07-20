@@ -5,7 +5,7 @@ import com.hwlcn.security.config.Ini;
 import com.hwlcn.security.util.CollectionUtils;
 import com.hwlcn.security.util.Nameable;
 import com.hwlcn.security.util.StringUtils;
-import com.hwlcn.security.web.config.IniFilterChainResolverFactory;
+
 import com.hwlcn.security.web.filter.AccessControlFilter;
 import com.hwlcn.security.web.filter.authc.AuthenticationFilter;
 import com.hwlcn.security.web.filter.authz.AuthorizationFilter;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor {
 
     private static transient final Logger log = LoggerFactory.getLogger(SecurityFilterFactoryBean.class);
-
+    public static final String URLS = "urls";
     private SecurityManager securityManager;
 
     private Map<String, Filter> filters;
@@ -102,7 +102,7 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
     public void setFilterChainDefinitions(String definitions) {
         Ini ini = new Ini();
         ini.load(definitions);
-        Ini.Section section = ini.getSection(IniFilterChainResolverFactory.URLS);
+        Ini.Section section = ini.getSection(URLS);
         if (CollectionUtils.isEmpty(section)) {
             section = ini.getSection(Ini.DEFAULT_SECTION_NAME);
         }

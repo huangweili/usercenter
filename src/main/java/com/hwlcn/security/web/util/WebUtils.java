@@ -5,13 +5,10 @@ import com.hwlcn.security.session.Session;
 import com.hwlcn.security.subject.Subject;
 import com.hwlcn.security.subject.support.DefaultSubjectContext;
 import com.hwlcn.security.util.StringUtils;
-import com.hwlcn.security.web.env.EnvironmentLoader;
-import com.hwlcn.security.web.env.WebEnvironment;
+
 import com.hwlcn.security.web.filter.AccessControlFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -143,43 +140,6 @@ public class WebUtils {
         return decodeRequestString(request, contextPath);
     }
 
-    public static WebEnvironment getRequiredWebEnvironment(ServletContext sc)
-            throws IllegalStateException {
-        WebEnvironment we = getWebEnvironment(sc);
-        if (we == null) {
-            throw new IllegalStateException("No WebEnvironment found: no EnvironmentLoaderListener registered?");
-        }
-        return we;
-    }
-
-
-    public static WebEnvironment getWebEnvironment(ServletContext sc) {
-        return getWebEnvironment(sc, EnvironmentLoader.ENVIRONMENT_ATTRIBUTE_KEY);
-    }
-
-
-    public static WebEnvironment getWebEnvironment(ServletContext sc, String attrName) {
-        if (sc == null) {
-            throw new IllegalArgumentException("ServletContext argument must not be null.");
-        }
-        Object attr = sc.getAttribute(attrName);
-        if (attr == null) {
-            return null;
-        }
-        if (attr instanceof RuntimeException) {
-            throw (RuntimeException) attr;
-        }
-        if (attr instanceof Error) {
-            throw (Error) attr;
-        }
-        if (attr instanceof Exception) {
-            throw new IllegalStateException((Exception) attr);
-        }
-        if (!(attr instanceof WebEnvironment)) {
-            throw new IllegalStateException("Context attribute is not of type WebEnvironment: " + attr);
-        }
-        return (WebEnvironment) attr;
-    }
 
 
     @SuppressWarnings({"deprecation"})

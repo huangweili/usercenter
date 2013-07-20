@@ -1,4 +1,4 @@
-package com.hwlcn.DB;
+package com.hwlcn.db;
 
 import com.hwlcn.security.authc.AuthenticationException;
 import com.hwlcn.security.authc.AuthenticationInfo;
@@ -17,7 +17,12 @@ import java.util.Set;
  * Date: 13-7-20
  * Time: 下午8:23
  */
-public class DBRealm extends AuthorizingRealm {
+public class DbRealm extends AuthorizingRealm {
+
+    public DbRealm(){
+        super();
+    }
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         Set<String> roles=new HashSet<String>();

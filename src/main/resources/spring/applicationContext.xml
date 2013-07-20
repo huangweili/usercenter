@@ -12,7 +12,6 @@
 
 
     <!--数据库配置-->
-    <import resource="databasesConfig.xml"/>
 
 
     <!-- 安全配置-->

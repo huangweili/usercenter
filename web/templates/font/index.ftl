@@ -9,6 +9,7 @@
     <link href="/resource/bootstrap/css/bootstrap.css?v=1" rel="stylesheet"/>
     <link href="/resource/bootstrap/css/bootstrap-responsive.css?v=1" rel="stylesheet"/>
     <link href="/resource/font/css/font.css?v=1" rel="stylesheet"/>
+    <link type="image/x-icon" href="/resource/favicon.ico" rel="shortcut icon">
     <!--[if lt IE 9]>
     <script src="/resource/js/html5shiv.js?v=1"></script>
     <![endif]-->
@@ -31,6 +32,7 @@
                         <li><a href="#">密码修改</a></li>
                         <li><a href="#">忘记密码</a></li>
                         <li><a href="#">离职申请</a></li>
+                        <li><a href="/logout.html">注销</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-package com.hwlcn.DB;
+package com.hwlcn.db;
 
 import org.springframework.stereotype.Component;
 

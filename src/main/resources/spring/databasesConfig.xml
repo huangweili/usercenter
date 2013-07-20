@@ -28,7 +28,7 @@
     <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.hwlcn.domain" />
-        <property name="annotationClass" value="com.hwlcn.DB.DBMapper"/>
+        <property name="annotationClass" value="com.hwlcn.db.DBMapper"/>
     </bean>
 
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>

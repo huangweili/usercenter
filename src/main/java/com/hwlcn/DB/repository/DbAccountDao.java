@@ -1,6 +1,6 @@
-package com.hwlcn.DB.repository;
+package com.hwlcn.db.repository;
 
-import com.hwlcn.DB.DBMapper;
+import com.hwlcn.db.DBMapper;
 import com.hwlcn.domain.repository.AccountDao;
 
 /**
