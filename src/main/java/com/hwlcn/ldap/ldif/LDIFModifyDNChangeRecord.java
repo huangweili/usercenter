@@ -34,8 +34,8 @@ import com.hwlcn.ldap.ldap.sdk.LDAPResult;
 import com.hwlcn.ldap.ldap.sdk.ModifyDNRequest;
 import com.hwlcn.ldap.ldap.sdk.RDN;
 import com.hwlcn.ldap.util.ByteStringBuffer;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

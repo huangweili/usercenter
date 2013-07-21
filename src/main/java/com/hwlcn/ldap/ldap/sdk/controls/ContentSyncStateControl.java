@@ -37,9 +37,9 @@ import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.SearchResultEntry;
 import com.hwlcn.ldap.ldap.sdk.SearchResultReference;
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.NotMutable;
+import com.hwlcn.core.annotation.NotMutable;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.Validator;
 

@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.Version;
 

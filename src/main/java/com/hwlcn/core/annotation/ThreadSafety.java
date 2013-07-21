@@ -1,4 +1,6 @@
-package com.hwlcn.ldap.util;
+package com.hwlcn.core.annotation;
+
+import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

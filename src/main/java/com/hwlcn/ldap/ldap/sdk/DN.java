@@ -29,8 +29,8 @@ import java.util.List;
 
 import com.hwlcn.ldap.asn1.ASN1OctetString;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;

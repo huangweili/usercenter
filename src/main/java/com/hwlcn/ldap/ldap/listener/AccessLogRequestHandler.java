@@ -56,9 +56,9 @@ import com.hwlcn.ldap.ldap.protocol.SearchResultEntryProtocolOp;
 import com.hwlcn.ldap.ldap.protocol.UnbindRequestProtocolOp;
 import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
-import com.hwlcn.ldap.util.NotMutable;
+import com.hwlcn.core.annotation.NotMutable;
 import com.hwlcn.ldap.util.ObjectPair;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.Validator;
 

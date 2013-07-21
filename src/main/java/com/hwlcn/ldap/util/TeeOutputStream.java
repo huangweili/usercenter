@@ -22,6 +22,8 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
+
 import java.io.OutputStream;
 import java.io.IOException;
 import java.util.ArrayList;

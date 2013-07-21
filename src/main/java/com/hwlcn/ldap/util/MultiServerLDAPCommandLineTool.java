@@ -29,6 +29,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
+import com.hwlcn.core.annotation.Extensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.BindRequest;
 import com.hwlcn.ldap.ldap.sdk.ExtendedResult;
 import com.hwlcn.ldap.ldap.sdk.LDAPConnection;

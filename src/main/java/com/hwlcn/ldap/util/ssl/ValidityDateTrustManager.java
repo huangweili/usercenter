@@ -28,8 +28,8 @@ import java.util.Date;
 import javax.net.ssl.X509TrustManager;
 import javax.security.auth.x500.X500Principal;
 
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.ssl.SSLMessages.*;

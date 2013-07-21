@@ -25,8 +25,8 @@ package com.hwlcn.ldap.ldap.sdk;
 import javax.net.ssl.SSLContext;
 
 import com.hwlcn.ldap.ldap.sdk.extensions.StartTLSExtendedRequest;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Validator.*;

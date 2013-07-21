@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 

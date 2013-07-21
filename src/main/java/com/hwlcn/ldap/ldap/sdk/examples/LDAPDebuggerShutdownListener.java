@@ -25,8 +25,8 @@ package com.hwlcn.ldap.ldap.sdk.examples;
 import java.util.logging.Handler;
 
 import com.hwlcn.ldap.ldap.listener.LDAPListener;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

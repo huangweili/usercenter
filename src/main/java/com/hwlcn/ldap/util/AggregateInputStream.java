@@ -22,6 +22,8 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

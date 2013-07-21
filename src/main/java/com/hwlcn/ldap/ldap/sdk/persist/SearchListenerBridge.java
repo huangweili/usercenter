@@ -25,7 +25,7 @@ package com.hwlcn.ldap.ldap.sdk.persist;
 import com.hwlcn.ldap.ldap.sdk.SearchResultEntry;
 import com.hwlcn.ldap.ldap.sdk.SearchResultListener;
 import com.hwlcn.ldap.ldap.sdk.SearchResultReference;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

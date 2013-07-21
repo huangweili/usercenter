@@ -21,6 +21,8 @@
 package com.hwlcn.ldap.util;
 
 
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 
 /**
  * This class serves as the base class for all custom runtime exception types

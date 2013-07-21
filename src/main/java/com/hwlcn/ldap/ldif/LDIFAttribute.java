@@ -30,7 +30,7 @@ import com.hwlcn.ldap.asn1.ASN1OctetString;
 import com.hwlcn.ldap.ldap.matchingrules.MatchingRule;
 import com.hwlcn.ldap.ldap.sdk.Attribute;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

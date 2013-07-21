@@ -37,10 +37,10 @@ import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.SearchResult;
 import com.hwlcn.ldap.ldap.sdk.SearchResultEntry;
 import com.hwlcn.ldap.ldap.sdk.SearchResultReference;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

@@ -24,8 +24,8 @@ package com.hwlcn.ldap.ldap.sdk.persist;
 
 import java.io.Serializable;
 
-import com.hwlcn.ldap.util.Extensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Extensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

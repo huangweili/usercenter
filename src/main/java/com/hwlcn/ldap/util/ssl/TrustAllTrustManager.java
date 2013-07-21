@@ -28,8 +28,8 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 import javax.net.ssl.X509TrustManager;
 
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
 
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

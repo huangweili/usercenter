@@ -29,7 +29,7 @@ import com.hwlcn.ldap.ldap.sdk.DNEntrySource;
 import com.hwlcn.ldap.ldap.sdk.Entry;
 import com.hwlcn.ldap.ldap.sdk.LDAPInterface;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.persist.PersistMessages.*;

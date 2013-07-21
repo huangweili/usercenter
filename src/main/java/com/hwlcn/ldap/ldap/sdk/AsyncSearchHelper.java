@@ -27,7 +27,7 @@ import java.util.logging.Level;
 
 import com.hwlcn.ldap.ldap.protocol.LDAPResponse;
 import com.hwlcn.ldap.util.DebugType;
-import com.hwlcn.ldap.util.InternalUseOnly;
+import com.hwlcn.core.annotation.InternalUseOnly;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;

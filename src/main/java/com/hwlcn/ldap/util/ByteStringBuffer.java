@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.asn1.ASN1OctetString;
 
 import static com.hwlcn.ldap.util.Debug.*;

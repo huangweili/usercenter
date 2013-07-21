@@ -40,10 +40,10 @@ import com.hwlcn.ldap.ldap.sdk.OperationType;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.Version;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.NotExtensible;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.NotExtensible;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.listener.ListenerMessages.*;

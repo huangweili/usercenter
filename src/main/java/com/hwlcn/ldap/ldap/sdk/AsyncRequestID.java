@@ -31,9 +31,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.NotMutable;
+import com.hwlcn.core.annotation.NotMutable;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;

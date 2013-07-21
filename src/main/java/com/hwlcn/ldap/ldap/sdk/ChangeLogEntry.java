@@ -40,9 +40,9 @@ import com.hwlcn.ldap.ldap.matchingrules.DistinguishedNameMatchingRule;
 import com.hwlcn.ldap.ldap.matchingrules.IntegerMatchingRule;
 import com.hwlcn.ldap.ldap.matchingrules.OctetStringMatchingRule;
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;

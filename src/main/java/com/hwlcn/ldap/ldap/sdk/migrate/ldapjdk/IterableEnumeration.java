@@ -26,9 +26,9 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

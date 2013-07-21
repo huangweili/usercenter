@@ -37,9 +37,9 @@ import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.schema.AttributeTypeDefinition;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.listener.ListenerMessages.*;

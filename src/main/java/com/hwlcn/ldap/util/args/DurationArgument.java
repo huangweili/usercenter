@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 
 import com.hwlcn.ldap.util.Debug;
 import com.hwlcn.ldap.util.LDAPSDKUsageException;
-import com.hwlcn.ldap.util.Mutable;
+import com.hwlcn.core.annotation.Mutable;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.args.ArgsMessages.*;

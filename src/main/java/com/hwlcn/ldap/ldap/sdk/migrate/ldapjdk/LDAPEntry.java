@@ -28,9 +28,9 @@ import java.util.Enumeration;
 
 import com.hwlcn.ldap.ldap.sdk.Attribute;
 import com.hwlcn.ldap.ldap.sdk.Entry;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

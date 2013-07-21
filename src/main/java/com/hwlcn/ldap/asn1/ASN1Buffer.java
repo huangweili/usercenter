@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.hwlcn.ldap.util.ByteStringBuffer;
 import com.hwlcn.ldap.util.DebugType;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

@@ -46,7 +46,7 @@ import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.extensions.StartTLSExtendedRequest;
 import com.hwlcn.ldap.util.Debug;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.listener.ListenerMessages.*;

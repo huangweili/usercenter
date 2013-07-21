@@ -26,9 +26,9 @@ import java.io.Serializable;
 
 import com.hwlcn.ldap.ldap.sdk.Modification;
 import com.hwlcn.ldap.ldap.sdk.ModificationType;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

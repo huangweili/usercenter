@@ -25,6 +25,7 @@ package com.hwlcn.ldap.util;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.listener.InMemoryDirectoryServerTool;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldap.sdk.Version;

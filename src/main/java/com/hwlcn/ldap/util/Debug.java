@@ -30,6 +30,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.asn1.ASN1Buffer;
 import com.hwlcn.ldap.asn1.ASN1Element;
 import com.hwlcn.ldap.ldap.protocol.LDAPResponse;

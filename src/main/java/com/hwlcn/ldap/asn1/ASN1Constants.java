@@ -22,8 +22,8 @@ package com.hwlcn.ldap.asn1;
 
 
 
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

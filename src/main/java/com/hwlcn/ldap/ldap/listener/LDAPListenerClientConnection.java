@@ -54,10 +54,10 @@ import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.ldap.sdk.LDAPRuntimeException;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.InternalUseOnly;
+import com.hwlcn.core.annotation.InternalUseOnly;
 import com.hwlcn.ldap.util.ObjectPair;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.Validator;
 

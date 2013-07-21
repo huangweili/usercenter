@@ -32,8 +32,8 @@ import com.hwlcn.ldap.asn1.ASN1OctetString;
 import com.hwlcn.ldap.ldap.sdk.extensions.StartTLSExtendedRequest;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
 import com.hwlcn.ldap.ldif.LDIFException;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;

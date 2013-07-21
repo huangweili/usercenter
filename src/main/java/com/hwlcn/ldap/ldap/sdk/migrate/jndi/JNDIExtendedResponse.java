@@ -29,9 +29,9 @@ import com.hwlcn.ldap.asn1.ASN1Exception;
 import com.hwlcn.ldap.asn1.ASN1OctetString;
 import com.hwlcn.ldap.ldap.sdk.ExtendedResult;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
-import com.hwlcn.ldap.util.NotMutable;
+import com.hwlcn.core.annotation.NotMutable;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

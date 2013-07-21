@@ -30,8 +30,8 @@ import java.util.List;
 
 import com.hwlcn.ldap.ldap.sdk.DN;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

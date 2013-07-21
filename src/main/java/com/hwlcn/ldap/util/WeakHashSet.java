@@ -1,26 +1,9 @@
-/*
- * Copyright 2011-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2011-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
+
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
@@ -29,34 +12,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-
-
-/**
- * This class provides a weak hash set, which maintains weak references to the
- * elements it contains, so that they will be removed automatically once there
- * are no more normal references to them.
- * <BR><BR>
- * Note that because this set uses weak references, elements may disappear from
- * the set at any time without being explicitly removed.  This means that care
- * must be taken to ensure that the result of one method must not be considered
- * authoritative for subsequent calls to the same method or other methods in
- * this class.
- *
- * @param  <T>  The type of element held in this set.
- */
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class WeakHashSet<T>
        implements Set<T>
 {
-  // The map that will be used to provide the set implementation.
   private final WeakHashMap<T,WeakReference<T>> m;
 
 
-
-  /**
-   * Creates a new weak hash set with the default initial capacity.
-   */
   public WeakHashSet()
   {
     m = new WeakHashMap<T,WeakReference<T>>(16);

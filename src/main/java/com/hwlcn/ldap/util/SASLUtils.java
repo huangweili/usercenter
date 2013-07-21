@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.ANONYMOUSBindRequest;
 import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.CRAMMD5BindRequest;

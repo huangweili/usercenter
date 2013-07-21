@@ -35,7 +35,7 @@ import com.hwlcn.ldap.asn1.ASN1OctetString;
 import com.hwlcn.ldap.ldap.sdk.Entry;
 import com.hwlcn.ldap.util.Base64;
 import com.hwlcn.ldap.util.LDAPSDKThreadFactory;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.ByteStringBuffer;
 import com.hwlcn.ldap.util.parallel.ParallelProcessor;

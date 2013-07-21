@@ -33,8 +33,8 @@ import com.hwlcn.ldap.ldap.sdk.DN;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.ldap.sdk.OperationType;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

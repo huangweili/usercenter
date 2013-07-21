@@ -24,9 +24,9 @@ package com.hwlcn.ldap.ldap.sdk.migrate.ldapjdk;
 
 import java.io.Serializable;
 
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

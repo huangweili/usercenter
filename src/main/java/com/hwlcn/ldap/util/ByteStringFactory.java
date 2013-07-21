@@ -22,6 +22,7 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.asn1.ASN1OctetString;
 
 

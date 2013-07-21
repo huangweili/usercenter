@@ -27,8 +27,8 @@ import java.io.Serializable;
 import com.hwlcn.ldap.ldap.sdk.DN;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.util.ByteStringBuffer;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

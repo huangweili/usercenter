@@ -21,6 +21,7 @@
 package com.hwlcn.ldap.util;
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
 
 /**
  * This class provides a runtime exception that may be thrown by the LDAP SDK

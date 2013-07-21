@@ -25,12 +25,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * A <code>MapCache</code> is a {@link Cache Cache} implementation that uses a backing {@link java.util.Map} instance to store
- * and retrieve cached data.
- *
- * @since 1.0
- */
+
 public class MapCache<K, V> implements Cache<K, V> {
 
 

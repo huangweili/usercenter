@@ -22,6 +22,8 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.io.Serializable;

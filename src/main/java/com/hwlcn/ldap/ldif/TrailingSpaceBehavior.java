@@ -22,7 +22,7 @@ package com.hwlcn.ldap.ldif;
 
 
 
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

@@ -37,7 +37,7 @@ import java.util.Set;
 
 import com.hwlcn.ldap.util.Debug;
 import com.hwlcn.ldap.util.ObjectPair;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.StaticUtils.*;

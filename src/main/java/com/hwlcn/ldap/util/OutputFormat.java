@@ -21,6 +21,7 @@
 package com.hwlcn.ldap.util;
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
 
 /**
  * This enum defines a set of output formats that may be used in conjunction

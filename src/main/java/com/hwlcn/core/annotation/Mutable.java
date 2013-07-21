@@ -1,9 +1,9 @@
 /*
- * Copyright 2008-2013 UnboundID Corp.
+ * Copyright 2009-2013 UnboundID Corp.
  * All Rights Reserved.
  */
 /*
- * Copyright (C) 2008-2013 UnboundID Corp.
+ * Copyright (C) 2009-2013 UnboundID Corp.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License (GPLv2 only)
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses>.
  */
-package com.hwlcn.ldap.util;
+package com.hwlcn.core.annotation;
 
 
 
@@ -31,20 +31,22 @@ import java.lang.annotation.Target;
 
 
 /**
- * This annotation type, may be used to mark a class, constructor, or method
- * that is part of the LDAP SDK codebase to be for internal use only, and
- * therefore something that should not be accessed by third-party code.  If a
- * class is marked with the {@code @InternalUseOnly} annotation, then no part of
- * that class should be used by third-party code.  If a class is not marked with
- * the {@code @InternalUseOnly} annotation, then it may be assumed that the
- * class is part of the public API, and any public constructors and methods
- * which do not have the {@code @InternalUseOnly} annotation may be used by
- * third-party code.
+ * This annotation type is used to indicate that instances of the associated
+ * class may be altered after they have been created.
+ * <BR><BR>
+ * It will only be used for classes which are primarily used as data structures
+ * and will not be included in classes whose primary purpose is something other
+ * than as a data type.  It will also not be used for interfaces, abstract
+ * classes, or enums.
+ * <BR><BR>
+ * This annotation type will appear in the generated Javadoc documentation for
+ * classes and interfaces that include it.
+ *
+ * @see  NotMutable
  */
 @Documented()
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.CONSTRUCTOR, ElementType.METHOD,
-          ElementType.PACKAGE })
-public @interface InternalUseOnly
+@Target({ ElementType.TYPE })
+public @interface Mutable
 {
 }

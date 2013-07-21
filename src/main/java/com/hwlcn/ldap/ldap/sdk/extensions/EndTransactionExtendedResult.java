@@ -35,8 +35,8 @@ import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.ExtendedResult;
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.extensions.ExtOpMessages.*;

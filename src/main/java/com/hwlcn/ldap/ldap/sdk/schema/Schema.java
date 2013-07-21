@@ -44,8 +44,8 @@ import com.hwlcn.ldap.ldap.sdk.ReadOnlyEntry;
 import com.hwlcn.ldap.ldap.sdk.ResultCode;
 import com.hwlcn.ldap.ldif.LDIFException;
 import com.hwlcn.ldap.ldif.LDIFReader;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.schema.SchemaMessages.*;

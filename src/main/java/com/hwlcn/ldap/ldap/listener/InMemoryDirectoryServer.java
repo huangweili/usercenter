@@ -97,9 +97,9 @@ import com.hwlcn.ldap.ldif.LDIFReader;
 import com.hwlcn.ldap.ldif.LDIFWriter;
 import com.hwlcn.ldap.util.ByteStringBuffer;
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.Mutable;
+import com.hwlcn.core.annotation.Mutable;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.Validator;
 

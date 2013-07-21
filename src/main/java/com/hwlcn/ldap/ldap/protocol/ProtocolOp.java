@@ -26,9 +26,9 @@ import java.io.Serializable;
 
 import com.hwlcn.ldap.asn1.ASN1Buffer;
 import com.hwlcn.ldap.asn1.ASN1Element;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

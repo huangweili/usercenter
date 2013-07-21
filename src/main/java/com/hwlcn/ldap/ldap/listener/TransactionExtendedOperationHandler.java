@@ -46,9 +46,9 @@ import com.hwlcn.ldap.ldap.sdk.extensions.EndTransactionExtendedResult;
 import com.hwlcn.ldap.ldap.sdk.extensions.StartTransactionExtendedRequest;
 import com.hwlcn.ldap.ldap.sdk.extensions.StartTransactionExtendedResult;
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.NotMutable;
+import com.hwlcn.core.annotation.NotMutable;
 import com.hwlcn.ldap.util.ObjectPair;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.listener.ListenerMessages.*;

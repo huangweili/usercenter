@@ -25,8 +25,8 @@ package com.hwlcn.ldap.ldap.sdk;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

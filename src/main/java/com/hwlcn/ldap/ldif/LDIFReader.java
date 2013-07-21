@@ -54,7 +54,7 @@ import com.hwlcn.ldap.ldap.sdk.schema.Schema;
 import com.hwlcn.ldap.util.AggregateInputStream;
 import com.hwlcn.ldap.util.Base64;
 import com.hwlcn.ldap.util.LDAPSDKThreadFactory;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.parallel.AsynchronousParallelProcessor;
 import com.hwlcn.ldap.util.parallel.Result;

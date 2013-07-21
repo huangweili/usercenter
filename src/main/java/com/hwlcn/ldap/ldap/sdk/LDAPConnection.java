@@ -43,7 +43,7 @@ import com.hwlcn.ldap.ldif.LDIFException;
 import com.hwlcn.ldap.util.DebugType;
 import com.hwlcn.ldap.util.SynchronizedSocketFactory;
 import com.hwlcn.ldap.util.SynchronizedSSLSocketFactory;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.WeakHashSet;
 

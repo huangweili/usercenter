@@ -46,7 +46,7 @@ import com.hwlcn.ldap.util.LDAPCommandLineTool;
 import com.hwlcn.ldap.util.ObjectPair;
 import com.hwlcn.ldap.util.OutputFormat;
 import com.hwlcn.ldap.util.ResultCodeCounter;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.ValuePattern;
 import com.hwlcn.ldap.util.args.ArgumentException;

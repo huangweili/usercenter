@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see <http://www.gnu.org/licenses>.
  */
-package com.hwlcn.ldap.util;
+package com.hwlcn.core.annotation;
 
 
 
@@ -42,7 +42,7 @@ import java.lang.annotation.Target;
  * This annotation type will appear in the generated Javadoc documentation for
  * classes and interfaces that include it.
  *
- * @see  com.hwlcn.ldap.util.Extensible
+ * @see  com.hwlcn.core.annotation.Extensible
  */
 @Documented()
 @Retention(RetentionPolicy.RUNTIME)

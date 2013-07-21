@@ -23,8 +23,8 @@ package com.hwlcn.ldap.ldap.sdk.controls;
 
 
 import com.hwlcn.ldap.ldap.sdk.Control;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

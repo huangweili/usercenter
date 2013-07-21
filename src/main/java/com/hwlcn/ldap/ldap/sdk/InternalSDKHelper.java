@@ -29,8 +29,8 @@ import com.hwlcn.ldap.asn1.ASN1StreamReaderSequence;
 import com.hwlcn.ldap.ldap.protocol.LDAPMessage;
 import com.hwlcn.ldap.ldap.sdk.extensions.CancelExtendedRequest;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

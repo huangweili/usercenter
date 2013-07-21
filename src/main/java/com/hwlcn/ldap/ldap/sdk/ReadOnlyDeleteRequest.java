@@ -23,8 +23,8 @@ package com.hwlcn.ldap.ldap.sdk;
 
 
 import com.hwlcn.ldap.ldif.LDIFDeleteChangeRecord;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

@@ -22,6 +22,8 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
+
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.UtilityMessages.*;

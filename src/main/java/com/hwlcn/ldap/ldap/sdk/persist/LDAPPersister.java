@@ -57,8 +57,8 @@ import com.hwlcn.ldap.ldap.sdk.SimpleBindRequest;
 import com.hwlcn.ldap.ldap.sdk.schema.AttributeTypeDefinition;
 import com.hwlcn.ldap.ldap.sdk.schema.ObjectClassDefinition;
 import com.hwlcn.ldap.ldap.sdk.schema.Schema;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.persist.PersistMessages.*;

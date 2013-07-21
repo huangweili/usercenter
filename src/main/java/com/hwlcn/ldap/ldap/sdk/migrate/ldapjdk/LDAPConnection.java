@@ -45,9 +45,9 @@ import com.hwlcn.ldap.ldap.sdk.SearchResult;
 import com.hwlcn.ldap.ldap.sdk.SearchScope;
 import com.hwlcn.ldap.ldap.sdk.SimpleBindRequest;
 import com.hwlcn.ldap.ldap.sdk.UpdatableLDAPRequest;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.util.Debug.*;

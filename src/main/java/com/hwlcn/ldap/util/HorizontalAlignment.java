@@ -21,6 +21,7 @@
 package com.hwlcn.ldap.util;
 
 
+import com.hwlcn.core.annotation.ThreadSafety;
 
 /**
  * This enumeration defines a set of values that may indicate how text should be

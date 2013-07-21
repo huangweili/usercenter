@@ -32,9 +32,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.hwlcn.ldap.util.Debug;
-import com.hwlcn.ldap.util.InternalUseOnly;
+import com.hwlcn.core.annotation.InternalUseOnly;
 import com.hwlcn.ldap.util.LDAPSDKThreadFactory;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.Validator;
 

@@ -25,8 +25,8 @@ package com.hwlcn.ldap.ldap.sdk;
 import java.util.List;
 
 import com.hwlcn.ldap.ldif.LDIFModifyChangeRecord;
-import com.hwlcn.ldap.util.NotExtensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotExtensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

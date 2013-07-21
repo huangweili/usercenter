@@ -33,9 +33,9 @@ import com.hwlcn.ldap.ldap.protocol.LDAPMessage;
 import com.hwlcn.ldap.ldap.protocol.LDAPResponse;
 import com.hwlcn.ldap.ldap.protocol.ProtocolOp;
 import com.hwlcn.ldap.ldif.LDIFDeleteChangeRecord;
-import com.hwlcn.ldap.util.InternalUseOnly;
-import com.hwlcn.ldap.util.Mutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.InternalUseOnly;
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;

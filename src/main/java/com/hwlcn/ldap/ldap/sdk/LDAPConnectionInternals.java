@@ -33,7 +33,7 @@ import javax.net.ssl.SSLContext;
 import com.hwlcn.ldap.asn1.ASN1Buffer;
 import com.hwlcn.ldap.ldap.protocol.LDAPMessage;
 import com.hwlcn.ldap.util.DebugType;
-import com.hwlcn.ldap.util.InternalUseOnly;
+import com.hwlcn.core.annotation.InternalUseOnly;
 
 import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;

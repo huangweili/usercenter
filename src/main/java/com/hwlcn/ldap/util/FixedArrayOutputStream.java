@@ -22,6 +22,9 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.Mutable;
+import com.hwlcn.core.annotation.ThreadSafety;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;

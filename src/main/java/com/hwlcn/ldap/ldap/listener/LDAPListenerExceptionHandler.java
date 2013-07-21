@@ -25,8 +25,8 @@ package com.hwlcn.ldap.ldap.listener;
 import java.net.Socket;
 
 import com.hwlcn.ldap.ldap.sdk.LDAPException;
-import com.hwlcn.ldap.util.Extensible;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Extensible;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

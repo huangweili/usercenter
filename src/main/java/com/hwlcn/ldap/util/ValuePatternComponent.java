@@ -22,6 +22,8 @@ package com.hwlcn.ldap.util;
 
 
 
+import com.hwlcn.core.annotation.NotExtensible;
+
 import java.io.Serializable;
 
 

@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.matchingrules.DistinguishedNameMatchingRule;
 import com.hwlcn.ldap.ldap.sdk.Attribute;
 import com.hwlcn.ldap.ldap.sdk.Control;

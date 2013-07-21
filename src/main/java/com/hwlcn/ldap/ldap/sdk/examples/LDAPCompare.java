@@ -37,7 +37,7 @@ import com.hwlcn.ldap.ldap.sdk.Version;
 import com.hwlcn.ldap.util.Base64;
 import com.hwlcn.ldap.util.LDAPCommandLineTool;
 import com.hwlcn.ldap.util.StaticUtils;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import com.hwlcn.ldap.util.args.ArgumentException;
 import com.hwlcn.ldap.util.args.ArgumentParser;

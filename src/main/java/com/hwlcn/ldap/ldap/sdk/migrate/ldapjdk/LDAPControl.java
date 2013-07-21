@@ -29,9 +29,9 @@ import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.controls.ManageDsaITRequestControl;
 import com.hwlcn.ldap.ldap.sdk.controls.PasswordExpiredControl;
 import com.hwlcn.ldap.ldap.sdk.controls.PasswordExpiringControl;
-import com.hwlcn.ldap.util.Extensible;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.Extensible;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 

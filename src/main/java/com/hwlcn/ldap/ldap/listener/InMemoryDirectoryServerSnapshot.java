@@ -29,8 +29,8 @@ import java.util.TreeMap;
 
 import com.hwlcn.ldap.ldap.sdk.DN;
 import com.hwlcn.ldap.ldap.sdk.ReadOnlyEntry;
-import com.hwlcn.ldap.util.NotMutable;
-import com.hwlcn.ldap.util.ThreadSafety;
+import com.hwlcn.core.annotation.NotMutable;
+import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
