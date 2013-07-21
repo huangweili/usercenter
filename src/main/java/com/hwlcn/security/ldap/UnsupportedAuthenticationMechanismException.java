@@ -4,7 +4,6 @@ package com.hwlcn.security.ldap;
 import com.hwlcn.security.dao.InvalidResourceUsageException;
 
 
-
 public class UnsupportedAuthenticationMechanismException extends InvalidResourceUsageException {
 
     public UnsupportedAuthenticationMechanismException(String message) {

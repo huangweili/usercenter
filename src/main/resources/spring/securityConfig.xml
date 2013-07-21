@@ -11,11 +11,14 @@
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.html"/>
         <property name="successUrl" value="/index.html"/>
+        <property name="logoutRedirectUrl" value="/index.html"/>
         <property name="unauthorizedUrl" value="/unauthorized.html"/>
         <property name="filterChainDefinitions">
             <value>
                 /resource/**=anon
+                /favicon.ico=anon
                 /unauthorized.html=anon
+                /logout.html=logout
                 /login.html=authc
                 /admin/** = authc,roles[admin]
                 /** = authc

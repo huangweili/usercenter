@@ -22,7 +22,8 @@
 
 
     <!--静态资源配置 -->
-    <mvc:resources mapping="/resource/**" location="resource/"></mvc:resources>
+    <mvc:resources mapping="/resource/**" location="resource/"/>
+    <mvc:resources mapping="/favicon.ico" location="resource/favicon.ico"/>
 
 
     <!-- 请求中断配置-->

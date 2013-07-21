@@ -8,6 +8,7 @@ import com.hwlcn.security.util.StringUtils;
 
 import com.hwlcn.security.web.filter.AccessControlFilter;
 import com.hwlcn.security.web.filter.authc.AuthenticationFilter;
+import com.hwlcn.security.web.filter.authc.LogoutFilter;
 import com.hwlcn.security.web.filter.authz.AuthorizationFilter;
 import com.hwlcn.security.web.filter.mgt.DefaultFilterChainManager;
 import com.hwlcn.security.web.filter.mgt.FilterChainManager;
@@ -41,7 +42,7 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
     private String loginUrl;
     private String successUrl;
     private String unauthorizedUrl;
-
+    private String logoutRedirectUrl;
     private AbstractSecurityFilter instance;
 
     public SecurityFilterFactoryBean() {
@@ -193,6 +194,18 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
         }
     }
 
+
+    private void applyLogoutRedirectUrlIfNecessary(Filter filter) {
+        String logoutRedirectUrl = getLogoutRedirectUrl();
+        if (StringUtils.hasText(logoutRedirectUrl) && (filter instanceof LogoutFilter)) {
+            LogoutFilter logoutFilter = (LogoutFilter) filter;
+            String existingLoginUrl = logoutFilter.getRedirectUrl();
+            if (LogoutFilter.DEFAULT_REDIRECT_URL.equals(existingLoginUrl)) {
+                logoutFilter.setRedirectUrl(logoutRedirectUrl);
+            }
+        }
+    }
+
     private void applySuccessUrlIfNecessary(Filter filter) {
         String successUrl = getSuccessUrl();
         if (StringUtils.hasText(successUrl) && (filter instanceof AuthenticationFilter)) {
@@ -219,6 +232,7 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
         applyLoginUrlIfNecessary(filter);
         applySuccessUrlIfNecessary(filter);
         applyUnauthorizedUrlIfNecessary(filter);
+        applyLogoutRedirectUrlIfNecessary(filter);//退出后跳转界面
     }
 
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -254,5 +268,13 @@ public class SecurityFilterFactoryBean implements FactoryBean, BeanPostProcessor
                 setFilterChainResolver(resolver);
             }
         }
+    }
+
+    public String getLogoutRedirectUrl() {
+        return logoutRedirectUrl;
+    }
+
+    public void setLogoutRedirectUrl(String logoutRedirectUrl) {
+        this.logoutRedirectUrl = logoutRedirectUrl;
     }
 }

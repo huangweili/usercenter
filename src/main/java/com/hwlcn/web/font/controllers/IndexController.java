@@ -1,5 +1,6 @@
 package com.hwlcn.web.font.controllers;
 
+import com.hwlcn.security.SecurityUtils;
 import com.hwlcn.security.web.filter.authc.FormAuthenticationFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,6 +69,9 @@ public class IndexController {
 
     @RequestMapping(value = "login.html", method = RequestMethod.POST)
     public String loginFail(@RequestParam(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM) String userName, Model model) {
+        if(SecurityUtils.getSubject().isAuthenticated()){
+            return  "redirect:/index.html";
+        }
         //登录错误
         model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, userName);
         return "font/login";
