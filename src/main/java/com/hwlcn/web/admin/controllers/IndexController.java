@@ -1,5 +1,7 @@
 package com.hwlcn.web.admin.controllers;
 
+import com.hwlcn.security.authz.annotation.Logical;
+import com.hwlcn.security.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin")
 public class IndexController {
 
-
+    @RequiresRoles(value = {"admin","test"},logical = Logical.AND)
     @RequestMapping(value = {"", "/", "/index.html"}, method = RequestMethod.GET)
     public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "admin/index";

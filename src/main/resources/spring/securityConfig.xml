@@ -2,8 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-
     <description>系统安全配置</description>
 
 
@@ -16,11 +14,12 @@
         <property name="filterChainDefinitions">
             <value>
                 /resource/**=anon
+                /error/**=anon
                 /favicon.ico=anon
                 /unauthorized.html=anon
                 /logout.html=logout
                 /login.html=authc
-                /admin/** = authc,roles[admin]
+                /admin/** = user,roles[admin]
                 /** = authc
             </value>
         </property>
@@ -32,7 +31,6 @@
     </bean>
 
 
-
     <bean id="lifecycleBeanPostProcessor" class="com.hwlcn.security.spring.LifecycleBeanPostProcessor"/>
 
 
@@ -41,6 +39,7 @@
           depends-on="lifecycleBeanPostProcessor">
         <property name="proxyTargetClass" value="true"/>
     </bean>
+
 
     <bean class="com.hwlcn.security.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>

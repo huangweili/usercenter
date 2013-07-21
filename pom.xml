@@ -28,6 +28,10 @@
         <commons.collections.version>3.2.1</commons.collections.version>
         <tomcat.dbcp.version>7.0.42</tomcat.dbcp.version>
         <commons.codec.version>1.8</commons.codec.version>
+
+        <aspectjrt.version>1.7.3</aspectjrt.version>
+        <aspectjweaver.version>1.7.3</aspectjweaver.version>
+
     </properties>
 
     <repositories>
@@ -41,6 +45,24 @@
 
 
     <dependencies>
+
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${aspectjrt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectjweaver.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>commons-codec</groupId>

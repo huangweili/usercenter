@@ -291,44 +291,26 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the default BER
-     * type and no value.
-     */
+
     public void addOctetString() {
         addOctetString(ASN1Constants.UNIVERSAL_OCTET_STRING_TYPE);
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the provided BER
-     * type and no value.
-     *
-     * @param type The BER type to use for the octet string element.
-     */
+
     public void addOctetString(final byte type) {
         buffer.append(type);
         buffer.append((byte) 0x00);
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the default BER
-     * type.
-     *
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final byte[] value) {
         addOctetString(ASN1Constants.UNIVERSAL_OCTET_STRING_TYPE, value);
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the default BER
-     * type.
-     *
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final CharSequence value) {
         if (value == null) {
             addOctetString(ASN1Constants.UNIVERSAL_OCTET_STRING_TYPE);
@@ -339,24 +321,13 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the default BER
-     * type.
-     *
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final String value) {
         addOctetString(ASN1Constants.UNIVERSAL_OCTET_STRING_TYPE, value);
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the provided BER
-     * type.
-     *
-     * @param type  The BER type to use for the octet string element.
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final byte type, final byte[] value) {
         buffer.append(type);
 
@@ -369,13 +340,7 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the provided BER
-     * type.
-     *
-     * @param type  The BER type to use for the octet string element.
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final byte type, final CharSequence value) {
         if (value == null) {
             addOctetString(type);
@@ -385,22 +350,14 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Adds an octet string element to this ASN.1 buffer using the provided BER
-     * type.
-     *
-     * @param type  The BER type to use for the octet string element.
-     * @param value The value to use for the octet string element.
-     */
+
     public void addOctetString(final byte type, final String value) {
         buffer.append(type);
 
         if (value == null) {
             buffer.append((byte) 0x00);
         } else {
-            // We'll assume that the string contains only ASCII characters and
-            // therefore the number of bytes will equal the number of characters.
-            // However, save the position in case we're wrong and need to re-encode.
+
             final int lengthStartPos = buffer.length();
             ASN1Element.encodeLengthTo(value.length(), buffer);
 
@@ -420,68 +377,33 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Begins adding elements to an ASN.1 sequence using the default BER type.
-     *
-     * @return An object that may be used to indicate when the end of the
-     *         sequence has been reached.  Once all embedded sequence elements
-     *         have been added, then the {@link ASN1BufferSequence#end} method
-     *         MUST be called to ensure that the sequence is properly encoded.
-     */
+
     public ASN1BufferSequence beginSequence() {
         return beginSequence(ASN1Constants.UNIVERSAL_SEQUENCE_TYPE);
     }
 
 
-    /**
-     * Begins adding elements to an ASN.1 sequence using the provided BER type.
-     *
-     * @param type The BER type to use for the sequence.
-     * @return An object that may be used to indicate when the end of the
-     *         sequence has been reached.  Once all embedded sequence elements
-     *         have been added, then the {@link ASN1BufferSequence#end} method
-     *         MUST be called to ensure that the sequence is properly encoded.
-     */
+
     public ASN1BufferSequence beginSequence(final byte type) {
         buffer.append(type);
         return new ASN1BufferSequence(this);
     }
 
 
-    /**
-     * Begins adding elements to an ASN.1 set using the default BER type.
-     *
-     * @return An object that may be used to indicate when the end of the set has
-     *         been reached.  Once all embedded set elements have been added,
-     *         then the {@link ASN1BufferSet#end} method MUST be called to ensure
-     *         that the set is properly encoded.
-     */
+
     public ASN1BufferSet beginSet() {
         return beginSet(ASN1Constants.UNIVERSAL_SET_TYPE);
     }
 
 
-    /**
-     * Begins adding elements to an ASN.1 set using the provided BER type.
-     *
-     * @param type The BER type to use for the set.
-     * @return An object that may be used to indicate when the end of the set has
-     *         been reached.  Once all embedded set elements have been added,
-     *         then the {@link ASN1BufferSet#end} method MUST be called to ensure
-     *         that the set is properly encoded.
-     */
+
     public ASN1BufferSet beginSet(final byte type) {
         buffer.append(type);
         return new ASN1BufferSet(this);
     }
 
 
-    /**
-     * Ensures that the appropriate length is inserted into the internal buffer
-     * after all elements in a sequence or set have been added.
-     *
-     * @param valueStartPos The position in which the first value was added.
-     */
+
     void endSequenceOrSet(final int valueStartPos) {
         final int length = buffer.length() - valueStartPos;
         if (length == 0) {
@@ -521,14 +443,7 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Writes the contents of this buffer to the provided output stream.
-     *
-     * @param outputStream The output stream to which the data should be
-     *                     written.
-     * @throws java.io.IOException If a problem occurs while writing to the provided
-     *                             output stream.
-     */
+
     public void writeTo(final OutputStream outputStream)
             throws IOException {
         if (debugEnabled(DebugType.ASN1)) {
@@ -539,27 +454,11 @@ public final class ASN1Buffer
     }
 
 
-    /**
-     * Retrieves a byte array containing the contents of this ASN.1 buffer.
-     *
-     * @return A byte array containing the contents of this ASN.1 buffer.
-     */
+
     public byte[] toByteArray() {
         return buffer.toByteArray();
     }
 
-
-    /**
-     * Retrieves a byte buffer that wraps the data associated with this ASN.1
-     * buffer.  The position will be set to the beginning of the data, and the
-     * limit will be set to one byte after the end of the data.  The contents
-     * of the returned byte buffer must not be altered in any way, and the
-     * contents of this ASN.1 buffer must not be altered until the
-     * {@code ByteBuffer} is no longer needed.
-     *
-     * @return A byte buffer that wraps the data associated with this ASN.1
-     *         buffer.
-     */
     public ByteBuffer asByteBuffer() {
         return ByteBuffer.wrap(buffer.getBackingArray(), 0, buffer.length());
     }

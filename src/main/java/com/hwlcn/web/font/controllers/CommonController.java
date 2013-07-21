@@ -25,4 +25,15 @@ public class CommonController {
         return "font/unauthorized";
     }
 
+
+    @RequestMapping(value = "/error/403.html")
+    public String error403(HttpServletRequest request,HttpServletResponse response,Model model){
+
+        return "error/403";
+    }
+
+    @RequestMapping(value = "/error/500.html")
+    public String error500(HttpServletRequest request,HttpServletResponse response,Model model){
+        return "error/500";
+    }
 }
