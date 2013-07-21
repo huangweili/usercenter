@@ -1,5 +1,7 @@
 package com.hwlcn.domain.repository;
 
+import com.hwlcn.domain.entity.User;
+
 /**
  * User: HuangWeili
  * Date: 13-7-20
@@ -7,4 +9,9 @@ package com.hwlcn.domain.repository;
  */
 
 public interface UserDao {
+
+
+    User getUserByAccountId(Long id);
+
+
 }
