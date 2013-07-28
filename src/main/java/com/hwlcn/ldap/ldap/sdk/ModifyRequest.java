@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -87,35 +67,23 @@ public final class ModifyRequest
        extends UpdatableLDAPRequest
        implements ReadOnlyModifyRequest, ResponseAcceptor, ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -4747622844001634758L;
 
 
 
-  // The queue that will be used to receive response messages from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue =
        new LinkedBlockingQueue<LDAPResponse>();
 
-  // The set of modifications to perform.
   private final ArrayList<Modification> modifications;
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The DN of the entry to modify.
   private String dn;
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn   The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mod  The modification to apply to the entry.  It must not be
-   *              {@code null}.
-   */
+
   public ModifyRequest(final String dn, final Modification mod)
   {
     super(null);
@@ -130,13 +98,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the entry.  It must not
-   *               be {@code null} or empty.
-   */
+
   public ModifyRequest(final String dn, final Modification... mods)
   {
     super(null);
@@ -153,13 +115,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the entry.  It must not
-   *               be {@code null} or empty.
-   */
   public ModifyRequest(final String dn, final List<Modification> mods)
   {
     super(null);
@@ -175,13 +130,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn   The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mod  The modification to apply to the entry.  It must not be
-   *              {@code null}.
-   */
   public ModifyRequest(final DN dn, final Modification mod)
   {
     super(null);
@@ -196,13 +144,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the entry.  It must not
-   *               be {@code null} or empty.
-   */
   public ModifyRequest(final DN dn, final Modification... mods)
   {
     super(null);
@@ -219,13 +160,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the entry.  It must not
-   *               be {@code null} or empty.
-   */
   public ModifyRequest(final DN dn, final List<Modification> mods)
   {
     super(null);
@@ -241,15 +175,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mod       The modification to apply to the entry.  It must not be
-   *                   {@code null}.
-   * @param  controls  The set of controls to include in the request.
-   */
+
   public ModifyRequest(final String dn, final Modification mod,
                        final Control[] controls)
   {
@@ -265,15 +191,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mods      The set of modifications to apply to the entry.  It must
-   *                   not be {@code null} or empty.
-   * @param  controls  The set of controls to include in the request.
-   */
+
   public ModifyRequest(final String dn, final Modification[] mods,
                        final Control[] controls)
   {
@@ -291,15 +209,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mods      The set of modifications to apply to the entry.  It must
-   *                   not be {@code null} or empty.
-   * @param  controls  The set of controls to include in the request.
-   */
   public ModifyRequest(final String dn, final List<Modification> mods,
                        final Control[] controls)
   {
@@ -316,15 +225,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mod       The modification to apply to the entry.  It must not be
-   *                   {@code null}.
-   * @param  controls  The set of controls to include in the request.
-   */
   public ModifyRequest(final DN dn, final Modification mod,
                        final Control[] controls)
   {
@@ -340,15 +240,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mods      The set of modifications to apply to the entry.  It must
-   *                   not be {@code null} or empty.
-   * @param  controls  The set of controls to include in the request.
-   */
   public ModifyRequest(final DN dn, final Modification[] mods,
                        final Control[] controls)
   {
@@ -366,15 +257,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request with the provided information.
-   *
-   * @param  dn        The DN of the entry to modify.  It must not be
-   *                   {@code null}.
-   * @param  mods      The set of modifications to apply to the entry.  It must
-   *                   not be {@code null} or empty.
-   * @param  controls  The set of controls to include in the request.
-   */
   public ModifyRequest(final DN dn, final List<Modification> mods,
                        final Control[] controls)
   {
@@ -391,17 +273,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Creates a new modify request from the provided LDIF representation of the
-   * changes.
-   *
-   * @param  ldifModificationLines  The lines that comprise an LDIF
-   *                                representation of a modify change record.
-   *                                It must not be {@code null} or empty.
-   *
-   * @throws  LDIFException  If the provided set of lines cannot be parsed as an
-   *                         LDIF modify change record.
-   */
+
   public ModifyRequest(final String... ldifModificationLines)
          throws LDIFException
   {
@@ -425,9 +297,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public String getDN()
   {
     return dn;
@@ -435,11 +305,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Specifies the DN of the entry to modify.
-   *
-   * @param  dn  The DN of the entry to modify.  It must not be {@code null}.
-   */
+
   public void setDN(final String dn)
   {
     ensureNotNull(dn);
@@ -448,12 +314,6 @@ public final class ModifyRequest
   }
 
 
-
-  /**
-   * Specifies the DN of the entry to modify.
-   *
-   * @param  dn  The DN of the entry to modify.  It must not be {@code null}.
-   */
   public void setDN(final DN dn)
   {
     ensureNotNull(dn);
@@ -463,9 +323,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public List<Modification> getModifications()
   {
     return Collections.unmodifiableList(modifications);
@@ -473,12 +330,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Adds the provided modification to the set of modifications for this modify
-   * request.
-   *
-   * @param  mod  The modification to be added.  It must not be {@code null}.
-   */
   public void addModification(final Modification mod)
   {
     ensureNotNull(mod);
@@ -488,15 +339,7 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Removes the provided modification from the set of modifications for this
-   * modify request.
-   *
-   * @param  mod  The modification to be removed.  It must not be {@code null}.
-   *
-   * @return  {@code true} if the specified modification was found and removed,
-   *          or {@code false} if not.
-   */
+
   public boolean removeModification(final Modification mod)
   {
     ensureNotNull(mod);
@@ -505,14 +348,6 @@ public final class ModifyRequest
   }
 
 
-
-  /**
-   * Replaces the existing set of modifications for this modify request with the
-   * provided modification.
-   *
-   * @param  mod  The modification to use for this modify request.  It must not
-   *              be {@code null}.
-   */
   public void setModifications(final Modification mod)
   {
     ensureNotNull(mod);
@@ -523,13 +358,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Replaces the existing set of modifications for this modify request with the
-   * provided modifications.
-   *
-   * @param  mods  The set of modification to use for this modify request.  It
-   *               must not be {@code null} or empty.
-   */
   public void setModifications(final Modification[] mods)
   {
     ensureNotNull(mods);
@@ -542,13 +370,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Replaces the existing set of modifications for this modify request with the
-   * provided modifications.
-   *
-   * @param  mods  The set of modification to use for this modify request.  It
-   *               must not be {@code null} or empty.
-   */
   public void setModifications(final List<Modification> mods)
   {
     ensureNotNull(mods);
@@ -561,9 +382,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_MODIFY_REQUEST;
@@ -571,9 +389,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer writer)
   {
     final ASN1BufferSequence requestSequence =
@@ -591,11 +406,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Encodes the modify request protocol op to an ASN.1 element.
-   *
-   * @return  The ASN.1 element with the encoded modify request protocol op.
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ASN1Element[] modElements = new ASN1Element[modifications.size()];
@@ -618,22 +428,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Sends this modify request to the directory server over the provided
-   * connection and returns the associated response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the modify processing.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected LDAPResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -649,7 +443,7 @@ public final class ModifyRequest
 
     try
     {
-      // Wait for and process the response.
+
       final LDAPResponse response;
       try
       {
@@ -680,35 +474,15 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Sends this modify request to the directory server over the provided
-   * connection and returns the message ID for the request.
-   *
-   * @param  connection      The connection to use to communicate with the
-   *                         directory server.
-   * @param  resultListener  The async result listener that is to be notified
-   *                         when the response is received.  It may be
-   *                         {@code null} only if the result is to be processed
-   *                         by this class.
-   *
-   * @return  The async request ID created for the operation, or {@code null} if
-   *          the provided {@code resultListener} is {@code null} and the
-   *          operation will not actually be processed asynchronously.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   AsyncRequestID processAsync(final LDAPConnection connection,
                               final AsyncResultListener resultListener)
                  throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message = new LDAPMessage(messageID, this, getControls());
 
 
-    // If the provided async result listener is {@code null}, then we'll use
-    // this class as the message acceptor.  Otherwise, create an async helper
-    // and use it as the message acceptor.
+
     final AsyncRequestID asyncRequestID;
     if (resultListener == null)
     {
@@ -734,8 +508,6 @@ public final class ModifyRequest
       }
     }
 
-
-    // Send the request to the server.
     try
     {
       debugLDAPRequest(this);
@@ -754,37 +526,15 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Processes this modify operation in synchronous mode, in which the same
-   * thread will send the request and read the response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  allowRetry  Indicates whether the request may be re-tried on a
-   *                     re-established connection if the initial attempt fails
-   *                     in a way that indicates the connection is no longer
-   *                     valid and autoReconnect is true.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the modify processing.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   private LDAPResult processSync(final LDAPConnection connection,
                                  final int depth, final boolean allowRetry)
           throws LDAPException
   {
-    // Create the LDAP message.
+
     messageID = connection.nextMessageID();
     final LDAPMessage message =
          new LDAPMessage(messageID,  this, getControls());
 
-
-    // Set the appropriate timeout on the socket.
     try
     {
       connection.getConnectionInternals(true).getSocket().setSoTimeout(
@@ -795,8 +545,6 @@ public final class ModifyRequest
       debugException(e);
     }
 
-
-    // Send the request to the server.
     final long requestTime = System.nanoTime();
     debugLDAPRequest(this);
     connection.getConnectionStatistics().incrementNumModifyRequests();
@@ -871,24 +619,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Performs the necessary processing for handling a response.
-   *
-   * @param  connection   The connection used to read the response.
-   * @param  response     The response to be processed.
-   * @param  requestTime  The time the request was sent to the server.
-   * @param  depth        The current referral depth for this request.  It
-   *                      should always be one for the initial request, and
-   *                      should only be incremented when following referrals.
-   * @param  allowRetry   Indicates whether the request may be re-tried on a
-   *                      re-established connection if the initial attempt fails
-   *                      in a way that indicates the connection is no longer
-   *                      valid and autoReconnect is true.
-   *
-   * @return  The modify result.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs.
-   */
   private LDAPResult handleResponse(final LDAPConnection connection,
                                     final LDAPResponse response,
                                     final long requestTime, final int depth,
@@ -911,7 +641,7 @@ public final class ModifyRequest
          System.nanoTime() - requestTime);
     if (response instanceof ConnectionClosedResponse)
     {
-      // The connection was closed while waiting for the response.
+
       if (allowRetry)
       {
         final LDAPResult retryResult = reconnectAndRetry(connection, depth,
@@ -970,27 +700,13 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Attempts to re-establish the connection and retry processing this request
-   * on it.
-   *
-   * @param  connection  The connection to be re-established.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  resultCode  The result code for the previous operation attempt.
-   *
-   * @return  The result from re-trying the add, or {@code null} if it could not
-   *          be re-tried.
-   */
   private LDAPResult reconnectAndRetry(final LDAPConnection connection,
                                        final int depth,
                                        final ResultCode resultCode)
   {
     try
     {
-      // We will only want to retry for certain result codes that indicate a
-      // connection problem.
+
       switch (resultCode.intValue())
       {
         case ResultCode.SERVER_DOWN_INT_VALUE:
@@ -1010,23 +726,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * Attempts to follow a referral to perform a modify operation in the target
-   * server.
-   *
-   * @param  referralResult  The LDAP result object containing information about
-   *                         the referral to follow.
-   * @param  connection      The connection on which the referral was received.
-   * @param  depth           The number of referrals followed in the course of
-   *                         processing this request.
-   *
-   * @return  The result of attempting to process the modify operation by
-   *          following the referral.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to establish
-   *                         the referral connection, sending the request, or
-   *                         reading the result.
-   */
   private LDAPResult followReferral(final LDAPResult referralResult,
                                     final LDAPConnection connection,
                                     final int depth)
@@ -1041,7 +740,6 @@ public final class ModifyRequest
 
         if (host == null)
         {
-          // We can't handle a referral in which there is no host.
           continue;
         }
 
@@ -1074,16 +772,11 @@ public final class ModifyRequest
       }
     }
 
-    // If we've gotten here, then we could not follow any of the referral URLs,
-    // so we'll just return the original referral result.
     return referralResult;
   }
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void responseReceived(final LDAPResponse response)
          throws LDAPException
@@ -1102,9 +795,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -1113,9 +803,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public OperationType getOperationType()
   {
@@ -1124,9 +811,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public ModifyRequest duplicate()
   {
     return duplicate(getControls());
@@ -1134,9 +818,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public ModifyRequest duplicate(final Control[] controls)
   {
     final ModifyRequest r = new ModifyRequest(dn,
@@ -1154,9 +835,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public LDIFModifyChangeRecord toLDIFChangeRecord()
   {
     return new LDIFModifyChangeRecord(this);
@@ -1164,9 +842,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String[] toLDIF()
   {
     return toLDIFChangeRecord().toLDIF();
@@ -1174,9 +849,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String toLDIFString()
   {
     return toLDIFChangeRecord().toLDIFString();
@@ -1184,9 +856,6 @@ public final class ModifyRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

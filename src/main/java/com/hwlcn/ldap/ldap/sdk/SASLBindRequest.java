@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -39,49 +19,23 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
-
-/**
- * This class provides an API that should be used to represent an LDAPv3 SASL
- * bind request.  A SASL bind includes a SASL mechanism name and an optional set
- * of credentials.
- * <BR><BR>
- * See <A HREF="http://www.ietf.org/rfc/rfc4422.txt">RFC 4422</A> for more
- * information about the Simple Authentication and Security Layer.
- */
 @Extensible()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public abstract class SASLBindRequest
        extends BindRequest
        implements ResponseAcceptor
 {
-  /**
-   * The BER type to use for the credentials element in a simple bind request
-   * protocol op.
-   */
+
   protected static final byte CRED_TYPE_SASL = (byte) 0xA3;
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -5842126553864908312L;
 
 
-
-  // The message ID to use for LDAP messages used in bind processing.
   private int messageID;
 
-  // The queue used to receive responses from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue;
 
-
-
-  /**
-   * Creates a new SASL bind request with the provided controls.
-   *
-   * @param  controls  The set of controls to include in this SASL bind request.
-   */
   protected SASLBindRequest(final Control[] controls)
   {
     super(controls);
@@ -91,10 +45,6 @@ public abstract class SASLBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getBindType()
   {
@@ -102,19 +52,9 @@ public abstract class SASLBindRequest
   }
 
 
-
-  /**
-   * Retrieves the name of the SASL mechanism used in this SASL bind request.
-   *
-   * @return  The name of the SASL mechanism used in this SASL bind request.
-   */
   public abstract String getSASLMechanismName();
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -122,27 +62,6 @@ public abstract class SASLBindRequest
   }
 
 
-
-  /**
-   * Sends an LDAP message to the directory server and waits for the response.
-   *
-   * @param  connection       The connection to the directory server.
-   * @param  bindDN           The bind DN to use for the request.  It should be
-   *                          {@code null} for most types of SASL bind requests.
-   * @param  saslCredentials  The SASL credentials to use for the bind request.
-   *                          It may be {@code null} if no credentials are
-   *                          required.
-   * @param  controls         The set of controls to include in the request.  It
-   *                          may be {@code null} if no controls are required.
-   * @param  timeoutMillis   The maximum length of time in milliseconds to wait
-   *                         for a response, or zero if it should wait forever.
-   *
-   * @return  The bind response message returned by the directory server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response, or if a timeout occurred
-   *                         while waiting for the response.
-   */
   protected final BindResult sendBindRequest(final LDAPConnection connection,
                                   final String bindDN,
                                   final ASN1OctetString saslCredentials,
@@ -166,20 +85,6 @@ public abstract class SASLBindRequest
 
 
 
-  /**
-   * Sends an LDAP message to the directory server and waits for the response.
-   *
-   * @param  connection      The connection to the directory server.
-   * @param  requestMessage  The LDAP message to send to the directory server.
-   * @param  timeoutMillis   The maximum length of time in milliseconds to wait
-   *                         for a response, or zero if it should wait forever.
-   *
-   * @return  The response message received from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response, or if a timeout occurred
-   *                         while waiting for the response.
-   */
   protected final BindResult sendMessage(final LDAPConnection connection,
                                          final LDAPMessage requestMessage,
                                          final long timeoutMillis)
@@ -198,7 +103,6 @@ public abstract class SASLBindRequest
       connection.getConnectionStatistics().incrementNumBindRequests();
       connection.sendMessage(requestMessage);
 
-      // Wait for and process the response.
       final LDAPResponse response;
       try
       {
@@ -228,28 +132,12 @@ public abstract class SASLBindRequest
 
 
 
-  /**
-   * Sends an LDAP message to the directory server and waits for the response.
-   * This should only be used when the connection is operating in synchronous
-   * mode.
-   *
-   * @param  connection      The connection to the directory server.
-   * @param  requestMessage  The LDAP message to send to the directory server.
-   * @param  timeoutMillis   The maximum length of time in milliseconds to wait
-   *                         for a response, or zero if it should wait forever.
-   *
-   * @return  The response message received from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response, or if a timeout occurred
-   *                         while waiting for the response.
-   */
   private BindResult sendMessageSync(final LDAPConnection connection,
                                      final LDAPMessage requestMessage,
                                      final long timeoutMillis)
             throws LDAPException
   {
-    // Set the appropriate timeout on the socket.
+
     try
     {
       connection.getConnectionInternals(true).getSocket().setSoTimeout(
@@ -288,17 +176,6 @@ public abstract class SASLBindRequest
 
 
 
-  /**
-   * Performs the necessary processing for handling a response.
-   *
-   * @param  connection   The connection used to read the response.
-   * @param  response     The response to be processed.
-   * @param  requestTime  The time the request was sent to the server.
-   *
-   * @return  The bind result.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs.
-   */
   private BindResult handleResponse(final LDAPConnection connection,
                                     final LDAPResponse response,
                                     final long requestTime)
@@ -317,14 +194,12 @@ public abstract class SASLBindRequest
       final String message = ccr.getMessage();
       if (message == null)
       {
-        // The connection was closed while waiting for the response.
         throw new LDAPException(ccr.getResultCode(),
              ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE.get(
                   connection.getHostPort(), toString()));
       }
       else
       {
-        // The connection was closed while waiting for the response.
         throw new LDAPException(ccr.getResultCode(),
              ERR_CONN_CLOSED_WAITING_FOR_BIND_RESPONSE_WITH_MESSAGE.get(
                   connection.getHostPort(), toString(), message));
@@ -337,10 +212,6 @@ public abstract class SASLBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public final void responseReceived(final LDAPResponse response)
          throws LDAPException

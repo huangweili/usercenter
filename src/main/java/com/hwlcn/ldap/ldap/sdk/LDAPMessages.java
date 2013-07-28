@@ -36,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This source file was generated from the properties file.
  * Do not edit it directly.
  */
-enum LDAPMessages
+public enum LDAPMessages
 {
   /**
    * Abandon operations are not supported on connections operating in synchronous mode.

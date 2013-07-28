@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -48,75 +28,25 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a data structure that represents an LDAP control.  A
- * control is an element that may be attached to an LDAP request or response
- * to provide additional information about the processing that should be (or has
- * been) performed.  This class may be overridden to provide additional
- * processing for specific types of controls.
- * <BR><BR>
- * A control includes the following elements:
- * <UL>
- *   <LI>An object identifier (OID), which identifies the type of control.</LI>
- *   <LI>A criticality flag, which indicates whether the control should be
- *       considered critical to the processing of the operation.  If a control
- *       is marked critical but the server either does not support that control
- *       or it is not appropriate for the associated request, then the server
- *       will reject the request.  If a control is not marked critical and the
- *       server either does not support it or it is not appropriate for the
- *       associated request, then the server will simply ignore that
- *       control and process the request as if it were not present.</LI>
- *   <LI>An optional value, which provides additional information for the
- *       control.  Some controls do not take values, and the value encoding for
- *       controls which do take values varies based on the type of control.</LI>
- * </UL>
- * Controls may be included in a request from the client to the server, as well
- * as responses from the server to the client (including intermediate response,
- * search result entry, and search result references, in addition to the final
- * response message for an operation).  When using request controls, they may be
- * included in the request object at the time it is created, or may be added
- * after the fact for {@link UpdatableLDAPRequest} objects.  When using
- * response controls, each response control class includes a {@code get} method
- * that can be used to extract the appropriate control from an appropriate
- * result (e.g.,  {@link LDAPResult}, {@link SearchResultEntry}, or
- * {@link SearchResultReference}).
- */
 @Extensible()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public class Control
        implements Serializable
 {
-  /**
-   * The BER type to use for the encoded set of controls in an LDAP message.
-   */
+
   private static final byte CONTROLS_TYPE = (byte) 0xA0;
 
 
-
-  // The registered set of decodeable controls, mapped from their OID to the
-  // class implementing the DecodeableControl interface that should be used to
-  // decode controls with that OID.
   private static final ConcurrentHashMap<String,DecodeableControl>
        decodeableControlMap = new ConcurrentHashMap<String,DecodeableControl>();
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4440956109070220054L;
 
-
-
-  // The encoded value for this control, if there is one.
   private final ASN1OctetString value;
 
-  // Indicates whether this control should be considered critical.
   private final boolean isCritical;
 
-  // The OID for this control
   private final String oid;
 
 

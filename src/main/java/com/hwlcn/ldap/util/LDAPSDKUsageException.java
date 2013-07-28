@@ -21,6 +21,7 @@
 package com.hwlcn.ldap.util;
 
 
+import com.hwlcn.HwlcnException;
 import com.hwlcn.core.annotation.ThreadSafety;
 
 /**
@@ -31,7 +32,7 @@ import com.hwlcn.core.annotation.ThreadSafety;
  */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDAPSDKUsageException
-       extends LDAPSDKRuntimeException
+       extends HwlcnException
 {
   /**
    * The serial version UID for this serializable class.

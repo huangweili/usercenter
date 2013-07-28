@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -111,58 +91,29 @@ public final class LDAPEntrySource
        extends EntrySource
        implements AsyncSearchResultListener
 {
-  /**
-   * The bogus entry that will be used to signify the end of the results.
-   */
+
   private static final String END_OF_RESULTS = "END OF RESULTS";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 1080386705549149135L;
 
 
 
-  // The request ID associated with the asynchronous search.
   private final AsyncRequestID asyncRequestID;
 
-  // Indicates whether this entry source has been closed.
   private final AtomicBoolean closed;
 
-  // The search result for the search operation.
   private final AtomicReference<SearchResult> searchResult;
 
-  // Indicates whether to close the connection when this entry source is closed.
   private final boolean closeConnection;
 
-  // The connection that will be used to read the entries.
   private final LDAPConnection connection;
 
-  // The queue from which entries will be read.
   private final LinkedBlockingQueue<Object> queue;
 
 
 
-  /**
-   * Creates a new LDAP entry source with the provided information.
-   *
-   * @param  connection       The connection to the directory server from which
-   *                          the entries will be read.  It must not be
-   *                          {@code null}.
-   * @param  searchRequest    The search request that will be used to identify
-   *                          which entries should be returned.  It must not be
-   *                          {@code null}, and it must not be configured with a
-   *                          {@link SearchResultListener}.
-   * @param  closeConnection  Indicates whether the provided connection should
-   *                          be closed whenever all of the entries have been
-   *                          read, or if the {@link #close} method is called.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If there is a problem with the provided search
-   *                         request or when trying to communicate with the
-   *                         directory server over the provided connection.
-   */
   public LDAPEntrySource(final LDAPConnection connection,
                          final SearchRequest searchRequest,
                          final boolean closeConnection)
@@ -172,29 +123,6 @@ public final class LDAPEntrySource
   }
 
 
-
-  /**
-   * Creates a new LDAP entry source with the provided information.
-   *
-   * @param  connection       The connection to the directory server from which
-   *                          the entries will be read.  It must not be
-   *                          {@code null}.
-   * @param  searchRequest    The search request that will be used to identify
-   *                          which entries should be returned.  It must not be
-   *                          {@code null}, and it must not be configured with a
-   *                          {@link SearchResultListener}.
-   * @param  closeConnection  Indicates whether the provided connection should
-   *                          be closed whenever all of the entries have been
-   *                          read, or if the {@link #close} method is called.
-   * @param  queueSize        The size of the internal queue used to hold search
-   *                          result entries until they can be consumed by the
-   *                          {@link #nextEntry} method.  The value must be
-   *                          greater than zero.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If there is a problem with the provided search
-   *                         request or when trying to communicate with the
-   *                         directory server over the provided connection.
-   */
   public LDAPEntrySource(final LDAPConnection connection,
                          final SearchRequest searchRequest,
                          final boolean closeConnection,
@@ -228,9 +156,6 @@ public final class LDAPEntrySource
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public Entry nextEntry()
          throws EntrySourceException
@@ -273,9 +198,6 @@ public final class LDAPEntrySource
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void close()
   {
@@ -284,11 +206,6 @@ public final class LDAPEntrySource
 
 
 
-  /**
-   * Closes this LDAP entry source.
-   *
-   * @param  abandon  Indicates whether to attempt to abandon the search.
-   */
   private void closeInternal(final boolean abandon)
   {
     addToQueue(END_OF_RESULTS);
@@ -316,37 +233,18 @@ public final class LDAPEntrySource
 
 
 
-  /**
-   * Retrieves the search result for the search operation, if available.  It
-   * will not be available until the search has completed (as indicated by a
-   * {@code null} return value from the {@link #nextEntry} method).
-   *
-   * @return  The search result for the search operation, or {@code null} if it
-   *          is not available (e.g., because the search has not yet completed).
-   */
   public SearchResult getSearchResult()
   {
     return searchResult.get();
   }
 
 
-
-  /**
-   * {@inheritDoc}  This is intended for internal use only and should not be
-   * called by anything outside of the LDAP SDK itself.
-   */
   @InternalUseOnly()
   public void searchEntryReturned(final SearchResultEntry searchEntry)
   {
     addToQueue(searchEntry);
   }
 
-
-
-  /**
-   * {@inheritDoc}  This is intended for internal use only and should not be
-   * called by anything outside of the LDAP SDK itself.
-   */
   @InternalUseOnly()
   public void searchReferenceReturned(
                    final SearchResultReference searchReference)
@@ -355,11 +253,6 @@ public final class LDAPEntrySource
   }
 
 
-
-  /**
-   * {@inheritDoc}  This is intended for internal use only and should not be
-   * called by anything outside of the LDAP SDK itself.
-   */
   @InternalUseOnly()
   public void searchResultReceived(final AsyncRequestID requestID,
                                    final SearchResult searchResult)
@@ -376,13 +269,6 @@ public final class LDAPEntrySource
   }
 
 
-
-  /**
-   * Adds the provided object to the queue, waiting as long as needed until it
-   * has been added.
-   *
-   * @param  o  The object to be added.  It must not be {@code null}.
-   */
   private void addToQueue(final Object o)
   {
     while (true)

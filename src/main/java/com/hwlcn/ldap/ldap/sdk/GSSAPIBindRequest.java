@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -115,148 +96,86 @@ public final class GSSAPIBindRequest
        extends SASLBindRequest
        implements CallbackHandler, PrivilegedExceptionAction<Object>
 {
-  /**
-   * The name for the GSSAPI SASL mechanism.
-   */
   public static final String GSSAPI_MECHANISM_NAME = "GSSAPI";
 
 
 
-  /**
-   * The name of the configuration property used to specify the address of the
-   * Kerberos key distribution center.
-   */
+
   private static final String PROPERTY_KDC_ADDRESS = "java.security.krb5.kdc";
 
 
 
-  /**
-   * The name of the configuration property used to specify the Kerberos realm.
-   */
   private static final String PROPERTY_REALM = "java.security.krb5.realm";
 
 
 
-  /**
-   * The name of the configuration property used to specify the path to the JAAS
-   * configuration file.
-   */
+
   private static final String PROPERTY_CONFIG_FILE =
        "java.security.auth.login.config";
 
 
 
-  /**
-   * The name of the configuration property used to indicate whether credentials
-   * can come from somewhere other than the location specified in the JAAS
-   * configuration file.
-   */
+
   private static final String PROPERTY_SUBJECT_CREDS_ONLY =
        "javax.security.auth.useSubjectCredsOnly";
 
 
 
-  /**
-   * The value for the java.security.auth.login.config property at the time that
-   * this class was loaded.  If this is set, then it will be used in place of
-   * an automatically-generated config file.
-   */
   private static final String DEFAULT_CONFIG_FILE =
        System.getProperty(PROPERTY_CONFIG_FILE);
 
 
 
-  /**
-   * The default KDC address that will be used if none is explicitly configured.
-   */
   private static final String DEFAULT_KDC_ADDRESS =
        System.getProperty(PROPERTY_KDC_ADDRESS);
 
 
-
-  /**
-   * The default realm that will be used if none is explicitly configured.
-   */
   private static final String DEFAULT_REALM =
        System.getProperty(PROPERTY_REALM);
 
 
 
-  /**
-   * The name that will identify this client to the JAAS framework.
-   */
   private static final String JAAS_CLIENT_NAME = "GSSAPIBindRequest";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 2511890818146955112L;
 
 
 
-  // The password for the GSSAPI bind request.
   private final ASN1OctetString password;
 
-  // A reference to the connection to use for bind processing.
   private final AtomicReference<LDAPConnection> conn;
 
-  // Indicates whether to enable JVM-level debugging for GSSAPI processing.
   private final boolean enableGSSAPIDebugging;
 
-  // Indicates whether to attempt to renew the client's existing ticket-granting
-  // ticket if authentication uses an existing Kerberos session.
+
   private boolean renewTGT;
 
-  // Indicates whether to require that the credentials be obtained from the
-  // ticket cache such that authentication will fail if the client does not have
-  // an existing Kerberos session.
+
   private boolean requireCachedCredentials;
 
-  // Indicates whether to enable the use pf a ticket cache.
   private boolean useTicketCache;
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID;
 
-  // The authentication ID string for the GSSAPI bind request.
   private final String authenticationID;
 
-  // The authorization ID string for the GSSAPI bind request, if available.
   private final String authorizationID;
 
-  // The path to the JAAS configuration file to use for bind processing.
   private final String configFilePath;
 
-  // The KDC address for the GSSAPI bind request, if available.
   private final String kdcAddress;
 
-  // The realm for the GSSAPI bind request, if available.
   private final String realm;
 
-  // The protocol that should be used in the Kerberos service principal for
-  // the server system.
+
   private final String servicePrincipalProtocol;
 
-  // The path to the Kerberos ticket cache to use.
   private String ticketCachePath;
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided authentication ID
-   * and password.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID, final String password)
          throws LDAPException
   {
@@ -265,19 +184,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided authentication ID
-   * and password.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
+
   public GSSAPIBindRequest(final String authenticationID, final byte[] password)
          throws LDAPException
   {
@@ -286,20 +193,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided authentication ID
-   * and password.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID, final String password,
                            final Control[] controls)
          throws LDAPException
@@ -309,20 +202,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided authentication ID
-   * and password.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
+
   public GSSAPIBindRequest(final String authenticationID, final byte[] password,
                            final Control[] controls)
          throws LDAPException
@@ -332,31 +212,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request.  It
-   *                           may be {@code null} if no alternate authorization
-   *                           ID should be used.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  realm             The realm to use for the authentication.  It may
-   *                           be {@code null} to attempt to use the default
-   *                           realm from the system configuration.
-   * @param  kdcAddress        The address of the Kerberos key distribution
-   *                           center.  It may be {@code null} to attempt to use
-   *                           the default KDC from the system configuration.
-   * @param  configFilePath    The path to the JAAS configuration file to use
-   *                           for the authentication processing.  It may be
-   *                           {@code null} to use the default JAAS
-   *                           configuration.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID,
                            final String authorizationID, final String password,
                            final String realm, final String kdcAddress,
@@ -369,31 +224,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request.  It
-   *                           may be {@code null} if no alternate authorization
-   *                           ID should be used.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  realm             The realm to use for the authentication.  It may
-   *                           be {@code null} to attempt to use the default
-   *                           realm from the system configuration.
-   * @param  kdcAddress        The address of the Kerberos key distribution
-   *                           center.  It may be {@code null} to attempt to use
-   *                           the default KDC from the system configuration.
-   * @param  configFilePath    The path to the JAAS configuration file to use
-   *                           for the authentication processing.  It may be
-   *                           {@code null} to use the default JAAS
-   *                           configuration.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID,
                            final String authorizationID, final byte[] password,
                            final String realm, final String kdcAddress,
@@ -406,32 +236,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request.  It
-   *                           may be {@code null} if no alternate authorization
-   *                           ID should be used.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  realm             The realm to use for the authentication.  It may
-   *                           be {@code null} to attempt to use the default
-   *                           realm from the system configuration.
-   * @param  kdcAddress        The address of the Kerberos key distribution
-   *                           center.  It may be {@code null} to attempt to use
-   *                           the default KDC from the system configuration.
-   * @param  configFilePath    The path to the JAAS configuration file to use
-   *                           for the authentication processing.  It may be
-   *                           {@code null} to use the default JAAS
-   *                           configuration.
-   * @param  controls          The set of controls to include in the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID,
                            final String authorizationID, final String password,
                            final String realm, final String kdcAddress,
@@ -446,32 +250,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request.  It
-   *                           may be {@code null} if no alternate authorization
-   *                           ID should be used.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  realm             The realm to use for the authentication.  It may
-   *                           be {@code null} to attempt to use the default
-   *                           realm from the system configuration.
-   * @param  kdcAddress        The address of the Kerberos key distribution
-   *                           center.  It may be {@code null} to attempt to use
-   *                           the default KDC from the system configuration.
-   * @param  configFilePath    The path to the JAAS configuration file to use
-   *                           for the authentication processing.  It may be
-   *                           {@code null} to use the default JAAS
-   *                           configuration.
-   * @param  controls          The set of controls to include in the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final String authenticationID,
                            final String authorizationID, final byte[] password,
                            final String realm, final String kdcAddress,
@@ -486,18 +264,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Creates a new SASL GSSAPI bind request with the provided set of properties.
-   *
-   * @param  gssapiProperties  The set of properties that should be used for
-   *                           the GSSAPI bind request.  It must not be
-   *                           {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while creating the JAAS
-   *                         configuration file to use during authentication
-   *                         processing.
-   */
   public GSSAPIBindRequest(final GSSAPIBindRequestProperties gssapiProperties,
                            final Control... controls)
           throws LDAPException
@@ -550,9 +316,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public String getSASLMechanismName()
   {
@@ -561,12 +325,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the authentication ID for the GSSAPI bind request, if defined.
-   *
-   * @return  The authentication ID for the GSSAPI bind request, or {@code null}
-   *          if an existing Kerberos session should be used.
-   */
+
   public String getAuthenticationID()
   {
     return authenticationID;
@@ -574,12 +333,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the authorization ID for this bind request, if any.
-   *
-   * @return  The authorization ID for this bind request, or {@code null} if
-   *          there should not be a separate authorization identity.
-   */
   public String getAuthorizationID()
   {
     return authorizationID;
@@ -587,13 +340,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the string representation of the password for this bind request,
-   * if defined.
-   *
-   * @return  The string representation of the password for this bind request,
-   *          or {@code null} if an existing Kerberos session should be used.
-   */
+
   public String getPasswordString()
   {
     if (password == null)
@@ -608,13 +355,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the bytes that comprise the the password for this bind request,
-   * if defined.
-   *
-   * @return  The bytes that comprise the password for this bind request, or
-   *          {@code null} if an existing Kerberos session should be used.
-   */
   public byte[] getPasswordBytes()
   {
     if (password == null)
@@ -629,41 +369,18 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the realm for this bind request, if any.
-   *
-   * @return  The realm for this bind request, or {@code null} if none was
-   *          defined and the client should attempt to determine the realm from
-   *          the system configuration.
-   */
   public String getRealm()
   {
     return realm;
   }
 
 
-
-  /**
-   * Retrieves the address of the Kerberos key distribution center.
-   *
-   * @return  The address of the Kerberos key distribution center, or
-   *          {@code null} if none was defined and the client should attempt to
-   *          determine the KDC address from the system configuration.
-   */
   public String getKDCAddress()
   {
     return kdcAddress;
   }
 
 
-
-  /**
-   * Retrieves the path to the JAAS configuration file that will be used during
-   * authentication processing.
-   *
-   * @return  The path to the JAAS configuration file that will be used during
-   *          authentication processing.
-   */
   public String getConfigFilePath()
   {
     return configFilePath;
@@ -671,45 +388,18 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the protocol specified in the service principal that the
-   * directory server uses for its communication with the KDC.
-   *
-   * @return  The protocol specified in the service principal that the directory
-   *          server uses for its communication with the KDC.
-   */
   public String getServicePrincipalProtocol()
   {
     return servicePrincipalProtocol;
   }
 
 
-
-  /**
-   * Indicates whether to enable the use of a ticket cache to to avoid the need
-   * to supply credentials if the client already has an existing Kerberos
-   * session.
-   *
-   * @return  {@code true} if a ticket cache may be used to take advantage of an
-   *          existing Kerberos session, or {@code false} if Kerberos
-   *          credentials should always be provided.
-   */
   public boolean useTicketCache()
   {
     return useTicketCache;
   }
 
 
-
-  /**
-   * Indicates whether GSSAPI authentication should only occur using an existing
-   * Kerberos session.
-   *
-   * @return  {@code true} if GSSAPI authentication should only use an existing
-   *          Kerberos session and should fail if the client does not have an
-   *          existing session, or {@code false} if the client will be allowed
-   *          to create a new session if one does not already exist.
-   */
   public boolean requireCachedCredentials()
   {
     return requireCachedCredentials;
@@ -717,14 +407,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the path to the Kerberos ticket cache file that should be used
-   * during authentication, if defined.
-   *
-   * @return  The path to the Kerberos ticket cache file that should be used
-   *          during authentication, or {@code null} if the default ticket cache
-   *          file should be used.
-   */
   public String getTicketCachePath()
   {
     return ticketCachePath;
@@ -732,14 +414,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Indicates whether to attempt to renew the client's ticket-granting ticket
-   * (TGT) if an existing Kerberos session is used to authenticate.
-   *
-   * @return  {@code true} if the client should attempt to renew its
-   *          ticket-granting ticket if the authentication is processed using an
-   *          existing Kerberos session, or {@code false} if not.
-   */
   public boolean renewTGT()
   {
     return renewTGT;
@@ -747,13 +421,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Indicates whether JVM-level debugging should be enabled for GSSAPI bind
-   * processing.
-   *
-   * @return  {@code true} if JVM-level debugging should be enabled for GSSAPI
-   *          bind processing, or {@code false} if not.
-   */
+
   public boolean enableGSSAPIDebugging()
   {
     return enableGSSAPIDebugging;
@@ -761,20 +429,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Retrieves the path to the default JAAS configuration file that will be used
-   * if no file was explicitly provided.  A new file may be created if
-   * necessary.
-   *
-   * @param  properties  The GSSAPI properties that should be used for
-   *                     authentication.
-   *
-   * @return  The path to the default JAAS configuration file that will be used
-   *          if no file was explicitly provided.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while attempting to create the
-   *                         configuration file.
-   */
+
   private static String getConfigFilePath(
                              final GSSAPIBindRequestProperties properties)
           throws LDAPException
@@ -788,9 +443,6 @@ public final class GSSAPIBindRequest
 
       try
       {
-        // The JAAS configuration file may vary based on the JVM that we're
-        // using. For Sun-based JVMs, the module will be
-        // "com.sun.security.auth.module.Krb5LoginModule".
         try
         {
           final Class<?> sunModuleClass =
@@ -803,13 +455,11 @@ public final class GSSAPIBindRequest
         }
         catch (final ClassNotFoundException cnfe)
         {
-          // This is fine.
+
           debugException(cnfe);
         }
 
 
-        // For the IBM JVMs, the module will be
-        // "com.ibm.security.auth.module.Krb5LoginModule".
         try
         {
           final Class<?> ibmModuleClass =
@@ -822,13 +472,11 @@ public final class GSSAPIBindRequest
         }
         catch (final ClassNotFoundException cnfe)
         {
-          // This is fine.
+
           debugException(cnfe);
         }
 
 
-        // If we've gotten here, then we can't generate an appropriate
-        // configuration.
         throw new LDAPException(ResultCode.LOCAL_ERROR,
              ERR_GSSAPI_CANNOT_CREATE_JAAS_CONFIG.get(
                   ERR_GSSAPI_NO_SUPPORTED_JAAS_MODULE.get()));
@@ -853,13 +501,6 @@ public final class GSSAPIBindRequest
   }
 
 
-
-  /**
-   * Writes a JAAS configuration file in a form appropriate for Sun VMs.
-   *
-   * @param  w  The writer to use to create the config file.
-   * @param  p  The properties to use for GSSAPI authentication.
-   */
   private static void writeSunJAASConfig(final PrintWriter w,
                                          final GSSAPIBindRequestProperties p)
   {
@@ -895,17 +536,10 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Writes a JAAS configuration file in a form appropriate for IBM VMs.
-   *
-   * @param  w  The writer to use to create the config file.
-   * @param  p  The properties to use for GSSAPI authentication.
-   */
   private static void writeIBMJAASConfig(final PrintWriter w,
                                          final GSSAPIBindRequestProperties p)
   {
-    // NOTE:  It does not appear that the IBM GSSAPI implementation has any
-    // analog for the renewTGT property, so it will be ignored.
+
     w.println(JAAS_CLIENT_NAME + " {");
     w.println("  com.ibm.security.auth.module.Krb5LoginModule required");
     w.println("  credsType=initiator");
@@ -943,21 +577,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Sends this bind request to the target server over the provided connection
-   * and returns the corresponding response.
-   *
-   * @param  connection  The connection to use to send this bind request to the
-   *                     server and read the associated response.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  The bind response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -1089,13 +708,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * Perform the privileged portion of the authentication processing.
-   *
-   * @return  {@code null}, since no return value is actually needed.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs during processing.
-   */
   @InternalUseOnly()
   public Object run()
          throws LDAPException
@@ -1138,9 +750,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public GSSAPIBindRequest getRebindRequest(final String host, final int port)
   {
@@ -1160,19 +770,12 @@ public final class GSSAPIBindRequest
     }
     catch (Exception e)
     {
-      // This should never happen.
       debugException(e);
       return null;
     }
   }
 
 
-
-  /**
-   * Handles any necessary callbacks required for SASL authentication.
-   *
-   * @param  callbacks  The set of callbacks to be handled.
-   */
   @InternalUseOnly()
   public void handle(final Callback[] callbacks)
   {
@@ -1205,7 +808,6 @@ public final class GSSAPIBindRequest
       }
       else
       {
-        // This is an unexpected callback.
         if (debugEnabled(DebugType.LDAP))
         {
           debug(Level.WARNING, DebugType.LDAP,
@@ -1218,9 +820,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -1229,9 +828,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public GSSAPIBindRequest duplicate()
   {
@@ -1240,9 +836,6 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public GSSAPIBindRequest duplicate(final Control[] controls)
   {
@@ -1265,7 +858,6 @@ public final class GSSAPIBindRequest
     }
     catch (Exception e)
     {
-      // This should never happen.
       debugException(e);
       return null;
     }
@@ -1273,9 +865,7 @@ public final class GSSAPIBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public void toString(final StringBuilder buffer)
   {

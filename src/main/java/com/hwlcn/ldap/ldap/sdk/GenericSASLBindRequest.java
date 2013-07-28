@@ -1,23 +1,3 @@
-/*
- * Copyright 2011-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2011-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -30,51 +10,21 @@ import com.hwlcn.ldap.util.Validator;
 
 
 
-/**
- * This class provides a mechanism for performing SASL authentication in a
- * generic manner.  The caller is responsible for properly encoding the
- * credentials (if any) and interpreting the result.  Further, if the requested
- * SASL mechanism is one that requires multiple stages, then the caller is
- * responsible for all processing in each stage.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class GenericSASLBindRequest
        extends SASLBindRequest
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7740968332104559230L;
 
 
-
-  // The SASL credentials that should be used for the bind request.
   private final ASN1OctetString credentials;
 
-  // The bind DN to use for the bind request.
   private final String bindDN;
 
-  // The name of the SASL mechanism that should be used for the bind request.
   private final String mechanism;
 
 
-
-  /**
-   * Creates a new generic SASL bind request with the provided information.
-   *
-   * @param  bindDN       The bind DN that should be used for the request.  It
-   *                      may be {@code null} if the target identity should be
-   *                      derived from the credentials or some other source.
-   * @param  mechanism    The name of the mechanism that should be used for the
-   *                      SASL bind.  It must not be {@code null}.
-   * @param  credentials  The credentials that should be used for the SASL bind.
-   *                      It may be {@code null} if no credentials should be
-   *                      used.
-   * @param  controls     The set of controls to include in the SASL bind
-   *                      request.  It may be {@code null} or empty if no
-   *                      request controls are needed.
-   */
   public GenericSASLBindRequest(final String bindDN, final String mechanism,
                                 final ASN1OctetString credentials,
                                 final Control... controls)
@@ -90,13 +40,6 @@ public final class GenericSASLBindRequest
 
 
 
-  /**
-   * Retrieves the bind DN for this SASL bind request, if any.
-   *
-   * @return  The bind DN for this SASL bind request, or {@code null} if the
-   *          target identity should be determined from the credentials or some
-   *          other mechanism.
-   */
   public String getBindDN()
   {
     return bindDN;
@@ -104,9 +47,6 @@ public final class GenericSASLBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSASLMechanismName()
   {
@@ -115,12 +55,6 @@ public final class GenericSASLBindRequest
 
 
 
-  /**
-   * Retrieves the credentials for the SASL bind request, if any.
-   *
-   * @return  The credentials for the SASL bind request, or {@code null} if
-   *          there are none.
-   */
   public ASN1OctetString getCredentials()
   {
     return credentials;
@@ -128,9 +62,6 @@ public final class GenericSASLBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -140,10 +71,6 @@ public final class GenericSASLBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public GenericSASLBindRequest duplicate()
   {
@@ -152,9 +79,6 @@ public final class GenericSASLBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public GenericSASLBindRequest duplicate(final Control[] controls)
   {
@@ -163,10 +87,6 @@ public final class GenericSASLBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

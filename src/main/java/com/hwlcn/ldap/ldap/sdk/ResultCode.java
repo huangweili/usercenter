@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -332,1178 +312,513 @@ import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 public final class ResultCode
        implements Serializable
 {
-  /**
-   * The integer value (0) for the "SUCCESS" result code.
-   */
+
   public static final int SUCCESS_INT_VALUE = 0;
 
 
 
-  /**
-   * The result code (0) that will be used to indicate a successful operation.
-   */
   public static final ResultCode SUCCESS =
        new ResultCode(INFO_RC_SUCCESS.get(), SUCCESS_INT_VALUE);
 
 
-
-  /**
-   * The integer value (1) for the "OPERATIONS_ERROR" result code.
-   */
   public static final int OPERATIONS_ERROR_INT_VALUE = 1;
 
 
-
-  /**
-   * The result code (1) that will be used to indicate that an operation was
-   * requested out of sequence.
-   */
   public static final ResultCode OPERATIONS_ERROR =
        new ResultCode(INFO_RC_OPERATIONS_ERROR.get(),
                       OPERATIONS_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (2) for the "PROTOCOL_ERROR" result code.
-   */
   public static final int PROTOCOL_ERROR_INT_VALUE = 2;
 
 
-
-  /**
-   * The result code (2) that will be used to indicate that the client sent a
-   * malformed request.
-   */
   public static final ResultCode PROTOCOL_ERROR =
        new ResultCode(INFO_RC_PROTOCOL_ERROR.get(), PROTOCOL_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (3) for the "TIME_LIMIT_EXCEEDED" result code.
-   */
   public static final int TIME_LIMIT_EXCEEDED_INT_VALUE = 3;
 
 
-
-  /**
-   * The result code (3) that will be used to indicate that the server was
-   * unable to complete processing on the request in the allotted time limit.
-   */
   public static final ResultCode TIME_LIMIT_EXCEEDED =
        new ResultCode(INFO_RC_TIME_LIMIT_EXCEEDED.get(),
                       TIME_LIMIT_EXCEEDED_INT_VALUE);
 
 
-
-  /**
-   * The integer value (4) for the "SIZE_LIMIT_EXCEEDED" result code.
-   */
   public static final int SIZE_LIMIT_EXCEEDED_INT_VALUE = 4;
 
 
-
-  /**
-   * The result code (4) that will be used to indicate that the server found
-   * more matching entries than the configured request size limit.
-   */
   public static final ResultCode SIZE_LIMIT_EXCEEDED =
        new ResultCode(INFO_RC_SIZE_LIMIT_EXCEEDED.get(),
                       SIZE_LIMIT_EXCEEDED_INT_VALUE);
 
 
-
-  /**
-   * The integer value (5) for the "COMPARE_FALSE" result code.
-   */
   public static final int COMPARE_FALSE_INT_VALUE = 5;
 
 
-
-  /**
-   * The result code (5) that will be used if a requested compare assertion does
-   * not match the target entry.
-   */
   public static final ResultCode COMPARE_FALSE =
        new ResultCode(INFO_RC_COMPARE_FALSE.get(), COMPARE_FALSE_INT_VALUE);
 
-
-
-  /**
-   * The integer value (6) for the "COMPARE_TRUE" result code.
-   */
   public static final int COMPARE_TRUE_INT_VALUE = 6;
 
 
-
-  /**
-   * The result code (6) that will be used if a requested compare assertion
-   * matched the target entry.
-   */
   public static final ResultCode COMPARE_TRUE =
        new ResultCode(INFO_RC_COMPARE_TRUE.get(), COMPARE_TRUE_INT_VALUE);
 
-
-
-  /**
-   * The integer value (7) for the "AUTH_METHOD_NOT_SUPPORTED" result code.
-   */
   public static final int AUTH_METHOD_NOT_SUPPORTED_INT_VALUE = 7;
 
 
-
-  /**
-   * The result code (7) that will be used if the client requested a form of
-   * authentication that is not supported by the server.
-   */
   public static final ResultCode AUTH_METHOD_NOT_SUPPORTED =
        new ResultCode(INFO_RC_AUTH_METHOD_NOT_SUPPORTED.get(),
                       AUTH_METHOD_NOT_SUPPORTED_INT_VALUE);
 
 
-
-  /**
-   * The integer value (8) for the "STRONG_AUTH_REQUIRED" result code.
-   */
   public static final int STRONG_AUTH_REQUIRED_INT_VALUE = 8;
 
 
-
-  /**
-   * The result code (8) that will be used if the client requested an operation
-   * that requires a strong authentication mechanism.
-   */
   public static final ResultCode STRONG_AUTH_REQUIRED =
        new ResultCode(INFO_RC_STRONG_AUTH_REQUIRED.get(),
                       STRONG_AUTH_REQUIRED_INT_VALUE);
 
 
-
-  /**
-   * The integer value (10) for the "REFERRAL" result code.
-   */
   public static final int REFERRAL_INT_VALUE = 10;
 
 
 
-  /**
-   * The result code (10) that will be used if the server sends a referral to
-   * the client to refer to data in another location.
-   */
   public static final ResultCode REFERRAL =
        new ResultCode(INFO_RC_REFERRAL.get(), REFERRAL_INT_VALUE);
 
 
-
-  /**
-   * The integer value (11) for the "ADMIN_LIMIT_EXCEEDED" result code.
-   */
   public static final int ADMIN_LIMIT_EXCEEDED_INT_VALUE = 11;
 
 
-
-  /**
-   * The result code (11) that will be used if a server administrative limit has
-   * been exceeded.
-   */
   public static final ResultCode ADMIN_LIMIT_EXCEEDED =
        new ResultCode(INFO_RC_ADMIN_LIMIT_EXCEEDED.get(),
                       ADMIN_LIMIT_EXCEEDED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (12) for the "UNAVAILABLE_CRITICAL_EXTENSION" result
-   * code.
-   */
   public static final int UNAVAILABLE_CRITICAL_EXTENSION_INT_VALUE = 12;
 
 
-
-  /**
-   * The result code (12) that will be used if the client requests a critical
-   * control that is not supported by the server.
-   */
   public static final ResultCode UNAVAILABLE_CRITICAL_EXTENSION =
        new ResultCode(INFO_RC_UNAVAILABLE_CRITICAL_EXTENSION.get(),
                       UNAVAILABLE_CRITICAL_EXTENSION_INT_VALUE);
 
 
-
-  /**
-   * The integer value (13) for the "CONFIDENTIALITY_REQUIRED" result code.
-   */
   public static final int CONFIDENTIALITY_REQUIRED_INT_VALUE = 13;
 
 
 
-  /**
-   * The result code (13) that will be used if the server requires a secure
-   * communication mechanism for the requested operation.
-   */
   public static final ResultCode CONFIDENTIALITY_REQUIRED =
        new ResultCode(INFO_RC_CONFIDENTIALITY_REQUIRED.get(),
                       CONFIDENTIALITY_REQUIRED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (14) for the "SASL_BIND_IN_PROGRESS" result code.
-   */
   public static final int SASL_BIND_IN_PROGRESS_INT_VALUE = 14;
 
 
-
-  /**
-   * The result code (14) that will be returned from the server after SASL bind
-   * stages in which more processing is required.
-   */
   public static final ResultCode SASL_BIND_IN_PROGRESS =
        new ResultCode(INFO_RC_SASL_BIND_IN_PROGRESS.get(),
                       SASL_BIND_IN_PROGRESS_INT_VALUE);
 
 
-
-  /**
-   * The integer value (16) for the "NO_SUCH_ATTRIBUTE" result code.
-   */
   public static final int NO_SUCH_ATTRIBUTE_INT_VALUE = 16;
 
 
-
-  /**
-   * The result code (16) that will be used if the client referenced an
-   * attribute that does not exist in the target entry.
-   */
   public static final ResultCode NO_SUCH_ATTRIBUTE =
        new ResultCode(INFO_RC_NO_SUCH_ATTRIBUTE.get(),
                       NO_SUCH_ATTRIBUTE_INT_VALUE);
 
 
 
-  /**
-   * The integer value (17) for the "UNDEFINED_ATTRIBUTE_TYPE" result code.
-   */
   public static final int UNDEFINED_ATTRIBUTE_TYPE_INT_VALUE = 17;
 
 
 
-  /**
-   * The result code (17) that will be used if the client referenced an
-   * attribute that is not defined in the server schema.
-   */
   public static final ResultCode UNDEFINED_ATTRIBUTE_TYPE =
        new ResultCode(INFO_RC_UNDEFINED_ATTRIBUTE_TYPE.get(),
                       UNDEFINED_ATTRIBUTE_TYPE_INT_VALUE);
 
 
 
-  /**
-   * The integer value (18) for the "INAPPROPRIATE_MATCHING" result code.
-   */
   public static final int INAPPROPRIATE_MATCHING_INT_VALUE = 18;
 
 
 
-  /**
-   * The result code (18) that will be used if the client attempted to use an
-   * attribute in a search filter in a manner not supported by the matching
-   * rules associated with that attribute.
-   */
   public static final ResultCode INAPPROPRIATE_MATCHING =
        new ResultCode(INFO_RC_INAPPROPRIATE_MATCHING.get(),
                       INAPPROPRIATE_MATCHING_INT_VALUE);
 
 
-
-  /**
-   * The integer value (19) for the "CONSTRAINT_VIOLATION" result code.
-   */
   public static final int CONSTRAINT_VIOLATION_INT_VALUE = 19;
 
 
 
-  /**
-   * The result code (19) that will be used if the requested operation would
-   * violate some constraint defined in the server.
-   */
   public static final ResultCode CONSTRAINT_VIOLATION =
        new ResultCode(INFO_RC_CONSTRAINT_VIOLATION.get(),
                       CONSTRAINT_VIOLATION_INT_VALUE);
 
 
 
-  /**
-   * The integer value (20) for the "ATTRIBUTE_OR_VALUE_EXISTS" result code.
-   */
   public static final int ATTRIBUTE_OR_VALUE_EXISTS_INT_VALUE = 20;
 
 
 
-  /**
-   * The result code (20) that will be used if the client attempts to modify an
-   * entry in a way that would create a duplicate value, or create multiple
-   * values for a single-valued attribute.
-   */
   public static final ResultCode ATTRIBUTE_OR_VALUE_EXISTS =
        new ResultCode(INFO_RC_ATTRIBUTE_OR_VALUE_EXISTS.get(),
                       ATTRIBUTE_OR_VALUE_EXISTS_INT_VALUE);
 
 
-
-  /**
-   * The integer value (21) for the "INVALID_ATTRIBUTE_SYNTAX" result code.
-   */
   public static final int INVALID_ATTRIBUTE_SYNTAX_INT_VALUE = 21;
 
 
 
-  /**
-   * The result code (21) that will be used if the client attempts to perform an
-   * operation that would create an attribute value that violates the syntax
-   * for that attribute.
-   */
+
   public static final ResultCode INVALID_ATTRIBUTE_SYNTAX =
        new ResultCode(INFO_RC_INVALID_ATTRIBUTE_SYNTAX.get(),
                       INVALID_ATTRIBUTE_SYNTAX_INT_VALUE);
 
 
 
-  /**
-   * The integer value (32) for the "NO_SUCH_OBJECT" result code.
-   */
+
   public static final int NO_SUCH_OBJECT_INT_VALUE = 32;
 
 
 
-  /**
-   * The result code (32) that will be used if the client targeted an entry that
-   * does not exist.
-   */
   public static final ResultCode NO_SUCH_OBJECT =
        new ResultCode(INFO_RC_NO_SUCH_OBJECT.get(), NO_SUCH_OBJECT_INT_VALUE);
 
 
 
-  /**
-   * The integer value (33) for the "ALIAS_PROBLEM" result code.
-   */
+
   public static final int ALIAS_PROBLEM_INT_VALUE = 33;
 
 
 
-  /**
-   * The result code (33) that will be used if the client targeted an entry that
-   * as an alias.
-   */
   public static final ResultCode ALIAS_PROBLEM =
        new ResultCode(INFO_RC_ALIAS_PROBLEM.get(), ALIAS_PROBLEM_INT_VALUE);
 
 
-
-  /**
-   * The integer value (34) for the "INVALID_DN_SYNTAX" result code.
-   */
   public static final int INVALID_DN_SYNTAX_INT_VALUE = 34;
 
 
-
-  /**
-   * The result code (34) that will be used if the client provided an invalid
-   * DN.
-   */
   public static final ResultCode INVALID_DN_SYNTAX =
        new ResultCode(INFO_RC_INVALID_DN_SYNTAX.get(),
                       INVALID_DN_SYNTAX_INT_VALUE);
 
 
-
-  /**
-   * The integer value (36) for the "ALIAS_DEREFERENCING_PROBLEM" result code.
-   */
   public static final int ALIAS_DEREFERENCING_PROBLEM_INT_VALUE = 36;
 
 
-
-  /**
-   * The result code (36) that will be used if a problem is encountered while
-   * the server is attempting to dereference an alias.
-   */
   public static final ResultCode ALIAS_DEREFERENCING_PROBLEM =
        new ResultCode(INFO_RC_ALIAS_DEREFERENCING_PROBLEM.get(),
                       ALIAS_DEREFERENCING_PROBLEM_INT_VALUE);
 
-
-
-  /**
-   * The integer value (48) for the "INAPPROPRIATE_AUTHENTICATION" result code.
-   */
   public static final int INAPPROPRIATE_AUTHENTICATION_INT_VALUE = 48;
 
 
-
-  /**
-   * The result code (48) that will be used if the client attempts to perform a
-   * type of authentication that is not supported for the target user.
-   */
   public static final ResultCode INAPPROPRIATE_AUTHENTICATION =
        new ResultCode(INFO_RC_INAPPROPRIATE_AUTHENTICATION.get(),
                       INAPPROPRIATE_AUTHENTICATION_INT_VALUE);
 
-
-
-  /**
-   * The integer value (49) for the "INVALID_CREDENTIALS" result code.
-   */
   public static final int INVALID_CREDENTIALS_INT_VALUE = 49;
 
 
-
-  /**
-   * The result code (49) that will be used if the client provided invalid
-   * credentials while trying to authenticate.
-   */
   public static final ResultCode INVALID_CREDENTIALS =
        new ResultCode(INFO_RC_INVALID_CREDENTIALS.get(),
                       INVALID_CREDENTIALS_INT_VALUE);
 
-
-
-  /**
-   * The integer value (50) for the "INSUFFICIENT_ACCESS_RIGHTS" result code.
-   */
   public static final int INSUFFICIENT_ACCESS_RIGHTS_INT_VALUE = 50;
 
 
-
-  /**
-   * The result code (50) that will be used if the client does not have
-   * permission to perform the requested operation.
-   */
   public static final ResultCode INSUFFICIENT_ACCESS_RIGHTS =
        new ResultCode(INFO_RC_INSUFFICIENT_ACCESS_RIGHTS.get(),
                       INSUFFICIENT_ACCESS_RIGHTS_INT_VALUE);
 
 
 
-  /**
-   * The integer value (51) for the "BUSY" result code.
-   */
   public static final int BUSY_INT_VALUE = 51;
 
 
-
-  /**
-   * The result code (51) that will be used if the server is too busy to process
-   * the requested operation.
-   */
   public static final ResultCode BUSY = new ResultCode(INFO_RC_BUSY.get(),
                                                        BUSY_INT_VALUE);
 
 
-
-  /**
-   * The integer value (52) for the "UNAVAILABLE" result code.
-   */
   public static final int UNAVAILABLE_INT_VALUE = 52;
 
 
-
-  /**
-   * The result code (52) that will be used if the server is unavailable.
-   */
   public static final ResultCode UNAVAILABLE =
        new ResultCode(INFO_RC_UNAVAILABLE.get(), UNAVAILABLE_INT_VALUE);
 
 
 
-  /**
-   * The integer value (53) for the "UNWILLING_TO_PERFORM" result code.
-   */
   public static final int UNWILLING_TO_PERFORM_INT_VALUE = 53;
 
 
-
-  /**
-   * The result code (53) that will be used if the server is not willing to
-   * perform the requested operation.
-   */
   public static final ResultCode UNWILLING_TO_PERFORM =
        new ResultCode(INFO_RC_UNWILLING_TO_PERFORM.get(),
                       UNWILLING_TO_PERFORM_INT_VALUE);
 
 
-
-  /**
-   * The integer value (54) for the "LOOP_DETECT" result code.
-   */
   public static final int LOOP_DETECT_INT_VALUE = 54;
 
 
 
-  /**
-   * The result code (54) that will be used if the server detects a chaining or
-   * alias loop.
-   */
+
   public static final ResultCode LOOP_DETECT =
        new ResultCode(INFO_RC_LOOP_DETECT.get(), LOOP_DETECT_INT_VALUE);
 
 
-
-  /**
-   * The integer value (60) for the "SORT_CONTROL_MISSING" result code.
-   */
   public static final int SORT_CONTROL_MISSING_INT_VALUE = 60;
 
 
-
-  /**
-   * The result code (60) that will be used if the client sends a virtual list
-   * view control without a server-side sort control.
-   */
   public static final ResultCode SORT_CONTROL_MISSING =
        new ResultCode(INFO_RC_SORT_CONTROL_MISSING.get(),
                       SORT_CONTROL_MISSING_INT_VALUE);
 
 
-
-  /**
-   * The integer value (61) for the "OFFSET_RANGE_ERROR" result code.
-   */
   public static final int OFFSET_RANGE_ERROR_INT_VALUE = 61;
 
-
-
-  /**
-   * The result code (61) that will be used if the client provides a virtual
-   * list view control with a target offset that is out of range for the
-   * available data set.
-   */
   public static final ResultCode OFFSET_RANGE_ERROR =
        new ResultCode(INFO_RC_OFFSET_RANGE_ERROR.get(),
                       OFFSET_RANGE_ERROR_INT_VALUE);
 
 
-
-  /**
-   * The integer value (64) for the "NAMING_VIOLATION" result code.
-   */
   public static final int NAMING_VIOLATION_INT_VALUE = 64;
 
 
 
-  /**
-   * The result code (64) that will be used if the client request violates a
-   * naming constraint (e.g., a name form or DIT structure rule) defined in the
-   * server.
-   */
   public static final ResultCode NAMING_VIOLATION =
        new ResultCode(INFO_RC_NAMING_VIOLATION.get(),
                       NAMING_VIOLATION_INT_VALUE);
 
 
-
-  /**
-   * The integer value (65) for the "OBJECT_CLASS_VIOLATION" result code.
-   */
   public static final int OBJECT_CLASS_VIOLATION_INT_VALUE = 65;
 
 
-
-  /**
-   * The result code (65) that will be used if the client request violates an
-   * object class constraint (e.g., an undefined object class, a
-   * disallowed attribute, or a missing required attribute) defined in the
-   * server.
-   */
   public static final ResultCode OBJECT_CLASS_VIOLATION =
        new ResultCode(INFO_RC_OBJECT_CLASS_VIOLATION.get(),
                       OBJECT_CLASS_VIOLATION_INT_VALUE);
 
-
-
-  /**
-   * The integer value (66) for the "NOT_ALLOWED_ON_NONLEAF" result code.
-   */
   public static final int NOT_ALLOWED_ON_NONLEAF_INT_VALUE = 66;
 
-
-
-  /**
-   * The result code (66) that will be used if the requested operation is not
-   * allowed to be performed on non-leaf entries.
-   */
   public static final ResultCode NOT_ALLOWED_ON_NONLEAF =
        new ResultCode(INFO_RC_NOT_ALLOWED_ON_NONLEAF.get(),
                       NOT_ALLOWED_ON_NONLEAF_INT_VALUE);
 
-
-
-  /**
-   * The integer value (67) for the "NOT_ALLOWED_ON_RDN" result code.
-   */
   public static final int NOT_ALLOWED_ON_RDN_INT_VALUE = 67;
 
-
-
-  /**
-   * The result code (67) that will be used if the requested operation would
-   * alter the RDN of the entry but the operation was not a modify DN request.
-   */
   public static final ResultCode NOT_ALLOWED_ON_RDN =
        new ResultCode(INFO_RC_NOT_ALLOWED_ON_RDN.get(),
                       NOT_ALLOWED_ON_RDN_INT_VALUE);
 
-
-
-  /**
-   * The integer value (68) for the "ENTRY_ALREADY_EXISTS" result code.
-   */
   public static final int ENTRY_ALREADY_EXISTS_INT_VALUE = 68;
 
-
-
-  /**
-   * The result code (68) that will be used if the requested operation would
-   * create a conflict with an entry that already exists in the server.
-   */
   public static final ResultCode ENTRY_ALREADY_EXISTS =
        new ResultCode(INFO_RC_ENTRY_ALREADY_EXISTS.get(),
                       ENTRY_ALREADY_EXISTS_INT_VALUE);
 
-
-
-  /**
-   * The integer value (69) for the "OBJECT_CLASS_MODS_PROHIBITED" result code.
-   */
   public static final int OBJECT_CLASS_MODS_PROHIBITED_INT_VALUE = 69;
 
 
-
-  /**
-   * The result code (69) that will be used if the requested operation would
-   * alter the set of object classes defined in the entry in a disallowed
-   * manner.
-   */
   public static final ResultCode OBJECT_CLASS_MODS_PROHIBITED =
        new ResultCode(INFO_RC_OBJECT_CLASS_MODS_PROHIBITED.get(),
                       OBJECT_CLASS_MODS_PROHIBITED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (71) for the "AFFECTS_MULTIPLE_DSAS" result code.
-   */
   public static final int AFFECTS_MULTIPLE_DSAS_INT_VALUE = 71;
 
-
-
-  /**
-   * The result code (71) that will be used if the requested operation would
-   * impact entries in multiple data sources.
-   */
   public static final ResultCode AFFECTS_MULTIPLE_DSAS =
        new ResultCode(INFO_RC_AFFECTS_MULTIPLE_DSAS.get(),
                       AFFECTS_MULTIPLE_DSAS_INT_VALUE);
 
 
-
-  /**
-   * The integer value (76) for the "VIRTUAL_LIST_VIEW_ERROR" result code.
-   */
   public static final int VIRTUAL_LIST_VIEW_ERROR_INT_VALUE = 76;
 
-
-
-  /**
-   * The result code (76) that will be used if an error occurred while
-   * performing processing associated with the virtual list view control.
-   */
   public static final ResultCode VIRTUAL_LIST_VIEW_ERROR =
        new ResultCode(INFO_RC_VIRTUAL_LIST_VIEW_ERR0R.get(),
                       VIRTUAL_LIST_VIEW_ERROR_INT_VALUE);
 
 
-
-  /**
-   * The integer value (80) for the "OTHER" result code.
-   */
   public static final int OTHER_INT_VALUE = 80;
 
 
-
-  /**
-   * The result code (80) that will be used if none of the other result codes
-   * are appropriate.
-   */
   public static final ResultCode OTHER =
        new ResultCode(INFO_RC_OTHER.get(), OTHER_INT_VALUE);
 
 
-
-  /**
-   * The integer value (81) for the "SERVER_DOWN" result code.
-   */
   public static final int SERVER_DOWN_INT_VALUE = 81;
 
 
 
-  /**
-   * The client-side result code (81) that will be used if an established
-   * connection to the server is lost.
-   */
   public static final ResultCode SERVER_DOWN =
        new ResultCode(INFO_RC_SERVER_DOWN.get(), SERVER_DOWN_INT_VALUE);
 
 
-
-  /**
-   * The integer value (82) for the "LOCAL_ERROR" result code.
-   */
   public static final int LOCAL_ERROR_INT_VALUE = 82;
 
-
-
-  /**
-   * The client-side result code (82) that will be used if a generic client-side
-   * error occurs during processing.
-   */
   public static final ResultCode LOCAL_ERROR =
        new ResultCode(INFO_RC_LOCAL_ERROR.get(), LOCAL_ERROR_INT_VALUE);
 
 
-
-  /**
-   * The integer value (83) for the "ENCODING_ERROR" result code.
-   */
   public static final int ENCODING_ERROR_INT_VALUE = 83;
 
 
-
-  /**
-   * The client-side result code (83) that will be used if an error occurs while
-   * encoding a request.
-   */
   public static final ResultCode ENCODING_ERROR =
        new ResultCode(INFO_RC_ENCODING_ERROR.get(), ENCODING_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (84) for the "DECODING_ERROR" result code.
-   */
   public static final int DECODING_ERROR_INT_VALUE = 84;
 
-
-
-  /**
-   * The client-side result code (84) that will be used if an error occurs while
-   * decoding a response.
-   */
   public static final ResultCode DECODING_ERROR =
        new ResultCode(INFO_RC_DECODING_ERROR.get(), DECODING_ERROR_INT_VALUE);
 
 
-
-  /**
-   * The integer value (85) for the "TIMEOUT" result code.
-   */
   public static final int TIMEOUT_INT_VALUE = 85;
 
 
-
-  /**
-   * The client-side result code (85) that will be used if a client timeout
-   * occurs while waiting for a response from the server.
-   */
   public static final ResultCode TIMEOUT =
        new ResultCode(INFO_RC_TIMEOUT.get(), TIMEOUT_INT_VALUE);
 
 
-
-  /**
-   * The integer value (86) for the "AUTH_UNKNOWN" result code.
-   */
   public static final int AUTH_UNKNOWN_INT_VALUE = 86;
 
-
-
-  /**
-   * The client-side result code (86) that will be used if the client attempts
-   * to use an unknown authentication type.
-   */
   public static final ResultCode AUTH_UNKNOWN =
        new ResultCode(INFO_RC_AUTH_UNKNOWN.get(), AUTH_UNKNOWN_INT_VALUE);
 
-
-
-  /**
-   * The integer value (87) for the "FILTER_ERROR" result code.
-   */
   public static final int FILTER_ERROR_INT_VALUE = 87;
 
-
-
-  /**
-   * The client-side result code (87) that will be used if an error occurs while
-   * attempting to encode a search filter.
-   */
   public static final ResultCode FILTER_ERROR =
        new ResultCode(INFO_RC_FILTER_ERROR.get(), FILTER_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (88) for the "USER_CANCELED" result code.
-   */
   public static final int USER_CANCELED_INT_VALUE = 88;
 
-
-
-  /**
-   * The client-side result code (88) that will be used if the end user canceled
-   * the operation in progress.
-   */
   public static final ResultCode USER_CANCELED =
        new ResultCode(INFO_RC_USER_CANCELED.get(), USER_CANCELED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (89) for the "PARAM_ERROR" result code.
-   */
   public static final int PARAM_ERROR_INT_VALUE = 89;
 
 
-
-  /**
-   * The client-side result code (89) that will be used if there is a problem
-   * with the parameters provided for a request.
-   */
   public static final ResultCode PARAM_ERROR =
        new ResultCode(INFO_RC_PARAM_ERROR.get(), PARAM_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (90) for the "NO_MEMORY" result code.
-   */
   public static final int NO_MEMORY_INT_VALUE = 90;
 
 
-
-  /**
-   * The client-side result code (90) that will be used if the client does not
-   * have sufficient memory to perform the requested operation.
-   */
   public static final ResultCode NO_MEMORY =
        new ResultCode(INFO_RC_NO_MEMORY.get(), NO_MEMORY_INT_VALUE);
 
 
-
-  /**
-   * The integer value (91) for the "CONNECT_ERROR" result code.
-   */
   public static final int CONNECT_ERROR_INT_VALUE = 91;
 
 
-
-  /**
-   * The client-side result code (91) that will be used if an error occurs while
-   * attempting to connect to a target server.
-   */
   public static final ResultCode CONNECT_ERROR =
        new ResultCode(INFO_RC_CONNECT_ERROR.get(), CONNECT_ERROR_INT_VALUE);
 
-
-
-  /**
-   * The integer value (92) for the "NOT_SUPPORTED" result code.
-   */
   public static final int NOT_SUPPORTED_INT_VALUE = 92;
 
-
-
-  /**
-   * The client-side result code (92) that will be used if the requested
-   * operation is not supported.
-   */
   public static final ResultCode NOT_SUPPORTED =
        new ResultCode(INFO_RC_NOT_SUPPORTED.get(), NOT_SUPPORTED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (93) for the "CONTROL_NOT_FOUND" result code.
-   */
   public static final int CONTROL_NOT_FOUND_INT_VALUE = 93;
 
 
-
-  /**
-   * The client-side result code (93) that will be used if the response from the
-   * server did not include an expected control.
-   */
   public static final ResultCode CONTROL_NOT_FOUND =
        new ResultCode(INFO_RC_CONTROL_NOT_FOUND.get(),
                       CONTROL_NOT_FOUND_INT_VALUE);
 
-
-
-  /**
-   * The integer value (94) for the "NO_RESULTS_RETURNED" result code.
-   */
   public static final int NO_RESULTS_RETURNED_INT_VALUE = 94;
 
 
 
-  /**
-   * The client-side result code (94) that will be used if the server did not
-   * send any results.
-   */
   public static final ResultCode NO_RESULTS_RETURNED =
        new ResultCode(INFO_RC_NO_RESULTS_RETURNED.get(),
                       NO_RESULTS_RETURNED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (95) for the "MORE_RESULTS_TO_RETURN" result code.
-   */
   public static final int MORE_RESULTS_TO_RETURN_INT_VALUE = 95;
 
 
-
-  /**
-   * The client-side result code (95) that will be used if there are still more
-   * results to return.
-   */
   public static final ResultCode MORE_RESULTS_TO_RETURN =
        new ResultCode(INFO_RC_MORE_RESULTS_TO_RETURN.get(),
                       MORE_RESULTS_TO_RETURN_INT_VALUE);
 
 
-
-  /**
-   * The integer value (96) for the "CLIENT_LOOP" result code.
-   */
   public static final int CLIENT_LOOP_INT_VALUE = 96;
 
 
-
-  /**
-   * The client-side result code (96) that will be used if the client detects a
-   * loop while attempting to follow referrals.
-   */
   public static final ResultCode CLIENT_LOOP =
        new ResultCode(INFO_RC_CLIENT_LOOP.get(), CLIENT_LOOP_INT_VALUE);
 
 
-
-  /**
-   * The integer value (97) for the "REFERRAL_LIMIT_EXCEEDED" result code.
-   */
   public static final int REFERRAL_LIMIT_EXCEEDED_INT_VALUE = 97;
 
 
 
-  /**
-   * The client-side result code (97) that will be used if the client
-   * encountered too many referrals in the course of processing an operation.
-   */
   public static final ResultCode REFERRAL_LIMIT_EXCEEDED =
        new ResultCode(INFO_RC_REFERRAL_LIMIT_EXCEEDED.get(),
                       REFERRAL_LIMIT_EXCEEDED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (118) for the "CANCELED" result code.
-   */
   public static final int CANCELED_INT_VALUE = 118;
 
-
-
-  /**
-   * The result code (118) that will be used if the operation was canceled.
-   */
   public static final ResultCode CANCELED =
        new ResultCode(INFO_RC_CANCELED.get(), CANCELED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (119) for the "NO_SUCH_OPERATION" result code.
-   */
   public static final int NO_SUCH_OPERATION_INT_VALUE = 119;
 
-
-
-  /**
-   * The result code (119) that will be used if the client attempts to cancel an
-   * operation that the client doesn't exist in the server.
-   */
   public static final ResultCode NO_SUCH_OPERATION =
        new ResultCode(INFO_RC_NO_SUCH_OPERATION.get(),
                       NO_SUCH_OPERATION_INT_VALUE);
 
-
-
-  /**
-   * The integer value (120) for the "TOO_LATE" result code.
-   */
   public static final int TOO_LATE_INT_VALUE = 120;
 
-
-
-  /**
-   * The result code (120) that will be used if the client attempts to cancel an
-   * operation too late in the processing for that operation.
-   */
   public static final ResultCode TOO_LATE =
        new ResultCode(INFO_RC_TOO_LATE.get(), TOO_LATE_INT_VALUE);
 
-
-
-  /**
-   * The integer value (121) for the "CANNOT_CANCEL" result code.
-   */
   public static final int CANNOT_CANCEL_INT_VALUE = 121;
 
-
-
-  /**
-   * The result code (121) that will be used if the client attempts to cancel an
-   * operation that cannot be canceled.
-   */
   public static final ResultCode CANNOT_CANCEL =
        new ResultCode(INFO_RC_CANNOT_CANCEL.get(), CANNOT_CANCEL_INT_VALUE);
 
-
-
-  /**
-   * The integer value (122) for the "ASSERTION_FAILED" result code.
-   */
   public static final int ASSERTION_FAILED_INT_VALUE = 122;
 
-
-
-  /**
-   * The result code (122) that will be used if the requested operation included
-   * the LDAP assertion control but the assertion did not match the target
-   * entry.
-   */
   public static final ResultCode ASSERTION_FAILED =
        new ResultCode(INFO_RC_ASSERTION_FAILED.get(),
                       ASSERTION_FAILED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (123) for the "AUTHORIZATION_DENIED" result code.
-   */
   public static final int AUTHORIZATION_DENIED_INT_VALUE = 123;
 
-
-
-  /**
-   * The result code (123) that will be used if the client is denied the ability
-   * to use the proxied authorization control.
-   */
   public static final ResultCode AUTHORIZATION_DENIED =
        new ResultCode(INFO_RC_AUTHORIZATION_DENIED.get(),
                       AUTHORIZATION_DENIED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (4096) for the "E_SYNC_REFRESH_REQUIRED" result code.
-   */
   public static final int E_SYNC_REFRESH_REQUIRED_INT_VALUE = 4096;
 
-
-
-  /**
-   * The result code (4096) that will be used if a client using the content
-   * synchronization request control requests an incremental update but the
-   * server is unable to honor that request and requires the client to request
-   * an initial content.
-   */
   public static final ResultCode E_SYNC_REFRESH_REQUIRED =
        new ResultCode(INFO_RC_E_SYNC_REFRESH_REQUIRED.get(),
                       E_SYNC_REFRESH_REQUIRED_INT_VALUE);
 
-
-
-  /**
-   * The integer value (16654) for the "NO_OPERATION" result code.
-   */
   public static final int NO_OPERATION_INT_VALUE = 16654;
 
 
-
-  /**
-   * The result code (16654) for operations that completed successfully but no
-   * changes were made to the server because the LDAP no-op control was included
-   * in the request.
-   */
   public static final ResultCode NO_OPERATION =
        new ResultCode(INFO_RC_NO_OPERATION.get(), NO_OPERATION_INT_VALUE);
 
 
-
-  /**
-   * The integer value (30221001) for the "INTERACTIVE_TRANSACTION_ABORTED"
-   * result code.
-   */
   public static final int INTERACTIVE_TRANSACTION_ABORTED_INT_VALUE = 30221001;
 
 
 
-  /**
-   * The result code (30221001) for use if an interactive transaction has been
-   * aborted, either due to an explicit request from a client or by the server
-   * without a client request.
-   */
   public static final ResultCode INTERACTIVE_TRANSACTION_ABORTED =
        new ResultCode(INFO_RC_INTERACTIVE_TRANSACTION_ABORTED.get(),
                       INTERACTIVE_TRANSACTION_ABORTED_INT_VALUE);
 
-
-
-  /**
-   * The set of result code objects created with undefined int result code
-   * values.
-   */
   private static final HashMap<Integer,ResultCode> UNDEFINED_RESULT_CODES =
        new HashMap<Integer,ResultCode>();
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7609311304252378100L;
 
-
-
-  // The integer value for this result code.
   private final int intValue;
 
-  // The name for this result code.
+
   private final String name;
 
-  // The string representation for this result code.
+
   private final String stringRepresentation;
 
 
-
-  /**
-   * Creates a new result code with the specified integer value.
-   *
-   * @param  intValue  The integer value for this result code.
-   */
   private ResultCode(final int intValue)
   {
     this.intValue = intValue;
@@ -1512,14 +827,6 @@ public final class ResultCode
     stringRepresentation = name;
   }
 
-
-
-  /**
-   * Creates a new result code with the specified name and integer value.
-   *
-   * @param  name      The name for this result code.
-   * @param  intValue  The integer value for this result code.
-   */
   private ResultCode(final String name, final int intValue)
   {
     this.name     = name;
@@ -1529,71 +836,24 @@ public final class ResultCode
   }
 
 
-
-  /**
-   * Retrieves the name for this result code.
-   *
-   * @return  The name for this result code.
-   */
   public String getName()
   {
     return name;
   }
 
 
-
-  /**
-   * Retrieves the integer value for this result code.
-   *
-   * @return  The integer value for this result code.
-   */
   public int intValue()
   {
     return intValue;
   }
 
 
-
-  /**
-   * Retrieves the result code with the specified integer value.  If the
-   * provided integer value does not correspond to a predefined
-   * {@code ResultCode} object, then a new {@code ResultCode} object will be
-   * created and returned.  Any new result codes created will also be cached
-   * and returned for any subsequent requests with that integer value so the
-   * same object will always be returned for a given integer value.
-   *
-   * @param  intValue  The integer value for which to retrieve the corresponding
-   *                   result code.
-   *
-   * @return  The result code with the specified integer value, or a new result
-   *          code
-   */
   public static ResultCode valueOf(final int intValue)
   {
     return valueOf(intValue, null);
   }
 
 
-
-  /**
-   * Retrieves the result code with the specified integer value.  If the
-   * provided integer value does not correspond to a predefined
-   * {@code ResultCode} object, then a new {@code ResultCode} object will be
-   * created and returned.  Any new result codes created will also be cached
-   * and returned for any subsequent requests with that integer value so the
-   * same object will always be returned for a given integer value.
-   *
-   * @param  intValue  The integer value for which to retrieve the corresponding
-   *                   result code.
-   * @param  name      The user-friendly name to use for the result code if no
-   *                   result code has been previously accessed with the same
-   *                   integer value.  It may be {@code null} if this is not
-   *                   known or a string representation of the integer value
-   *                   should be used.
-   *
-   * @return  The result code with the specified integer value, or a new result
-   *          code
-   */
   public static ResultCode valueOf(final int intValue, final String name)
   {
     switch (intValue)
@@ -1757,14 +1017,6 @@ public final class ResultCode
     }
   }
 
-
-
-  /**
-   * Retrieves an array of all result codes defined in the LDAP SDK.  This will
-   * not include dynamically-generated values.
-   *
-   * @return  An array of all result codes defined in the LDAP SDK.
-   */
   public static ResultCode[] values()
   {
     return new ResultCode[]
@@ -1842,13 +1094,6 @@ public final class ResultCode
 
 
 
-  /**
-   * Indicates whether this result code is one that should be used for
-   * client-side errors rather than returned by the server.
-   *
-   * @return  {@code true} if this result code is a client-side result code, or
-   *          {@code false} if it is one that may be returned by the server.
-   */
   public boolean isClientSideResultCode()
   {
     return isClientSideResultCode(this);
@@ -1856,16 +1101,6 @@ public final class ResultCode
 
 
 
-  /**
-   * Indicates whether the provided result code is one that should be used for
-   * client-side errors rather than returned by the server.
-   *
-   * @param  resultCode  The result code for which to make the determination.
-   *
-   * @return  {@code true} if the provided result code is a client-side result
-   *          code, or {@code false} if it is one that may be returned by the
-   *          server.
-   */
   public static boolean isClientSideResultCode(final ResultCode resultCode)
   {
     switch (resultCode.intValue())
@@ -1895,17 +1130,6 @@ public final class ResultCode
 
 
 
-  /**
-   * Indicates whether the connection on which this result code was received is
-   * likely still usable.  Note that this is a best guess, and it may or may not
-   * be correct.  It will attempt to be conservative so that a connection is
-   * more likely to be classified as unusable when it may still be valid than to
-   * be classified as usable when that is no longer the case.
-   *
-   * @return  {@code true} if it is likely that the connection on which this
-   *          result code was received is still usable, or {@code false} if it
-   *          may no longer be valid.
-   */
   public boolean isConnectionUsable()
   {
     return isConnectionUsable(this);
@@ -1913,20 +1137,6 @@ public final class ResultCode
 
 
 
-  /**
-   * Indicates whether the connection on which the provided result code was
-   * received is likely still usable.  Note that this is a best guess based on
-   * the provided result code, and it may or may not be correct.  It will
-   * attempt to be conservative so that a connection is more likely to be
-   * classified as unusable when it may still be valid than to be classified
-   * as usable when that is no longer the case.
-   *
-   * @param  resultCode  The result code for which to make the determination.
-   *
-   * @return  {@code true} if it is likely that the connection on which the
-   *          provided result code was received is still usable, or
-   *          {@code false} if it may no longer be valid.
-   */
   public static boolean isConnectionUsable(final ResultCode resultCode)
   {
     switch (resultCode.intValue())
@@ -1950,29 +1160,12 @@ public final class ResultCode
     }
   }
 
-
-
-  /**
-   * The hash code for this result code.
-   *
-   * @return  The hash code for this result code.
-   */
   @Override()
   public int hashCode()
   {
     return intValue;
   }
 
-
-
-  /**
-   * Indicates whether the provided object is equal to this result code.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object is a result code that is equal
-   *          to this result code, or {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -1994,13 +1187,6 @@ public final class ResultCode
     }
   }
 
-
-
-  /**
-   * Retrieves a string representation of this result code.
-   *
-   * @return  A string representation of this result code.
-   */
   @Override()
   public String toString()
   {

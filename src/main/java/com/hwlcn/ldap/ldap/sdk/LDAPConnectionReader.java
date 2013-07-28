@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -52,73 +32,40 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides a thread that will read data from the socket associated
- * with an LDAP connection.  It will accept messages from the server, and
- * associate responses with their corresponding requests.
- */
 @InternalUseOnly()
 final class LDAPConnectionReader
       extends Thread
 {
-  /**
-   * The default size that will be used for the input stream buffer.
-   */
+
   private static final int DEFAULT_INPUT_BUFFER_SIZE = 4096;
 
 
 
-  // The ASN.1 stream reader used to read LDAP messages from the server.
   private volatile ASN1StreamReader asn1StreamReader;
 
-  // Indicates whether a request has been made to close the associated socket.
   private volatile boolean closeRequested;
 
-  // The map that will be used to associate message IDs with the corresponding
-  // response acceptors.
   private final ConcurrentHashMap<Integer,ResponseAcceptor> acceptorMap;
 
-  // The exception encountered during StartTLS processing.
   private volatile Exception startTLSException;
 
-  // The input stream used to read data from the socket.
   private volatile InputStream inputStream;
 
-  // The SSL-enabled output stream resulting from StartTLS negotiation.  It will
-  // be non-null only immediately after StartTLS negotiation has completed and
-  // this output stream is ready to be handed back to the connection.
   private volatile OutputStream startTLSOutputStream;
 
-  // The LDAP connection with which this reader is associated.
   private final LDAPConnection connection;
 
-  // The socket with which this reader is associated.
   private volatile Socket socket;
 
-  // The SSL context to use to perform StartTLS negotiation.  It will be null
-  // unless there is an outstanding StartTLS request.
+
   private volatile SSLContext sslContext;
 
-  // The thread that is used to read data from the client.
   private volatile Thread thread;
 
-  // The wakeable sleeper that will be used during StartTLS processing.
   private final WakeableSleeper startTLSSleeper;
 
 
 
-  /**
-   * Creates a new LDAP connection reader instance that will read data from the
-   * provided socket.
-   *
-   * @param  connection           The LDAP connection with which this reader is
-   *                              associated.
-   * @param  connectionInternals  The elements of the LDAP connection actually
-   *                              used to communicate with the directory server.
-   *
-   * @throws  java.io.IOException  If a problem occurs while preparing to read data from
-   *                       the provided socket.
-   */
   LDAPConnectionReader(final LDAPConnection connection,
                        final LDAPConnectionInternals connectionInternals)
        throws IOException
@@ -143,10 +90,7 @@ final class LDAPConnectionReader
 
     if (! connectionInternals.synchronousMode())
     {
-      // We don't want to set an SO_TIMEOUT that is too short, but we don't
-      // necessarily want to make it unlimited.  As a compromise, set it equal
-      // to the connect timeout for the connection (which might be unlimited,
-      // but that's up to the user to decide).
+
       final LDAPConnectionOptions options = connection.getConnectionOptions();
       final int connectTimeout = options.getConnectTimeoutMillis();
       if (connectTimeout > 0)
@@ -180,17 +124,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Registers the provided response acceptor to be notified of any responses
-   * with the given message ID.
-   *
-   * @param  messageID  The message ID for which to register the acceptor.
-   * @param  acceptor   The response acceptor that should be notified for any
-   *                    responses with the provided message ID.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If another acceptor is already registered for the
-   *                         provided message ID.
-   */
   void registerResponseAcceptor(final int messageID,
                                 final ResponseAcceptor acceptor)
        throws LDAPException
@@ -204,13 +137,7 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Deregisters the response acceptor that has been registered with the
-   * specified message ID.  This will have no effect if no response acceptor is
-   * registered for the provided message ID.
-   *
-   * @param  messageID  The message ID for the response acceptor to deregister.
-   */
+
   void deregisterResponseAcceptor(final int messageID)
   {
     acceptorMap.remove(messageID);
@@ -218,26 +145,11 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Retrieves the number of outstanding operations on the LDAP connection,
-   * which are operations for which the request has been sent but the final
-   * result has not yet been received.  The value will only be valid for
-   * connections not configured to use synchronous mode.
-   *
-   * @return  The number of outstanding operations on the associated LDAP
-   *          connection.
-   */
   int getActiveOperationCount()
   {
     return acceptorMap.size();
   }
 
-
-
-  /**
-   * Operates in a loop, reading data from the server and decoding the
-   * responses, and associating them with their corresponding requests.
-   */
   @Override()
   public void run()
   {
@@ -260,8 +172,6 @@ final class LDAPConnectionReader
           final Throwable t = le.getCause();
           if ((t != null) && (t instanceof SocketTimeoutException))
           {
-            // This is rarely a problem, so we can make the debug message for
-            // this exception only visible at a verbose log level.
             final SocketTimeoutException ste = (SocketTimeoutException) t;
             debugException(Level.FINEST,  ste);
             if (sslContext != null)
@@ -339,10 +249,7 @@ final class LDAPConnectionReader
           if (closeRequested || connection.closeRequested() ||
               (connection.getDisconnectType() != null))
           {
-            // This exception resulted from the connection being closed in a way
-            // that we already knew about.  We don't want to debug it at the
-            // same level as a newly-detected invalidity.
-            closeRequested = true;
+          closeRequested = true;
             debugException(Level.FINEST, le);
           }
           else
@@ -350,8 +257,6 @@ final class LDAPConnectionReader
             debugException(le);
           }
 
-          // We should terminate the connection regardless of the type of
-          // exception, but might want to customize the debug message.
           final String message;
           Level debugLevel = Level.SEVERE;
 
@@ -396,9 +301,7 @@ final class LDAPConnectionReader
 
           debug(debugLevel, DebugType.LDAP, message, t);
 
-          // If the connection is configured to try to auto-reconnect, then set
-          // things up to do that.  Otherwise, terminate the connection.
-          if ((! closeRequested) &&
+           if ((! closeRequested) &&
               connection.getConnectionOptions().autoReconnect())
           {
             reconnect = true;
@@ -419,8 +322,7 @@ final class LDAPConnectionReader
 
         if (response == null)
         {
-          // This should only happen if the socket has been closed.
-          connection.setDisconnectInfo(
+           connection.setDisconnectInfo(
                DisconnectType.SERVER_CLOSED_WITHOUT_NOTICE, null, null);
           if ((! closeRequested) && (! connection.unbindRequestSent()) &&
               connection.getConnectionOptions().autoReconnect())
@@ -495,9 +397,7 @@ final class LDAPConnectionReader
           if ((response instanceof ExtendedResult) &&
               (response.getMessageID() == 0))
           {
-            // This is an intermediate response message, so handle it
-            // appropriately.
-            ExtendedResult extendedResult = (ExtendedResult) response;
+             ExtendedResult extendedResult = (ExtendedResult) response;
 
             final String oid = extendedResult.getOID();
             if (NoticeOfDisconnectionExtendedResult.
@@ -523,10 +423,7 @@ final class LDAPConnectionReader
               }
               catch (Exception e)
               {
-                // This is fine.  It can happen if the client is using the
-                // standard edition of the LDAP SDK which does not have
-                // support for UnboundID-specific content.
-                debugException(e);
+               debugException(e);
               }
             }
 
@@ -574,8 +471,7 @@ final class LDAPConnectionReader
       {
         debugException(e);
 
-        // We should terminate the connection regardless of the type of
-        // exception, but might want to customize the debug message.
+
         final String message;
         Level debugLevel = Level.SEVERE;
         if (e instanceof IOException)
@@ -600,8 +496,6 @@ final class LDAPConnectionReader
 
         debug(debugLevel, DebugType.LDAP, message, e);
 
-        // If the connection is configured to try to auto-reconnect, then set
-        // things up to do that.  Otherwise, terminate the connection.
         if (connection.getConnectionOptions().autoReconnect())
         {
           reconnect = true;
@@ -640,28 +534,13 @@ final class LDAPConnectionReader
     }
     else
     {
-      // Ensure that the connection has properly been closed.
       closeInternal(true, null);
     }
   }
 
 
 
-  /**
-   * Reads a response from the server, blocking if necessary until the response
-   * has been received.  This should only be used for connections operating in
-   * synchronous mode.
-   *
-   * @param  messageID  The message ID for the response to be read.  Any
-   *                    response read with a different message ID will be
-   *                    discarded, unless it is an unsolicited notification in
-   *                    which case it will be provided to any registered
-   *                    unsolicited notification handler.
-   *
-   * @return  The response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading the response.
-   */
+
   LDAPResponse readResponse(final int messageID)
                throws LDAPException
   {
@@ -684,8 +563,7 @@ final class LDAPConnectionReader
         if ((response instanceof ExtendedResult) &&
             (response.getMessageID() == 0))
         {
-          // This is an intermediate response message, so handle it
-          // appropriately.
+
           ExtendedResult extendedResult = (ExtendedResult) response;
 
           final String oid = extendedResult.getOID();
@@ -712,9 +590,7 @@ final class LDAPConnectionReader
             }
             catch (Exception e)
             {
-              // This is fine.  It can happen if the client is using the
-              // standard edition of the LDAP SDK which does not have
-              // support for UnboundID-specific content.
+
               debugException(e);
             }
           }
@@ -751,18 +627,12 @@ final class LDAPConnectionReader
         debugException(le);
         final Throwable t = le.getCause();
 
-
-        // If the cause was a SocketTimeoutException, then we shouldn't
-        // terminate the connection, but we should propagate the failure to
-        // the client with the appropriate result.
-        if ((t != null) && (t instanceof SocketTimeoutException))
+          if ((t != null) && (t instanceof SocketTimeoutException))
         {
           throw new LDAPException(ResultCode.TIMEOUT, le.getMessage(), le);
         }
 
 
-        // We should terminate the connection regardless of the type of
-        // exception, but might want to customize the debug message.
         final String message;
         Level debugLevel = Level.SEVERE;
 
@@ -808,8 +678,6 @@ final class LDAPConnectionReader
       {
         debugException(e);
 
-        // We should terminate the connection regardless of the type of
-        // exception, but might want to customize the debug message.
         final String message;
         Level debugLevel = Level.SEVERE;
         if (e instanceof IOException)
@@ -845,17 +713,7 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Attempts to set the SO_TIMEOUT value for the connection.  This will take
-   * effect for the next blocking operation that it starts.
-   *
-   * @param  soTimeout  The SO_TIMEOUT value that should be set for the
-   *                    connection.  It must be greater than or equal to zero,
-   *                    with a value of zero meaning an unlimited timeout.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem is encountered while attempting to
-   *                         set the SO_TIMEOUT value.
-   */
+
   void setSoTimeout(final int soTimeout)
        throws LDAPException
   {
@@ -876,17 +734,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Converts this clear-text connection to one that uses TLS.
-   *
-   * @param  sslContext  The SSL context to use to perform the negotiation.
-   *
-   * @return  The TLS-enabled output stream that may be used to send encrypted
-   *          requests to the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to convert the
-   *                         connection to use TLS security.
-   */
   OutputStream doStartTLS(final SSLContext sslContext)
        throws LDAPException
   {
@@ -987,12 +834,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Closes the connection and interrupts the reader thread.
-   *
-   * @param  notifyConnection  Indicates whether the associated connection
-   *                           should be notified.
-   */
    void close(final boolean notifyConnection)
    {
      closeRequested = true;
@@ -1023,14 +864,6 @@ final class LDAPConnectionReader
 
 
 
-   /**
-    * Performs an internal close without interrupting the read thread.
-    *
-    * @param  notifyConnection  Indicates whether the associated connection
-    *                           should be notified.
-    * @param  message           A message with additional information about the
-    *                           reason for the closure, if available.
-    */
    private void closeInternal(final boolean notifyConnection,
                               final String message)
    {
@@ -1094,13 +927,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Retrieves the handle to the thread used to read data from the server.  This
-   * must not be used for any purpose other than test validation.
-   *
-   * @return  The handle to the thread used to read data from the server, or
-   *          {@code null} if it is not available.
-   */
   Thread getReaderThread()
   {
     return thread;
@@ -1108,10 +934,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Updates the name of the reader thread (if active) based on the information
-   * known about the provided connection.
-   */
   void updateThreadName()
   {
     final Thread t = thread;
@@ -1130,18 +952,6 @@ final class LDAPConnectionReader
 
 
 
-  /**
-   * Determines the name that should be used for the reader thread based on
-   * information about the associated client connection.
-   *
-   * @param  connectionInternals  The connection internals to use for
-   *                              information about the address and port of the
-   *                              directory server, or {@code null} if the
-   *                              connection is not established.
-   *
-   * @return  The name that should be used for the reader thread based on
-   *          information about the associated client connection.
-   */
   private String constructThreadName(
                       final LDAPConnectionInternals connectionInternals)
   {

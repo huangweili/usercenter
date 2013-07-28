@@ -1,26 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
-
-
 
 import java.util.List;
 
@@ -29,37 +7,15 @@ import com.hwlcn.ldap.util.StaticUtils;
 import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
-
-
-/**
- * This class defines an exception that can be thrown if a problem occurs while
- * performing LDAP-related processing.  It includes all of the elements of the
- * {@link com.hwlcn.ldap.ldap.sdk.SearchResult} object, potentially including entries and references
- * returned before the failure result.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDAPSearchException
        extends LDAPException
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 350230437196125113L;
 
-
-
-  // The search result with information from this exception.
   private final SearchResult searchResult;
 
-
-
-  /**
-   * Creates a new LDAP search exception with the provided information.
-   *
-   * @param  resultCode    The result code for this LDAP search exception.
-   * @param  errorMessage  The error message for this LDAP search exception.
-   */
   public LDAPSearchException(final ResultCode resultCode,
                              final String errorMessage)
   {
@@ -69,16 +25,6 @@ public final class LDAPSearchException
          StaticUtils.NO_STRINGS, 0, 0, StaticUtils.NO_CONTROLS);
   }
 
-
-
-  /**
-   * Creates a new LDAP search exception with the provided information.
-   *
-   * @param  resultCode    The result code for this LDAP search exception.
-   * @param  errorMessage  The error message for this LDAP search exception.
-   * @param  cause         The underlying exception that triggered this LDAP
-   *                       search exception.
-   */
   public LDAPSearchException(final ResultCode resultCode,
                              final String errorMessage, final Throwable cause)
   {
@@ -88,14 +34,6 @@ public final class LDAPSearchException
          StaticUtils.NO_STRINGS , 0, 0, StaticUtils.NO_CONTROLS);
   }
 
-
-
-  /**
-   * Creates a new LDAP search exception from the provided exception.
-   *
-   * @param  ldapException  The LDAP exception with the information to include
-   *                        in this LDAP search exception.
-   */
   public LDAPSearchException(final LDAPException ldapException)
   {
     super(ldapException.getResultCode(), ldapException.getMessage(),
@@ -117,14 +55,6 @@ public final class LDAPSearchException
     }
   }
 
-
-
-  /**
-   * Creates a new LDAP search exception with the provided result.
-   *
-   * @param  searchResult  The search result to use to create this LDAP search
-   *                       exception.
-   */
   public LDAPSearchException(final SearchResult searchResult)
   {
     super(searchResult);
@@ -132,87 +62,31 @@ public final class LDAPSearchException
     this.searchResult = searchResult;
   }
 
-
-
-  /**
-   * Retrieves the search result object associated with this LDAP search
-   * exception.
-   *
-   * @return  The search result object associated with this LDAP search
-   *          exception.
-   */
   public SearchResult getSearchResult()
   {
     return searchResult;
   }
 
-
-
-  /**
-   * Retrieves the number of matching entries returned for the search operation
-   * before this exception was thrown.
-   *
-   * @return  The number of matching entries returned for the search operation
-   *          before this exception was thrown.
-   */
   public int getEntryCount()
   {
     return searchResult.getEntryCount();
   }
 
-
-
-  /**
-   * Retrieves the number of search references returned for the search
-   * operation before this exception was thrown.
-   *
-   * @return  The number of search references returned for the search operation
-   *          before this exception was thrown.
-   */
   public int getReferenceCount()
   {
     return searchResult.getReferenceCount();
   }
 
-
-
-  /**
-   * Retrieves a list containing the matching entries returned from the search
-   * operation before this exception was thrown.  This will only be available if
-   * a {@code SearchResultListener} was not used during the search.
-   *
-   * @return  A list containing the matching entries returned from the search
-   *          operation before this exception was thrown, or {@code null} if a
-   *          {@code SearchResultListener} was used during the search.
-   */
   public List<SearchResultEntry> getSearchEntries()
   {
     return searchResult.getSearchEntries();
   }
 
-
-
-  /**
-   * Retrieves a list containing the search references returned from the search
-   * operation before this exception was thrown.  This will only be available if
-   * a {@code SearchResultListener} was not used during the search.
-   *
-   * @return  A list containing the search references returned from the search
-   *          operation before this exception was thrown, or {@code null} if a
-   *          {@code SearchResultListener} was used during the search.
-   */
   public List<SearchResultReference> getSearchReferences()
   {
     return searchResult.getSearchReferences();
   }
 
-
-
-  /**
-   * Creates a new {@code SearchResult} object from this exception.
-   *
-   * @return  The {@code SearchResult} object created from this exception.
-   */
   @Override()
   public SearchResult toLDAPResult()
   {
@@ -220,14 +94,6 @@ public final class LDAPSearchException
   }
 
 
-
-  /**
-   * Appends a string representation of this LDAP exception to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append a string representation of
-   *                 this LDAP exception.
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

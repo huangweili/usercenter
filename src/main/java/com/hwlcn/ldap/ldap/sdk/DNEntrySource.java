@@ -1,23 +1,3 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -75,29 +55,15 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class DNEntrySource
        extends EntrySource
 {
-  // The iterator to use to access the DNs.  It will either be across DN or
-  // String objects.
+
   private final Iterator<?> dnIterator;
 
-  // The connection to use to communicate with the directory server.
   private final LDAPInterface connection;
 
-  // The set of attributes to include in entries that are returned.
   private final String[] attributes;
 
 
 
-  /**
-   * Creates a new DN entry source with the provided information.
-   *
-   * @param  connection  The connection to the directory server from which the
-   *                     entries will be read.  It must not be {@code null}.
-   * @param  dns         The set of DNs to be read.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in entries that are
-   *                     returned.  If this is empty or {@code null}, then all
-   *                     user attributes will be requested.
-   */
   public DNEntrySource(final LDAPInterface connection, final DN[] dns,
                        final String... attributes)
   {
@@ -118,17 +84,6 @@ public final class DNEntrySource
 
 
 
-  /**
-   * Creates a new DN entry source with the provided information.
-   *
-   * @param  connection  The connection to the directory server from which the
-   *                     entries will be read.  It must not be {@code null}.
-   * @param  dns         The set of DNs to be read.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in entries that are
-   *                     returned.  If this is empty or {@code null}, then all
-   *                     user attributes will be requested.
-   */
   public DNEntrySource(final LDAPInterface connection, final String[] dns,
                        final String... attributes)
   {
@@ -137,17 +92,7 @@ public final class DNEntrySource
 
 
 
-  /**
-   * Creates a new DN entry source with the provided information.
-   *
-   * @param  connection  The connection to the directory server from which the
-   *                     entries will be read.  It must not be {@code null}.
-   * @param  dns         The set of DNs to be read.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in entries that are
-   *                     returned.  If this is empty or {@code null}, then all
-   *                     user attributes will be requested.
-   */
+
   public DNEntrySource(final LDAPInterface connection,
                        final Collection<String> dns, final String... attributes)
   {
@@ -168,9 +113,6 @@ public final class DNEntrySource
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public Entry nextEntry()
          throws EntrySourceException
@@ -206,10 +148,6 @@ public final class DNEntrySource
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void close()
   {

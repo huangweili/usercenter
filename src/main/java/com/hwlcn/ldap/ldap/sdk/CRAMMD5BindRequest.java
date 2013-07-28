@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -89,40 +69,22 @@ public final class CRAMMD5BindRequest
        extends SASLBindRequest
        implements CallbackHandler
 {
-  /**
-   * The name for the CRAM-MD5 SASL mechanism.
-   */
+
   public static final String CRAMMD5_MECHANISM_NAME = "CRAM-MD5";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -4556570436768136483L;
 
 
 
-  // The password for this bind request.
   private final ASN1OctetString password;
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The authentication ID string for this bind request.
   private final String authenticationID;
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID and password.  It will not include any controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public CRAMMD5BindRequest(final String authenticationID,
                             final String password)
   {
@@ -133,15 +95,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID and password.  It will not include any controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public CRAMMD5BindRequest(final String authenticationID,
                             final byte[] password)
   {
@@ -152,15 +105,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID and password.  It will not include any controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public CRAMMD5BindRequest(final String authenticationID,
                             final ASN1OctetString password)
   {
@@ -169,16 +113,7 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID, password, and set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   */
+
   public CRAMMD5BindRequest(final String authenticationID,
                             final String password, final Control... controls)
   {
@@ -189,16 +124,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID, password, and set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   */
   public CRAMMD5BindRequest(final String authenticationID,
                             final byte[] password, final Control... controls)
   {
@@ -209,16 +134,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Creates a new SASL CRAM-MD5 bind request with the provided authentication
-   * ID, password, and set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include in the request.
-   */
   public CRAMMD5BindRequest(final String authenticationID,
                             final ASN1OctetString password,
                             final Control... controls)
@@ -232,10 +147,6 @@ public final class CRAMMD5BindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSASLMechanismName()
   {
@@ -244,23 +155,11 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Retrieves the authentication ID for this bind request.
-   *
-   * @return  The authentication ID for this bind request.
-   */
   public String getAuthenticationID()
   {
     return authenticationID;
   }
 
-
-
-  /**
-   * Retrieves the string representation of the password for this bind request.
-   *
-   * @return  The string representation of the password for this bind request.
-   */
   public String getPasswordString()
   {
     return password.stringValue();
@@ -268,11 +167,7 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Retrieves the bytes that comprise the the password for this bind request.
-   *
-   * @return  The bytes that comprise the password for this bind request.
-   */
+
   public byte[] getPasswordBytes()
   {
     return password.getValue();
@@ -280,21 +175,7 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * Sends this bind request to the target server over the provided connection
-   * and returns the corresponding response.
-   *
-   * @param  connection  The connection to use to send this bind request to the
-   *                     server and read the associated response.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  The bind response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
+
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -332,9 +213,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public CRAMMD5BindRequest getRebindRequest(final String host, final int port)
   {
@@ -342,12 +220,6 @@ public final class CRAMMD5BindRequest
   }
 
 
-
-  /**
-   * Handles any necessary callbacks required for SASL authentication.
-   *
-   * @param  callbacks  The set of callbacks to be handled.
-   */
   @InternalUseOnly()
   public void handle(final Callback[] callbacks)
   {
@@ -375,11 +247,6 @@ public final class CRAMMD5BindRequest
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -387,10 +254,6 @@ public final class CRAMMD5BindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public CRAMMD5BindRequest duplicate()
   {
@@ -399,9 +262,7 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public CRAMMD5BindRequest duplicate(final Control[] controls)
   {
@@ -413,9 +274,6 @@ public final class CRAMMD5BindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

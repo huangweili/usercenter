@@ -37,121 +37,31 @@ import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a data structure for holding information about an LDAP
- * distinguished name (DN).  A DN consists of a comma-delimited list of zero or
- * more RDN components.  See
- * <A HREF="http://www.ietf.org/rfc/rfc4514.txt">RFC 4514</A> for more
- * information about representing DNs and RDNs as strings.
- * <BR><BR>
- * Examples of valid DNs (excluding the quotation marks, which are provided for
- * clarity) include:
- * <UL>
- *   <LI>"" -- This is the zero-length DN (also called the null DN), which may
- *       be used to refer to the directory server root DSE.</LI>
- *   <LI>"{@code o=example.com}".  This is a DN with a single, single-valued
- *       RDN.  The RDN attribute is "{@code o}" and the RDN value is
- *       "{@code example.com}".</LI>
- *   <LI>"{@code givenName=John+sn=Doe,ou=People,dc=example,dc=com}".  This is a
- *       DN with four different RDNs ("{@code givenName=John+sn=Doe"},
- *       "{@code ou=People}", "{@code dc=example}", and "{@code dc=com}".  The
- *       first RDN is multivalued with attribute-value pairs of
- *       "{@code givenName=John}" and "{@code sn=Doe}".</LI>
- * </UL>
- * Note that there is some inherent ambiguity in the string representations of
- * distinguished names.  In particular, there may be differences in spacing
- * (particularly around commas and equal signs, as well as plus signs in
- * multivalued RDNs), and also differences in capitalization in attribute names
- * and/or values.  For example, the strings
- * "{@code uid=john.doe,ou=people,dc=example,dc=com}" and
- * "{@code UID = JOHN.DOE , OU = PEOPLE , DC = EXAMPLE , DC = COM}" actually
- * refer to the same distinguished name.  To deal with these differences, the
- * normalized representation may be used.  The normalized representation is a
- * standardized way of representing a DN, and it is obtained by eliminating any
- * unnecessary spaces and converting all non-case-sensitive characters to
- * lowercase.  The normalized representation of a DN may be obtained using the
- * {@link com.hwlcn.ldap.ldap.sdk.DN#toNormalizedString} method, and two DNs may be compared to
- * determine if they are equal using the standard {@link com.hwlcn.ldap.ldap.sdk.DN#equals} method.
- * <BR><BR>
- * Distinguished names are hierarchical.  The rightmost RDN refers to the root
- * of the directory information tree (DIT), and each successive RDN to the left
- * indicates the addition of another level of hierarchy.  For example, in the
- * DN "{@code uid=john.doe,ou=People,o=example.com}", the entry
- * "{@code o=example.com}" is at the root of the DIT, the entry
- * "{@code ou=People,o=example.com}" is an immediate descendant of the
- * "{@code o=example.com}" entry, and the
- * "{@code uid=john.doe,ou=People,o=example.com}" entry is an immediate
- * descendant of the "{@code ou=People,o=example.com}" entry.  Similarly, the
- * entry "{@code uid=jane.doe,ou=People,o=example.com}" would be considered a
- * peer of the "{@code uid=john.doe,ou=People,o=example.com}" entry because they
- * have the same parent.
- * <BR><BR>
- * Note that in some cases, the root of the DIT may actually contain a DN with
- * multiple RDNs.  For example, in the DN
- * "{@code uid=john.doe,ou=People,dc=example,dc=com}", the directory server may
- * or may not actually have a "{@code dc=com}" entry.  In many such cases, the
- * base entry may actually be just "{@code dc=example,dc=com}".  The DNs of the
- * entries that are at the base of the directory information tree are called
- * "naming contexts" or "suffixes" and they are generally available in the
- * {@code namingContexts} attribute of the root DSE.  See the {@link RootDSE}
- * class for more information about interacting with the server root DSE.
- * <BR><BR>
- * This class provides methods for making determinations based on the
- * hierarchical relationships of DNs.  For example, the
- * {@link com.hwlcn.ldap.ldap.sdk.DN#isAncestorOf} and {@link com.hwlcn.ldap.ldap.sdk.DN#isDescendantOf} methods may be used to
- * determine whether two DNs have a hierarchical relationship.  In addition,
- * this class implements the {@link Comparable} and {@link java.util.Comparator}
- * interfaces so that it may be used to easily sort DNs (ancestors will always
- * be sorted before descendants, and peers will always be sorted
- * lexicographically based on their normalized representations).
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class DN
        implements Comparable<DN>, Comparator<DN>, Serializable
 {
-  /**
-   * The RDN array that will be used for the null DN.
-   */
+
   private static final RDN[] NO_RDNS = new RDN[0];
 
 
 
-  /**
-   * A pre-allocated DN object equivalent to the null DN.
-   */
   public static final DN NULL_DN = new DN();
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -5272968942085729346L;
 
-
-
-  // The set of RDN components that make up this DN.
   private final RDN[] rdns;
 
-  // The schema to use to generate the normalized string representation of this
-  // DN, if any.
   private final Schema schema;
 
-  // The string representation of this DN.
   private final String dnString;
 
-  // The normalized string representation of this DN.
   private volatile String normalizedString;
 
 
 
-  /**
-   * Creates a new DN with the provided set of RDNs.
-   *
-   * @param  rdns  The RDN components for this DN.  It must not be {@code null}.
-   */
   public DN(final RDN... rdns)
   {
     ensureNotNull(rdns);
@@ -188,11 +98,7 @@ public final class DN
 
 
 
-  /**
-   * Creates a new DN with the provided set of RDNs.
-   *
-   * @param  rdns  The RDN components for this DN.  It must not be {@code null}.
-   */
+
   public DN(final List<RDN> rdns)
   {
     ensureNotNull(rdns);
@@ -230,14 +136,6 @@ public final class DN
   }
 
 
-
-  /**
-   * Creates a new DN below the provided parent DN with the given RDN.
-   *
-   * @param  rdn       The RDN for the new DN.  It must not be {@code null}.
-   * @param  parentDN  The parent DN for the new DN to create.  It must not be
-   *                   {@code null}.
-   */
   public DN(final RDN rdn, final DN parentDN)
   {
     ensureNotNull(rdn, parentDN);
@@ -268,15 +166,7 @@ public final class DN
 
 
 
-  /**
-   * Creates a new DN from the provided string representation.
-   *
-   * @param  dnString  The string representation to use to create this DN.  It
-   *                   must not be {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as a valid
-   *                         DN.
-   */
+
   public DN(final String dnString)
          throws LDAPException
   {
@@ -285,18 +175,6 @@ public final class DN
 
 
 
-  /**
-   * Creates a new DN from the provided string representation.
-   *
-   * @param  dnString  The string representation to use to create this DN.  It
-   *                   must not be {@code null}.
-   * @param  schema    The schema to use to generate the normalized string
-   *                   representation of this DN.  It may be {@code null} if no
-   *                   schema is available.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as a valid
-   *                         DN.
-   */
   public DN(final String dnString, final Schema schema)
          throws LDAPException
   {
@@ -320,7 +198,7 @@ public final class DN
 rdnLoop:
     while (pos < length)
     {
-      // Skip over any spaces before the attribute name.
+
       while ((pos < length) && (dnString.charAt(pos) == ' '))
       {
         pos++;
@@ -328,7 +206,7 @@ rdnLoop:
 
       if (pos >= length)
       {
-        // This is only acceptable if we haven't read anything yet.
+
         if (rdnList.isEmpty())
         {
           break;
@@ -340,7 +218,7 @@ rdnLoop:
         }
       }
 
-      // Read the attribute name, until we find a space or equal sign.
+
       int rdnEndPos;
       int rdnStartPos = pos;
       int attrStartPos = pos;
@@ -368,7 +246,7 @@ rdnLoop:
       }
 
 
-      // Skip over any spaces before the equal sign.
+
       while ((pos < length) && (dnString.charAt(pos) == ' '))
       {
         pos++;
@@ -376,13 +254,12 @@ rdnLoop:
 
       if ((pos >= length) || (dnString.charAt(pos) != '='))
       {
-        // We didn't find an equal sign.
+
         throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
                                 ERR_DN_NO_EQUAL_SIGN.get(attrName));
       }
 
-      // Skip over the equal sign, and then any spaces leading up to the
-      // attribute value.
+
       pos++;
       while ((pos < length) && (dnString.charAt(pos) == ' '))
       {
@@ -390,7 +267,7 @@ rdnLoop:
       }
 
 
-      // If we're at the end of the string, then it's not a valid DN.
+
       if (pos >= length)
       {
         throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -398,13 +275,11 @@ rdnLoop:
       }
 
 
-      // Read the value for this RDN component.
+
       ASN1OctetString value;
       if (dnString.charAt(pos) == '#')
       {
-        // It is a hex-encoded value, so we'll read until we find the end of the
-        // string or the first non-hex character, which must be a space, a
-        // comma, or a plus sign.
+
         final byte[] valueArray = RDN.readHexString(dnString, ++pos);
         value = new ASN1OctetString(valueArray);
         pos += (valueArray.length * 2);
@@ -412,7 +287,7 @@ rdnLoop:
       }
       else
       {
-        // It is a string value, which potentially includes escaped characters.
+
         final StringBuilder buffer = new StringBuilder();
         pos = RDN.readValueString(dnString, pos, buffer);
         value = new ASN1OctetString(buffer.toString());
@@ -420,8 +295,7 @@ rdnLoop:
       }
 
 
-      // Skip over any spaces until we find a comma, a plus sign, or the end of
-      // the value.
+
       while ((pos < length) && (dnString.charAt(pos) == ' '))
       {
         pos++;
@@ -429,7 +303,7 @@ rdnLoop:
 
       if (pos >= length)
       {
-        // It's a single-valued RDN, and we're at the end of the DN.
+
         rdnList.add(new RDN(attrName, value, schema,
              getTrimmedRDN(dnString, rdnStartPos,rdnEndPos)));
         expectMore = false;
@@ -439,15 +313,13 @@ rdnLoop:
       switch (dnString.charAt(pos))
       {
         case '+':
-          // It is a multivalued RDN, so we're not done reading either the DN
-          // or the RDN.
+
           pos++;
           break;
 
         case ',':
         case ';':
-          // We hit the end of the single-valued RDN, but there's still more of
-          // the DN to be read.
+
           rdnList.add(new RDN(attrName, value, schema,
                getTrimmedRDN(dnString, rdnStartPos,rdnEndPos)));
           pos++;
@@ -455,7 +327,7 @@ rdnLoop:
           continue rdnLoop;
 
         default:
-          // It's an illegal character.  This should never happen.
+
           throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
                                   ERR_DN_UNEXPECTED_CHAR.get(
                                        dnString.charAt(pos), pos));
@@ -468,9 +340,7 @@ rdnLoop:
       }
 
 
-      // If we've gotten here, then we're dealing with a multivalued RDN.
-      // Create lists to hold the names and values, and then loop until we hit
-      // the end of the RDN.
+
       final ArrayList<String> nameList = new ArrayList<String>(5);
       final ArrayList<ASN1OctetString> valueList =
            new ArrayList<ASN1OctetString>(5);
@@ -479,7 +349,7 @@ rdnLoop:
 
       while (pos < length)
       {
-        // Skip over any spaces before the attribute name.
+
         while ((pos < length) && (dnString.charAt(pos) == ' '))
         {
           pos++;
@@ -491,7 +361,7 @@ rdnLoop:
                                   ERR_DN_ENDS_WITH_PLUS.get());
         }
 
-        // Read the attribute name, until we find a space or equal sign.
+
         attrStartPos = pos;
         while (pos < length)
         {

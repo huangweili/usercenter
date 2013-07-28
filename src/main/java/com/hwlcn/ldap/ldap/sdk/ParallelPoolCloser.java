@@ -1,23 +1,3 @@
-/*
- * Copyright 2012-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2012-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -32,37 +12,15 @@ import java.util.concurrent.TimeUnit;
 import com.hwlcn.ldap.util.Debug;
 
 
-
-/**
- * This class provides a parallel mechanism for concurrently closing a set of
- * connections in a connection pool.
- */
 final class ParallelPoolCloser
 {
-  // Indicates whether to try to send an unbind request to the server before
-  // closing the connection.
   private final boolean unbind;
 
-  // A collection containing the connections to be closed.
   private final Collection<LDAPConnection> connections;
 
-  // The number of threads to use to establish connections in parallel.
   private final int numThreads;
 
-
-
-  /**
-   * Creates a new parallel pool closer with the provided settings.
-   *
-   * @param  connections  A collection containing the connections to be closed.
-   *                      No items will be added to or removed from the
-   *                      collection in the course of processing.
-   * @param  unbind       Indicates whether to try to send an unbind request to
-   *                      the server before closing the connection.
-   * @param  numThreads   The number of threads to use to close the connections
-   *                      in parallel.
-   */
-  ParallelPoolCloser(final Collection<LDAPConnection> connections,
+ ParallelPoolCloser(final Collection<LDAPConnection> connections,
                      final boolean unbind, final int numThreads)
   {
     this.connections = connections;
@@ -71,11 +29,6 @@ final class ParallelPoolCloser
   }
 
 
-
-  /**
-   * Performs the work of closing the connections.  This method will not return
-   * until all connections have been closed.
-   */
   void closeConnections()
   {
     final int numConnections = connections.size();

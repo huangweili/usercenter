@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import com.hwlcn.HwlcnException;
 import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.Control;
 import com.hwlcn.ldap.ldap.sdk.Version;
@@ -982,9 +983,9 @@ public final class StaticUtils
     {
       buffer.append(((LDAPSDKException) t).getExceptionMessage());
     }
-    else if (t instanceof LDAPSDKRuntimeException)
+    else if (t instanceof HwlcnException)
     {
-      buffer.append(((LDAPSDKRuntimeException) t).getExceptionMessage());
+      buffer.append(((HwlcnException) t).getExceptionMessage());
     }
     if ((t instanceof RuntimeException) || (t instanceof Error))
     {

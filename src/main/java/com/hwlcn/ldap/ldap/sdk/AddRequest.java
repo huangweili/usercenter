@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -87,36 +67,18 @@ public final class AddRequest
        extends UpdatableLDAPRequest
        implements ReadOnlyAddRequest, ResponseAcceptor, ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 1320730292848237219L;
 
-
-
-  // The queue that will be used to receive response messages from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue =
        new LinkedBlockingQueue<LDAPResponse>();
 
-  // The set of attributes to include in the entry to add.
   private ArrayList<Attribute> attributes;
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The DN of the entry to be added.
   private String dn;
 
-
-
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   */
   public AddRequest(final String dn, final Attribute... attributes)
   {
     super(null);
@@ -131,15 +93,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   * @param  controls    The set of controls to include in the request.
-   */
   public AddRequest(final String dn, final Attribute[] attributes,
                     final Control[] controls)
   {
@@ -155,14 +108,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   */
   public AddRequest(final String dn, final Collection<Attribute> attributes)
   {
     super(null);
@@ -175,15 +120,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   * @param  controls    The set of controls to include in the request.
-   */
   public AddRequest(final String dn, final Collection<Attribute> attributes,
                     final Control[] controls)
   {
@@ -197,14 +133,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   */
   public AddRequest(final DN dn, final Attribute... attributes)
   {
     super(null);
@@ -218,16 +146,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   * @param  controls    The set of controls to include in the request.
-   */
   public AddRequest(final DN dn, final Attribute[] attributes,
                     final Control[] controls)
   {
@@ -242,15 +160,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   */
   public AddRequest(final DN dn, final Collection<Attribute> attributes)
   {
     super(null);
@@ -262,16 +171,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * Creates a new add request with the provided DN and set of attributes.
-   *
-   * @param  dn          The DN for the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   * @param  controls    The set of controls to include in the request.
-   */
   public AddRequest(final DN dn, final Collection<Attribute> attributes,
                     final Control[] controls)
   {
@@ -285,11 +184,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request to add the provided entry.
-   *
-   * @param  entry  The entry to be added.  It must not be {@code null}.
-   */
   public AddRequest(final Entry entry)
   {
     super(null);
@@ -302,12 +196,6 @@ public final class AddRequest
 
 
 
-  /**
-   * Creates a new add request to add the provided entry.
-   *
-   * @param  entry     The entry to be added.  It must not be {@code null}.
-   * @param  controls  The set of controls to include in the request.
-   */
   public AddRequest(final Entry entry, final Control[] controls)
   {
     super(controls);
@@ -319,16 +207,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * Creates a new add request with the provided entry in LDIF form.
-   *
-   * @param  ldifLines  The lines that comprise the LDIF representation of the
-   *                    entry to add.  It must not be {@code null} or empty.
-   *
-   * @throws  LDIFException  If the provided LDIF data cannot be decoded as an
-   *                         entry.
-   */
   public AddRequest(final String... ldifLines)
          throws LDIFException
   {
@@ -336,22 +214,12 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public String getDN()
   {
     return dn;
   }
 
 
-
-  /**
-   * Specifies the DN for this add request.
-   *
-   * @param  dn  The DN for this add request.  It must not be {@code null}.
-   */
   public void setDN(final String dn)
   {
     ensureNotNull(dn);
@@ -360,12 +228,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * Specifies the DN for this add request.
-   *
-   * @param  dn  The DN for this add request.  It must not be {@code null}.
-   */
   public void setDN(final DN dn)
   {
     ensureNotNull(dn);
@@ -375,9 +237,7 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public List<Attribute> getAttributes()
   {
     return Collections.unmodifiableList(attributes);
@@ -385,9 +245,6 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public Attribute getAttribute(final String attributeName)
   {
     ensureNotNull(attributeName);
@@ -405,9 +262,7 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public boolean hasAttribute(final String attributeName)
   {
     return (getAttribute(attributeName) != null);
@@ -415,9 +270,6 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public boolean hasAttribute(final Attribute attribute)
   {
     ensureNotNull(attribute);
@@ -428,9 +280,6 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final String attributeValue)
   {
@@ -441,10 +290,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final String attributeValue,
                                    final MatchingRule matchingRule)
@@ -456,10 +301,6 @@ public final class AddRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final byte[] attributeValue)
   {
@@ -471,9 +312,6 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final byte[] attributeValue,
                                    final MatchingRule matchingRule)
@@ -486,9 +324,7 @@ public final class AddRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public boolean hasObjectClass(final String objectClassName)
   {
     return hasAttributeValue("objectClass", objectClassName);

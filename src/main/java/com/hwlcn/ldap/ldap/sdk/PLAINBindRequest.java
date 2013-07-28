@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -78,40 +58,16 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class PLAINBindRequest
        extends SASLBindRequest
 {
-  /**
-   * The name for the PLAIN SASL mechanism.
-   */
   public static final String PLAIN_MECHANISM_NAME = "PLAIN";
 
+    private static final long serialVersionUID = -5186140710317748684L;
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
-  private static final long serialVersionUID = -5186140710317748684L;
-
-
-
-  // The password for this bind request.
-  private final ASN1OctetString password;
-
-  // The authentication ID string for this bind request.
+private final ASN1OctetString password;
   private final String authenticationID;
 
-  // The authorization ID string for this bind request, if available.
   private final String authorizationID;
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID
-   * and password.  It will not include an authorization ID or set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID, final String password)
   {
     this(authenticationID, null, new ASN1OctetString(password), NO_CONTROLS);
@@ -121,15 +77,6 @@ public final class PLAINBindRequest
 
 
 
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID
-   * and password.  It will not include an authorization ID or set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID, final byte[] password)
   {
     this(authenticationID, null, new ASN1OctetString(password), NO_CONTROLS);
@@ -138,16 +85,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID
-   * and password.  It will not include an authorization ID or set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID,
                           final ASN1OctetString password)
   {
@@ -155,19 +92,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * authorization ID, and password.  It will not include a set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID, final String password)
   {
@@ -178,19 +102,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * authorization ID, and password.  It will not include a set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID, final byte[] password)
   {
@@ -201,19 +112,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * authorization ID, and password.  It will not include a set of controls.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID,
                           final ASN1OctetString password)
@@ -222,17 +120,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * password, and set of controls.  It will not include an authorization ID.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID, final String password,
                           final Control... controls)
   {
@@ -243,16 +130,6 @@ public final class PLAINBindRequest
 
 
 
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * password, and set of controls.  It will not include an authorization ID.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID, final byte[] password,
                           final Control... controls)
   {
@@ -262,17 +139,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided authentication ID,
-   * password, and set of controls.  It will not include an authorization ID.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID,
                           final ASN1OctetString password,
                           final Control... controls)
@@ -281,19 +147,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID, final String password,
                           final Control... controls)
@@ -305,19 +158,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID, final byte[] password,
                           final Control... controls)
@@ -329,19 +169,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * Creates a new SASL PLAIN bind request with the provided information.
-   *
-   * @param  authenticationID  The authentication ID for this bind request.  It
-   *                           must not be {@code null}.
-   * @param  authorizationID   The authorization ID for this bind request, or
-   *                           {@code null} if there is to be no authorization
-   *                           ID.
-   * @param  password          The password for this bind request.  It must not
-   *                           be {@code null}.
-   * @param  controls          The set of controls to include
-   */
   public PLAINBindRequest(final String authenticationID,
                           final String authorizationID,
                           final ASN1OctetString password,
@@ -357,60 +184,30 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSASLMechanismName()
   {
     return PLAIN_MECHANISM_NAME;
   }
 
-
-
-  /**
-   * Retrieves the authentication ID for this bind request.
-   *
-   * @return  The authentication ID for this bind request.
-   */
   public String getAuthenticationID()
   {
     return authenticationID;
   }
 
 
-
-  /**
-   * Retrieves the authorization ID for this bind request.
-   *
-   * @return  The authorization ID for this bind request, or {@code null} if
-   *          there is no authorization ID.
-   */
   public String getAuthorizationID()
   {
     return authorizationID;
   }
 
 
-
-  /**
-   * Retrieves the string representation of the password for this bind request.
-   *
-   * @return  The string representation of the password for this bind request.
-   */
   public String getPasswordString()
   {
     return password.stringValue();
   }
 
 
-
-  /**
-   * Retrieves the bytes that comprise the the password for this bind request.
-   *
-   * @return  The bytes that comprise the password for this bind request.
-   */
   public byte[] getPasswordBytes()
   {
     return password.getValue();
@@ -418,26 +215,11 @@ public final class PLAINBindRequest
 
 
 
-  /**
-   * Sends this bind request to the target server over the provided connection
-   * and returns the corresponding response.
-   *
-   * @param  connection  The connection to use to send this bind request to the
-   *                     server and read the associated response.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  The bind response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
   {
-    // Create the byte array that should comprise the credentials.
+
     final byte[] authZIDBytes  = getBytes(authorizationID);
     final byte[] authNIDBytes  = getBytes(authenticationID);
     final byte[] passwordBytes = password.getValue();
@@ -457,10 +239,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public PLAINBindRequest getRebindRequest(final String host, final int port)
   {
@@ -468,11 +246,6 @@ public final class PLAINBindRequest
                                 getControls());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public PLAINBindRequest duplicate()
   {
@@ -480,10 +253,6 @@ public final class PLAINBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public PLAINBindRequest duplicate(final Control[] controls)
   {
@@ -493,11 +262,6 @@ public final class PLAINBindRequest
     return bindRequest;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -47,23 +47,18 @@ import static com.hwlcn.ldap.util.args.ArgsMessages.*;
 public final class IntegerArgument
        extends Argument
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 3364985217337213643L;
 
 
-
-  // The set of values assigned to this argument.
   private final ArrayList<Integer> values;
 
-  // The lower bound for this argument.
+
   private final int lowerBound;
 
-  // The upper bound for this argument.
+
   private final int upperBound;
 
-  // The list of default values that will be used if no values were provided.
   private final List<Integer> defaultValues;
 
 

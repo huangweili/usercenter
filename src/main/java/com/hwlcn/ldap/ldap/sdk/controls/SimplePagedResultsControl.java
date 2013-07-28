@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -41,113 +21,28 @@ import static com.hwlcn.ldap.util.Debug.*;
 
 
 
-/**
- * This class provides an implementation of the simple paged results control as
- * defined in <A HREF="http://www.ietf.org/rfc/rfc2696.txt">RFC 2696</A>.  It
- * allows the client to iterate through a potentially large set of search
- * results in subsets of a specified number of entries (i.e., "pages").
- * <BR><BR>
- * The same control encoding is used for both the request control sent by
- * clients and the response control returned by the server.  It may contain
- * two elements:
- * <UL>
- *   <LI>Size -- In a request control, this provides the requested page size,
- *       which is the maximum number of entries that the server should return
- *       in the next iteration of the search.  In a response control, it is an
- *       estimate of the total number of entries that match the search
- *       criteria.</LI>
- *   <LI>Cookie -- A token which is used by the server to keep track of its
- *       position in the set of search results.  The first request sent by the
- *       client should not include a cookie, and the last response sent by the
- *       server should not include a cookie.  For all other intermediate search
- *       requests and responses,  the server will include a cookie value in its
- *       response that the client should include in its next request.</LI>
- * </UL>
- * When the client wishes to use the paged results control, the first search
- * request should include a version of the paged results request control that
- * was created with a requested page size but no cookie.  The corresponding
- * response from the server will include a version of the paged results control
- * that may include an estimate of the total number of matching entries, and
- * may also include a cookie.  The client should include this cookie in the
- * next request (with the same set of search criteria) to retrieve the next page
- * of results.  This process should continue until the response control returned
- * by the server does not include a cookie, which indicates that the end of the
- * result set has been reached.
- * <BR><BR>
- * Note that the simple paged results control is similar to the
- * {@link VirtualListViewRequestControl} in that both allow the client to
- * request that only a portion of the result set be returned at any one time.
- * However, there are significant differences between them, including:
- * <UL>
- *   <LI>In order to use the virtual list view request control, it is also
- *       necessary to use the {@link ServerSideSortRequestControl} to ensure
- *       that the entries are sorted.  This is not a requirement for the
- *       simple paged results control.</LI>
- *   <LI>The simple paged results control may only be used to iterate
- *       sequentially through the set of search results.  The virtual list view
- *       control can retrieve pages out of order, can retrieve overlapping
- *       pages, and can re-request pages that it had already retrieved.</LI>
- * </UL>
- * <H2>Example</H2>
- * The following example demonstrates the use of the simple paged results
- * control.  It will iterate through all users in the "Sales" department,
- * retrieving up to 10 entries at a time:
- * <PRE>
- *   SearchRequest searchRequest =
- *        new SearchRequest("dc=example,dc=com", SearchScope.SUB,"(ou=Sales)");
- *   ASN1OctetString cookie = null;
- *   do
- *   {
- *     searchRequest.setControls(
- *          new Control[] { new SimplePagedResultsControl(10, cookie) });
- *     SearchResult searchResult = connection.search(searchRequest);
- *
- *     // Do something with the entries that are returned.
- *
- *     cookie = null;
- *     SimplePagedResultControl c = SimplePagedResultControl.get(searchResult);
- *     if (c != null)
- *     {
- *       cookie = c.getCookie();
- *     }
- *   } while ((cookie != null) && (cookie.getValueLength() > 0));
- * </PRE>
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class SimplePagedResultsControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.2.840.113556.1.4.319) for the paged results control.
-   */
+
   public static final String PAGED_RESULTS_OID = "1.2.840.113556.1.4.319";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 2186787148024999291L;
 
 
 
-  // The encoded cookie returned from the server (for a response control) or
-  // that should be included in the next request to the server (for a request
-  // control).
+
   private final ASN1OctetString cookie;
 
-  // The maximum requested page size (for a request control), or the estimated
-  // total result set size (for a response control).
+
   private final int size;
 
 
 
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   SimplePagedResultsControl()
   {
     size   = 0;
@@ -156,17 +51,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Creates a new paged results control with the specified page size.  This
-   * version of the constructor should only be used when creating the first
-   * search as part of the set of paged results.  Subsequent searches to
-   * retrieve additional pages should use the response control returned by the
-   * server in their next request, until the response control returned by the
-   * server does not include a cookie.
-   *
-   * @param  pageSize  The maximum number of entries that the server should
-   *                   return in the first page.
-   */
+
   public SimplePagedResultsControl(final int pageSize)
   {
     super(PAGED_RESULTS_OID, false, encodeValue(pageSize, null));
@@ -177,19 +62,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Creates a new paged results control with the specified page size.  This
-   * version of the constructor should only be used when creating the first
-   * search as part of the set of paged results.  Subsequent searches to
-   * retrieve additional pages should use the response control returned by the
-   * server in their next request, until the response control returned by the
-   * server does not include a cookie.
-   *
-   * @param  pageSize    The maximum number of entries that the server should
-   *                     return in the first page.
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   */
+
   public SimplePagedResultsControl(final int pageSize, final boolean isCritical)
   {
     super(PAGED_RESULTS_OID, isCritical, encodeValue(pageSize, null));
@@ -200,18 +73,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Creates a new paged results control with the specified page size and the
-   * provided cookie.  This version of the constructor should be used to
-   * continue iterating through an existing set of results, but potentially
-   * using a different page size.
-   *
-   * @param  pageSize  The maximum number of entries that the server should
-   *                   return in the next page of the results.
-   * @param  cookie    The cookie provided by the server after returning the
-   *                   previous page of results, or {@code null} if this request
-   *                   will retrieve the first page of results.
-   */
+
   public SimplePagedResultsControl(final int pageSize,
                                    final ASN1OctetString cookie)
   {
@@ -231,20 +93,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Creates a new paged results control with the specified page size and the
-   * provided cookie.  This version of the constructor should be used to
-   * continue iterating through an existing set of results, but potentially
-   * using a different page size.
-   *
-   * @param  pageSize    The maximum number of entries that the server should
-   *                     return in the first page.
-   * @param  cookie      The cookie provided by the server after returning the
-   *                     previous page of results, or {@code null} if this
-   *                     request will retrieve the first page of results.
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   */
+
   public SimplePagedResultsControl(final int pageSize,
                                    final ASN1OctetString cookie,
                                    final boolean isCritical)
@@ -265,20 +114,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Creates a new paged results control from the control with the provided set
-   * of information.  This should be used to decode the paged results response
-   * control returned by the server with a page of results.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         simple paged results control.
-   */
+
   public SimplePagedResultsControl(final String oid, final boolean isCritical,
                                    final ASN1OctetString value)
          throws LDAPException
@@ -328,9 +164,6 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public SimplePagedResultsControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -341,20 +174,7 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Extracts a simple paged results response control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the simple paged results
-   *                 response control.
-   *
-   * @return  The simple paged results response control contained in the
-   *          provided result, or {@code null} if the result did not contain a
-   *          simple paged results response control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the simple paged results response control
-   *                         contained in the provided result.
-   */
+
   public static SimplePagedResultsControl get(final SearchResult result)
          throws LDAPException
   {
@@ -377,19 +197,6 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  pageSize  The maximum number of entries that the server should
-   *                   return in the next page of the results.
-   * @param  cookie    The cookie provided by the server after returning the
-   *                   previous page of results, or {@code null} if this request
-   *                   will retrieve the first page of results.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final int pageSize,
                                              final ASN1OctetString cookie)
   {
@@ -415,15 +222,6 @@ public final class SimplePagedResultsControl
   }
 
 
-
-  /**
-   * Retrieves the size for this paged results control.  For a request control,
-   * it may be used to specify the number of entries that should be included in
-   * the next page of results.  For a response control, it may be used to
-   * specify the estimated number of entries in the complete result set.
-   *
-   * @return  The size for this paged results control.
-   */
   public int getSize()
   {
     return size;
@@ -431,16 +229,6 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Retrieves the cookie for this control, which may be used in a subsequent
-   * request to resume reading entries from the next page of results.  The
-   * value should have a length of zero when used to retrieve the first page of
-   * results for a given search, and also in the response from the server when
-   * there are no more entries to send.  It should be non-empty for all other
-   * conditions.
-   *
-   * @return  The cookie for this control, or {@code null} if there is none.
-   */
   public ASN1OctetString getCookie()
   {
     return cookie;
@@ -448,22 +236,12 @@ public final class SimplePagedResultsControl
 
 
 
-  /**
-   * Indicates whether there are more results to return as part of this search.
-   *
-   * @return  {@code true} if there are more results to return, or
-   *          {@code false} if not.
-   */
   public boolean moreResultsToReturn()
   {
     return (cookie.getValue().length > 0);
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -471,10 +249,6 @@ public final class SimplePagedResultsControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

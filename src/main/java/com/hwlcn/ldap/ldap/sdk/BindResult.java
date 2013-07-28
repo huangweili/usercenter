@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -38,51 +18,25 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides a data structure for holding information about the result
- * of processing a bind operation.  It provides generic bind response elements
- * as described in the {@link LDAPResult} class, but may be overridden to
- * provide more detailed information for specific types of bind requests.
- */
 @Extensible()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public class BindResult
        extends LDAPResult
 {
-  /**
-   * The BER type for the server SASL credentials element in the bind result.
-   */
+
   private static final byte TYPE_SERVER_SASL_CREDENTIALS = (byte) 0x87;
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 2211625049303605730L;
 
 
 
-  // The server SASL credentials from the response, if available.
   private final ASN1OctetString serverSASLCredentials;
 
 
 
-  /**
-   * Creates a new bind result with the provided information.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this bind result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
   public BindResult(final int messageID, final ResultCode resultCode,
                     final String diagnosticMessage, final String matchedDN,
                     final String[] referralURLs,
@@ -94,23 +48,6 @@ public class BindResult
 
 
 
-  /**
-   * Creates a new bind result with the provided information.
-   *
-   * @param  messageID              The message ID for the LDAP message that is
-   *                                associated with this bind result.
-   * @param  resultCode             The result code from the response.
-   * @param  diagnosticMessage      The diagnostic message from the response, if
-   *                                available.
-   * @param  matchedDN              The matched DN from the response, if
-   *                                available.
-   * @param  referralURLs           The set of referral URLs from the response,
-   *                                if available.
-   * @param  responseControls       The set of controls from the response, if
-   *                                available.
-   * @param  serverSASLCredentials  The server SASL credentials from the
-   *                                response, if available.
-   */
   public BindResult(final int messageID, final ResultCode resultCode,
                     final String diagnosticMessage, final String matchedDN,
                     final String[] referralURLs,
@@ -125,11 +62,7 @@ public class BindResult
 
 
 
-  /**
-   * Creates a new bind result from the provided generic LDAP result.
-   *
-   * @param  ldapResult  The LDAP result to use to create this bind result.
-   */
+
   public BindResult(final LDAPResult ldapResult)
   {
     super(ldapResult);
@@ -139,12 +72,6 @@ public class BindResult
 
 
 
-  /**
-   * Creates a new bind result from the provided bind result.  This constructor
-   * may be used in creating custom subclasses.
-   *
-   * @param  bindResult  The bind result to use to create this bind result.
-   */
   protected BindResult(final BindResult bindResult)
   {
     super(bindResult);
@@ -154,22 +81,6 @@ public class BindResult
 
 
 
-  /**
-   * Creates a new bind result object with the provided message ID and with the
-   * protocol op and controls read from the given ASN.1 stream reader.
-   *
-   * @param  messageID        The LDAP message ID for the LDAP message that is
-   *                          associated with this bind result.
-   * @param  messageSequence  The ASN.1 stream reader sequence used in the
-   *                          course of reading the LDAP message elements.
-   * @param  reader           The ASN.1 stream reader from which to read the
-   *                          protocol op and controls.
-   *
-   * @return  The decoded bind result.
-   *
-   * @throws  LDAPException  If a problem occurs while reading or decoding data
-   *                         from the ASN.1 stream reader.
-   */
   static BindResult readBindResultFrom(final int messageID,
                          final ASN1StreamReaderSequence messageSequence,
                          final ASN1StreamReader reader)
@@ -253,13 +164,6 @@ public class BindResult
   }
 
 
-
-  /**
-   * Retrieves the server SASL credentials from the bind result, if available.
-   *
-   * @return  The server SASL credentials from the bind response, or
-   *          {@code null} if none were provided.
-   */
   public ASN1OctetString getServerSASLCredentials()
   {
     return serverSASLCredentials;

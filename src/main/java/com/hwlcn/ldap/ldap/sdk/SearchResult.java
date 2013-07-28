@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -32,80 +12,22 @@ import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
-
-/**
- * This class provides a data structure for holding information about the result
- * of processing a search request.  This includes the elements of the
- * {@link com.hwlcn.ldap.ldap.sdk.LDAPResult} object, but also contains additional information specific
- * to the search operation.  This includes:
- * <UL>
- *   <LI>The number of {@link SearchResultEntry} objects returned from the
- *       server.  This will be available regardless of whether the entries are
- *       included in this search result object or were returned through a
- *       {@link SearchResultListener}.</LI>
- *   <LI>The number of {@link SearchResultReference} objects returned from the
- *       server.  This will be available regardless of whether the entries are
- *       included in this search result object or were returned through a
- *       {@link SearchResultListener}.</LI>
- *   <LI>A list of the {@link SearchResultEntry} objects returned from the
- *       server.  This will be {@code null} if a {@link SearchResultListener}
- *       was used to return the entries.</LI>
- *   <LI>A list of the {@link SearchResultReference} objects returned from the
- *       server.  This will be {@code null} if a {@link SearchResultListener}
- *       was used to return the entries.</LI>
- * </UL>
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class SearchResult
        extends LDAPResult
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 1938208530894131198L;
 
-
-
-  // The number of matching entries returned for this search.
   private int numEntries;
-
-  // The number of search result references returned for this search.
   private int numReferences;
-
-  // A list that may be used to hold the search result entries returned for
-  // this search.
   private List<SearchResultEntry> searchEntries;
 
-  // A list that may be used to hold the search result references returned for
-  // this search.
   private List<SearchResultReference> searchReferences;
 
 
 
-  /**
-   * Creates a new search result object with the provided information.  This
-   * version of the constructor should be used if the search result entries and
-   * references were returned to the client via the {@code SearchResultListener}
-   * interface.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the search result done
-   *                            response.
-   * @param  diagnosticMessage  The diagnostic message from the search result
-   *                            done response, if available.
-   * @param  matchedDN          The matched DN from the search result done
-   *                            response, if available.
-   * @param  referralURLs       The set of referral URLs from the search result
-   *                            done response, if available.
-   * @param  numEntries         The number of search result entries returned
-   *                            for this search.
-   * @param  numReferences      The number of search result references returned
-   *                            for this search.
-   * @param  responseControls   The set of controls from the search result done
-   *                            response, if available.
-   */
   public SearchResult(final int messageID, final ResultCode resultCode,
                       final String diagnosticMessage, final String matchedDN,
                       final String[] referralURLs, final int numEntries,
@@ -122,40 +44,6 @@ public final class SearchResult
   }
 
 
-
-  /**
-   * Creates a new search result object with the provided information.  This
-   * version of the constructor should be used if the search result entries and
-   * references were collected in lists rather than returned to the requester
-   * through the {@code SearchResultListener} interface.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the search result done
-   *                            response.
-   * @param  diagnosticMessage  The diagnostic message from the search result
-   *                            done response, if available.
-   * @param  matchedDN          The matched DN from the search result done
-   *                            response, if available.
-   * @param  referralURLs       The set of referral URLs from the search result
-   *                            done response, if available.
-   * @param  searchEntries      A list containing the set of search result
-   *                            entries returned by the server.  It may only be
-   *                            {@code null} if the search result entries were
-   *                            returned through the
-   *                            {@code SearchResultListener} interface.
-   * @param  searchReferences   A list containing the set of search result
-   *                            references returned by the server.  It may only
-   *                            be {@code null} if the search result entries
-   *                            were returned through the
-   *                            {@code SearchResultListener} interface.
-   * @param  numEntries         The number of search result entries returned
-   *                            for this search.
-   * @param  numReferences      The number of search result references returned
-   *                            for this search.
-   * @param  responseControls   The set of controls from the search result done
-   *                            response, if available.
-   */
   public SearchResult(final int messageID, final ResultCode resultCode,
                       final String diagnosticMessage, final String matchedDN,
                       final String[] referralURLs,
@@ -175,22 +63,6 @@ public final class SearchResult
 
 
 
-  /**
-   * Creates a new search result object with the provided message ID and with
-   * the protocol op and controls read from the given ASN.1 stream reader.
-   *
-   * @param  messageID        The LDAP message ID for the LDAP message that is
-   *                          associated with this LDAP result.
-   * @param  messageSequence  The ASN.1 stream reader sequence used in the
-   *                          course of reading the LDAP message elements.
-   * @param  reader           The ASN.1 stream reader from which to read the
-   *                          protocol op and controls.
-   *
-   * @return  The decoded search result object.
-   *
-   * @throws  LDAPException  If a problem occurs while reading or decoding data
-   *                         from the ASN.1 stream reader.
-   */
   static SearchResult readSearchResultFrom(final int messageID,
                            final ASN1StreamReaderSequence messageSequence,
                            final ASN1StreamReader reader)
@@ -205,43 +77,17 @@ public final class SearchResult
   }
 
 
-
-  /**
-   * Retrieves the number of matching entries returned for the search operation.
-   *
-   * @return  The number of matching entries returned for the search operation.
-   */
   public int getEntryCount()
   {
     return numEntries;
   }
 
-
-
-  /**
-   * Retrieves the number of search references returned for the search
-   * operation.  This may be zero even if search references were received if the
-   * connection used when processing the search was configured to automatically
-   * follow referrals.
-   *
-   * @return  The number of search references returned for the search operation.
-   */
   public int getReferenceCount()
   {
     return numReferences;
   }
 
 
-
-  /**
-   * Retrieves a list containing the matching entries returned from the search
-   * operation.  This will only be available if a {@code SearchResultListener}
-   * was not used during the search.
-   *
-   * @return  A list containing the matching entries returned from the search
-   *          operation, or {@code null} if a {@code SearchResultListener} was
-   *          used during the search.
-   */
   public List<SearchResultEntry> getSearchEntries()
   {
     if (searchEntries == null)
@@ -253,22 +99,6 @@ public final class SearchResult
   }
 
 
-
-  /**
-   * Retrieves the search result entry with the specified DN from the set of
-   * entries returned.  This will only be available if a
-   * {@code SearchResultListener} was not used during the search.
-   *
-   * @param  dn  The DN of the search result entry to retrieve.  It must not
-   *             be {@code null}.
-   *
-   * @return  The search result entry with the provided DN, or {@code null} if
-   *          the specified entry was not returned, or if a
-   *          {@code SearchResultListener} was used for the search.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         parse the provided DN or a search entry DN.
-   */
   public SearchResultEntry getSearchEntry(final String dn)
          throws LDAPException
   {
@@ -291,17 +121,6 @@ public final class SearchResult
 
 
 
-  /**
-   * Retrieves a list containing the search references returned from the search
-   * operation.  This will only be available if a {@code SearchResultListener}
-   * was not used during the search, and may be empty even if search references
-   * were received if the connection used when processing the search was
-   * configured to automatically follow referrals.
-   *
-   * @return  A list containing the search references returned from the search
-   *          operation, or {@code null} if a {@code SearchResultListener} was
-   *          used during the search.
-   */
   public List<SearchResultReference> getSearchReferences()
   {
     if (searchReferences == null)
@@ -313,25 +132,6 @@ public final class SearchResult
   }
 
 
-
-  /**
-   * Provides information about the entries and references returned for the
-   * search operation.  This must only be called when a search result is created
-   * and the search result must not be altered at any point after that.
-   *
-   * @param  numEntries        The number of entries returned for the search
-   *                           operation.
-   * @param  searchEntries     A list containing the entries returned from the
-   *                           search operation, or {@code null} if a
-   *                           {@code SearchResultListener} was used during the
-   *                           search.
-   * @param  numReferences     The number of references returned for the search
-   *                           operation.
-   * @param  searchReferences  A list containing the search references returned
-   *                           from the search operation, or {@code null} if a
-   *                           {@code SearchResultListener} was used during the
-   *                           search.
-   */
   void setCounts(final int numEntries,
                  final List<SearchResultEntry> searchEntries,
                  final int numReferences,
@@ -360,13 +160,6 @@ public final class SearchResult
   }
 
 
-
-  /**
-   * Appends a string representation of this LDAP result to the provided buffer.
-   *
-   * @param  buffer  The buffer to which to append a string representation of
-   *                 this LDAP result.
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

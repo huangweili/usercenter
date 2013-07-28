@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -93,29 +73,10 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 @ThreadSafety(level=ThreadSafetyLevel.INTERFACE_NOT_THREADSAFE)
 public abstract class EntrySource
 {
-  /**
-   * Retrieves the next entry from the entry source, if there is at least one
-   * remaining entry.  This method may block if no entries are immediately
-   * available.
-   *
-   * @return  The next entry from the entry source, or {@code null} if there are
-   *          no more entries to retrieve..
-   *
-   * @throws  EntrySourceException  If a problem occurs while attempting to read
-   *                                the next entry from the entry source.
-   */
+
   public abstract Entry nextEntry()
          throws EntrySourceException;
 
 
-
-  /**
-   * Indicates that this entry source will no longer be needed and any resources
-   * associated with it may be closed.  This method MUST be called if the entry
-   * source is no longer needed before all entries have been read.  It MAY be
-   * called after all entries have been read with no ill effects, but this is
-   * not necessary as the entry source will have already been closed after all
-   * entries have been read.
-   */
   public abstract void close();
 }

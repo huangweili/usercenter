@@ -1,23 +1,3 @@
-/*
- * Copyright 2012-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2012-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -76,60 +56,22 @@ import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 public final class FastestConnectServerSet
        extends ServerSet
 {
-  // The port numbers of the target servers.
   private final int[] ports;
 
-  // The set of connection options to use for new connections.
   private final LDAPConnectionOptions connectionOptions;
 
-  // The socket factory to use to establish connections.
   private final SocketFactory socketFactory;
 
-  // The addresses of the target servers.
   private final String[] addresses;
 
 
 
-  /**
-   * Creates a new fastest connect server set with the specified set of
-   * directory server addresses and port numbers.  It will use the default
-   * socket factory provided by the JVM to create the underlying sockets.
-   *
-   * @param  addresses  The addresses of the directory servers to which the
-   *                    connections should be established.  It must not be
-   *                    {@code null} or empty.
-   * @param  ports      The ports of the directory servers to which the
-   *                    connections should be established.  It must not be
-   *                    {@code null}, and it must have the same number of
-   *                    elements as the {@code addresses} array.  The order of
-   *                    elements in the {@code addresses} array must correspond
-   *                    to the order of elements in the {@code ports} array.
-   */
   public FastestConnectServerSet(final String[] addresses, final int[] ports)
   {
     this(addresses, ports, null, null);
   }
 
 
-
-  /**
-   * Creates a new fastest connect server set with the specified set of
-   * directory server addresses and port numbers.  It will use the default
-   * socket factory provided by the JVM to create the underlying sockets.
-   *
-   * @param  addresses          The addresses of the directory servers to which
-   *                            the connections should be established.  It must
-   *                            not be {@code null} or empty.
-   * @param  ports              The ports of the directory servers to which the
-   *                            connections should be established.  It must not
-   *                            be {@code null}, and it must have the same
-   *                            number of elements as the {@code addresses}
-   *                            array.  The order of elements in the
-   *                            {@code addresses} array must correspond to the
-   *                            order of elements in the {@code ports} array.
-   * @param  connectionOptions  The set of connection options to use for the
-   *                            underlying connections.
-   */
   public FastestConnectServerSet(final String[] addresses, final int[] ports,
                                  final LDAPConnectionOptions connectionOptions)
   {
@@ -138,24 +80,6 @@ public final class FastestConnectServerSet
 
 
 
-  /**
-   * Creates a new fastest connect server set with the specified set of
-   * directory server addresses and port numbers.  It will use the provided
-   * socket factory to create the underlying sockets.
-   *
-   * @param  addresses      The addresses of the directory servers to which the
-   *                        connections should be established.  It must not be
-   *                        {@code null} or empty.
-   * @param  ports          The ports of the directory servers to which the
-   *                        connections should be established.  It must not be
-   *                        {@code null}, and it must have the same number of
-   *                        elements as the {@code addresses} array.  The order
-   *                        of elements in the {@code addresses} array must
-   *                        correspond to the order of elements in the
-   *                        {@code ports} array.
-   * @param  socketFactory  The socket factory to use to create the underlying
-   *                        connections.
-   */
   public FastestConnectServerSet(final String[] addresses, final int[] ports,
                                  final SocketFactory socketFactory)
   {
@@ -163,27 +87,6 @@ public final class FastestConnectServerSet
   }
 
 
-
-  /**
-   * Creates a new fastest connect server set with the specified set of
-   * directory server addresses and port numbers.  It will use the provided
-   * socket factory to create the underlying sockets.
-   *
-   * @param  addresses          The addresses of the directory servers to which
-   *                            the connections should be established.  It must
-   *                            not be {@code null} or empty.
-   * @param  ports              The ports of the directory servers to which the
-   *                            connections should be established.  It must not
-   *                            be {@code null}, and it must have the same
-   *                            number of elements as the {@code addresses}
-   *                            array.  The order of elements in the
-   *                            {@code addresses} array must correspond to the
-   *                            order of elements in the {@code ports} array.
-   * @param  socketFactory      The socket factory to use to create the
-   *                            underlying connections.
-   * @param  connectionOptions  The set of connection options to use for the
-   *                            underlying connections.
-   */
   public FastestConnectServerSet(final String[] addresses, final int[] ports,
                                  final SocketFactory socketFactory,
                                  final LDAPConnectionOptions connectionOptions)
@@ -217,65 +120,27 @@ public final class FastestConnectServerSet
     }
   }
 
-
-
-  /**
-   * Retrieves the addresses of the directory servers to which the connections
-   * should be established.
-   *
-   * @return  The addresses of the directory servers to which the connections
-   *          should be established.
-   */
   public String[] getAddresses()
   {
     return addresses;
   }
 
-
-
-  /**
-   * Retrieves the ports of the directory servers to which the connections
-   * should be established.
-   *
-   * @return  The ports of the directory servers to which the connections should
-   *          be established.
-   */
   public int[] getPorts()
   {
     return ports;
   }
 
-
-
-  /**
-   * Retrieves the socket factory that will be used to establish connections.
-   *
-   * @return  The socket factory that will be used to establish connections.
-   */
   public SocketFactory getSocketFactory()
   {
     return socketFactory;
   }
 
 
-
-  /**
-   * Retrieves the set of connection options that will be used for underlying
-   * connections.
-   *
-   * @return  The set of connection options that will be used for underlying
-   *          connections.
-   */
   public LDAPConnectionOptions getConnectionOptions()
   {
     return connectionOptions;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPConnection getConnection()
          throws LDAPException
@@ -283,11 +148,6 @@ public final class FastestConnectServerSet
     return getConnection(null);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPConnection getConnection(
                              final LDAPConnectionPoolHealthCheck healthCheck)
@@ -383,11 +243,6 @@ public final class FastestConnectServerSet
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

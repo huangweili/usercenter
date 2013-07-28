@@ -104,46 +104,30 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class Attribute
        implements Serializable
 {
-  /**
-   * The array to use as the set of values when there are no values.
-   */
+
   private static final ASN1OctetString[] NO_VALUES = new ASN1OctetString[0];
 
 
 
-  /**
-   * The array to use as the set of byte array values when there are no values.
-   */
   private static final byte[][] NO_BYTE_VALUES = new byte[0][];
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 5867076498293567612L;
 
 
 
-  // The set of values for this attribute.
   private final ASN1OctetString[] values;
 
-  // The hash code for this attribute.
   private int hashCode = -1;
 
-  // The matching rule that should be used for equality determinations.
   private final MatchingRule matchingRule;
 
-  // The attribute description for this attribute.
   private final String name;
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and no values.
-   *
-   * @param  name  The name for this attribute.  It must not be {@code null}.
-   */
+
   public Attribute(final String name)
   {
     ensureNotNull(name);
@@ -156,12 +140,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and value.
-   *
-   * @param  name   The name for this attribute.  It must not be {@code null}.
-   * @param  value  The value for this attribute.  It must not be {@code null}.
-   */
   public Attribute(final String name, final String value)
   {
     ensureNotNull(name, value);
@@ -174,12 +152,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and value.
-   *
-   * @param  name   The name for this attribute.  It must not be {@code null}.
-   * @param  value  The value for this attribute.  It must not be {@code null}.
-   */
   public Attribute(final String name, final byte[] value)
   {
     ensureNotNull(name, value);
@@ -191,13 +163,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
+
   public Attribute(final String name, final String... values)
   {
     ensureNotNull(name, values);
@@ -214,13 +180,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
   public Attribute(final String name, final byte[]... values)
   {
     ensureNotNull(name, values);
@@ -237,13 +196,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  values  The set of raw values for this attribute.  It must not be
-   *                 {@code null}.
-   */
   public Attribute(final String name, final ASN1OctetString... values)
   {
     ensureNotNull(name, values);
@@ -256,13 +208,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
+
   public Attribute(final String name, final Collection<String> values)
   {
     ensureNotNull(name, values);
@@ -281,14 +227,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and no values.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   */
   public Attribute(final String name, final MatchingRule matchingRule)
   {
     ensureNotNull(name, matchingRule);
@@ -301,16 +239,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and value.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   * @param  value         The value for this attribute.  It must not be
-   *                       {@code null}.
-   */
   public Attribute(final String name, final MatchingRule matchingRule,
                    final String value)
   {
@@ -324,16 +252,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and value.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   * @param  value         The value for this attribute.  It must not be
-   *                       {@code null}.
-   */
+
   public Attribute(final String name, final MatchingRule matchingRule,
                    final byte[] value)
   {
@@ -347,16 +266,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   * @param  values        The set of values for this attribute.  It must not be
-   *                       {@code null}.
-   */
+
   public Attribute(final String name, final MatchingRule matchingRule,
                    final String... values)
   {
@@ -374,16 +284,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   * @param  values        The set of values for this attribute.  It must not be
-   *                       {@code null}.
-   */
+
   public Attribute(final String name, final MatchingRule matchingRule,
                    final byte[]... values)
   {
@@ -401,16 +302,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name          The name for this attribute.  It must not be
-   *                       {@code null}.
-   * @param  matchingRule  The matching rule to use when comparing values.  It
-   *                       must not be {@code null}.
-   * @param  values        The set of values for this attribute.  It must not be
-   *                       {@code null}.
-   */
   public Attribute(final String name, final MatchingRule matchingRule,
                    final Collection<String> values)
   {
@@ -430,13 +321,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name          The name for this attribute.
-   * @param  matchingRule  The matching rule for this attribute.
-   * @param  values        The set of values for this attribute.
-   */
+
   public Attribute(final String name, final MatchingRule matchingRule,
                    final ASN1OctetString[] values)
   {
@@ -447,16 +332,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  schema  The schema to use to select the matching rule for this
-   *                 attribute.  It may be {@code null} if the default matching
-   *                 rule should be used.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
+
   public Attribute(final String name, final Schema schema,
                    final String... values)
   {
@@ -465,16 +341,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  schema  The schema to use to select the matching rule for this
-   *                 attribute.  It may be {@code null} if the default matching
-   *                 rule should be used.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
   public Attribute(final String name, final Schema schema,
                    final byte[]... values)
   {
@@ -483,16 +349,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  schema  The schema to use to select the matching rule for this
-   *                 attribute.  It may be {@code null} if the default matching
-   *                 rule should be used.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
   public Attribute(final String name, final Schema schema,
                    final Collection<String> values)
   {
@@ -501,16 +357,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new LDAP attribute with the specified name and set of values.
-   *
-   * @param  name    The name for this attribute.  It must not be {@code null}.
-   * @param  schema  The schema to use to select the matching rule for this
-   *                 attribute.  It may be {@code null} if the default matching
-   *                 rule should be used.
-   * @param  values  The set of values for this attribute.  It must not be
-   *                 {@code null}.
-   */
   public Attribute(final String name, final Schema schema,
                    final ASN1OctetString[] values)
   {
@@ -519,20 +365,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new attribute containing the merged values of the provided
-   * attributes.  Any duplicate values will only be present once in the
-   * resulting attribute.  The names of the provided attributes must be the
-   * same.
-   *
-   * @param  attr1  The first attribute containing the values to merge.  It must
-   *                not be {@code null}.
-   * @param  attr2  The second attribute containing the values to merge.  It
-   *                must not be {@code null}.
-   *
-   * @return  The new attribute containing the values of both of the
-   *          provided attributes.
-   */
   public static Attribute mergeAttributes(final Attribute attr1,
                                           final Attribute attr2)
   {
@@ -586,22 +418,7 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new attribute containing all of the values of the first attribute
-   * that are not contained in the second attribute.  Any values contained in
-   * the second attribute that are not contained in the first will be ignored.
-   * The names of the provided attributes must be the same.
-   *
-   * @param  attr1  The attribute from which to remove the values.  It must not
-   *                be {@code null}.
-   * @param  attr2  The attribute containing the values to remove.  It must not
-   *                be {@code null}.
-   *
-   * @return  A new attribute containing all of the values of the first
-   *          attribute not contained in the second.  It may contain zero values
-   *          if all the values of the first attribute were also contained in
-   *          the second.
-   */
+
   public static Attribute removeValues(final Attribute attr1,
                                        final Attribute attr2)
   {
@@ -610,25 +427,6 @@ public final class Attribute
 
 
 
-  /**
-   * Creates a new attribute containing all of the values of the first attribute
-   * that are not contained in the second attribute.  Any values contained in
-   * the second attribute that are not contained in the first will be ignored.
-   * The names of the provided attributes must be the same.
-   *
-   * @param  attr1         The attribute from which to remove the values.  It
-   *                       must not be {@code null}.
-   * @param  attr2         The attribute containing the values to remove.  It
-   *                       must not be {@code null}.
-   * @param  matchingRule  The matching rule to use to locate matching values.
-   *                       It may be {@code null} if the matching rule
-   *                       associated with the first attribute should be used.
-   *
-   * @return  A new attribute containing all of the values of the first
-   *          attribute not contained in the second.  It may contain zero values
-   *          if all the values of the first attribute were also contained in
-   *          the second.
-   */
   public static Attribute removeValues(final Attribute attr1,
                                        final Attribute attr2,
                                        final MatchingRule matchingRule)
@@ -669,12 +467,6 @@ public final class Attribute
 
 
 
-  /**
-   * Retrieves the name for this attribute (i.e., the attribute description),
-   * which may include zero or more attribute options.
-   *
-   * @return  The name for this attribute.
-   */
   public String getName()
   {
     return name;
@@ -682,14 +474,7 @@ public final class Attribute
 
 
 
-  /**
-   * Retrieves the base name for this attribute, which is the name or OID of the
-   * attribute type, without any attribute options.  For an attribute without
-   * any options, the value returned by this method will be identical the value
-   * returned by the {@link #getName} method.
-   *
-   * @return  The base name for this attribute.
-   */
+
   public String getBaseName()
   {
     return getBaseName(name);
@@ -697,17 +482,7 @@ public final class Attribute
 
 
 
-  /**
-   * Retrieves the base name for an attribute with the given name, which will be
-   * the provided name without any attribute options.  If the given name does
-   * not include any attribute options, then it will be returned unaltered.  If
-   * it does contain one or more attribute options, then the name will be
-   * returned without those options.
-   *
-   * @param  name  The name to be processed.
-   *
-   * @return  The base name determined from the provided attribute name.
-   */
+
   public static String getBaseName(final String name)
   {
     final int semicolonPos = name.indexOf(';');
@@ -723,18 +498,7 @@ public final class Attribute
 
 
 
-  /**
-   * Indicates whether the name of this attribute is valid as per RFC 4512.  The
-   * name will be considered valid only if it starts with an ASCII alphabetic
-   * character ('a' through 'z', or 'A' through 'Z'), and contains only ASCII
-   * alphabetic characters, ASCII numeric digits ('0' through '9'), and the
-   * ASCII hyphen character ('-').  It will also be allowed to include zero or
-   * more attribute options, in which the option must be separate from the base
-   * name by a semicolon and has the same naming constraints as the base name.
-   *
-   * @return  {@code true} if this attribute has a valid name, or {@code false}
-   *          if not.
-   */
+
   public boolean nameIsValid()
   {
     return nameIsValid(name, true);

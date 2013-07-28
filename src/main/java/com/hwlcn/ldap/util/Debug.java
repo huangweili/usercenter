@@ -1,23 +1,3 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -38,7 +18,6 @@ import com.hwlcn.ldap.ldap.sdk.DisconnectType;
 import com.hwlcn.ldap.ldap.sdk.Entry;
 import com.hwlcn.ldap.ldap.sdk.LDAPConnection;
 import com.hwlcn.ldap.ldap.sdk.LDAPRequest;
-import com.hwlcn.ldap.ldap.sdk.Version;
 import com.hwlcn.ldap.ldif.LDIFRecord;
 
 import static com.hwlcn.ldap.util.StaticUtils.*;
@@ -79,85 +58,41 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 public final class Debug
        implements Serializable
 {
-  /**
-   * The name of the system property that will be used to enable debugging in
-   * the UnboundID LDAP SDK for Java.  The fully-qualified name for this
-   * property is "{@code com.hwlcn.ldap.ldap.sdk.debug.enabled}".  If it is set,
-   * then it should have a value of either "true" or "false".
-   */
   public static final String PROPERTY_DEBUG_ENABLED =
        "com.hwlcn.ldap.ldap.sdk.debug.enabled";
 
 
 
-  /**
-   * The name of the system property that may be used to indicate whether stack
-   * trace information for the thread calling the debug method should be
-   * included in debug log messages.  The fully-qualified name for this property
-   * is "{@code com.hwlcn.ldap.ldap.sdk.debug.includeStackTrace}".  If it is set,
-   * then it should have a value of either "true" or "false".
-   */
   public static final String PROPERTY_INCLUDE_STACK_TRACE =
        "com.hwlcn.ldap.ldap.sdk.debug.includeStackTrace";
 
 
 
-  /**
-   * The name of the system property that will be used to set the initial level
-   * for the debug logger.  The fully-qualified name for this property is
-   * "{@code com.hwlcn.ldap.ldap.sdk.debug.level}".  If it is set, then it should
-   * be one of the strings "{@code SEVERE}", "{@code WARNING}", "{@code INFO}",
-   * "{@code CONFIG}", "{@code FINE}", "{@code FINER}", or "{@code FINEST}".
-   */
   public static final String PROPERTY_DEBUG_LEVEL =
        "com.hwlcn.ldap.ldap.sdk.debug.level";
 
 
 
-  /**
-   * The name of the system property that will be used to indicate that
-   * debugging should be enabled for specific types of messages.  The
-   * fully-qualified name for this property is
-   * "{@code com.hwlcn.ldap.ldap.sdk.debug.type}". If it is set, then it should
-   * be a comma-delimited list of the names of the desired debug types.  See the
-   * {@link DebugType} enum for the available debug types.
-   */
   public static final String PROPERTY_DEBUG_TYPE =
        "com.hwlcn.ldap.ldap.sdk.debug.type";
 
 
 
-  /**
-   * The name that will be used for the Java logger that will actually handle
-   * the debug messages if debugging is enabled.
-   */
   public static final String LOGGER_NAME = "com.hwlcn.ldap.ldap.sdk";
 
-
-
-  /**
-   * The logger that will be used to handle the debug messages if debugging is
-   * enabled.
-   */
   private static final Logger logger = Logger.getLogger(LOGGER_NAME);
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -6079754380415146030L;
 
 
 
-  // Indicates whether any debugging is currently enabled for the SDK.
   private static boolean debugEnabled;
 
-  // Indicates whether to capture a thread stack trace whenever a debug message
-  // is logged.
+
   private static boolean includeStackTrace;
 
-  // The set of debug types for which debugging is enabled.
   private static EnumSet<DebugType> debugTypes;
 
 
@@ -169,21 +104,11 @@ public final class Debug
 
 
 
-  /**
-   * Prevent this class from being instantiated.
-   */
   private Debug()
   {
-    // No implementation is required.
+
   }
 
-
-
-  /**
-   * Initializes this debugger with the default settings.  Debugging will be
-   * disabled, the set of debug types will include all types, and the debug
-   * level will be "ALL".
-   */
   public static void initialize()
   {
     includeStackTrace = false;
@@ -195,21 +120,12 @@ public final class Debug
 
 
 
-  /**
-   * Initializes this debugger with settings from the provided set of
-   * properties.  Any debug setting that isn't configured in the provided
-   * properties will be initialized with its default value.
-   *
-   * @param  properties  The set of properties to use to initialize this
-   *                     debugger.
-   */
   public static void initialize(final Properties properties)
   {
-    // First, apply the default values for the properties.
     initialize();
     if ((properties == null) || properties.isEmpty())
     {
-      // No properties were provided, so we don't need to do anything.
+
       return;
     }
 
@@ -267,8 +183,7 @@ public final class Debug
         final DebugType debugType = DebugType.forName(debugTypeName);
         if (debugType == null)
         {
-          // Throw a runtime exception to indicate that the debug type is
-          // invalid.
+
           throw new IllegalArgumentException("Invalid value '" + debugTypeName +
                       "' for property " + PROPERTY_DEBUG_TYPE +
                       ".  Allowed values include:  " +
@@ -289,24 +204,12 @@ public final class Debug
   }
 
 
-
-  /**
-   * Retrieves the logger that will be used to write the debug messages.
-   *
-   * @return  The logger that will be used to write the debug messages.
-   */
   public static Logger getLogger()
   {
     return logger;
   }
 
 
-
-  /**
-   * Indicates whether any form of debugging is enabled.
-   *
-   * @return  {@code true} if debugging is enabled, or {@code false} if not.
-   */
   public static boolean debugEnabled()
   {
     return debugEnabled;
@@ -314,28 +217,12 @@ public final class Debug
 
 
 
-  /**
-   * Indicates whether debugging is enabled for messages of the specified debug
-   * type.
-   *
-   * @param  debugType  The debug type for which to make the determination.
-   *
-   * @return  {@code true} if debugging is enabled for messages of the specified
-   *          debug type, or {@code false} if not.
-   */
   public static boolean debugEnabled(final DebugType debugType)
   {
     return (debugEnabled && debugTypes.contains(debugType));
   }
 
 
-
-  /**
-   * Specifies whether debugging should be enabled.  If it should be, then it
-   * will be enabled for all debug types.
-   *
-   * @param  enabled  Specifies whether debugging should be enabled.
-   */
   public static void setEnabled(final boolean enabled)
   {
     debugTypes   = EnumSet.allOf(DebugType.class);
@@ -343,16 +230,6 @@ public final class Debug
   }
 
 
-
-  /**
-   * Specifies whether debugging should be enabled.  If it should be, then it
-   * will be enabled for all debug types in the provided set.
-   *
-   * @param  enabled  Specifies whether debugging should be enabled.
-   * @param  types    The set of debug types that should be enabled.  It may be
-   *                  {@code null} or empty to indicate that it should be for
-   *                  all debug types.
-   */
   public static void setEnabled(final boolean enabled,
                                 final Set<DebugType> types)
   {
@@ -370,13 +247,6 @@ public final class Debug
 
 
 
-  /**
-   * Indicates whether log messages should include a stack trace of the thread
-   * that invoked the debug method.
-   *
-   * @return  {@code true} if log messages should include a stack trace of the
-   *          thread that invoked the debug method, or {@code false} if not.
-   */
   public static boolean includeStackTrace()
   {
     return includeStackTrace;
@@ -384,14 +254,6 @@ public final class Debug
 
 
 
-  /**
-   * Specifies whether log messages should include a stack trace of the thread
-   * that invoked the debug method.
-   *
-   * @param  includeStackTrace  Indicates whether log messages should include a
-   *                            stack trace of the thread that invoked the debug
-   *                            method.
-   */
   public static void setIncludeStackTrace(final boolean includeStackTrace)
   {
     Debug.includeStackTrace = includeStackTrace;
@@ -399,11 +261,6 @@ public final class Debug
 
 
 
-  /**
-   * Retrieves the set of debug types that will be used if debugging is enabled.
-   *
-   * @return  The set of debug types that will be used if debugging is enabled.
-   */
   public static EnumSet<DebugType> getDebugTypes()
   {
     return debugTypes;
@@ -411,13 +268,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided exception, if appropriate.  If
-   * it is to be logged, then it will be sent to the underlying logger using the
-   * {@code WARNING} level.
-   *
-   * @param  t  The exception for which debug information should be written.
-   */
   public static void debugException(final Throwable t)
   {
     if (debugEnabled && debugTypes.contains(DebugType.EXCEPTION))
@@ -426,14 +276,6 @@ public final class Debug
     }
   }
 
-
-
-  /**
-   * Writes debug information about the provided exception, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  t  The exception for which debug information should be written.
-   */
   public static void debugException(final Level l, final Throwable t)
   {
     if (debugEnabled && debugTypes.contains(DebugType.EXCEPTION))
@@ -450,15 +292,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * established, if appropriate.  If it is to be logged, then it will be sent
-   * to the underlying logger using the {@code INFO} level.
-   *
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   */
   public static void debugConnect(final String h, final int p)
   {
     if (debugEnabled && debugTypes.contains(DebugType.CONNECT))
@@ -468,16 +301,6 @@ public final class Debug
   }
 
 
-
-  /**
-   * Writes debug information to indicate that a connection has been
-   * established, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   */
   public static void debugConnect(final Level l, final String h, final int p)
   {
     if (debugEnabled && debugTypes.contains(DebugType.CONNECT))
@@ -488,18 +311,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * established, if appropriate.  If it is to be logged, then it will be sent
-   * to the underlying logger using the {@code INFO} level.
-   *
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  c  The connection object for the connection that has been
-   *            established.  It may be {@code null} for historic reasons, but
-   *            should be non-{@code null} in new uses.
-   */
+
   public static void debugConnect(final String h, final int p,
                                   final LDAPConnection c)
   {
@@ -511,18 +323,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * established, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  c  The connection object for the connection that has been
-   *            established.  It may be {@code null} for historic reasons, but
-   *            should be non-{@code null} in new uses.
-   */
   public static void debugConnect(final Level l, final String h, final int p,
                                   final LDAPConnection c)
   {
@@ -564,18 +364,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * terminated, if appropriate.  If it is to be logged, then it will be sent
-   * to the underlying logger using the {@code INFO} level.
-   *
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  t  The disconnect type.
-   * @param  m  The disconnect message, if available.
-   * @param  e  The disconnect cause, if available.
-   */
   public static void debugDisconnect(final String h, final int p,
                                      final DisconnectType t, final String m,
                                      final Throwable e)
@@ -588,18 +376,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * terminated, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  t  The disconnect type.
-   * @param  m  The disconnect message, if available.
-   * @param  e  The disconnect cause, if available.
-   */
   public static void debugDisconnect(final Level l, final String h, final int p,
                                      final DisconnectType t, final String m,
                                      final Throwable e)
@@ -611,22 +387,6 @@ public final class Debug
   }
 
 
-
-  /**
-   * Writes debug information to indicate that a connection has been
-   * terminated, if appropriate.  If it is to be logged, then it will be sent
-   * to the underlying logger using the {@code INFO} level.
-   *
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  c  The connection object for the connection that has been closed.
-   *            It may be {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   * @param  t  The disconnect type.
-   * @param  m  The disconnect message, if available.
-   * @param  e  The disconnect cause, if available.
-   */
   public static void debugDisconnect(final String h, final int p,
                                      final LDAPConnection c,
                                      final DisconnectType t, final String m,
@@ -640,21 +400,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information to indicate that a connection has been
-   * terminated, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  h  The address of the server to which the connection was
-   *            established.
-   * @param  p  The port of the server to which the connection was established.
-   * @param  c  The connection object for the connection that has been closed.
-   *            It may be {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   * @param  t  The disconnect type.
-   * @param  m  The disconnect message, if available.
-   * @param  e  The disconnect cause, if available.
-   */
   public static void debugDisconnect(final Level l, final String h, final int p,
                                      final LDAPConnection c,
                                      final DisconnectType t, final String m,
@@ -717,13 +462,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided request, if appropriate.  If
-   * it is to be logged, then it will be sent to the underlying logger using the
-   * {@code INFO} level.
-   *
-   * @param  r  The LDAP request for which debug information should be written.
-   */
   public static void debugLDAPRequest(final LDAPRequest r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDAP))
@@ -733,13 +471,6 @@ public final class Debug
   }
 
 
-
-  /**
-   * Writes debug information about the provided request, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The LDAP request for which debug information should be written.
-   */
   public static void debugLDAPRequest(final Level l, final LDAPRequest r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDAP))
@@ -750,18 +481,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided request, if appropriate.  If
-   * it is to be logged, then it will be sent to the underlying logger using the
-   * {@code INFO} level.
-   *
-   * @param  r  The LDAP request for which debug information should be written.
-   * @param  i  The message ID for the request that will be sent.  It may be
-   *            negative if no message ID is available.
-   * @param  c  The connection on which the request will be sent.  It may be
-   *            {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   */
   public static void debugLDAPRequest(final LDAPRequest r, final int i,
                                       final LDAPConnection c)
   {
@@ -773,17 +492,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided request, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The LDAP request for which debug information should be written.
-   * @param  i  The message ID for the request that will be sent.  It may be
-   *            negative if no message ID is available.
-   * @param  c  The connection on which the request will be sent.  It may be
-   *            {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   */
   public static void debugLDAPRequest(final Level l, final LDAPRequest r,
                                       final int i, final LDAPConnection c)
   {
@@ -837,13 +545,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided result, if appropriate.  If
-   * it is to be logged, then it will be sent to the underlying logger using the
-   * {@code INFO} level.
-   *
-   * @param  r  The result for which debug information should be written.
-   */
   public static void debugLDAPResult(final LDAPResponse r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDAP))
@@ -854,12 +555,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided result, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The result for which debug information should be written.
-   */
   public static void debugLDAPResult(final Level l, final LDAPResponse r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDAP))
@@ -870,16 +565,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided result, if appropriate.  If
-   * it is to be logged, then it will be sent to the underlying logger using the
-   * {@code INFO} level.
-   *
-   * @param  r  The result for which debug information should be written.
-   * @param  c  The connection on which the response was received.  It may be
-   *            {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   */
+
   public static void debugLDAPResult(final LDAPResponse r,
                                      final LDAPConnection c)
   {
@@ -891,15 +577,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided result, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The result for which debug information should be written.
-   * @param  c  The connection on which the response was received.  It may be
-   *            {@code null} for historic reasons, but should be
-   *            non-{@code null} in new uses.
-   */
   public static void debugLDAPResult(final Level l, final LDAPResponse r,
                                      final LDAPConnection c)
   {
@@ -946,13 +623,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element to be written,
-   * if appropriate.  If it is to be logged, then it will be sent to the
-   * underlying logger using the {@code INFO} level.
-   *
-   * @param  e  The ASN.1 element for which debug information should be written.
-   */
   public static void debugASN1Write(final ASN1Element e)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -963,13 +633,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element to be written,
-   * if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  e  The ASN.1 element for which debug information should be written.
-   */
   public static void debugASN1Write(final Level l, final ASN1Element e)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -986,13 +649,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element to be written,
-   * if appropriate.  If it is to be logged, then it will be sent to the
-   * underlying logger using the {@code INFO} level.
-   *
-   * @param  b  The ASN.1 buffer with the information to be written.
-   */
   public static void debugASN1Write(final ASN1Buffer b)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -1003,13 +659,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element to be written,
-   * if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  b  The ASN1Buffer with the information to be written.
-   */
+
   public static void debugASN1Write(final Level l, final ASN1Buffer b)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -1026,13 +676,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element that was read, if
-   * appropriate.  If it is to be logged, then it will be sent to the underlying
-   * logger using the {@code INFO} level.
-   *
-   * @param  e  The ASN.1 element for which debug information should be written.
-   */
+
   public static void debugASN1Read(final ASN1Element e)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -1043,13 +687,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided ASN.1 element that was read, if
-   * appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  e  The ASN.1 element for which debug information should be written.
-   */
+
   public static void debugASN1Read(final Level l, final ASN1Element e)
   {
     if (debugEnabled && debugTypes.contains(DebugType.ASN1))
@@ -1066,13 +704,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided LDIF record to be written, if
-   * if appropriate.  If it is to be logged, then it will be sent to the
-   * underlying logger using the {@code INFO} level.
-   *
-   * @param  r  The LDIF record for which debug information should be written.
-   */
   public static void debugLDIFWrite(final LDIFRecord r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDIF))
@@ -1083,13 +714,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided LDIF record to be written, if
-   * appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The LDIF record for which debug information should be written.
-   */
   public static void debugLDIFWrite(final Level l, final LDIFRecord r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDIF))
@@ -1106,13 +730,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided record read from LDIF, if
-   * appropriate.  If it is to be logged, then it will be sent to the underlying
-   * logger using the {@code INFO} level.
-   *
-   * @param  r  The LDIF record for which debug information should be written.
-   */
   public static void debugLDIFRead(final LDIFRecord r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDIF))
@@ -1123,13 +740,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about the provided record read from LDIF, if
-   * appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  r  The LDIF record for which debug information should be written.
-   */
   public static void debugLDIFRead(final Level l, final LDIFRecord r)
   {
     if (debugEnabled && debugTypes.contains(DebugType.LDIF))
@@ -1146,14 +756,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about monitor entry parsing.  If it is to be
-   * logged, then it will be sent to the underlying logger using the
-   * {@code FINE} level.
-   *
-   * @param  e  The entry containing the monitor information being parsed.
-   * @param  m  The message to be written to the debug logger.
-   */
+
   public static void debugMonitor(final Entry e, final String m)
   {
     if (debugEnabled && debugTypes.contains(DebugType.MONITOR))
@@ -1164,13 +767,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about monitor entry parsing, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  e  The entry containing the monitor information being parsed.
-   * @param  m  The message to be written to the debug logger.
-   */
   public static void debugMonitor(final Level l, final Entry e, final String m)
   {
     if (debugEnabled && debugTypes.contains(DebugType.MONITOR))
@@ -1189,14 +785,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes debug information about a coding error detected in the use of the
-   * LDAP SDK.  If it is to be logged, then it will be sent to the underlying
-   * logger using the {@code SEVERE} level.
-   *
-   * @param  t  The {@code Throwable} object that was created and will be thrown
-   *            as a result of the coding error.
-   */
+
   public static void debugCodingError(final Throwable t)
   {
     if (debugEnabled && debugTypes.contains(DebugType.CODING_ERROR))
@@ -1213,13 +802,7 @@ public final class Debug
 
 
 
-  /**
-   * Writes a generic debug message, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  t  The debug type to use to determine whether to write the message.
-   * @param  m  The message to be written.
-   */
+
   public static void debug(final Level l, final DebugType t, final String m)
   {
     if (debugEnabled && debugTypes.contains(t))
@@ -1236,14 +819,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes a generic debug message, if appropriate.
-   *
-   * @param  l  The log level that should be used for the debug information.
-   * @param  t  The debug type to use to determine whether to write the message.
-   * @param  m  The message to be written.
-   * @param  e  An exception to include with the log message.
-   */
   public static void debug(final Level l, final DebugType t, final String m,
                            final Throwable e)
   {
@@ -1264,14 +839,6 @@ public final class Debug
 
 
 
-  /**
-   * Writes common header information to the provided buffer.  It will include
-   * the thread ID, name, and caller stack trace (optional), and it will be
-   * followed by a trailing space.
-   *
-   * @param  buffer  The buffer to which the information should be appended.
-   * @param  level   The log level for the message that will be written.
-   */
   private static void addCommonHeader(final StringBuilder buffer,
                                       final Level level)
   {
@@ -1324,7 +891,6 @@ public final class Debug
     }
 
     buffer.append("\" revision=");
-    buffer.append(Version.REVISION_NUMBER);
     buffer.append(' ');
   }
 }

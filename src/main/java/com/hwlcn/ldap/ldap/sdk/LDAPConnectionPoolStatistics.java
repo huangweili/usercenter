@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -30,104 +10,46 @@ import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
-
-/**
- * This class provides a data structure with information about usage of an LDAP
- * connection pool.  Calls to update statistics maintained by this class are
- * threadsafe, but attempts to access different statistics may not be consistent
- * if operations may be in progress in the connection pool.
- * <BR><BR>
- * The set of statistics maintained for connection pools include:
- * <UL>
- *   <LI>The current number of connections that are available within the
- *       pool.</LI>
- *   <LI>The maximum number of connections that may be available within the
- *       pool.</LI>
- *   <LI>The total number of connections that have been successfully checked out
- *       of the pool.</LI>
- *   <LI>The number of connections that have been successfully checked out of
- *       of the pool without needing to wait for a connection to become
- *       available.
- *   <LI>The number of connections that have been successfully checked out of
- *       the pool after waiting for a connection to become available.</LI>
- *   <LI>The number of connections that have been successfully checked out of
- *       the pool after creating a new connection to service the request.</LI>
- *   <LI>The number of failed attempts to check a connection out of the
- *       pool.</LI>
- *   <LI>The number of connections that have been released back to the pool as
- *       valid.</LI>
- *   <LI>The number of connections that have been closed as defunct.</LI>
- *   <LI>The number of connections that have been closed as expired (i.e., that
- *       had been established for the maximum connection age).</LI>
- *   <LI>The number of connections that have been closed as unneeded (because
- *       the pool already had the maximum number of available connections).</LI>
- *   <LI>The number of successful attempts to create a new connection for use in
- *       the pool.</LI>
- *   <LI>The number of failed attempts to create a new connection for use in the
- *       pool.</LI>
- * </UL>
- */
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.MOSTLY_THREADSAFE)
 public final class LDAPConnectionPoolStatistics
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 1493039391352814874L;
 
 
 
-  // The number of connections that have been closed as defunct.
   private final AtomicLong numConnectionsClosedDefunct;
 
-  // The number of connections that have been closed because they were expired.
   private final AtomicLong numConnectionsClosedExpired;
 
-  // The number of connections that have been closed because they were no longer
-  // needed.
   private final AtomicLong numConnectionsClosedUnneeded;
 
-  // The number of failed attempts to check out a connection from the pool.
   private final AtomicLong numFailedCheckouts;
 
-  // The number of failed attempts to create a connection for use in the pool.
   private final AtomicLong numFailedConnectionAttempts;
 
-  // The number of valid connections released back to the pool.
   private final AtomicLong numReleasedValid;
 
-  // The number of successful attempts to check out a connection from the pool.
   private final AtomicLong numSuccessfulCheckouts;
 
-  // The number of successful checkout attempts that retrieved a connection from
-  // the pool after waiting for it to become available.
+
   private final AtomicLong numSuccessfulCheckoutsAfterWait;
 
-  // The number of successful checkout attempts that had to create a new
-  // connection because none were available.
+
   private final AtomicLong numSuccessfulCheckoutsNewConnection;
 
-  // The number of successful checkout attempts that were able to take an
-  // existing connection without waiting.
+
   private final AtomicLong numSuccessfulCheckoutsWithoutWait;
 
-  // The number successful attempts to create a connection for use in the pool.
   private final AtomicLong numSuccessfulConnectionAttempts;
 
-  // The connection pool with which these statistics are associated.
   private final AbstractConnectionPool pool;
 
 
 
-  /**
-   * Creates a new instance of this LDAP connection pool statistics object.  All
-   * of the counts will be initialized to zero.
-   *
-   * @param  pool  The connection pool with which these statistics are
-   *               associated.
-   */
+
   public LDAPConnectionPoolStatistics(final AbstractConnectionPool pool)
   {
     this.pool = pool;
@@ -147,9 +69,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Resets all counters back to zero.
-   */
+
   public void reset()
   {
     numSuccessfulConnectionAttempts.set(0L);
@@ -167,13 +87,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of connections that have been successfully created for
-   * use in conjunction with the connection pool.
-   *
-   * @return  The number of connections that have been created for use in
-   *          conjunction with the connection pool.
-   */
   public long getNumSuccessfulConnectionAttempts()
   {
     return numSuccessfulConnectionAttempts.get();
@@ -181,10 +94,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of connections that have been successfully created
-   * for use in conjunction with the connection pool.
-   */
   void incrementNumSuccessfulConnectionAttempts()
   {
     numSuccessfulConnectionAttempts.incrementAndGet();
@@ -192,13 +101,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of failed attempts to create a connection for use in
-   * the connection pool.
-   *
-   * @return  The number of failed attempts to create a connection for use in
-   *          the connection pool.
-   */
+
   public long getNumFailedConnectionAttempts()
   {
     return numFailedConnectionAttempts.get();
@@ -206,10 +109,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of failed attempts to create a connection for use in
-   * the connection pool.
-   */
   void incrementNumFailedConnectionAttempts()
   {
     numFailedConnectionAttempts.incrementAndGet();
@@ -217,22 +116,13 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of connections that have been closed as defunct (i.e.,
-   * they are no longer believed to be valid).
-   *
-   * @return  The number of connections that have been closed as defunct.
-   */
+
   public long getNumConnectionsClosedDefunct()
   {
     return numConnectionsClosedDefunct.get();
   }
 
 
-
-  /**
-   * Increments the number of connections that have been closed as defunct.
-   */
   void incrementNumConnectionsClosedDefunct()
   {
     numConnectionsClosedDefunct.incrementAndGet();
@@ -240,23 +130,13 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of connections that have been closed as expired (i.e.,
-   * they have been established for longer than the maximum connection age for
-   * the pool).
-   *
-   * @return  The number of connections that have been closed as expired.
-   */
+
   public long getNumConnectionsClosedExpired()
   {
     return numConnectionsClosedExpired.get();
   }
 
 
-
-  /**
-   * Increments the number of connections that have been closed as expired.
-   */
   void incrementNumConnectionsClosedExpired()
   {
     numConnectionsClosedExpired.incrementAndGet();
@@ -264,23 +144,13 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of connections that have been closed as unneeded
-   * (i.e., they were created in response to heavy load but are no longer needed
-   * to meet the current load, or they were closed when the pool was closed).
-   *
-   * @return  The number of connections that have been closed as unneeded.
-   */
+
   public long getNumConnectionsClosedUnneeded()
   {
     return numConnectionsClosedUnneeded.get();
   }
 
 
-
-  /**
-   * Increments the number of connections that have been closed as unneeded.
-   */
   void incrementNumConnectionsClosedUnneeded()
   {
     numConnectionsClosedUnneeded.incrementAndGet();
@@ -288,14 +158,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of successful attempts to check out a connection from
-   * the pool (including connections checked out for internal use by operations
-   * processed as part of the pool).
-   *
-   * @return  The number of successful attempts to check out a connection from
-   *          the pool.
-   */
+
   public long getNumSuccessfulCheckouts()
   {
     return numSuccessfulCheckouts.get();
@@ -303,14 +166,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of successful attempts to check out a connection from
-   * the pool that were able to obtain an existing connection without waiting.
-   *
-   * @return  The number of successful attempts to check out a connection from
-   *          the pool that were able to obtain an existing connection without
-   *          waiting.
-   */
+
   public long getNumSuccessfulCheckoutsWithoutWaiting()
   {
     return numSuccessfulCheckoutsWithoutWait.get();
@@ -318,13 +174,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of successful attempts to check out a connection from
-   * the pool that had to wait for a connection to become available.
-   *
-   * @return  The number of successful attempts to check out a connection from
-   *          the pool that had to wait for a connection to become available.
-   */
   public long getNumSuccessfulCheckoutsAfterWaiting()
   {
     return numSuccessfulCheckoutsAfterWait.get();
@@ -332,15 +181,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of successful attempts to check out a connection from
-   * the pool that had to create a new connection because no existing
-   * connections were available.
-   *
-   * @return  The number of successful attempts to check out a connection from
-   *          the pool that had to create a new connection because no existing
-   *          connections were available.
-   */
   public long getNumSuccessfulCheckoutsNewConnection()
   {
     return numSuccessfulCheckoutsNewConnection.get();
@@ -348,10 +188,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of successful attempts to check out a connection from
-   * the pool without waiting.
-   */
+
   void incrementNumSuccessfulCheckoutsWithoutWaiting()
   {
    numSuccessfulCheckouts.incrementAndGet();
@@ -360,22 +197,12 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of successful attempts to check out a connection from
-   * the pool after waiting.
-   */
   void incrementNumSuccessfulCheckoutsAfterWaiting()
   {
    numSuccessfulCheckouts.incrementAndGet();
    numSuccessfulCheckoutsAfterWait.incrementAndGet();
   }
 
-
-
-  /**
-   * Increments the number of successful attempts to check out a connection from
-   * the pool after creating a new connection.
-   */
   void incrementNumSuccessfulCheckoutsNewConnection()
   {
    numSuccessfulCheckouts.incrementAndGet();
@@ -383,15 +210,6 @@ public final class LDAPConnectionPoolStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of failed attempts to check out a connection from
-   * the pool (including connections checked out for internal use by operations
-   * processed as part of the pool).
-   *
-   * @return  The number of failed attempts to check out a connection from
-   *          the pool.
-   */
   public long getNumFailedCheckouts()
   {
     return numFailedCheckouts.get();
@@ -399,25 +217,12 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of failed attempts to check out a connection from
-   * the pool.
-   */
   void incrementNumFailedCheckouts()
   {
    numFailedCheckouts.incrementAndGet();
   }
 
 
-
-  /**
-   * Retrieves the number of times a valid, usable connection has been released
-   * back to the pool after being checked out (including connections checked out
-   * for internal use by operations processed within the pool).
-   *
-   * @return  The number of times a valid connection has been released back to
-   *          the pool.
-   */
   public long getNumReleasedValid()
   {
     return numReleasedValid.get();
@@ -425,10 +230,6 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Increments the number of times a valid, usable connection has been released
-   * back to the pool.
-   */
   void incrementNumReleasedValid()
   {
    numReleasedValid.incrementAndGet();
@@ -436,29 +237,13 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves the number of connections currently available for use in the
-   * pool, if that information is available.
-   *
-   * @return  The number of connections currently available for use in the pool,
-   *          or -1 if that is not applicable for the associated connection pool
-   *          implementation.
-   */
+
   public int getNumAvailableConnections()
   {
     return pool.getCurrentAvailableConnections();
   }
 
 
-
-  /**
-   * Retrieves the maximum number of connections that may be available in the
-   * pool at any time, if that information is available.
-   *
-   * @return  The maximum number of connections that may be available in the
-   *          pool at any time, or -1 if that is not applicable for the
-   *          associated connection pool implementation.
-   */
   public int getMaximumAvailableConnections()
   {
     return pool.getMaximumAvailableConnections();
@@ -466,13 +251,7 @@ public final class LDAPConnectionPoolStatistics
 
 
 
-  /**
-   * Retrieves a string representation of this LDAP connection pool statistics
-   * object.
-   *
-   * @return  A string representation of this LDAP connection pool statistics
-   *          object.
-   */
+
   @Override()
   public String toString()
   {
@@ -482,14 +261,6 @@ public final class LDAPConnectionPoolStatistics
   }
 
 
-
-  /**
-   * Appends a string representation of this LDAP connection pool statistics
-   * object to the provided buffer.
-   *
-   * @param  buffer  The buffer to which the string representation should be
-   *                 appended.
-   */
   public void toString(final StringBuilder buffer)
   {
     final long availableConns      = pool.getCurrentAvailableConnections();

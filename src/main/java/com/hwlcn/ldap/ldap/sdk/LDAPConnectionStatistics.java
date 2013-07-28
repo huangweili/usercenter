@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -32,25 +13,6 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
 
-/**
- * This class provides a data structure with information about operations
- * performed on an associated LDAP connection.  Calls to update statistics
- * maintained by this class are threadsafe, but attempts to access different
- * statistics may not be consistent if other operations may be in progress on
- * the connection.
- * <BR><BR>
- * The set of statistics maintained for connections:
- * <UL>
- *   <LI>The number of attempts made to establish the connection.</LI>
- *   <LI>The number of times the connection has been closed.</LI>
- *   <LI>The number of requests of each type that have been sent over the
- *       connection.</LI>
- *   <LI>The number of responses of each type that have been received over the
- *       connection.</LI>
- *   <LI>The average response time (in milliseconds or nanoseconds) for each
- *       type of operation processed on the connection.</LI>
- * </UL>
- */
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.MOSTLY_THREADSAFE)
 public final class LDAPConnectionStatistics
@@ -63,107 +25,67 @@ public final class LDAPConnectionStatistics
 
 
 
-  // The number of abandon requests sent over the associated connection.
   private final AtomicLong numAbandonRequests;
 
-  // The number of add requests sent over the associated connection.
   private final AtomicLong numAddRequests;
 
-  // The number of add responses received on the associated connection.
   private final AtomicLong numAddResponses;
 
-  // The number of bind requests sent over the associated connection.
   private final AtomicLong numBindRequests;
-
-  // The number of bind responses received on the associated connection.
   private final AtomicLong numBindResponses;
 
-  // The number of compare requests sent over the associated connection.
   private final AtomicLong numCompareRequests;
 
-  // The number of compare responses received on the associated connection.
   private final AtomicLong numCompareResponses;
 
-  // The number of times the associated connection has been connected to a
-  // server.
   private final AtomicLong numConnects;
 
-  // The number of delete requests sent over the associated connection.
   private final AtomicLong numDeleteRequests;
 
-  // The number of delete responses received on the associated connection.
   private final AtomicLong numDeleteResponses;
 
-  // The number of times the associated connection has been disconnected from a
-  // server.
   private final AtomicLong numDisconnects;
 
-  // The number of extended requests sent over the associated connection.
   private final AtomicLong numExtendedRequests;
 
-  // The number of extended responses received on the associated connection.
   private final AtomicLong numExtendedResponses;
 
-  // The number of modify requests sent over the associated connection.
   private final AtomicLong numModifyRequests;
 
-  // The number of modify responses received on the associated connection.
   private final AtomicLong numModifyResponses;
 
-  // The number of modify DN requests sent over the associated connection.
-  private final AtomicLong numModifyDNRequests;
+ private final AtomicLong numModifyDNRequests;
 
-  // The number of modify DN responses received on the associated connection.
   private final AtomicLong numModifyDNResponses;
 
-  // The number of search requests sent over the associated connection.
-  private final AtomicLong numSearchRequests;
+ private final AtomicLong numSearchRequests;
 
-  // The number of search result entry responses received on the associated
-  // connection.
-  private final AtomicLong numSearchEntryResponses;
+ private final AtomicLong numSearchEntryResponses;
 
-  // The number of search result reference responses received on the associated
-  // connection.
-  private final AtomicLong numSearchReferenceResponses;
+private final AtomicLong numSearchReferenceResponses;
 
-  // The number of search result done responses received on the associated
-  // connection.
   private final AtomicLong numSearchDoneResponses;
 
-  // The number of unbind requests sent over the associated connection.
   private final AtomicLong numUnbindRequests;
 
-  // The total length of time spent waiting for add responses.
   private final AtomicLong totalAddResponseTime;
 
-  // The total length of time spent waiting for bind responses.
   private final AtomicLong totalBindResponseTime;
 
-  // The total length of time spent waiting for compare responses.
   private final AtomicLong totalCompareResponseTime;
 
-  // The total length of time spent waiting for delete responses.
   private final AtomicLong totalDeleteResponseTime;
 
-  // The total length of time spent waiting for extended responses.
   private final AtomicLong totalExtendedResponseTime;
 
-  // The total length of time spent waiting for modify responses.
   private final AtomicLong totalModifyResponseTime;
 
-  // The total length of time spent waiting for modify DN responses.
   private final AtomicLong totalModifyDNResponseTime;
 
-  // The total length of time spent waiting for search done responses.
   private final AtomicLong totalSearchResponseTime;
 
 
 
-  /**
-   * Creates a new instance of this LDAP connection statistics object.  All of
-   * the counts will be initialized to zero.
-   */
   public LDAPConnectionStatistics()
   {
     numAbandonRequests          = new AtomicLong(0L);
@@ -200,9 +122,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Resets all counters back to zero.
-   */
   public void reset()
   {
     numAbandonRequests.set(0L);
@@ -239,13 +158,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of times an attempt has been made to establish the
-   * associated connection.
-   *
-   * @return  The number of times an attempt has been made to establish the
-   *          associated connection.
-   */
+
   public long getNumConnects()
   {
     return numConnects.get();
@@ -253,10 +166,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of times an attempt has been made to establish the
-   * associated connection.
-   */
   void incrementNumConnects()
   {
     numConnects.incrementAndGet();
@@ -264,14 +173,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of times the associated connection has been
-   * terminated.  Note that this may exceed the number of connection attempts
-   * because there may be cases in which an attempt is made to close a
-   * connection after it has already been closed or otherwise disconnected.
-   *
-   * @return  The number of times the associated connection has been terminated.
-   */
   public long getNumDisconnects()
   {
     return numDisconnects.get();
@@ -279,10 +180,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of times an attempt has been made to terminate the
-   * associated connection.
-   */
   void incrementNumDisconnects()
   {
     numDisconnects.incrementAndGet();
@@ -290,11 +187,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of abandon requests sent on the associated connection.
-   *
-   * @return  The number of abandon requests sent on the associated connection.
-   */
   public long getNumAbandonRequests()
   {
     return numAbandonRequests.get();
@@ -302,10 +194,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of abandon requests sent on the associated
-   * connection.
-   */
   void incrementNumAbandonRequests()
   {
     numAbandonRequests.incrementAndGet();
@@ -313,11 +201,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of add requests sent on the associated connection.
-   *
-   * @return  The number of add requests sent on the associated connection.
-   */
   public long getNumAddRequests()
   {
     return numAddRequests.get();
@@ -325,21 +208,12 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of add requests sent on the associated connection.
-   */
   void incrementNumAddRequests()
   {
     numAddRequests.incrementAndGet();
   }
 
 
-
-  /**
-   * Retrieves the number of add responses sent on the associated connection.
-   *
-   * @return  The number of add responses sent on the associated connection.
-   */
   public long getNumAddResponses()
   {
     return numAddResponses.get();
@@ -347,12 +221,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of add responses sent on the associated connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumAddResponses(final long responseTime)
   {
     numAddResponses.incrementAndGet();
@@ -364,28 +232,11 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the total response time in nanoseconds for all add operations
-   * processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all add operations
-   *          processed on the associated connection.
-   */
   public long getTotalAddResponseTimeNanos()
   {
     return totalAddResponseTime.get();
   }
 
-
-
-  /**
-   * Retrieves the total response time in milliseconds for all add operations
-   * processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all add operations
-   *          processed on the associated connection.
-   */
   public long getTotalAddResponseTimeMillis()
   {
     return Math.round(totalAddResponseTime.get() / 1000000.0d);
@@ -393,14 +244,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all add operations
-   * processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all add operations
-   *          processed on the associated connection, or {@code Double.NaN} if
-   *          no add operations have yet been performed.
-   */
   public double getAverageAddResponseTimeNanos()
   {
     final long totalTime  = totalAddResponseTime.get();
@@ -418,14 +261,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in milliseconds for all add operations
-   * processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all add operations
-   *          processed on the associated connection, or {@code Double.NaN} if
-   *          no add operations have yet been performed.
-   */
   public double getAverageAddResponseTimeMillis()
   {
     final long totalTime  = totalAddResponseTime.get();
@@ -442,22 +277,12 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of bind requests sent on the associated connection.
-   *
-   * @return  The number of bind requests sent on the associated connection.
-   */
   public long getNumBindRequests()
   {
     return numBindRequests.get();
   }
 
 
-
-  /**
-   * Increments the number of bind requests sent on the associated connection.
-   */
   void incrementNumBindRequests()
   {
     numBindRequests.incrementAndGet();
@@ -465,11 +290,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of bind responses sent on the associated connection.
-   *
-   * @return  The number of bind responses sent on the associated connection.
-   */
   public long getNumBindResponses()
   {
     return numBindResponses.get();
@@ -477,12 +297,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of bind responses sent on the associated connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumBindResponses(final long responseTime)
   {
     numBindResponses.incrementAndGet();
@@ -495,13 +309,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in nanoseconds for all bind operations
-   * processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all bind operations
-   *          processed on the associated connection.
-   */
   public long getTotalBindResponseTimeNanos()
   {
     return totalBindResponseTime.get();
@@ -509,13 +316,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in milliseconds for all bind operations
-   * processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all bind operations
-   *          processed on the associated connection.
-   */
   public long getTotalBindResponseTimeMillis()
   {
     return Math.round(totalBindResponseTime.get() / 1000000.0d);
@@ -523,14 +323,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all bind operations
-   * processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all bind operations
-   *          processed on the associated connection, or {@code Double.NaN} if
-   *          no bind operations have yet been performed.
-   */
   public double getAverageBindResponseTimeNanos()
   {
     final long totalTime  = totalBindResponseTime.get();
@@ -546,16 +338,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the average response time in milliseconds for all bind operations
-   * processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all bind operations
-   *          processed on the associated connection, or {@code Double.NaN} if
-   *          no bind operations have yet been performed.
-   */
   public double getAverageBindResponseTimeMillis()
   {
     final long totalTime  = totalBindResponseTime.get();
@@ -572,12 +354,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of compare requests sent on the associated connection.
-   *
-   * @return  The number of compare requests sent on the associated connection.
-   */
   public long getNumCompareRequests()
   {
     return numCompareRequests.get();
@@ -585,37 +361,19 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of compare requests sent on the associated
-   * connection.
-   */
+
   void incrementNumCompareRequests()
   {
     numCompareRequests.incrementAndGet();
   }
 
 
-
-  /**
-   * Retrieves the number of compare responses sent on the associated
-   * connection.
-   *
-   * @return  The number of compare responses sent on the associated connection.
-   */
   public long getNumCompareResponses()
   {
     return numCompareResponses.get();
   }
 
 
-
-  /**
-   * Increments the number of compare responses sent on the associated
-   * connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumCompareResponses(final long responseTime)
   {
     numCompareResponses.incrementAndGet();
@@ -626,15 +384,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the total response time in nanoseconds for all compare
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all compare operations
-   *          processed on the associated connection.
-   */
   public long getTotalCompareResponseTimeNanos()
   {
     return totalCompareResponseTime.get();
@@ -642,13 +391,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in milliseconds for all compare
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all compare operations
-   *          processed on the associated connection.
-   */
   public long getTotalCompareResponseTimeMillis()
   {
     return Math.round(totalCompareResponseTime.get() / 1000000.0d);
@@ -656,15 +398,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all compare
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all compare
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no compare operations have yet been
-   *          performed.
-   */
   public double getAverageCompareResponseTimeNanos()
   {
     final long totalTime  = totalCompareResponseTime.get();
@@ -680,17 +413,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the average response time in milliseconds for all compare
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all compare
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no compare operations have yet been
-   *          performed.
-   */
   public double getAverageCompareResponseTimeMillis()
   {
     final long totalTime  = totalCompareResponseTime.get();
@@ -708,47 +430,24 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of delete requests sent on the associated connection.
-   *
-   * @return  The number of delete requests sent on the associated connection.
-   */
   public long getNumDeleteRequests()
   {
     return numDeleteRequests.get();
   }
 
 
-
-  /**
-   * Increments the number of delete requests sent on the associated connection.
-   */
   void incrementNumDeleteRequests()
   {
     numDeleteRequests.incrementAndGet();
   }
 
 
-
-  /**
-   * Retrieves the number of delete responses sent on the associated connection.
-   *
-   * @return  The number of delete responses sent on the associated connection.
-   */
   public long getNumDeleteResponses()
   {
     return numDeleteResponses.get();
   }
 
 
-
-  /**
-   * Increments the number of delete responses sent on the associated
-   * connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumDeleteResponses(final long responseTime)
   {
     numDeleteResponses.incrementAndGet();
@@ -761,13 +460,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in nanoseconds for all delete
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all delete operations
-   *          processed on the associated connection.
-   */
   public long getTotalDeleteResponseTimeNanos()
   {
     return totalDeleteResponseTime.get();
@@ -775,13 +467,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in milliseconds for all delete
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all delete operations
-   *          processed on the associated connection.
-   */
   public long getTotalDeleteResponseTimeMillis()
   {
     return Math.round(totalDeleteResponseTime.get() / 1000000.0d);
@@ -789,15 +474,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all delete
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all delete
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no delete operations have yet been
-   *          performed.
-   */
   public double getAverageDeleteResponseTimeNanos()
   {
     final long totalTime  = totalDeleteResponseTime.get();
@@ -815,15 +491,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in milliseconds for all delete
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all delete
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no delete operations have yet been
-   *          performed.
-   */
   public double getAverageDeleteResponseTimeMillis()
   {
     final long totalTime  = totalDeleteResponseTime.get();
@@ -841,23 +508,12 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of extended requests sent on the associated
-   * connection.
-   *
-   * @return  The number of extended requests sent on the associated connection.
-   */
   public long getNumExtendedRequests()
   {
     return numExtendedRequests.get();
   }
 
 
-
-  /**
-   * Increments the number of extended requests sent on the associated
-   * connection.
-   */
   void incrementNumExtendedRequests()
   {
     numExtendedRequests.incrementAndGet();
@@ -865,13 +521,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of extended responses sent on the associated
-   * connection.
-   *
-   * @return  The number of extended responses sent on the associated
-   *          connection.
-   */
+
   public long getNumExtendedResponses()
   {
     return numExtendedResponses.get();
@@ -879,13 +529,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of extended responses sent on the associated
-   * connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
+
   void incrementNumExtendedResponses(final long responseTime)
   {
     numExtendedResponses.incrementAndGet();
@@ -898,27 +542,12 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in nanoseconds for all extended
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all extended
-   *          operations processed on the associated connection.
-   */
   public long getTotalExtendedResponseTimeNanos()
   {
     return totalExtendedResponseTime.get();
   }
 
 
-
-  /**
-   * Retrieves the total response time in milliseconds for all extended
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all extended
-   *          operations processed on the associated connection.
-   */
   public long getTotalExtendedResponseTimeMillis()
   {
     return Math.round(totalExtendedResponseTime.get() / 1000000.0d);
@@ -926,15 +555,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all extended
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all extended
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no extended operations have yet been
-   *          performed.
-   */
   public double getAverageExtendedResponseTimeNanos()
   {
     final long totalTime  = totalExtendedResponseTime.get();
@@ -950,17 +570,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the average response time in milliseconds for all extended
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all extended
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no extended operations have yet been
-   *          performed.
-   */
   public double getAverageExtendedResponseTimeMillis()
   {
     final long totalTime  = totalExtendedResponseTime.get();
@@ -977,12 +586,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of modify requests sent on the associated connection.
-   *
-   * @return  The number of modify requests sent on the associated connection.
-   */
   public long getNumModifyRequests()
   {
     return numModifyRequests.get();
@@ -990,21 +593,12 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of modify requests sent on the associated connection.
-   */
   void incrementNumModifyRequests()
   {
     numModifyRequests.incrementAndGet();
   }
 
 
-
-  /**
-   * Retrieves the number of modify responses sent on the associated connection.
-   *
-   * @return  The number of modify responses sent on the associated connection.
-   */
   public long getNumModifyResponses()
   {
     return numModifyResponses.get();
@@ -1012,13 +606,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of modify responses sent on the associated
-   * connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumModifyResponses(final long responseTime)
   {
     numModifyResponses.incrementAndGet();
@@ -1031,13 +618,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in nanoseconds for all modify
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all modify operations
-   *          processed on the associated connection.
-   */
   public long getTotalModifyResponseTimeNanos()
   {
     return totalModifyResponseTime.get();
@@ -1045,13 +625,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in milliseconds for all modify
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all modify operations
-   *          processed on the associated connection.
-   */
   public long getTotalModifyResponseTimeMillis()
   {
     return Math.round(totalModifyResponseTime.get() / 1000000.0d);
@@ -1059,15 +632,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all modify
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all modify
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no modify operations have yet been
-   *          performed.
-   */
+
   public double getAverageModifyResponseTimeNanos()
   {
     final long totalTime  = totalModifyResponseTime.get();
@@ -1083,17 +648,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the average response time in milliseconds for all modify
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all modify
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no modify operations have yet been
-   *          performed.
-   */
   public double getAverageModifyResponseTimeMillis()
   {
     final long totalTime  = totalModifyResponseTime.get();
@@ -1109,15 +663,6 @@ public final class LDAPConnectionStatistics
     }
   }
 
-
-
-  /**
-   * Retrieves the number of modify DN requests sent on the associated
-   * connection.
-   *
-   * @return  The number of modify DN requests sent on the associated
-   *          connection.
-   */
   public long getNumModifyDNRequests()
   {
     return numModifyDNRequests.get();
@@ -1125,10 +670,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of modify DN requests sent on the associated
-   * connection.
-   */
+
   void incrementNumModifyDNRequests()
   {
     numModifyDNRequests.incrementAndGet();
@@ -1136,27 +678,12 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of modify DN responses sent on the associated
-   * connection.
-   *
-   * @return  The number of modify DN responses sent on the associated
-   *          connection.
-   */
   public long getNumModifyDNResponses()
   {
     return numModifyDNResponses.get();
   }
 
 
-
-  /**
-   * Increments the number of modify DN responses sent on the associated
-   * connection.
-   *
-   * @param  responseTime  The length of time in nanoseconds between sending
-   *                       the request and receiving the response.
-   */
   void incrementNumModifyDNResponses(final long responseTime)
   {
     numModifyDNResponses.incrementAndGet();
@@ -1168,14 +695,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the total response time in nanoseconds for all modify DN
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all modify DN
-   *          operations processed on the associated connection.
-   */
   public long getTotalModifyDNResponseTimeNanos()
   {
     return totalModifyDNResponseTime.get();
@@ -1183,13 +702,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in milliseconds for all modify DN
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all modify DN
-   *          operations processed on the associated connection.
-   */
+
   public long getTotalModifyDNResponseTimeMillis()
   {
     return Math.round(totalModifyDNResponseTime.get() / 1000000.0d);
@@ -1197,15 +710,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in nanoseconds for all modify DN
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all modify DN
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no modify DN operations have yet been
-   *          performed.
-   */
   public double getAverageModifyDNResponseTimeNanos()
   {
     final long totalTime  = totalModifyDNResponseTime.get();
@@ -1222,16 +726,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the average response time in milliseconds for all modify DN
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all modify DN
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no modify DN operations have yet been
-   *          performed.
-   */
   public double getAverageModifyDNResponseTimeMillis()
   {
     final long totalTime  = totalModifyDNResponseTime.get();
@@ -1248,23 +742,11 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of search requests sent on the associated connection.
-   *
-   * @return  The number of search requests sent on the associated connection.
-   */
   public long getNumSearchRequests()
   {
     return numSearchRequests.get();
   }
 
-
-
-  /**
-   * Increments the number of search requests sent on the associated
-   * connection.
-   */
   void incrementNumSearchRequests()
   {
     numSearchRequests.incrementAndGet();
@@ -1272,13 +754,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of search result entry responses received on the
-   * associated connection.
-   *
-   * @return  The number of search result entry responses received on the
-   *          associated connection.
-   */
   public long getNumSearchEntryResponses()
   {
     return numSearchEntryResponses.get();
@@ -1286,27 +761,11 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the number of search result reference responses received on the
-   * associated connection.
-   *
-   * @return  The number of search result reference responses received on the
-   *          associated connection.
-   */
   public long getNumSearchReferenceResponses()
   {
     return numSearchReferenceResponses.get();
   }
 
-
-
-  /**
-   * Retrieves the number of search result done responses received on the
-   * associated connection.
-   *
-   * @return  The number of search result done responses received on the
-   *          associated connection.
-   */
   public long getNumSearchDoneResponses()
   {
     return numSearchDoneResponses.get();
@@ -1314,18 +773,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of search result done responses received on the
-   * associated connection.
-   *
-   * @param  numEntries     The number of search result entries returned for the
-   *                        search.
-   * @param  numReferences  The number of search result references returned for
-   *                        the search.
-   * @param  responseTime   The length of time in nanoseconds between sending
-   *                        the search request and receiving the search result
-   *                        done response.
-   */
+
   void incrementNumSearchResponses(final int numEntries,
                                    final int numReferences,
                                    final long responseTime)
@@ -1342,43 +790,18 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the total response time in nanoseconds for all search
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in nanoseconds for all search operations
-   *          processed on the associated connection.
-   */
   public long getTotalSearchResponseTimeNanos()
   {
     return totalSearchResponseTime.get();
   }
 
 
-
-  /**
-   * Retrieves the total response time in milliseconds for all search
-   * operations processed on the associated connection.
-   *
-   * @return  The total response time in milliseconds for all search operations
-   *          processed on the associated connection.
-   */
   public long getTotalSearchResponseTimeMillis()
   {
     return Math.round(totalSearchResponseTime.get() / 1000000.0d);
   }
 
 
-
-  /**
-   * Retrieves the average response time in nanoseconds for all search
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in nanoseconds for all search
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no compare operations have yet been
-   *          performed.
-   */
   public double getAverageSearchResponseTimeNanos()
   {
     final long totalTime  = totalSearchResponseTime.get();
@@ -1396,15 +819,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves the average response time in milliseconds for all search
-   * operations processed on the associated connection.
-   *
-   * @return  The average response time in milliseconds for all search
-   *          operations processed on the associated connection, or
-   *          {@code Double.NaN} if no compare operations have yet been
-   *          performed.
-   */
   public double getAverageSearchResponseTimeMillis()
   {
     final long totalTime  = totalSearchResponseTime.get();
@@ -1421,12 +835,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Retrieves the number of unbind requests sent on the associated connection.
-   *
-   * @return  The number of unbind requests sent on the associated connection.
-   */
   public long getNumUnbindRequests()
   {
     return numUnbindRequests.get();
@@ -1434,10 +842,7 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Increments the number of unbind requests sent on the associated
-   * connection.
-   */
+
   void incrementNumUnbindRequests()
   {
     numUnbindRequests.incrementAndGet();
@@ -1445,12 +850,6 @@ public final class LDAPConnectionStatistics
 
 
 
-  /**
-   * Retrieves a string representation of this LDAP connection statistics
-   * object.
-   *
-   * @return  A string representation of this LDAP connection statistics object.
-   */
   @Override()
   public String toString()
   {
@@ -1460,14 +859,6 @@ public final class LDAPConnectionStatistics
   }
 
 
-
-  /**
-   * Appends a string representation of this LDAP connection statistics object
-   * to the provided buffer.
-   *
-   * @param  buffer  The buffer to which the string representation should be
-   *                 appended.
-   */
   public void toString(final StringBuilder buffer)
   {
     final long connects          = numConnects.get();

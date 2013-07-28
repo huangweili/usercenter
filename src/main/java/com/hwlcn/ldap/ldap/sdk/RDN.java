@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -44,71 +24,32 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class provides a data structure for holding information about an LDAP
- * relative distinguished name (RDN).  An RDN consists of one or more
- * attribute name-value pairs.  See
- * <A HREF="http://www.ietf.org/rfc/rfc4514.txt">RFC 4514</A> for more
- * information about representing DNs and RDNs as strings.  See the
- * documentation in the {@link com.hwlcn.ldap.ldap.sdk.DN} class for more information about DNs and
- * RDNs.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class RDN
        implements Comparable<RDN>, Comparator<RDN>, Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 2923419812807188487L;
 
 
-
-  // The set of attribute values for this RDN.
   private final ASN1OctetString[] attributeValues;
 
-  // The schema to use to generate the normalized string representation of this
-  // RDN, if any.
   private final Schema schema;
 
-  // The normalized string representation for this RDN.
   private volatile String normalizedString;
 
-  // The user-defined string representation for this RDN.
   private volatile String rdnString;
 
-  // The set of attribute names for this RDN.
   private final String[] attributeNames;
 
 
-
-  /**
-   * Creates a new single-valued RDN with the provided information.
-   *
-   * @param  attributeName   The attribute name for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  attributeValue  The attribute value for this RDN.  It must not be
-   *                         {@code null}.
-   */
   public RDN(final String attributeName, final String attributeValue)
   {
     this(attributeName, attributeValue, null);
   }
 
 
-
-  /**
-   * Creates a new single-valued RDN with the provided information.
-   *
-   * @param  attributeName   The attribute name for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  attributeValue  The attribute value for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  schema          The schema to use to generate the normalized string
-   *                         representation of this RDN.  It may be {@code null}
-   *                         if no schema is available.
-   */
   public RDN(final String attributeName, final String attributeValue,
              final Schema schema)
   {
@@ -123,32 +64,12 @@ public final class RDN
 
 
 
-  /**
-   * Creates a new single-valued RDN with the provided information.
-   *
-   * @param  attributeName   The attribute name for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  attributeValue  The attribute value for this RDN.  It must not be
-   *                         {@code null}.
-   */
   public RDN(final String attributeName, final byte[] attributeValue)
   {
     this(attributeName, attributeValue, null);
   }
 
 
-
-  /**
-   * Creates a new single-valued RDN with the provided information.
-   *
-   * @param  attributeName   The attribute name for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  attributeValue  The attribute value for this RDN.  It must not be
-   *                         {@code null}.
-   * @param  schema          The schema to use to generate the normalized string
-   *                         representation of this RDN.  It may be {@code null}
-   *                         if no schema is available.
-   */
   public RDN(final String attributeName, final byte[] attributeValue,
              final Schema schema)
   {
@@ -163,36 +84,12 @@ public final class RDN
 
 
 
-  /**
-   * Creates a new (potentially multivalued) RDN.  The set of names must have
-   * the same number of elements as the set of values, and there must be at
-   * least one element in each array.
-   *
-   * @param  attributeNames   The set of attribute names for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  attributeValues  The set of attribute values for this RDN.  It must
-   *                          not be {@code null} or empty.
-   */
   public RDN(final String[] attributeNames, final String[] attributeValues)
   {
     this(attributeNames, attributeValues, null);
   }
 
 
-
-  /**
-   * Creates a new (potentially multivalued) RDN.  The set of names must have
-   * the same number of elements as the set of values, and there must be at
-   * least one element in each array.
-   *
-   * @param  attributeNames   The set of attribute names for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  attributeValues  The set of attribute values for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  schema           The schema to use to generate the normalized
-   *                          string representation of this RDN.  It may be
-   *                          {@code null} if no schema is available.
-   */
   public RDN(final String[] attributeNames, final String[] attributeValues,
              final Schema schema)
   {
@@ -214,36 +111,12 @@ public final class RDN
 
 
 
-  /**
-   * Creates a new (potentially multivalued) RDN.  The set of names must have
-   * the same number of elements as the set of values, and there must be at
-   * least one element in each array.
-   *
-   * @param  attributeNames   The set of attribute names for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  attributeValues  The set of attribute values for this RDN.  It must
-   *                          not be {@code null} or empty.
-   */
   public RDN(final String[] attributeNames, final byte[][] attributeValues)
   {
     this(attributeNames, attributeValues, null);
   }
 
 
-
-  /**
-   * Creates a new (potentially multivalued) RDN.  The set of names must have
-   * the same number of elements as the set of values, and there must be at
-   * least one element in each array.
-   *
-   * @param  attributeNames   The set of attribute names for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  attributeValues  The set of attribute values for this RDN.  It must
-   *                          not be {@code null} or empty.
-   * @param  schema           The schema to use to generate the normalized
-   *                          string representation of this RDN.  It may be
-   *                          {@code null} if no schema is available.
-   */
   public RDN(final String[] attributeNames, final byte[][] attributeValues,
              final Schema schema)
   {
@@ -264,17 +137,6 @@ public final class RDN
   }
 
 
-
-  /**
-   * Creates a new single-valued RDN with the provided information.
-   *
-   * @param  attributeName   The name to use for this RDN.
-   * @param  attributeValue  The value to use for this RDN.
-   * @param  schema          The schema to use to generate the normalized string
-   *                         representation of this RDN.  It may be {@code null}
-   *                         if no schema is available.
-   * @param  rdnString       The string representation for this RDN.
-   */
   RDN(final String attributeName, final ASN1OctetString attributeValue,
       final Schema schema, final String rdnString)
   {
@@ -285,18 +147,6 @@ public final class RDN
     attributeValues = new ASN1OctetString[] { attributeValue };
   }
 
-
-
-  /**
-   * Creates a new potentially multivalued RDN with the provided information.
-   *
-   * @param  attributeNames   The set of names to use for this RDN.
-   * @param  attributeValues  The set of values to use for this RDN.
-   * @param  rdnString        The string representation for this RDN.
-   * @param  schema           The schema to use to generate the normalized
-   *                          string representation of this RDN.  It may be
-   *                          {@code null} if no schema is available.
-   */
   RDN(final String[] attributeNames, final ASN1OctetString[] attributeValues,
       final Schema schema, final String rdnString)
   {
@@ -308,16 +158,6 @@ public final class RDN
   }
 
 
-
-  /**
-   * Creates a new RDN from the provided string representation.
-   *
-   * @param  rdnString  The string representation to use for this RDN.  It must
-   *                    not be empty or {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as a valid
-   *                         RDN.
-   */
   public RDN(final String rdnString)
          throws LDAPException
   {
@@ -326,18 +166,6 @@ public final class RDN
 
 
 
-  /**
-   * Creates a new RDN from the provided string representation.
-   *
-   * @param  rdnString  The string representation to use for this RDN.  It must
-   *                    not be empty or {@code null}.
-   * @param  schema     The schema to use to generate the normalized string
-   *                    representation of this RDN.  It may be {@code null} if
-   *                    no schema is available.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as a valid
-   *                         RDN.
-   */
   public RDN(final String rdnString, final Schema schema)
          throws LDAPException
   {
@@ -349,17 +177,11 @@ public final class RDN
     int pos = 0;
     final int length = rdnString.length();
 
-    // First, skip over any leading spaces.
-    while ((pos < length) && (rdnString.charAt(pos) == ' '))
+  while ((pos < length) && (rdnString.charAt(pos) == ' '))
     {
       pos++;
     }
 
-    // Read until we find a space or an equal sign.  Technically, we should
-    // ensure that all characters before that point are ASCII letters, numeric
-    // digits, or dashes, or that it is a valid numeric OID, but since some
-    // directories allow technically invalid characters in attribute names,
-    // we'll just blindly take whatever is provided.
     int attrStartPos = pos;
     while (pos < length)
     {
@@ -372,8 +194,7 @@ public final class RDN
       pos++;
     }
 
-    // Extract the attribute name, then skip over any spaces between the
-    // attribute name and the equal sign.
+
     String attrName = rdnString.substring(attrStartPos, pos);
     if (attrName.length() == 0)
     {
@@ -388,14 +209,10 @@ public final class RDN
 
     if ((pos >= length) || (rdnString.charAt(pos) != '='))
     {
-      // We didn't find an equal sign.
       throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
                               ERR_RDN_NO_EQUAL_SIGN.get(attrName));
     }
 
-
-    // The next character is the equal sign.  Skip it, and then skip over any
-    // spaces between it and the attribute value.
     pos++;
     while ((pos < length) && (rdnString.charAt(pos) == ' '))
     {
@@ -403,37 +220,28 @@ public final class RDN
     }
 
 
-    // If we're at the end of the string, then it's not a valid RDN.
     if (pos >= length)
     {
       throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
                               ERR_RDN_NO_ATTR_VALUE.get(attrName));
     }
 
-
-    // Look at the next character.  If it is an octothorpe (#), then the value
-    // must be hex-encoded.  Otherwise, it's a regular string (although possibly
-    // containing escaped or quoted characters).
-    ASN1OctetString value;
+   ASN1OctetString value;
     if (rdnString.charAt(pos) == '#')
     {
-      // It is a hex-encoded value, so we'll read until we find the end of the
-      // string or the first non-hex character, which must be either a space or
-      // a plus sign.
+
       final byte[] valueArray = readHexString(rdnString, ++pos);
       value = new ASN1OctetString(valueArray);
       pos += (valueArray.length * 2);
     }
     else
     {
-      // It is a string value, which potentially includes escaped characters.
       final StringBuilder buffer = new StringBuilder();
       pos = readValueString(rdnString, pos, buffer);
       value = new ASN1OctetString(buffer.toString());
     }
 
 
-    // Skip over any spaces until we find a plus sign or the end of the value.
     while ((pos < length) && (rdnString.charAt(pos) == ' '))
     {
       pos++;
@@ -561,13 +369,11 @@ public final class RDN
 
       if (pos >= length)
       {
-        // We're at the end of the value, so break out of the loop.
         break;
       }
       else
       {
-        // Skip over the plus sign and loop again to read another name-value
-        // pair.
+
         if (rdnString.charAt(pos) == '+')
         {
           pos++;
@@ -596,24 +402,6 @@ public final class RDN
   }
 
 
-
-  /**
-   * Parses a hex-encoded RDN value from the provided string.  Reading will
-   * continue until the end of the string is reached or a non-escaped plus sign
-   * is encountered.  After returning, the caller should increment its position
-   * by two times the length of the value array.
-   *
-   * @param  rdnString  The string to be parsed.  It should be the position
-   *                    immediately after the octothorpe at the start of the
-   *                    hex-encoded value.
-   * @param  startPos   The position at which to start reading the value.
-   *
-   * @return  A byte array containing the parsed value.
-   *
-   * @throws  LDAPException  If an error occurs while reading the value (e.g.,
-   *                         if it contains non-hex characters, or has an odd
-   *                         number of characters.
-   */
   static byte[] readHexString(final String rdnString, final int startPos)
          throws LDAPException
   {
@@ -685,7 +473,6 @@ hexLoop:
         case '+':
         case ',':
         case ';':
-          // This indicates that we've reached the end of the hex string.
           break hexLoop;
         default:
           throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -772,22 +559,6 @@ hexLoop:
 
 
 
-  /**
-   * Reads a string value from the provided RDN string.  Reading will continue
-   * until the end of the string is reached or until a non-escaped plus sign is
-   * encountered.
-   *
-   * @param  rdnString  The string from which to read the value.
-   * @param  startPos   The position in the RDN string at which to start reading
-   *                    the value.
-   * @param  buffer     The buffer into which the parsed value should be
-   *                    placed.
-   *
-   * @return  The position at which the caller should continue reading when
-   *          parsing the RDN.
-   *
-   * @throws  LDAPException  If a problem occurs while reading the value.
-   */
   static int readValueString(final String rdnString, final int startPos,
                              final StringBuilder buffer)
           throws LDAPException
@@ -804,11 +575,7 @@ valueLoop:
       switch (c)
       {
         case '\\':
-          // It's an escaped value.  It can either be followed by a single
-          // character (e.g., backslash, space, octothorpe, equals, double
-          // quote, plus sign, comma, semicolon, less than, or greater-than), or
-          // two hex digits.  If it is followed by hex digits, then continue
-          // reading to see if there are more of them.
+
           if ((pos+1) >= length)
           {
             throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -820,8 +587,7 @@ valueLoop:
             c = rdnString.charAt(pos);
             if (isHex(c))
             {
-              // We need to subtract one from the resulting position because
-              // it will be incremented later.
+
               pos = readEscapedHexString(rdnString, pos, buffer) - 1;
             }
             else
@@ -834,7 +600,7 @@ valueLoop:
         case '"':
           if (inQuotes)
           {
-            // This should be the end of the value.  If it's not, then fail.
+
             pos++;
             while (pos < length)
             {
@@ -858,7 +624,7 @@ valueLoop:
           }
           else
           {
-            // This should be the first character of the value.
+
             if (pos == startPos)
             {
               inQuotes = true;
@@ -872,8 +638,7 @@ valueLoop:
           break;
 
         case ' ':
-          // We'll add this character if we're in quotes, or if the next
-          // character is not also a space.
+
           if (inQuotes ||
               (((pos+1) < length) && (rdnString.charAt(pos+1) != ' ')))
           {
@@ -884,7 +649,6 @@ valueLoop:
         case ',':
         case ';':
         case '+':
-          // This denotes the end of the value, if it's not in quotes.
           if (inQuotes)
           {
             buffer.append(c);
@@ -896,7 +660,6 @@ valueLoop:
           break;
 
         default:
-          // This is a normal character that should be added to the buffer.
           buffer.append(c);
           break;
       }
@@ -905,7 +668,6 @@ valueLoop:
     }
 
 
-    // If the value started with a quotation mark, then make sure it was closed.
     if (inQuotes)
     {
       throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -913,7 +675,6 @@ valueLoop:
     }
 
 
-    // If the value ends with any unescaped trailing spaces, then trim them off.
     int bufferPos = buffer.length() - 1;
     int rdnStrPos = pos - 2;
     while ((bufferPos > 0) && (buffer.charAt(bufferPos) == ' '))
@@ -929,7 +690,7 @@ valueLoop:
       }
     }
 
-    // If nothing was added to the buffer, then that's an error.
+
     if (buffer.length() == bufferLength)
     {
       throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -940,23 +701,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Reads one or more hex-encoded bytes from the specified portion of the RDN
-   * string.
-   *
-   * @param  rdnString  The string from which the data is to be read.
-   * @param  startPos   The position at which to start reading.  This should be
-   *                    the first hex character immediately after the initial
-   *                    backslash.
-   * @param  buffer     The buffer to which the decoded string portion should be
-   *                    appended.
-   *
-   * @return  The position at which the caller may resume parsing.
-   *
-   * @throws  LDAPException  If a problem occurs while reading hex-encoded
-   *                         bytes.
-   */
   private static int readEscapedHexString(final String rdnString,
                                           final int startPos,
                                           final StringBuilder buffer)
@@ -1103,8 +847,7 @@ valueLoop:
       if (((pos+1) < length) && (rdnString.charAt(pos) == '\\') &&
           isHex(rdnString.charAt(pos+1)))
       {
-        // It appears that there are more hex-encoded bytes to follow, so keep
-        // reading.
+
         pos++;
         continue;
       }
@@ -1125,7 +868,6 @@ valueLoop:
     catch (final Exception e)
     {
       debugException(e);
-      // This should never happen.
       buffer.append(new String(byteArray));
     }
 
@@ -1133,16 +875,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Indicates whether the provided string represents a valid RDN.
-   *
-   * @param  s  The string for which to make the determination.  It must not be
-   *            {@code null}.
-   *
-   * @return  {@code true} if the provided string represents a valid RDN, or
-   *          {@code false} if not.
-   */
   public static boolean isValidRDN(final String s)
   {
     try
@@ -1158,36 +890,17 @@ valueLoop:
 
 
 
-  /**
-   * Indicates whether this RDN contains multiple components.
-   *
-   * @return  {@code true} if this RDN contains multiple components, or
-   *          {@code false} if not.
-   */
   public boolean isMultiValued()
   {
     return (attributeNames.length != 1);
   }
 
 
-
-  /**
-   * Retrieves the set of attribute names for this RDN.
-   *
-   * @return  The set of attribute names for this RDN.
-   */
   public String[] getAttributeNames()
   {
     return attributeNames;
   }
 
-
-
-  /**
-   * Retrieves the set of attribute values for this RDN.
-   *
-   * @return  The set of attribute values for this RDN.
-   */
   public String[] getAttributeValues()
   {
     final String[] stringValues = new String[attributeValues.length];
@@ -1200,12 +913,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves the set of attribute values for this RDN.
-   *
-   * @return  The set of attribute values for this RDN.
-   */
   public byte[][] getByteArrayAttributeValues()
   {
     final byte[][] byteValues = new byte[attributeValues.length][];
@@ -1218,29 +925,12 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves the schema that will be used for this RDN, if any.
-   *
-   * @return  The schema that will be used for this RDN, or {@code null} if none
-   *          has been provided.
-   */
   Schema getSchema()
   {
     return schema;
   }
 
 
-
-  /**
-   * Indicates whether this RDN contains the specified attribute.
-   *
-   * @param  attributeName  The name of the attribute for which to make the
-   *                        determination.
-   *
-   * @return  {@code true} if RDN contains the specified attribute, or
-   *          {@code false} if not.
-   */
   public boolean hasAttribute(final String attributeName)
   {
     for (final String name : attributeNames)
@@ -1256,17 +946,6 @@ valueLoop:
 
 
 
-  /**
-   * Indicates whether this RDN contains the specified attribute value.
-   *
-   * @param  attributeName   The name of the attribute for which to make the
-   *                         determination.
-   * @param  attributeValue  The attribute value for which to make the
-   *                         determination.
-   *
-   * @return  {@code true} if RDN contains the specified attribute, or
-   *          {@code false} if not.
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final String attributeValue)
   {
@@ -1290,18 +969,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Indicates whether this RDN contains the specified attribute value.
-   *
-   * @param  attributeName   The name of the attribute for which to make the
-   *                         determination.
-   * @param  attributeValue  The attribute value for which to make the
-   *                         determination.
-   *
-   * @return  {@code true} if RDN contains the specified attribute, or
-   *          {@code false} if not.
-   */
   public boolean hasAttributeValue(final String attributeName,
                                    final byte[] attributeValue)
   {
@@ -1325,12 +992,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves a string representation of this RDN.
-   *
-   * @return  A string representation of this RDN.
-   */
   @Override()
   public String toString()
   {
@@ -1346,15 +1007,6 @@ valueLoop:
 
 
 
-  /**
-   * Retrieves a string representation of this RDN with minimal encoding for
-   * special characters.  Only those characters specified in RFC 4514 section
-   * 2.4 will be escaped.  No escaping will be used for non-ASCII characters or
-   * non-printable ASCII characters.
-   *
-   * @return  A string representation of this RDN with minimal encoding for
-   *          special characters.
-   */
   public String toMinimallyEncodedString()
   {
     final StringBuilder buffer = new StringBuilder();
@@ -1364,32 +1016,12 @@ valueLoop:
 
 
 
-  /**
-   * Appends a string representation of this RDN to the provided buffer.
-   *
-   * @param  buffer  The buffer to which the string representation is to be
-   *                 appended.
-   */
   public void toString(final StringBuilder buffer)
   {
     toString(buffer, false);
   }
 
 
-
-  /**
-   * Appends a string representation of this RDN to the provided buffer.
-   *
-   * @param  buffer            The buffer to which the string representation is
-   *                           to be appended.
-   * @param  minimizeEncoding  Indicates whether to restrict the encoding of
-   *                           special characters to the bare minimum required
-   *                           by LDAP (as per RFC 4514 section 2.4).  If this
-   *                           is {@code true}, then only leading and trailing
-   *                           spaces, double quotes, plus signs, commas,
-   *                           semicolons, greater-than, less-than, and
-   *                           backslash characters will be encoded.
-   */
   public void toString(final StringBuilder buffer,
                        final boolean minimizeEncoding)
   {
@@ -1409,8 +1041,7 @@ valueLoop:
       buffer.append(attributeNames[i]);
       buffer.append('=');
 
-      // Iterate through the value character-by-character and do any escaping
-      // that may be necessary.
+
       final String valueString = attributeValues[i].stringValue();
       final int length = valueString.length();
       for (int j=0; j < length; j++)
@@ -1432,8 +1063,7 @@ valueLoop:
             break;
 
           case ' ':
-            // Escape this space only if it's the first character, the last
-            // character, or if the next character is also a space.
+
             if ((j == 0) || ((j+1) == length) ||
                 (((j+1) < length) && (valueString.charAt(j+1) == ' ')))
             {
@@ -1450,8 +1080,7 @@ valueLoop:
             break;
 
           default:
-            // If it's not a printable ASCII character, then hex-encode it
-            // unless we're using minimized encoding.
+
             if ((! minimizeEncoding) && ((c < ' ') || (c > '~')))
             {
               hexEncode(c, buffer);
@@ -1467,12 +1096,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves a normalized string representation of this RDN.
-   *
-   * @return  A normalized string representation of this RDN.
-   */
   public String toNormalizedString()
   {
     if (normalizedString == null)
@@ -1487,18 +1110,10 @@ valueLoop:
 
 
 
-  /**
-   * Appends a normalized string representation of this RDN to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which the normalized string representation is
-   *                 to be appended.
-   */
   public void toNormalizedString(final StringBuilder buffer)
   {
     if (attributeNames.length == 1)
     {
-      // It's a single-valued RDN, so there is no need to sort anything.
       final String name = normalizeAttrName(attributeNames[0]);
       buffer.append(name);
       buffer.append('=');
@@ -1506,7 +1121,6 @@ valueLoop:
     }
     else
     {
-      // It's a multivalued RDN, so we need to sort the components.
       final TreeMap<String,ASN1OctetString> valueMap =
            new TreeMap<String,ASN1OctetString>();
       for (int i=0; i < attributeNames.length; i++)
@@ -1532,14 +1146,6 @@ valueLoop:
 
 
 
-  /**
-   * Obtains a normalized representation of the provided attribute name.
-   *
-   * @param  name  The name of the attribute for which to create the normalized
-   *               representation.
-   *
-   * @return  A normalized representation of the provided attribute name.
-   */
   private String normalizeAttrName(final String name)
   {
     String n = name;
@@ -1555,19 +1161,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves a normalized string representation of the RDN with the provided
-   * string representation.
-   *
-   * @param  s  The string representation of the RDN to normalize.  It must not
-   *            be {@code null}.
-   *
-   * @return  The normalized string representation of the RDN with the provided
-   *          string representation.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as an RDN.
-   */
   public static String normalize(final String s)
          throws LDAPException
   {
@@ -1575,22 +1168,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves a normalized string representation of the RDN with the provided
-   * string representation.
-   *
-   * @param  s       The string representation of the RDN to normalize.  It must
-   *                 not be {@code null}.
-   * @param  schema  The schema to use to generate the normalized string
-   *                 representation of the RDN.  It may be {@code null} if no
-   *                 schema is available.
-   *
-   * @return  The normalized string representation of the RDN with the provided
-   *          string representation.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as an RDN.
-   */
   public static String normalize(final String s, final Schema schema)
          throws LDAPException
   {
@@ -1599,16 +1176,6 @@ valueLoop:
 
 
 
-  /**
-   * Normalizes the provided attribute value for use in an RDN.
-   *
-   * @param  attributeName  The name of the attribute with which the value is
-   *                        associated.
-   * @param  value           The value to be normalized.
-   *
-   * @return  A string builder containing a normalized representation of the
-   *          value in a suitable form for inclusion in an RDN.
-   */
   private StringBuilder normalizeValue(final String attributeName,
                                        final ASN1OctetString value)
   {
@@ -1651,8 +1218,6 @@ valueLoop:
           break;
 
         case ' ':
-          // Escape this space only if it's the first character, the last
-          // character, or if the next character is also a space.
           if ((i == 0) || ((i+1) == length) ||
               (((i+1) < length) && (valueString.charAt(i+1) == ' ')))
           {
@@ -1665,8 +1230,7 @@ valueLoop:
           break;
 
         default:
-          // If it's not a printable ASCII character, then hex-encode it.
-          if ((c < ' ') || (c > '~'))
+         if ((c < ' ') || (c > '~'))
           {
             hexEncode(c, buffer);
           }
@@ -1682,12 +1246,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Retrieves a hash code for this RDN.
-   *
-   * @return  The hash code for this RDN.
-   */
   @Override()
   public int hashCode()
   {
@@ -1696,16 +1254,6 @@ valueLoop:
 
 
 
-  /**
-   * Indicates whether this RDN is equal to the provided object.  The given
-   * object will only be considered equal to this RDN if it is also an RDN with
-   * the same set of names and values.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object can be considered equal to
-   *          this RDN, or {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -1730,17 +1278,6 @@ valueLoop:
 
 
 
-  /**
-   * Indicates whether the RDN with the provided string representation is equal
-   * to this RDN.
-   *
-   * @param  s  The string representation of the DN to compare with this RDN.
-   *
-   * @return  {@code true} if the DN with the provided string representation is
-   *          equal to this RDN, or {@code false} if not.
-   *
-   * @throws  LDAPException  If the provided string cannot be parsed as an RDN.
-   */
   public boolean equals(final String s)
          throws LDAPException
   {
@@ -1753,21 +1290,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Indicates whether the two provided strings represent the same RDN.
-   *
-   * @param  s1  The string representation of the first RDN for which to make
-   *             the determination.  It must not be {@code null}.
-   * @param  s2  The string representation of the second RDN for which to make
-   *             the determination.  It must not be {@code null}.
-   *
-   * @return  {@code true} if the provided strings represent the same RDN, or
-   *          {@code false} if not.
-   *
-   * @throws  LDAPException  If either of the provided strings cannot be parsed
-   *                         as an RDN.
-   */
   public static boolean equals(final String s1, final String s2)
          throws LDAPException
   {
@@ -1775,19 +1297,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Compares the provided RDN to this RDN to determine their relative order in
-   * a sorted list.
-   *
-   * @param  rdn  The RDN to compare against this RDN.  It must not be
-   *              {@code null}.
-   *
-   * @return  A negative integer if this RDN should come before the provided RDN
-   *          in a sorted list, a positive integer if this RDN should come after
-   *          the provided RDN in a sorted list, or zero if the provided RDN
-   *          can be considered equal to this RDN.
-   */
   public int compareTo(final RDN rdn)
   {
     return compare(this, rdn);
@@ -1795,18 +1304,6 @@ valueLoop:
 
 
 
-  /**
-   * Compares the provided RDN values to determine their relative order in a
-   * sorted list.
-   *
-   * @param  rdn1  The first RDN to be compared.  It must not be {@code null}.
-   * @param  rdn2  The second RDN to be compared.  It must not be {@code null}.
-   *
-   * @return  A negative integer if the first RDN should come before the second
-   *          RDN in a sorted list, a positive integer if the first RDN should
-   *          come after the second RDN in a sorted list, or zero if the two RDN
-   *          values can be considered equal.
-   */
   public int compare(final RDN rdn1, final RDN rdn2)
   {
     ensureNotNull(rdn1, rdn2);
@@ -1816,23 +1313,6 @@ valueLoop:
 
 
 
-  /**
-   * Compares the RDN values with the provided string representations to
-   * determine their relative order in a sorted list.
-   *
-   * @param  s1  The string representation of the first RDN to be compared.  It
-   *             must not be {@code null}.
-   * @param  s2  The string representation of the second RDN to be compared.  It
-   *             must not be {@code null}.
-   *
-   * @return  A negative integer if the first RDN should come before the second
-   *          RDN in a sorted list, a positive integer if the first RDN should
-   *          come after the second RDN in a sorted list, or zero if the two RDN
-   *          values can be considered equal.
-   *
-   * @throws  LDAPException  If either of the provided strings cannot be parsed
-   *                         as an RDN.
-   */
   public static int compare(final String s1, final String s2)
          throws LDAPException
   {
@@ -1840,27 +1320,6 @@ valueLoop:
   }
 
 
-
-  /**
-   * Compares the RDN values with the provided string representations to
-   * determine their relative order in a sorted list.
-   *
-   * @param  s1      The string representation of the first RDN to be compared.
-   *                 It must not be {@code null}.
-   * @param  s2      The string representation of the second RDN to be compared.
-   *                 It must not be {@code null}.
-   * @param  schema  The schema to use to generate the normalized string
-   *                 representations of the RDNs.  It may be {@code null} if no
-   *                 schema is available.
-   *
-   * @return  A negative integer if the first RDN should come before the second
-   *          RDN in a sorted list, a positive integer if the first RDN should
-   *          come after the second RDN in a sorted list, or zero if the two RDN
-   *          values can be considered equal.
-   *
-   * @throws  LDAPException  If either of the provided strings cannot be parsed
-   *                         as an RDN.
-   */
   public static int compare(final String s1, final String s2,
                             final Schema schema)
          throws LDAPException

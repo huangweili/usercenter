@@ -63,14 +63,11 @@ import static com.hwlcn.ldap.ldap.listener.ListenerMessages.*;
 public final class StartTLSRequestHandler
        extends LDAPListenerRequestHandler
 {
-  // The client connection with which this request handler is associated.
+
   private final LDAPListenerClientConnection connection;
 
-  // The request handler that will be used to process all operations except the
-  // StartTLS extended operation.
   private final LDAPListenerRequestHandler requestHandler;
 
-  // The SSL socket factory that will be used to SSL-enable the existing socket.
   private final SSLSocketFactory sslSocketFactory;
 
 

@@ -1,23 +1,3 @@
-/*
- * Copyright 2011-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2011-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -34,64 +14,35 @@ import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
-
-/**
- * This class provides a data structure for holding information about a set of
- * DNS SRV records with the same priority.  Records are organized into those
- * with nonzero weights and those with zero weights.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 final class SRVRecordPrioritySet
       implements Serializable
 {
-  /**
-   * The random number generator that will be used to seed the thread-local
-   * random number generators.
-   */
+
   private static final Random SEED_RANDOM = new Random();
 
 
 
-  /**
-   * A set of thread-local random number generators that will be used to order
-   * servers based on their weights.
-   */
   private static final ThreadLocal<Random> RANDOMS = new ThreadLocal<Random>();
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -7722028520625558942L;
 
 
 
-  // The priority for all records in this set.
   private final long priority;
 
-  // The total weight for all servers in this set.
   private final long totalWeight;
 
-  // The set of all records in this set.
   private final List<SRVRecord> allRecords;
 
-  // The set of records with nonzero weights.
   private final List<SRVRecord> nonzeroWeightRecords;
 
-  // The set of records with zero weights.
   private final List<SRVRecord> zeroWeightRecords;
 
 
-
-  /**
-   * Creates a new SRV record priority set with the provided records.
-   *
-   * @param  priority  The priority for all records in this set.
-   * @param  records   The set of records with the same priority.  It must not
-   *                   be {@code null} or empty.
-   */
   SRVRecordPrioritySet(final long priority, final List<SRVRecord> records)
   {
     this.priority = priority;
@@ -124,24 +75,12 @@ final class SRVRecordPrioritySet
   }
 
 
-
-  /**
-   * Retrieves the priority for all records in this set.
-   *
-   * @return  The priority for all records in this set.
-   */
   long getPriority()
   {
     return priority;
   }
 
 
-
-  /**
-   * Retrieves a list of SRV records in the order that they should be accessed.
-   *
-   * @return  A list of SRV records in the order that they should be accessed.
-   */
   List<SRVRecord> getOrderedRecords()
   {
     final ArrayList<SRVRecord> records =
@@ -197,12 +136,6 @@ final class SRVRecordPrioritySet
   }
 
 
-
-  /**
-   * Retrieves a string representation of this priority server set.
-   *
-   * @return  A string representation of this priority server set.
-   */
   @Override()
   public String toString()
   {
@@ -212,13 +145,6 @@ final class SRVRecordPrioritySet
   }
 
 
-
-  /**
-   * Appends a string representation of this priority buffer set to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which the information should be appended.
-   */
   void toString(final StringBuilder buffer)
   {
     buffer.append("SRVRecordPrioritySet(records={");

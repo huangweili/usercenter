@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -119,120 +99,61 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class LDAPURL
        implements Serializable
 {
-  /**
-   * The default filter that will be used if none is provided.
-   */
+
   private static final Filter DEFAULT_FILTER =
        Filter.createPresenceFilter("objectClass");
 
-
-
-  /**
-   * The default port number that will be used for LDAP URLs if none is
-   * provided.
-   */
   public static final int DEFAULT_LDAP_PORT = 389;
 
 
-
-  /**
-   * The default port number that will be used for LDAPS URLs if none is
-   * provided.
-   */
   public static final int DEFAULT_LDAPS_PORT = 636;
 
 
-
-  /**
-   * The default port number that will be used for LDAPI URLs if none is
-   * provided.
-   */
   public static final int DEFAULT_LDAPI_PORT = 0;
 
 
-
-  /**
-   * The default scope that will be used if none is provided.
-   */
   private static final SearchScope DEFAULT_SCOPE = SearchScope.BASE;
 
 
 
-  /**
-   * The default base DN that will be used if none is provided.
-   */
   private static final DN DEFAULT_BASE_DN = DN.NULL_DN;
 
 
-
-  /**
-   * The default set of attributes that will be used if none is provided.
-   */
   private static final String[] DEFAULT_ATTRIBUTES = NO_STRINGS;
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 3420786933570240493L;
 
 
+ private final boolean attributesProvided;
 
-  // Indicates whether the attribute list was provided in the URL.
-  private final boolean attributesProvided;
-
-  // Indicates whether the base DN was provided in the URL.
   private final boolean baseDNProvided;
 
-  // Indicates whether the filter was provided in the URL.
   private final boolean filterProvided;
 
-  // Indicates whether the port was provided in the URL.
   private final boolean portProvided;
 
-  // Indicates whether the scope was provided in the URL.
   private final boolean scopeProvided;
 
-  // The base DN used by this URL.
   private final DN baseDN;
 
-  // The filter used by this URL.
   private final Filter filter;
 
-  // The port used by this URL.
   private final int port;
 
-  // The search scope used by this URL.
   private final SearchScope scope;
 
-  // The host used by this URL.
   private final String host;
 
-  // The normalized representation of this LDAP URL.
   private volatile String normalizedURLString;
 
-  // The scheme used by this LDAP URL.  The standard only accepts "ldap", but
-  // we will also accept "ldaps" and "ldapi".
   private final String scheme;
 
-  // The string representation of this LDAP URL.
   private final String urlString;
 
-  // The set of attributes included in this URL.
   private final String[] attributes;
 
 
-
-  /**
-   * Creates a new LDAP URL from the provided string representation.
-   *
-   * @param  urlString  The string representation for this LDAP URL.  It must
-   *                    not be {@code null}.
-   *
-   * @throws  LDAPException  If the provided URL string cannot be parsed as an
-   *                         LDAP URL.
-   */
   public LDAPURL(final String urlString)
          throws LDAPException
   {
@@ -240,9 +161,6 @@ public final class LDAPURL
 
     this.urlString = urlString;
 
-
-    // Find the location of the first colon.  It should mark the end of the
-    // scheme.
     final int colonPos = urlString.indexOf("://");
     if (colonPos < 0)
     {
@@ -271,14 +189,10 @@ public final class LDAPURL
     }
 
 
-    // Look for the first slash after the "://".  It will designate the end of
-    // the hostport section.
     final int slashPos = urlString.indexOf('/', colonPos+3);
     if (slashPos < 0)
     {
-      // This is fine.  It just means that the URL won't have a base DN,
-      // attribute list, scope, or filter, and that the rest of the value is
-      // the hostport element.
+
       baseDN             = DEFAULT_BASE_DN;
       baseDNProvided     = false;
       attributes         = DEFAULT_ATTRIBUTES;
@@ -336,14 +250,9 @@ public final class LDAPURL
       host = hostBuffer.toString();
     }
 
-
-    // Look for the first question mark after the slash.  It will designate the
-    // end of the base DN.
     final int questionMarkPos = urlString.indexOf('?', slashPos+1);
     if (questionMarkPos < 0)
     {
-      // This is fine.  It just means that the URL won't have an attribute list,
-      // scope, or filter, and that the rest of the value is the base DN.
       attributes         = DEFAULT_ATTRIBUTES;
       attributesProvided = false;
       scope              = DEFAULT_SCOPE;
@@ -361,13 +270,9 @@ public final class LDAPURL
     baseDNProvided = (! baseDN.isNullDN());
 
 
-    // Look for the next question mark.  It will designate the end of the
-    // attribute list.
     final int questionMark2Pos = urlString.indexOf('?', questionMarkPos+1);
     if (questionMark2Pos < 0)
     {
-      // This is fine.  It just means that the URL won't have a scope or filter,
-      // and that the rest of the value is the attribute list.
       scope          = DEFAULT_SCOPE;
       scopeProvided  = false;
       filter         = DEFAULT_FILTER;
@@ -383,12 +288,9 @@ public final class LDAPURL
     attributesProvided = (attributes.length > 0);
 
 
-    // Look for the next question mark.  It will designate the end of the scope.
     final int questionMark3Pos = urlString.indexOf('?', questionMark2Pos+1);
     if (questionMark3Pos < 0)
     {
-      // This is fine.  It just means that the URL won't have a filter, and that
-      // the rest of the value is the scope.
       filter         = DEFAULT_FILTER;
       filterProvided = false;
 
@@ -460,8 +362,6 @@ public final class LDAPURL
                               ERR_LDAPURL_INVALID_SCOPE.get(scopeStr));
     }
 
-
-    // The remainder of the value must be the filter.
     final String filterStr =
          percentDecode(urlString.substring(questionMark3Pos+1));
     if (filterStr.length() == 0)
@@ -477,32 +377,6 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Creates a new LDAP URL with the provided information.
-   *
-   * @param  scheme      The scheme for this LDAP URL.  It must not be
-   *                     {@code null} and must be either "ldap", "ldaps", or
-   *                     "ldapi".
-   * @param  host        The host for this LDAP URL.  It may be {@code null} if
-   *                     no host is to be included.
-   * @param  port        The port for this LDAP URL.  It may be {@code null} if
-   *                     no port is to be included.  If it is provided, it must
-   *                     be between 1 and 65535, inclusive.
-   * @param  baseDN      The base DN for this LDAP URL.  It may be {@code null}
-   *                     if no base DN is to be included.
-   * @param  attributes  The set of requested attributes for this LDAP URL.  It
-   *                     may be {@code null} or empty if no attribute list is to
-   *                     be included.
-   * @param  scope       The scope for this LDAP URL.  It may be {@code null} if
-   *                     no scope is to be included.  Otherwise, it must be a
-   *                     value between zero and three, inclusive.
-   * @param  filter      The filter for this LDAP URL.  It may be {@code null}
-   *                     if no filter is to be included.
-   *
-   * @throws  LDAPException  If there is a problem with any of the provided
-   *                         arguments.
-   */
   public LDAPURL(final String scheme, final String host, final Integer port,
                  final DN baseDN, final String[] attributes,
                  final SearchScope scope, final Filter filter)
@@ -670,21 +544,6 @@ public final class LDAPURL
     urlString = buffer.toString();
   }
 
-
-
-  /**
-   * Decodes the provided string as a host and optional port number.
-   *
-   * @param  hostPort    The string to be decoded.
-   * @param  hostBuffer  The buffer to which the decoded host address will be
-   *                     appended.
-   *
-   * @return  The port number decoded from the provided string, or -1 if there
-   *          was no port number.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a
-   *                         hostport element.
-   */
   private static int decodeHostPort(final String hostPort,
                                     final StringBuilder hostBuffer)
           throws LDAPException
@@ -692,15 +551,11 @@ public final class LDAPURL
     final int length = hostPort.length();
     if (length == 0)
     {
-      // It's an empty string, so we'll just use the defaults.
       return -1;
     }
 
     if (hostPort.charAt(0) == '[')
     {
-      // It starts with a square bracket, which means that the address is an
-      // IPv6 literal address.  Find the closing bracket, and the address
-      // will be inside them.
       final int closingBracketPos = hostPort.indexOf(']');
       if (closingBracketPos < 0)
       {
@@ -715,9 +570,6 @@ public final class LDAPURL
                                 ERR_LDAPURL_IPV6_HOST_EMPTY.get());
       }
 
-      // The closing bracket must either be the end of the hostport element
-      // (in which case we'll use the default port), or it must be followed by
-      // a colon and an integer (which will be the port).
       if (closingBracketPos == (length - 1))
       {
         return -1;
@@ -758,11 +610,6 @@ public final class LDAPURL
       }
     }
 
-
-    // If we've gotten here, then the address is either a resolvable name or an
-    // IPv4 address.  If there is a colon in the string, then it will separate
-    // the address from the port.  Otherwise, the remaining value will be the
-    // address and we'll use the default port.
     final int colonPos = hostPort.indexOf(':');
     if (colonPos < 0)
     {
@@ -795,18 +642,6 @@ public final class LDAPURL
     }
   }
 
-
-
-  /**
-   * Decodes the contents of the provided string as an attribute list.
-   *
-   * @param  s  The string to decode as an attribute list.
-   *
-   * @return  The array of decoded attribute names.
-   *
-   * @throws  LDAPException  If an error occurred while attempting to decode the
-   *                         attribute list.
-   */
   private static String[] decodeAttributes(final String s)
           throws LDAPException
   {
@@ -823,15 +658,9 @@ public final class LDAPURL
       final int commaPos = s.indexOf(',', startPos);
       if (commaPos < 0)
       {
-        // There are no more commas, so there can only be one attribute left.
         final String attrName = s.substring(startPos).trim();
         if (attrName.length() == 0)
         {
-          // This is only acceptable if the attribute list is empty (there was
-          // probably a space in the attribute list string, which is technically
-          // not allowed, but we'll accept it).  If the attribute list is not
-          // empty, then there were two consecutive commas, which is not
-          // allowed.
           if (attrList.isEmpty())
           {
             return DEFAULT_ATTRIBUTES;
@@ -875,23 +704,9 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Decodes any percent-encoded values that may be contained in the provided
-   * string.
-   *
-   * @param  s  The string to be decoded.
-   *
-   * @return  The percent-decoded form of the provided string.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to decode the
-   *                         provided string.
-   */
   public static String percentDecode(final String s)
           throws LDAPException
   {
-    // First, see if there are any percent characters at all in the provided
-    // string.  If not, then just return the string as-is.
     int firstPercentPos = -1;
     final int length = s.length();
     for (int i=0; i < length; i++)
@@ -1080,17 +895,6 @@ public final class LDAPURL
     return buffer.toString();
   }
 
-
-
-  /**
-   * Appends an encoded version of the provided string to the given buffer.  Any
-   * special characters contained in the string will be replaced with byte
-   * representations consisting of one percent sign and two hexadecimal digits
-   * for each byte in the special character.
-   *
-   * @param  s       The string to be encoded.
-   * @param  buffer  The buffer to which the encoded string will be written.
-   */
   private static void percentEncode(final String s, final StringBuilder buffer)
   {
     final int length = s.length();
@@ -1193,191 +997,82 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Retrieves the scheme for this LDAP URL.  It will either be "ldap", "ldaps",
-   * or "ldapi".
-   *
-   * @return  The scheme for this LDAP URL.
-   */
   public String getScheme()
   {
     return scheme;
   }
 
-
-
-  /**
-   * Retrieves the host for this LDAP URL.
-   *
-   * @return  The host for this LDAP URL, or {@code null} if the URL does not
-   *          include a host and the client is supposed to have some external
-   *          knowledge of what the host should be.
-   */
   public String getHost()
   {
     return host;
   }
 
 
-
-  /**
-   * Indicates whether the URL explicitly included a host address.
-   *
-   * @return  {@code true} if the URL explicitly included a host address, or
-   *          {@code false} if it did not.
-   */
   public boolean hostProvided()
   {
     return (host != null);
   }
 
 
-
-  /**
-   * Retrieves the port for this LDAP URL.
-   *
-   * @return  The port for this LDAP URL.
-   */
   public int getPort()
   {
     return port;
   }
 
-
-
-  /**
-   * Indicates whether the URL explicitly included a port number.
-   *
-   * @return  {@code true} if the URL explicitly included a port number, or
-   *          {@code false} if it did not and the default should be used.
-   */
   public boolean portProvided()
   {
     return portProvided;
   }
 
 
-
-  /**
-   * Retrieves the base DN for this LDAP URL.
-   *
-   * @return  The base DN for this LDAP URL.
-   */
   public DN getBaseDN()
   {
     return baseDN;
   }
 
-
-
-  /**
-   * Indicates whether the URL explicitly included a base DN.
-   *
-   * @return  {@code true} if the URL explicitly included a base DN, or
-   *          {@code false} if it did not and the default should be used.
-   */
   public boolean baseDNProvided()
   {
     return baseDNProvided;
   }
 
-
-
-  /**
-   * Retrieves the attribute list for this LDAP URL.
-   *
-   * @return  The attribute list for this LDAP URL.
-   */
   public String[] getAttributes()
   {
     return attributes;
   }
 
-
-
-  /**
-   * Indicates whether the URL explicitly included an attribute list.
-   *
-   * @return  {@code true} if the URL explicitly included an attribute list, or
-   *          {@code false} if it did not and the default should be used.
-   */
   public boolean attributesProvided()
   {
     return attributesProvided;
   }
 
-
-
-  /**
-   * Retrieves the scope for this LDAP URL.
-   *
-   * @return  The scope for this LDAP URL.
-   */
   public SearchScope getScope()
   {
     return scope;
   }
 
 
-
-  /**
-   * Indicates whether the URL explicitly included a search scope.
-   *
-   * @return  {@code true} if the URL explicitly included a search scope, or
-   *          {@code false} if it did not and the default should be used.
-   */
   public boolean scopeProvided()
   {
     return scopeProvided;
   }
 
-
-
-  /**
-   * Retrieves the filter for this LDAP URL.
-   *
-   * @return  The filter for this LDAP URL.
-   */
   public Filter getFilter()
   {
     return filter;
   }
 
-
-
-  /**
-   * Indicates whether the URL explicitly included a search filter.
-   *
-   * @return  {@code true} if the URL explicitly included a search filter, or
-   *          {@code false} if it did not and the default should be used.
-   */
   public boolean filterProvided()
   {
     return filterProvided;
   }
 
 
-
-  /**
-   * Creates a search request containing the base DN, scope, filter, and
-   * requested attributes from this LDAP URL.
-   *
-   * @return  The search request created from the base DN, scope, filter, and
-   *          requested attributes from this LDAP URL.
-   */
   public SearchRequest toSearchRequest()
   {
     return new SearchRequest(baseDN.toString(), scope, filter, attributes);
   }
 
 
-
-  /**
-   * Retrieves a hash code for this LDAP URL.
-   *
-   * @return  A hash code for this LDAP URL.
-   */
   @Override()
   public int hashCode()
   {
@@ -1385,17 +1080,6 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Indicates whether the provided object is equal to this LDAP URL.  In order
-   * to be considered equal, the provided object must be an LDAP URL with the
-   * same normalized string representation.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object is equal to this LDAP URL, or
-   *          {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -1419,25 +1103,12 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Retrieves a string representation of this LDAP URL.
-   *
-   * @return  A string representation of this LDAP URL.
-   */
   @Override()
   public String toString()
   {
     return urlString;
   }
 
-
-
-  /**
-   * Retrieves a normalized string representation of this LDAP URL.
-   *
-   * @return  A normalized string representation of this LDAP URL.
-   */
   public String toNormalizedString()
   {
     if (normalizedURLString == null)
@@ -1451,14 +1122,6 @@ public final class LDAPURL
   }
 
 
-
-  /**
-   * Appends a normalized string representation of this LDAP URL to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append the normalized string
-   *                 representation of this LDAP URL.
-   */
   public void toNormalizedString(final StringBuilder buffer)
   {
     buffer.append(scheme);
@@ -1501,16 +1164,16 @@ public final class LDAPURL
     buffer.append('?');
     switch (scope.intValue())
     {
-      case 0:  // BASE
+      case 0:
         buffer.append("base");
         break;
-      case 1:  // ONE
+      case 1:
         buffer.append("one");
         break;
-      case 2:  // SUB
+      case 2:
         buffer.append("sub");
         break;
-      case 3:  // SUBORDINATE_SUBTREE
+      case 3:
         buffer.append("subordinates");
         break;
     }

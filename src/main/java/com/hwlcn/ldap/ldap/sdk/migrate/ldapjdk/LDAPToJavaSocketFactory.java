@@ -38,7 +38,6 @@ import static com.hwlcn.ldap.util.Debug.*;
 final class LDAPToJavaSocketFactory
       extends SocketFactory
 {
-  // The LDAP socket factory that will be used.
   private final LDAPSocketFactory f;
 
 

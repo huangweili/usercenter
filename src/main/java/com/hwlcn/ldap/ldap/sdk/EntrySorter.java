@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -81,68 +61,28 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 public final class EntrySorter
        implements Comparator<Entry>, Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7606107105238612142L;
 
 
 
-  // Indicates whether entries should be sorted based on hierarchy.
   private final boolean sortByHierarchy;
 
-  // The set of sort keys for attribute-level sorting.
   private final List<SortKey> sortKeys;
 
-  // The schema to use to make the comparison, if available.
   private final Schema schema;
 
-
-
-  /**
-   * Creates a new entry sorter that will sort entries based only on hierarchy.
-   * Superior entries (that is, entries closer to the root of the DIT) will be
-   * ordered before subordinate entries.  Entries below the same parent will be
-   * sorted lexicographically based on their normalized DNs.
-   */
-  public EntrySorter()
+ public EntrySorter()
   {
     this(true, null, Collections.<SortKey>emptyList());
   }
 
 
-
-  /**
-   * Creates a new entry sorter with the provided information.
-   *
-   * @param  sortByHierarchy  Indicates whether entries should be sorted
-   *                          hierarchically, such that superior entries will
-   *                          be ordered before subordinate entries.
-   * @param  sortKeys         A list of sort keys that define the order in which
-   *                          attributes should be compared.  It may be empty
-   *                          (but never {@code null}) if sorting should be done
-   *                          only based on hierarchy.
-   */
   public EntrySorter(final boolean sortByHierarchy, final SortKey... sortKeys)
   {
     this(sortByHierarchy, null, Arrays.asList(sortKeys));
   }
 
 
-
-  /**
-   * Creates a new entry sorter with the provided information.
-   *
-   * @param  sortByHierarchy  Indicates whether entries should be sorted
-   *                          hierarchically, such that superior entries will
-   *                          be ordered before subordinate entries.
-   * @param  schema           The schema to use to make the determination.  It
-   *                          may be {@code null} if no schema is available.
-   * @param  sortKeys         A list of sort keys that define the order in which
-   *                          attributes should be compared.  It may be empty
-   *                          (but never {@code null}) if sorting should be done
-   *                          only based on hierarchy.
-   */
   public EntrySorter(final boolean sortByHierarchy, final Schema schema,
                      final SortKey... sortKeys)
   {
@@ -150,18 +90,6 @@ public final class EntrySorter
   }
 
 
-
-  /**
-   * Creates a new entry sorter with the provided information.
-   *
-   * @param  sortByHierarchy  Indicates whether entries should be sorted
-   *                          hierarchically, such that superior entries will
-   *                          be ordered before subordinate entries.
-   * @param  sortKeys         A list of sort keys that define the order in which
-   *                          attributes should be compared.  It may be empty or
-   *                          {@code null} if sorting should be done only based
-   *                          on hierarchy.
-   */
   public EntrySorter(final boolean sortByHierarchy,
                      final List<SortKey> sortKeys)
   {
@@ -170,19 +98,6 @@ public final class EntrySorter
 
 
 
-  /**
-   * Creates a new entry sorter with the provided information.
-   *
-   * @param  sortByHierarchy  Indicates whether entries should be sorted
-   *                          hierarchically, such that superior entries will
-   *                          be ordered before subordinate entries.
-   * @param  schema           The schema to use to make the determination.  It
-   *                          may be {@code null} if no schema is available.
-   * @param  sortKeys         A list of sort keys that define the order in which
-   *                          attributes should be compared.  It may be empty or
-   *                          {@code null} if sorting should be done only based
-   *                          on hierarchy.
-   */
   public EntrySorter(final boolean sortByHierarchy, final Schema schema,
                      final List<SortKey> sortKeys)
   {
@@ -202,14 +117,6 @@ public final class EntrySorter
 
 
 
-  /**
-   * Sorts the provided collection of entries according to the criteria defined
-   * in this entry sorter.
-   *
-   * @param  entries  The collection of entries to be sorted.
-   *
-   * @return  A sorted set, ordered in accordance with this entry sorter.
-   */
   public SortedSet<Entry> sort(final Collection<? extends Entry> entries)
   {
     final TreeSet<Entry> entrySet = new TreeSet<Entry>(this);
@@ -218,19 +125,6 @@ public final class EntrySorter
   }
 
 
-
-  /**
-   * Compares the provided entries to determine the order in which they should
-   * be placed in a sorted list.
-   *
-   * @param  e1  The first entry to be compared.
-   * @param  e2  The second entry to be compared.
-   *
-   * @return  A negative value if the first entry should be ordered before the
-   *          second, a positive value if the first entry should be ordered
-   *          after the second, or zero if the entries should have an equivalent
-   *          order.
-   */
   public int compare(final Entry e1, final Entry e2)
   {
     DN parsedDN1 = null;
@@ -268,14 +162,10 @@ public final class EntrySorter
       {
         if ((a2 == null) || (! a2.hasValue()))
         {
-          // Neither entry has the attribute.  Continue on with the next
-          // attribute.
           continue;
         }
         else
         {
-          // The first entry does not have the attribute but the second does.
-          // The first entry should be ordered after the second.
           return 1;
         }
       }
@@ -283,8 +173,6 @@ public final class EntrySorter
       {
         if ((a2 == null) || (! a2.hasValue()))
         {
-          // The first entry has the attribute but the second does not.  The
-          // first entry should be ordered before the second.
           return -1;
         }
       }
@@ -294,8 +182,6 @@ public final class EntrySorter
            attrName, k.getMatchingRuleID(), schema);
       if (k.reverseOrder())
       {
-        // Find the largest value for each attribute, and pick the larger of the
-        // two.
         ASN1OctetString v1 = null;
         for (final ASN1OctetString s : a1.getRawValues())
         {
@@ -357,8 +243,6 @@ public final class EntrySorter
       }
       else
       {
-        // Find the smallest value for each attribute, and pick the larger of
-        // the two.
         ASN1OctetString v1 = null;
         for (final ASN1OctetString s : a1.getRawValues())
         {
@@ -420,10 +304,7 @@ public final class EntrySorter
       }
     }
 
-
-    // If we've gotten here, then there is no difference in hierarchy or
-    // sort attributes.  Compare the DNs as a last resort.
-    try
+try
     {
       if (parsedDN1 == null)
       {
@@ -448,11 +329,6 @@ public final class EntrySorter
 
 
 
-  /**
-   * Retrieves a hash code for this entry sorter.
-   *
-   * @return  A hash code for this entry sorter.
-   */
   @Override()
   public int hashCode()
   {
@@ -482,14 +358,7 @@ public final class EntrySorter
 
 
 
-  /**
-   * Indicates whether the provided object is equal to this entry sorter.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object is equal to this entry sorter,
-   *          or {@code false} if not.
-   */
+
   @Override()
   public boolean equals(final Object o)
   {
@@ -519,11 +388,6 @@ public final class EntrySorter
 
 
 
-  /**
-   * Retrieves a string representation of this entry sorter.
-   *
-   * @return  A string representation of this entry sorter.
-   */
   @Override()
   public String toString()
   {
@@ -534,13 +398,7 @@ public final class EntrySorter
 
 
 
-  /**
-   * Appends a string representation of this entry sorter to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which the string representation should be
-   *                 appended.
-   */
+
   public void toString(final StringBuilder buffer)
   {
     buffer.append("EntrySorter(sortByHierarchy=");

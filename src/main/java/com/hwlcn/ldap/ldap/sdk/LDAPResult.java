@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -40,93 +20,34 @@ import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
-
-
-/**
- * This class provides a data structure for holding the elements that are common
- * to most types of LDAP responses.  The elements contained in an LDAP result
- * include:
- * <UL>
- *   <LI>Result Code -- An integer value that provides information about the
- *       status of the operation.  See the {@link ResultCode} class for
- *       information about a number of result codes defined in LDAP.</LI>
- *   <LI>Diagnostic Message -- An optional string that may provide additional
- *       information about the operation.  For example, if the operation failed,
- *       it may include information about the reason for the failure.  It will
- *       often (but not always) be absent in the result for successful
- *       operations, and it may be absent in the result for failed
- *       operations.</LI>
- *   <LI>Matched DN -- An optional DN which specifies the entry that most
- *       closely matched the DN of a non-existent entry in the server.  For
- *       example, if an operation failed because the target entry did not exist,
- *       then the matched DN field may specify the DN of the closest ancestor
- *       to that entry that does exist in the server.</LI>
- *   <LI>Referral URLs -- An optional set of LDAP URLs which refer to other
- *       directories and/or locations within the DIT in which the operation may
- *       be attempted.  If multiple referral URLs are provided, then they should
- *       all be considered equivalent for the purpose of attempting the
- *       operation (e.g., the different URLs may simply refer to different
- *       servers in which the operation could be processed).</LI>
- *   <LI>Response Controls -- An optional set of controls included in the
- *       response from the server.  If any controls are included, then they may
- *       provide additional information about the processing that was performed
- *       by the server.</LI>
- * </UL>
- * <BR><BR>
- * Note that even though this class is marked with the @Extensible annotation
- * type, it should not be directly subclassed by third-party code.  Only the
- * {@link com.hwlcn.ldap.ldap.sdk.BindResult} and {@link ExtendedResult} subclasses are actually
- * intended to be extended by third-party code.
- */
 @Extensible()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public class LDAPResult
        implements Serializable, LDAPResponse
 {
-  /**
-   * The BER type for the set of referral URLs.
-   */
   static final byte TYPE_REFERRAL_URLS = (byte) 0xA3;
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 2215819095653175991L;
 
 
 
-  // The protocol op type for this result, if available.
   private final Byte protocolOpType;
 
-  // The set of controls from the response.
   private final Control[] responseControls;
 
-  // The message ID for the LDAP message that is associated with this LDAP
-  // result.
   private final int messageID;
 
-  // The result code from the response.
   private final ResultCode resultCode;
 
-  // The diagnostic message from the response, if available.
   private final String diagnosticMessage;
 
-  // The matched DN from the response, if available.
   private final String matchedDN;
 
-  // The set of referral URLs from the response, if available.
   private final String[] referralURLs;
 
-
-
-  /**
-   * Creates a new LDAP result object based on the provided result.
-   *
-   * @param  result  The LDAP result object to use to initialize this result.
-   */
   protected LDAPResult(final LDAPResult result)
   {
     protocolOpType    = result.protocolOpType;
@@ -139,36 +60,11 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Creates a new LDAP result object with the provided message ID and result
-   * code, and no other information.
-   *
-   * @param  messageID   The message ID for the LDAP message that is associated
-   *                     with this LDAP result.
-   * @param  resultCode  The result code from the response.
-   */
   public LDAPResult(final int messageID, final ResultCode resultCode)
   {
     this(null, messageID, resultCode, null, null, NO_STRINGS, NO_CONTROLS);
   }
 
-
-
-  /**
-   * Creates a new LDAP result object with the provided information.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
   public LDAPResult(final int messageID, final ResultCode resultCode,
                     final String diagnosticMessage, final String matchedDN,
                     final String[] referralURLs,
@@ -179,22 +75,7 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Creates a new LDAP result object with the provided information.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
-  public LDAPResult(final int messageID, final ResultCode resultCode,
+    public LDAPResult(final int messageID, final ResultCode resultCode,
                     final String diagnosticMessage, final String matchedDN,
                     final List<String> referralURLs,
                     final List<Control> responseControls)
@@ -204,23 +85,6 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Creates a new LDAP result object with the provided information.
-   *
-   * @param  protocolOpType     The protocol op type for this result, if
-   *                            available.
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
   private LDAPResult(final Byte protocolOpType, final int messageID,
                      final ResultCode resultCode,
                      final String diagnosticMessage, final String matchedDN,
@@ -253,23 +117,6 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Creates a new LDAP result object with the provided information.
-   *
-   * @param  protocolOpType     The protocol op type for this result, if
-   *                            available.
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
   private LDAPResult(final Byte protocolOpType, final int messageID,
                      final ResultCode resultCode,
                      final String diagnosticMessage, final String matchedDN,
@@ -304,23 +151,6 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Creates a new LDAP result object with the provided message ID and with the
-   * protocol op and controls read from the given ASN.1 stream reader.
-   *
-   * @param  messageID        The LDAP message ID for the LDAP message that is
-   *                          associated with this LDAP result.
-   * @param  messageSequence  The ASN.1 stream reader sequence used in the
-   *                          course of reading the LDAP message elements.
-   * @param  reader           The ASN.1 stream reader from which to read the
-   *                          protocol op and controls.
-   *
-   * @return  The decoded LDAP result.
-   *
-   * @throws  LDAPException  If a problem occurs while reading or decoding data
-   *                         from the ASN.1 stream reader.
-   */
   static LDAPResult readLDAPResultFrom(final int messageID,
                          final ASN1StreamReaderSequence messageSequence,
                          final ASN1StreamReader reader)
@@ -397,26 +227,12 @@ public class LDAPResult
   }
 
 
-
-  /**
-   * Retrieves the message ID for the LDAP message with which this LDAP result
-   * is associated.
-   *
-   * @return  The message ID for the LDAP message with which this LDAP result
-   *          is associated.
-   */
   public final int getMessageID()
   {
     return messageID;
   }
 
 
-
-  /**
-   * Retrieves the result code from the response.
-   *
-   * @return  The result code from the response.
-   */
   public final ResultCode getResultCode()
   {
     return resultCode;
@@ -424,83 +240,31 @@ public class LDAPResult
 
 
 
-  /**
-   * Retrieves the diagnostic message from the response, if available.
-   *
-   * @return  The diagnostic message from the response, or {@code null} if none
-   *          was provided.
-   */
   public final String getDiagnosticMessage()
   {
     return diagnosticMessage;
   }
 
-
-
-  /**
-   * Retrieves the matched DN from the response, if available.
-   *
-   * @return  The matched DN from the response, or {@code null} if none was
-   *          provided.
-   */
   public final String getMatchedDN()
   {
     return matchedDN;
   }
 
-
-
-  /**
-   * Retrieves the set of referral URLs from the response, if available.
-   *
-   * @return  The set of referral URLs from the response.  The array returned
-   *          may be empty if the response did not include any referral URLs.
-   */
   public final String[] getReferralURLs()
   {
     return referralURLs;
   }
 
-
-
-  /**
-   * Retrieves the set of controls from the response, if available.  Individual
-   * response controls of a specific type may be retrieved and decoded using the
-   * {@code get} method in the response control class.
-   *
-   * @return  The set of controls from the response.  The array returned may be
-   *          empty if the response did not include any controls.
-   */
   public final Control[] getResponseControls()
   {
     return responseControls;
   }
 
-
-
-  /**
-   * Indicates whether this result contains at least one control.
-   *
-   * @return  {@code true} if this result contains at least one control, or
-   *          {@code false} if not.
-   */
   public final boolean hasResponseControl()
   {
     return (responseControls.length > 0);
   }
 
-
-
-  /**
-   * Indicates whether this result contains at least one control with the
-   * specified OID.
-   *
-   * @param  oid  The object identifier for which to make the determination.  It
-   *              must not be {@code null}.
-   *
-   * @return  {@code true} if this result contains at least one control with
-   *          the specified OID, or {@code false} if not.
-   */
   public final boolean hasResponseControl(final String oid)
   {
     for (final Control c : responseControls)
@@ -514,18 +278,6 @@ public class LDAPResult
     return false;
   }
 
-
-
-  /**
-   * Retrieves the response control with the specified OID.  If there is more
-   * than one response control with the specified OID, then the first will be
-   * returned.
-   *
-   * @param  oid  The OID for the response control to retrieve.
-   *
-   * @return  The requested response control, or {@code null} if there is no
-   *          such response control.
-   */
   public final Control getResponseControl(final String oid)
   {
     for (final Control c : responseControls)
@@ -539,13 +291,6 @@ public class LDAPResult
     return null;
   }
 
-
-
-  /**
-   * Retrieves a string representation of this LDAP result.
-   *
-   * @return  A string representation of this LDAP result.
-   */
   @Override()
   public String toString()
   {
@@ -554,14 +299,6 @@ public class LDAPResult
     return buffer.toString();
   }
 
-
-
-  /**
-   * Appends a string representation of this LDAP result to the provided buffer.
-   *
-   * @param  buffer  The buffer to which to append a string representation of
-   *                 this LDAP result.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("LDAPResult(resultCode=");

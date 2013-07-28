@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -81,30 +61,20 @@ public final class DeleteRequest
        extends UpdatableLDAPRequest
        implements ReadOnlyDeleteRequest, ResponseAcceptor, ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -6126029442850884239L;
 
 
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The queue that will be used to receive response messages from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue =
        new LinkedBlockingQueue<LDAPResponse>();
 
-  // The DN of the entry to delete.
   private String dn;
 
 
 
-  /**
-   * Creates a new delete request with the provided DN.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   */
   public DeleteRequest(final String dn)
   {
     super(null);
@@ -116,13 +86,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Creates a new delete request with the provided DN.
-   *
-   * @param  dn        The DN of the entry to delete.  It must not be
-   *                   {@code null}.
-   * @param  controls  The set of controls to include in the request.
-   */
   public DeleteRequest(final String dn, final Control[] controls)
   {
     super(controls);
@@ -134,11 +97,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Creates a new delete request with the provided DN.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   */
   public DeleteRequest(final DN dn)
   {
     super(null);
@@ -148,15 +106,6 @@ public final class DeleteRequest
     this.dn = dn.toString();
   }
 
-
-
-  /**
-   * Creates a new delete request with the provided DN.
-   *
-   * @param  dn        The DN of the entry to delete.  It must not be
-   *                   {@code null}.
-   * @param  controls  The set of controls to include in the request.
-   */
   public DeleteRequest(final DN dn, final Control[] controls)
   {
     super(controls);
@@ -168,21 +117,12 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String getDN()
   {
     return dn;
   }
 
 
-
-  /**
-   * Specifies the DN of the entry to delete.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   */
   public void setDN(final String dn)
   {
     ensureNotNull(dn);
@@ -192,11 +132,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Specifies the DN of the entry to delete.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   */
   public void setDN(final DN dn)
   {
     ensureNotNull(dn);
@@ -206,9 +141,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_DELETE_REQUEST;
@@ -216,9 +148,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     buffer.addOctetString(LDAPMessage.PROTOCOL_OP_TYPE_DELETE_REQUEST, dn);
@@ -226,11 +155,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Encodes the delete request protocol op to an ASN.1 element.
-   *
-   * @return  The ASN.1 element with the encoded delete request protocol op.
-   */
   public ASN1Element encodeProtocolOp()
   {
     return new ASN1OctetString(LDAPMessage.PROTOCOL_OP_TYPE_DELETE_REQUEST, dn);
@@ -238,22 +162,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Sends this delete request to the directory server over the provided
-   * connection and returns the associated response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the delete processing.
-   *
-   * @throws  LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected LDAPResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -269,7 +177,6 @@ public final class DeleteRequest
 
     try
     {
-      // Wait for and process the response.
       final LDAPResponse response;
       try
       {
@@ -300,35 +207,14 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Sends this delete request to the directory server over the provided
-   * connection and returns the message ID for the request.
-   *
-   * @param  connection      The connection to use to communicate with the
-   *                         directory server.
-   * @param  resultListener  The async result listener that is to be notified
-   *                         when the response is received.  It may be
-   *                         {@code null} only if the result is to be processed
-   *                         by this class.
-   *
-   * @return  The async request ID created for the operation, or {@code null} if
-   *          the provided {@code resultListener} is {@code null} and the
-   *          operation will not actually be processed asynchronously.
-   *
-   * @throws  LDAPException  If a problem occurs while sending the request.
-   */
   AsyncRequestID processAsync(final LDAPConnection connection,
                               final AsyncResultListener resultListener)
                  throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message = new LDAPMessage(messageID, this, getControls());
 
 
-    // If the provided async result listener is {@code null}, then we'll use
-    // this class as the message acceptor.  Otherwise, create an async helper
-    // and use it as the message acceptor.
     final AsyncRequestID asyncRequestID;
     if (resultListener == null)
     {
@@ -355,7 +241,6 @@ public final class DeleteRequest
     }
 
 
-    // Send the request to the server.
     try
     {
       debugLDAPRequest(this);
@@ -373,38 +258,15 @@ public final class DeleteRequest
   }
 
 
-
-  /**
-   * Processes this delete operation in synchronous mode, in which the same
-   * thread will send the request and read the response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  allowRetry  Indicates whether the request may be re-tried on a
-   *                     re-established connection if the initial attempt fails
-   *                     in a way that indicates the connection is no longer
-   *                     valid and autoReconnect is true.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the delete processing.
-   *
-   * @throws  LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
-  private LDAPResult processSync(final LDAPConnection connection,
+private LDAPResult processSync(final LDAPConnection connection,
                                  final int depth, final boolean allowRetry)
           throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message =
          new LDAPMessage(messageID,  this, getControls());
 
 
-    // Set the appropriate timeout on the socket.
     try
     {
       connection.getConnectionInternals(true).getSocket().setSoTimeout(
@@ -416,7 +278,6 @@ public final class DeleteRequest
     }
 
 
-    // Send the request to the server.
     final long requestTime = System.nanoTime();
     debugLDAPRequest(this);
     connection.getConnectionStatistics().incrementNumDeleteRequests();
@@ -491,24 +352,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Performs the necessary processing for handling a response.
-   *
-   * @param  connection   The connection used to read the response.
-   * @param  response     The response to be processed.
-   * @param  requestTime  The time the request was sent to the server.
-   * @param  depth        The current referral depth for this request.  It
-   *                      should always be one for the initial request, and
-   *                      should only be incremented when following referrals.
-   * @param  allowRetry   Indicates whether the request may be re-tried on a
-   *                      re-established connection if the initial attempt fails
-   *                      in a way that indicates the connection is no longer
-   *                      valid and autoReconnect is true.
-   *
-   * @return  The delete result.
-   *
-   * @throws  LDAPException  If a problem occurs.
-   */
   private LDAPResult handleResponse(final LDAPConnection connection,
                                     final LDAPResponse response,
                                     final long requestTime, final int depth,
@@ -531,7 +374,6 @@ public final class DeleteRequest
          System.nanoTime() - requestTime);
     if (response instanceof ConnectionClosedResponse)
     {
-      // The connection was closed while waiting for the response.
       if (allowRetry)
       {
         final LDAPResult retryResult = reconnectAndRetry(connection, depth,
@@ -589,28 +431,12 @@ public final class DeleteRequest
   }
 
 
-
-  /**
-   * Attempts to re-establish the connection and retry processing this request
-   * on it.
-   *
-   * @param  connection  The connection to be re-established.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  resultCode  The result code for the previous operation attempt.
-   *
-   * @return  The result from re-trying the add, or {@code null} if it could not
-   *          be re-tried.
-   */
   private LDAPResult reconnectAndRetry(final LDAPConnection connection,
                                        final int depth,
                                        final ResultCode resultCode)
   {
     try
     {
-      // We will only want to retry for certain result codes that indicate a
-      // connection problem.
       switch (resultCode.intValue())
       {
         case ResultCode.SERVER_DOWN_INT_VALUE:
@@ -630,23 +456,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * Attempts to follow a referral to perform a delete operation in the target
-   * server.
-   *
-   * @param  referralResult  The LDAP result object containing information about
-   *                         the referral to follow.
-   * @param  connection      The connection on which the referral was received.
-   * @param  depth           The number of referrals followed in the course of
-   *                         processing this request.
-   *
-   * @return  The result of attempting to process the delete operation by
-   *          following the referral.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to establish
-   *                         the referral connection, sending the request, or
-   *                         reading the result.
-   */
   private LDAPResult followReferral(final LDAPResult referralResult,
                                     final LDAPConnection connection,
                                     final int depth)
@@ -661,7 +470,6 @@ public final class DeleteRequest
 
         if (host == null)
         {
-          // We can't handle a referral in which there is no host.
           continue;
         }
 
@@ -693,17 +501,11 @@ public final class DeleteRequest
         debugException(le);
       }
     }
-
-    // If we've gotten here, then we could not follow any of the referral URLs,
-    // so we'll just return the original referral result.
     return referralResult;
   }
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void responseReceived(final LDAPResponse response)
          throws LDAPException
@@ -722,9 +524,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -733,9 +532,6 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public OperationType getOperationType()
   {
@@ -744,19 +540,11 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public DeleteRequest duplicate()
   {
     return duplicate(getControls());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public DeleteRequest duplicate(final Control[] controls)
   {
     final DeleteRequest r = new DeleteRequest(dn, controls);
@@ -773,9 +561,7 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public LDIFDeleteChangeRecord toLDIFChangeRecord()
   {
     return new LDIFDeleteChangeRecord(this);
@@ -783,9 +569,7 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public String[] toLDIF()
   {
     return toLDIFChangeRecord().toLDIF();
@@ -793,19 +577,12 @@ public final class DeleteRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String toLDIFString()
   {
     return toLDIFChangeRecord().toLDIFString();
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

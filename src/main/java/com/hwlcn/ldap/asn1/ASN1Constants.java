@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.asn1;
 
 
@@ -28,18 +8,12 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
 
-/**
- * This class defines a number of constants that are used in the course of
- * processing ASN.1 BER elements.  It is intended for internal use only and
- * should not be referenced by classes outside of the LDAP SDK.
- */
+
 @InternalUseOnly()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ASN1Constants
 {
-  /**
-   * Prevent this class from being instantiated.
-   */
+
   private ASN1Constants()
   {
     // No implementation is required.
@@ -47,96 +21,55 @@ public final class ASN1Constants
 
 
 
-  /**
-   * A pre-allocated array of zero elements, which can be used for sequence or
-   * set elements that do not encapsulate any other elements.
-   */
   static final ASN1Element[] NO_ELEMENTS = new ASN1Element[0];
 
 
 
-  /**
-   * A byte array that should be used as the default value for an ASN.1 Boolean
-   * element with a boolean value of "FALSE".
-   */
   static final byte[] BOOLEAN_VALUE_FALSE = { (byte) 0x00 };
 
 
 
-  /**
-   * A byte array that should be used as the default value for an ASN.1 Boolean
-   * element with a boolean value of "TRUE".
-   */
   static final byte[] BOOLEAN_VALUE_TRUE = { (byte) 0xFF };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 0 bytes.
-   */
   static final byte[] LENGTH_0 = { 0 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 1 byte.
-   */
   static final byte[] LENGTH_1 = { 1 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 2 bytes.
-   */
+
   static final byte[] LENGTH_2 = { 2 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 3 bytes.
-   */
   static final byte[] LENGTH_3 = { 3 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 4 bytes.
-   */
   static final byte[] LENGTH_4 = { 4 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 5 bytes.
-   */
   static final byte[] LENGTH_5 = { 5 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 6 bytes.
-   */
   static final byte[] LENGTH_6 = { 6 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 7 bytes.
-   */
   static final byte[] LENGTH_7 = { 7 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 8 bytes.
-   */
   static final byte[] LENGTH_8 = { 8 };
 
 
 
-  /**
-   * The pre-encoded length array to use for a length of 9 bytes.
-   */
   static final byte[] LENGTH_9 = { 9 };
 
 
@@ -1002,23 +935,14 @@ public final class ASN1Constants
 
 
 
-  /**
-   * The BER type for the universal sequence element.
-   */
   public static final byte UNIVERSAL_SEQUENCE_TYPE = 0x30;
 
 
 
-  /**
-   * The BER type for the universal set element.
-   */
   public static final byte UNIVERSAL_SET_TYPE = 0x31;
 
 
 
-  /**
-   * A byte array that should be used as the value for an ASN.1 element if it
-   * does not have a value (i.e., the value length is zero bytes).
-   */
+
   public static final byte[] NO_VALUE = new byte[0];
 }

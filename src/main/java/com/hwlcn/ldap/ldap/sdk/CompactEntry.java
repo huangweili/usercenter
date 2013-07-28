@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -40,46 +20,20 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class provides a data structure that represents a compact version of an
- * entry.  This is basically the same as an {@code Entry} object, except that
- * it stores the information in a more compact form that requires less space in
- * memory.  This may be useful in applications that need to hold a large number
- * of entries in memory.  Note that performance of some methods in this class
- * may be significantly worse than the performance of the corresponding methods
- * in the {@code Entry} class.
- *
- * @see  com.hwlcn.ldap.ldap.sdk.Entry
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class CompactEntry
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 8067151651120794058L;
 
-
-
-  // The set of attributes for this entry.
   private final CompactAttribute[] attributes;
 
-  // The hash code for this entry, if it has been calculated.
   private int hashCode;
 
-  // The DN for this entry.
   private final String dn;
 
-
-
-  /**
-   * Creates a new compact entry from the provided entry.
-   *
-   * @param  entry  The entry to use to create this compact entry.  It must not
-   *                be {@code null}.
-   */
   public CompactEntry(final Entry entry)
   {
     ensureNotNull(entry);
@@ -125,13 +79,6 @@ public final class CompactEntry
 
 
 
-  /**
-   * Retrieves the RDN for this entry.
-   *
-   * @return  The RDN for this entry, or {@code null} if the DN is the null DN.
-   *
-   * @throws  LDAPException  If the DN string cannot be parsed as a valid DN.
-   */
   public RDN getRDN()
          throws LDAPException
   {
@@ -139,15 +86,6 @@ public final class CompactEntry
   }
 
 
-
-  /**
-   * Retrieves the parent DN for this entry.
-   *
-   * @return  The parent DN for this entry, or {@code null} if there is no
-   *          parent.
-   *
-   * @throws  LDAPException  If the DN string cannot be parsed as a valid DN.
-   */
   public DN getParentDN()
          throws LDAPException
   {
@@ -155,15 +93,6 @@ public final class CompactEntry
   }
 
 
-
-  /**
-   * Retrieves the parent DN for this entry as a string.
-   *
-   * @return  The parent DN for this entry as a string, or {@code null} if there
-   *          is no parent.
-   *
-   * @throws  LDAPException  If the DN string cannot be parsed as a valid DN.
-   */
   public String getParentDNString()
          throws LDAPException
   {

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -194,203 +174,80 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class Filter
        implements Serializable
 {
-  /**
-   * The BER type for AND search filters.
-   */
   public static final byte FILTER_TYPE_AND = (byte) 0xA0;
 
+ public static final byte FILTER_TYPE_OR = (byte) 0xA1;
 
-
-  /**
-   * The BER type for OR search filters.
-   */
-  public static final byte FILTER_TYPE_OR = (byte) 0xA1;
-
-
-
-  /**
-   * The BER type for NOT search filters.
-   */
   public static final byte FILTER_TYPE_NOT = (byte) 0xA2;
 
 
-
-  /**
-   * The BER type for equality search filters.
-   */
   public static final byte FILTER_TYPE_EQUALITY = (byte) 0xA3;
 
 
-
-  /**
-   * The BER type for substring search filters.
-   */
   public static final byte FILTER_TYPE_SUBSTRING = (byte) 0xA4;
 
 
-
-  /**
-   * The BER type for greaterOrEqual search filters.
-   */
   public static final byte FILTER_TYPE_GREATER_OR_EQUAL = (byte) 0xA5;
 
 
-
-  /**
-   * The BER type for lessOrEqual search filters.
-   */
   public static final byte FILTER_TYPE_LESS_OR_EQUAL = (byte) 0xA6;
 
 
-
-  /**
-   * The BER type for presence search filters.
-   */
   public static final byte FILTER_TYPE_PRESENCE = (byte) 0x87;
 
 
-
-  /**
-   * The BER type for approximate match search filters.
-   */
   public static final byte FILTER_TYPE_APPROXIMATE_MATCH = (byte) 0xA8;
 
 
-
-  /**
-   * The BER type for extensible match search filters.
-   */
   public static final byte FILTER_TYPE_EXTENSIBLE_MATCH = (byte) 0xA9;
 
-
-
-  /**
-   * The BER type for the subInitial substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBINITIAL = (byte) 0x80;
 
-
-
-  /**
-   * The BER type for the subAny substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBANY = (byte) 0x81;
 
 
-
-  /**
-   * The BER type for the subFinal substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBFINAL = (byte) 0x82;
 
-
-
-  /**
-   * The BER type for the matching rule ID extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_MATCHING_RULE_ID = (byte) 0x81;
 
-
-
-  /**
-   * The BER type for the attribute name extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_ATTRIBUTE_NAME = (byte) 0x82;
 
-
-
-  /**
-   * The BER type for the match value extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_MATCH_VALUE = (byte) 0x83;
 
-
-
-  /**
-   * The BER type for the DN attributes extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_DN_ATTRIBUTES = (byte) 0x84;
 
-
-
-  /**
-   * The set of filters that will be used if there are no subordinate filters.
-   */
   private static final Filter[] NO_FILTERS = new Filter[0];
 
-
-
-  /**
-   * The set of subAny components that will be used if there are no subAny
-   * components.
-   */
   private static final ASN1OctetString[] NO_SUB_ANY = new ASN1OctetString[0];
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2734184402804691970L;
 
-
-
-  // The assertion value for this filter.
   private final ASN1OctetString assertionValue;
 
-  // The subFinal component for this filter.
   private final ASN1OctetString subFinal;
 
-  // The subInitial component for this filter.
   private final ASN1OctetString subInitial;
 
-  // The subAny components for this filter.
   private final ASN1OctetString[] subAny;
 
-  // The dnAttrs element for this filter.
   private final boolean dnAttributes;
 
-  // The filter component to include in a NOT filter.
   private final Filter notComp;
 
-  // The set of filter components to include in an AND or OR filter.
   private final Filter[] filterComps;
 
-  // The filter type for this search filter.
   private final byte filterType;
 
-  // The attribute name for this filter.
   private final String attrName;
 
-  // The string representation of this search filter.
   private volatile String filterString;
 
-  // The matching rule ID for this filter.
   private final String matchingRuleID;
 
-  // The normalized string representation of this search filter.
   private volatile String normalizedString;
 
 
-
-  /**
-   * Creates a new filter with the appropriate subset of the provided
-   * information.
-   *
-   * @param  filterString    The string representation of this search filter.
-   *                         It may be {@code null} if it is not yet known.
-   * @param  filterType      The filter type for this filter.
-   * @param  filterComps     The set of filter components for this filter.
-   * @param  notComp         The filter component for this NOT filter.
-   * @param  attrName        The name of the target attribute for this filter.
-   * @param  assertionValue  Then assertion value for this filter.
-   * @param  subInitial      The subInitial component for this filter.
-   * @param  subAny          The set of subAny components for this filter.
-   * @param  subFinal        The subFinal component for this filter.
-   * @param  matchingRuleID  The matching rule ID for this filter.
-   * @param  dnAttributes    The dnAttributes flag.
-   */
-  private Filter(final String filterString, final byte filterType,
+ private Filter(final String filterString, final byte filterType,
                  final Filter[] filterComps, final Filter notComp,
                  final String attrName, final ASN1OctetString assertionValue,
                  final ASN1OctetString subInitial,
@@ -412,14 +269,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new AND search filter with the provided components.
-   *
-   * @param  andComponents  The set of filter components to include in the AND
-   *                        filter.  It must not be {@code null}.
-   *
-   * @return  The created AND search filter.
-   */
   public static Filter createANDFilter(final Filter... andComponents)
   {
     ensureNotNull(andComponents);
@@ -430,14 +279,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new AND search filter with the provided components.
-   *
-   * @param  andComponents  The set of filter components to include in the AND
-   *                        filter.  It must not be {@code null}.
-   *
-   * @return  The created AND search filter.
-   */
   public static Filter createANDFilter(final List<Filter> andComponents)
   {
     ensureNotNull(andComponents);
@@ -449,14 +290,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new OR search filter with the provided components.
-   *
-   * @param  orComponents  The set of filter components to include in the OR
-   *                       filter.  It must not be {@code null}.
-   *
-   * @return  The created OR search filter.
-   */
   public static Filter createORFilter(final Filter... orComponents)
   {
     ensureNotNull(orComponents);
@@ -467,14 +300,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new OR search filter with the provided components.
-   *
-   * @param  orComponents  The set of filter components to include in the OR
-   *                       filter.  It must not be {@code null}.
-   *
-   * @return  The created OR search filter.
-   */
   public static Filter createORFilter(final List<Filter> orComponents)
   {
     ensureNotNull(orComponents);
@@ -486,14 +311,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new NOT search filter with the provided component.
-   *
-   * @param  notComponent  The filter component to include in this NOT filter.
-   *                       It must not be {@code null}.
-   *
-   * @return  The created NOT search filter.
-   */
   public static Filter createNOTFilter(final Filter notComponent)
   {
     ensureNotNull(notComponent);
@@ -504,16 +321,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new equality search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this equality filter.  It
-   *                         must not be {@code null}.
-   * @param  assertionValue  The assertion value for this equality filter.  It
-   *                         must not be {@code null}.
-   *
-   * @return  The created equality search filter.
-   */
   public static Filter createEqualityFilter(final String attributeName,
                                             final String assertionValue)
   {
@@ -526,16 +333,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new equality search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this equality filter.  It
-   *                         must not be {@code null}.
-   * @param  assertionValue  The assertion value for this equality filter.  It
-   *                         must not be {@code null}.
-   *
-   * @return  The created equality search filter.
-   */
   public static Filter createEqualityFilter(final String attributeName,
                                             final byte[] assertionValue)
   {
@@ -548,16 +345,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new equality search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this equality filter.  It
-   *                         must not be {@code null}.
-   * @param  assertionValue  The assertion value for this equality filter.  It
-   *                         must not be {@code null}.
-   *
-   * @return  The created equality search filter.
-   */
   static Filter createEqualityFilter(final String attributeName,
                                      final ASN1OctetString assertionValue)
   {
@@ -569,21 +356,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new substring search filter with the provided information.  At
-   * least one of the subInitial, subAny, and subFinal components must not be
-   * {@code null}.
-   *
-   * @param  attributeName  The attribute name for this substring filter.  It
-   *                        must not be {@code null}.
-   * @param  subInitial     The subInitial component for this substring filter.
-   * @param  subAny         The set of subAny components for this substring
-   *                        filter.
-   * @param  subFinal       The subFinal component for this substring filter.
-   *
-   * @return  The created substring search filter.
-   */
   public static Filter createSubstringFilter(final String attributeName,
                                              final String subInitial,
                                              final String[] subAny,
@@ -634,21 +406,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new substring search filter with the provided information.  At
-   * least one of the subInitial, subAny, and subFinal components must not be
-   * {@code null}.
-   *
-   * @param  attributeName  The attribute name for this substring filter.  It
-   *                        must not be {@code null}.
-   * @param  subInitial     The subInitial component for this substring filter.
-   * @param  subAny         The set of subAny components for this substring
-   *                        filter.
-   * @param  subFinal       The subFinal component for this substring filter.
-   *
-   * @return  The created substring search filter.
-   */
   public static Filter createSubstringFilter(final String attributeName,
                                              final byte[] subInitial,
                                              final byte[][] subAny,
@@ -698,22 +455,6 @@ public final class Filter
                       subFinalOS, null, false);
   }
 
-
-
-  /**
-   * Creates a new substring search filter with the provided information.  At
-   * least one of the subInitial, subAny, and subFinal components must not be
-   * {@code null}.
-   *
-   * @param  attributeName  The attribute name for this substring filter.  It
-   *                        must not be {@code null}.
-   * @param  subInitial     The subInitial component for this substring filter.
-   * @param  subAny         The set of subAny components for this substring
-   *                        filter.
-   * @param  subFinal       The subFinal component for this substring filter.
-   *
-   * @return  The created substring search filter.
-   */
   static Filter createSubstringFilter(final String attributeName,
                                       final ASN1OctetString subInitial,
                                       final ASN1OctetString[] subAny,
@@ -738,18 +479,6 @@ public final class Filter
     }
   }
 
-
-
-  /**
-   * Creates a new greater-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created greater-or-equal search filter.
-   */
   public static Filter createGreaterOrEqualFilter(final String attributeName,
                                                   final String assertionValue)
   {
@@ -761,17 +490,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new greater-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created greater-or-equal search filter.
-   */
   public static Filter createGreaterOrEqualFilter(final String attributeName,
                                                   final byte[] assertionValue)
   {
@@ -784,16 +502,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new greater-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this greater-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created greater-or-equal search filter.
-   */
   static Filter createGreaterOrEqualFilter(final String attributeName,
                                            final ASN1OctetString assertionValue)
   {
@@ -805,17 +513,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new less-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created less-or-equal search filter.
-   */
   public static Filter createLessOrEqualFilter(final String attributeName,
                                                final String assertionValue)
   {
@@ -828,16 +525,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new less-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created less-or-equal search filter.
-   */
   public static Filter createLessOrEqualFilter(final String attributeName,
                                                final byte[] assertionValue)
   {
@@ -849,17 +536,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new less-or-equal search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this less-or-equal
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created less-or-equal search filter.
-   */
   static Filter createLessOrEqualFilter(final String attributeName,
                                         final ASN1OctetString assertionValue)
   {
@@ -872,14 +548,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new presence search filter with the provided information.
-   *
-   * @param  attributeName   The attribute name for this presence filter.  It
-   *                         must not be {@code null}.
-   *
-   * @return  The created presence search filter.
-   */
   public static Filter createPresenceFilter(final String attributeName)
   {
     ensureNotNull(attributeName);
@@ -889,18 +557,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new approximate match search filter with the provided
-   * information.
-   *
-   * @param  attributeName   The attribute name for this approximate match
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this approximate match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created approximate match search filter.
-   */
   public static Filter createApproximateMatchFilter(final String attributeName,
                                                     final String assertionValue)
   {
@@ -912,18 +568,6 @@ public final class Filter
   }
 
 
-
-  /**
-   * Creates a new approximate match search filter with the provided
-   * information.
-   *
-   * @param  attributeName   The attribute name for this approximate match
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this approximate match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created approximate match search filter.
-   */
   public static Filter createApproximateMatchFilter(final String attributeName,
                                                     final byte[] assertionValue)
   {
@@ -936,17 +580,7 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new approximate match search filter with the provided
-   * information.
-   *
-   * @param  attributeName   The attribute name for this approximate match
-   *                         filter.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value for this approximate match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created approximate match search filter.
-   */
+
   static Filter createApproximateMatchFilter(final String attributeName,
                      final ASN1OctetString assertionValue)
   {
@@ -959,22 +593,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new extensible match search filter with the provided
-   * information.  At least one of the attribute name and matching rule ID must
-   * be specified, and the assertion value must always be present.
-   *
-   * @param  attributeName   The attribute name for this extensible match
-   *                         filter.
-   * @param  matchingRuleID  The matching rule ID for this extensible match
-   *                         filter.
-   * @param  dnAttributes    Indicates whether the match should be performed
-   *                         against attributes in the target entry's DN.
-   * @param  assertionValue  The assertion value for this extensible match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created extensible match search filter.
-   */
   public static Filter createExtensibleMatchFilter(final String attributeName,
                                                    final String matchingRuleID,
                                                    final boolean dnAttributes,
@@ -990,22 +608,7 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new extensible match search filter with the provided
-   * information.  At least one of the attribute name and matching rule ID must
-   * be specified, and the assertion value must always be present.
-   *
-   * @param  attributeName   The attribute name for this extensible match
-   *                         filter.
-   * @param  matchingRuleID  The matching rule ID for this extensible match
-   *                         filter.
-   * @param  dnAttributes    Indicates whether the match should be performed
-   *                         against attributes in the target entry's DN.
-   * @param  assertionValue  The assertion value for this extensible match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created extensible match search filter.
-   */
+
   public static Filter createExtensibleMatchFilter(final String attributeName,
                                                    final String matchingRuleID,
                                                    final boolean dnAttributes,
@@ -1019,24 +622,6 @@ public final class Filter
                       NO_SUB_ANY, null, matchingRuleID, dnAttributes);
   }
 
-
-
-  /**
-   * Creates a new extensible match search filter with the provided
-   * information.  At least one of the attribute name and matching rule ID must
-   * be specified, and the assertion value must always be present.
-   *
-   * @param  attributeName   The attribute name for this extensible match
-   *                         filter.
-   * @param  matchingRuleID  The matching rule ID for this extensible match
-   *                         filter.
-   * @param  dnAttributes    Indicates whether the match should be performed
-   *                         against attributes in the target entry's DN.
-   * @param  assertionValue  The assertion value for this extensible match
-   *                         filter.  It must not be {@code null}.
-   *
-   * @return  The created approximate match search filter.
-   */
   static Filter createExtensibleMatchFilter(final String attributeName,
                      final String matchingRuleID, final boolean dnAttributes,
                      final ASN1OctetString assertionValue)
@@ -1051,17 +636,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new search filter from the provided string representation.
-   *
-   * @param  filterString  The string representation of the filter to create.
-   *                       It must not be {@code null}.
-   *
-   * @return  The search filter decoded from the provided filter string.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a valid
-   *                         LDAP search filter.
-   */
   public static Filter create(final String filterString)
          throws LDAPException
   {
@@ -1072,25 +646,6 @@ public final class Filter
 
 
 
-  /**
-   * Creates a new search filter from the specified portion of the provided
-   * string representation.
-   *
-   * @param  filterString  The string representation of the filter to create.
-   * @param  startPos      The position of the first character to consider as
-   *                       part of the filter.
-   * @param  endPos        The position of the last character to consider as
-   *                       part of the filter.
-   * @param  depth         The current nesting depth for this filter.  It should
-   *                       be increased by one for each AND, OR, or NOT filter
-   *                       encountered, in order to prevent stack overflow
-   *                       errors from excessive recursion.
-   *
-   * @return  The decoded search filter.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a valid
-   *                         LDAP search filter.
-   */
   private static Filter create(final String filterString, final int startPos,
                                final int endPos, final int depth)
           throws LDAPException
@@ -1121,8 +676,6 @@ public final class Filter
     int l = startPos;
     int r = endPos;
 
-    // First, see if the provided filter string is enclosed in parentheses, like
-    // it should be.  If so, then strip off the outer parentheses.
     if (filterString.charAt(l) == '(')
     {
       if (filterString.charAt(r) == ')')
@@ -1138,9 +691,6 @@ public final class Filter
     }
     else
     {
-      // This is technically an error, and it's a bad practice.  If we're
-      // working on the complete filter string then we'll let it slide, but
-      // otherwise we'll raise an error.
       if (l != 0)
       {
         throw new LDAPException(ResultCode.FILTER_ERROR,
@@ -1150,8 +700,6 @@ public final class Filter
     }
 
 
-    // Look at the first character of the filter to see if it's an '&', '|', or
-    // '!'.  If we find a parenthesis, then that's an error.
     switch (filterString.charAt(l))
     {
       case '&':
@@ -1198,9 +746,6 @@ public final class Filter
                                 ERR_FILTER_UNEXPECTED_OPEN_PAREN.get(l));
 
       case ':':
-        // This must be an extensible matching filter that starts with a
-        // dnAttributes flag and/or matching rule ID, and we should parse it
-        // accordingly.
         filterType  = FILTER_TYPE_EXTENSIBLE_MATCH;
         filterComps = NO_FILTERS;
         notComp     = null;
@@ -1209,8 +754,6 @@ public final class Filter
         subAny      = NO_SUB_ANY;
         subFinal    = null;
 
-        // The next element must be either the "dn:{matchingruleid}" or just
-        // "{matchingruleid}", and it must be followed by a colon.
         final int dnMRIDStart = ++l;
         while ((l <= r) && (filterString.charAt(l) != ':'))
         {
@@ -1233,8 +776,6 @@ public final class Filter
         {
           dnAttributes = true;
 
-          // The colon must be followed by the matching rule ID and another
-          // colon.
           final int mrIDStart = l;
           while ((l < r) && (filterString.charAt(l) != ':'))
           {
@@ -1267,7 +808,6 @@ public final class Filter
           matchingRuleID = s;
           dnAttributes = false;
 
-          // The colon must be followed by an equal sign.
           if ((l > r) || (filterString.charAt(l) != '='))
           {
             throw new LDAPException(ResultCode.FILTER_ERROR,
@@ -1276,8 +816,6 @@ public final class Filter
           }
         }
 
-        // Now we should be able to read the value, handling any escape
-        // characters as we go.
         l++;
         final StringBuilder valueBuffer = new StringBuilder(r - l + 1);
         while (l <= r)
@@ -1308,13 +846,10 @@ public final class Filter
 
 
       default:
-        // We know that it's not an AND, OR, or NOT filter, so we can eliminate
-        // the variables used only for them.
         filterComps = NO_FILTERS;
         notComp     = null;
 
 
-        // We should now be able to read a non-empty attribute name.
         final int attrStartPos = l;
         int     attrEndPos   = -1;
         byte    tempFilterType = 0x00;
@@ -1396,8 +931,6 @@ attrNameLoop:
               break attrNameLoop;
 
             case '=':
-              // It could be either an equality, presence, or substring filter.
-              // We'll need to look at the value to determine that.
               attrEndPos = l - 1;
               break attrNameLoop;
           }
@@ -1410,12 +943,7 @@ attrNameLoop:
         }
         attrName = filterString.substring(attrStartPos, attrEndPos);
 
-
-        // See if we're dealing with an extensible match filter.  If so, then
-        // we may still need to do additional parsing to get the matching rule
-        // ID and/or the dnAttributes flag.  Otherwise, we can rule out any
-        // variables that are specific to extensible matching filters.
-        if (filterTypeKnown && (tempFilterType == FILTER_TYPE_EXTENSIBLE_MATCH))
+     if (filterTypeKnown && (tempFilterType == FILTER_TYPE_EXTENSIBLE_MATCH))
         {
           if (l > r)
           {
@@ -1431,9 +959,6 @@ attrNameLoop:
           }
           else
           {
-            // We have either a matching rule ID or a dnAttributes flag, or
-            // both.  Iterate through the filter until we find the equal sign,
-            // and then figure out what we have from that.
             boolean equalFound = false;
             final int substrStartPos = l - 1;
             while (l <= r)
@@ -1496,9 +1021,6 @@ attrNameLoop:
         }
 
 
-        // At this point, we're ready to read the value.  If we still don't
-        // know what type of filter we're dealing with, then we can tell that
-        // based on asterisks in the value.
         if (l > r)
         {
           assertionValue = new ASN1OctetString();
@@ -1587,17 +1109,11 @@ attrNameLoop:
                 {
                   if ((l-1) == valueStartPos)
                   {
-                    // The first character is an asterisk, so there is no
-                    // subInitial.
                   }
                   else
                   {
                     if (tempFilterType == FILTER_TYPE_SUBSTRING)
                     {
-                      // We already know that it's a substring filter, so this
-                      // must be a subAny portion.  However, if the buffer is
-                      // empty, then that means that there were two asterisks
-                      // right next to each other, which is invalid.
                       if (buffer.length() == 0)
                       {
                         throw new LDAPException(ResultCode.FILTER_ERROR,
@@ -1612,9 +1128,6 @@ attrNameLoop:
                     }
                     else
                     {
-                      // We haven't yet set the filter type, so the buffer must
-                      // contain the subInitial portion.  We also know it's not
-                      // empty because of an earlier check.
                       tempSubInitial = new ASN1OctetString(buffer.toString());
                       buffer = new StringBuilder(r - l + 1);
                     }
@@ -1647,7 +1160,6 @@ attrNameLoop:
           if ((tempFilterType == FILTER_TYPE_SUBSTRING) &&
               (buffer.length() > 0))
           {
-            // The buffer must contain the subFinal portion.
             tempSubFinal = new ASN1OctetString(buffer.toString());
           }
 
@@ -1686,26 +1198,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Parses the specified portion of the provided filter string to obtain a set
-   * of filter components for use in an AND or OR filter.
-   *
-   * @param  filterString  The string representation for the set of filters.
-   * @param  startPos      The position of the first character to consider as
-   *                       part of the first filter.
-   * @param  endPos        The position of the last character to consider as
-   *                       part of the last filter.
-   * @param  depth         The current nesting depth for this filter.  It should
-   *                       be increased by one for each AND, OR, or NOT filter
-   *                       encountered, in order to prevent stack overflow
-   *                       errors from excessive recursion.
-   *
-   * @return  The decoded set of search filters.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a set
-   *                         of LDAP search filters.
-   */
   private static Filter[] parseFilterComps(final String filterString,
                                            final int startPos, final int endPos,
                                            final int depth)
@@ -1713,14 +1205,9 @@ attrNameLoop:
   {
     if (startPos > endPos)
     {
-      // This is acceptable, since it can represent an LDAP TRUE or FALSE filter
-      // as described in RFC 4526.
       return NO_FILTERS;
     }
 
-
-    // The set of filters must start with an opening parenthesis, and end with a
-    // closing parenthesis.
     if (filterString.charAt(startPos) != '(')
     {
       throw new LDAPException(ResultCode.FILTER_ERROR,
@@ -1732,10 +1219,6 @@ attrNameLoop:
                               ERR_FILTER_EXPECTED_CLOSE_PAREN.get(startPos));
     }
 
-
-    // Iterate through the specified portion of the filter string and count
-    // opening and closing parentheses to figure out where one filter ends and
-    // another begins.
     final ArrayList<Filter> filterList = new ArrayList<Filter>(5);
     int filterStartPos = startPos;
     int pos = startPos;
@@ -1769,25 +1252,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Reads one or more hex-encoded bytes from the specified portion of the
-   * filter string.
-   *
-   * @param  filterString  The string from which the data is to be read.
-   * @param  startPos      The position at which to start reading.  This should
-   *                       be the position of first hex character immediately
-   *                       after the initial backslash.
-   * @param  endPos        The position of the last possible character that can
-   *                       be read.
-   * @param  buffer        The buffer to which the decoded string portion should
-   *                       be appended.
-   *
-   * @return  The position at which the caller may resume parsing.
-   *
-   * @throws  LDAPException  If a problem occurs while reading hex-encoded
-   *                         bytes.
-   */
   private static int readEscapedHexString(final String filterString,
                                           final int startPos, final int endPos,
                                           final StringBuilder buffer)
@@ -1871,7 +1335,6 @@ attrNameLoop:
       switch (filterString.charAt(pos++))
       {
         case '0':
-          // No action is required.
           break;
         case '1':
           b |= 0x01;
@@ -1952,13 +1415,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Writes an ASN.1-encoded representation of this filter to the provided ASN.1
-   * buffer.
-   *
-   * @param  buffer  The ASN.1 buffer to which the encoded representation should
-   *                 be written.
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     switch (filterType)
@@ -2043,13 +1499,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Encodes this search filter to an ASN.1 element suitable for inclusion in an
-   * LDAP search request protocol op.
-   *
-   * @return  An ASN.1 element containing the encoded search filter.
-   */
   public ASN1Element encode()
   {
     switch (filterType)
@@ -2149,17 +1598,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Reads and decodes a search filter from the provided ASN.1 stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the filter.
-   *
-   * @return  The decoded search filter.
-   *
-   * @throws  LDAPException  If an error occurs while reading or parsing the
-   *                         search filter.
-   */
   public static Filter readFrom(final ASN1StreamReader reader)
          throws LDAPException
   {
@@ -2384,19 +1822,6 @@ attrNameLoop:
     }
   }
 
-
-
-  /**
-   * Decodes the provided ASN.1 element as a search filter.
-   *
-   * @param  filterElement  The ASN.1 element containing the encoded search
-   *                        filter.
-   *
-   * @return  The decoded search filter.
-   *
-   * @throws  LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a search filter.
-   */
   public static Filter decode(final ASN1Element filterElement)
          throws LDAPException
   {
@@ -2750,40 +2175,17 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the filter type for this filter.
-   *
-   * @return  The filter type for this filter.
-   */
   public byte getFilterType()
   {
     return filterType;
   }
 
 
-
-  /**
-   * Retrieves the set of filter components used in this AND or OR filter.  This
-   * is not applicable for any other filter type.
-   *
-   * @return  The set of filter components used in this AND or OR filter, or an
-   *          empty array if this is some other type of filter or if there are
-   *          no components (i.e., as in an LDAP TRUE or LDAP FALSE filter).
-   */
   public Filter[] getComponents()
   {
     return filterComps;
   }
 
-
-
-  /**
-   * Retrieves the filter component used in this NOT filter.  This is not
-   * applicable for any other filter type.
-   *
-   * @return  The filter component used in this NOT filter, or {@code null} if
-   *          this is some other type of filter.
-   */
   public Filter getNOTComponent()
   {
     return notComp;
@@ -2791,22 +2193,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the name of the attribute type for this search filter.  This is
-   * applicable for the following types of filters:
-   * <UL>
-   *   <LI>Equality</LI>
-   *   <LI>Substring</LI>
-   *   <LI>Greater or Equal</LI>
-   *   <LI>Less or Equal</LI>
-   *   <LI>Presence</LI>
-   *   <LI>Approximate Match</LI>
-   *   <LI>Extensible Match</LI>
-   * </UL>
-   *
-   * @return  The name of the attribute type for this search filter, or
-   *          {@code null} if it is not applicable for this type of filter.
-   */
   public String getAttributeName()
   {
     return attrName;
@@ -2814,21 +2200,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the string representation of the assertion value for this search
-   * filter.  This is applicable for the following types of filters:
-   * <UL>
-   *   <LI>Equality</LI>
-   *   <LI>Greater or Equal</LI>
-   *   <LI>Less or Equal</LI>
-   *   <LI>Approximate Match</LI>
-   *   <LI>Extensible Match</LI>
-   * </UL>
-   *
-   * @return  The string representation of the assertion value for this search
-   *          filter, or {@code null} if it is not applicable for this type of
-   *          filter.
-   */
   public String getAssertionValue()
   {
     if (assertionValue == null)
@@ -2841,23 +2212,6 @@ attrNameLoop:
     }
   }
 
-
-
-  /**
-   * Retrieves the binary representation of the assertion value for this search
-   * filter.  This is applicable for the following types of filters:
-   * <UL>
-   *   <LI>Equality</LI>
-   *   <LI>Greater or Equal</LI>
-   *   <LI>Less or Equal</LI>
-   *   <LI>Approximate Match</LI>
-   *   <LI>Extensible Match</LI>
-   * </UL>
-   *
-   * @return  The binary representation of the assertion value for this search
-   *          filter, or {@code null} if it is not applicable for this type of
-   *          filter.
-   */
   public byte[] getAssertionValueBytes()
   {
     if (assertionValue == null)
@@ -2871,22 +2225,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Retrieves the raw assertion value for this search filter as an ASN.1
-   * octet string.  This is applicable for the following types of filters:
-   * <UL>
-   *   <LI>Equality</LI>
-   *   <LI>Greater or Equal</LI>
-   *   <LI>Less or Equal</LI>
-   *   <LI>Approximate Match</LI>
-   *   <LI>Extensible Match</LI>
-   * </UL>
-   *
-   * @return  The raw assertion value for this search filter as an ASN.1 octet
-   *          string, or {@code null} if it is not applicable for this type of
-   *          filter.
-   */
   public ASN1OctetString getRawAssertionValue()
   {
     return assertionValue;
@@ -2894,14 +2232,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the string representation of the subInitial element for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The string representation of the subInitial element for this
-   *          substring filter, or {@code null} if this is some other type of
-   *          filter, or if it is a substring filter with no subInitial element.
-   */
   public String getSubInitialString()
   {
     if (subInitial == null)
@@ -2914,16 +2244,6 @@ attrNameLoop:
     }
   }
 
-
-
-  /**
-   * Retrieves the binary representation of the subInitial element for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The binary representation of the subInitial element for this
-   *          substring filter, or {@code null} if this is some other type of
-   *          filter, or if it is a substring filter with no subInitial element.
-   */
   public byte[] getSubInitialBytes()
   {
     if (subInitial == null)
@@ -2938,29 +2258,12 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the raw subInitial element for this filter as an ASN.1 octet
-   * string.  This is not applicable for any other filter type.
-   *
-   * @return  The raw subInitial element for this filter as an ASN.1 octet
-   *          string, or {@code null} if this is not a substring filter, or if
-   *          it is a substring filter with no subInitial element.
-   */
   public ASN1OctetString getRawSubInitialValue()
   {
     return subInitial;
   }
 
 
-
-  /**
-   * Retrieves the string representations of the subAny elements for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The string representations of the subAny elements for this
-   *          substring filter, or an empty array if this is some other type of
-   *          filter, or if it is a substring filter with no subFinal element.
-   */
   public String[] getSubAnyStrings()
   {
     final String[] subAnyStrings = new String[subAny.length];
@@ -2974,14 +2277,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the binary representations of the subAny elements for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The binary representations of the subAny elements for this
-   *          substring filter, or an empty array if this is some other type of
-   *          filter, or if it is a substring filter with no subFinal element.
-   */
   public byte[][] getSubAnyBytes()
   {
     final byte[][] subAnyBytes = new byte[subAny.length][];
@@ -2994,15 +2289,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Retrieves the raw subAny values for this substring filter.  This is not
-   * applicable for any other filter type.
-   *
-   * @return  The raw subAny values for this substring filter, or an empty array
-   *          if this is some other type of filter, or if it is a substring
-   *          filter with no subFinal element.
-   */
   public ASN1OctetString[] getRawSubAnyValues()
   {
     return subAny;
@@ -3010,14 +2296,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves the string representation of the subFinal element for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The string representation of the subFinal element for this
-   *          substring filter, or {@code null} if this is some other type of
-   *          filter, or if it is a substring filter with no subFinal element.
-   */
   public String getSubFinalString()
   {
     if (subFinal == null)
@@ -3031,15 +2309,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Retrieves the binary representation of the subFinal element for this
-   * substring filter.  This is not applicable for any other filter type.
-   *
-   * @return  The binary representation of the subFinal element for this
-   *          substring filter, or {@code null} if this is some other type of
-   *          filter, or if it is a substring filter with no subFinal element.
-   */
   public byte[] getSubFinalBytes()
   {
     if (subFinal == null)
@@ -3053,76 +2322,21 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Retrieves the raw subFinal element for this filter as an ASN.1 octet
-   * string.  This is not applicable for any other filter type.
-   *
-   * @return  The raw subFinal element for this filter as an ASN.1 octet
-   *          string, or {@code null} if this is not a substring filter, or if
-   *          it is a substring filter with no subFinal element.
-   */
   public ASN1OctetString getRawSubFinalValue()
   {
     return subFinal;
   }
 
-
-
-  /**
-   * Retrieves the matching rule ID for this extensible match filter.  This is
-   * not applicable for any other filter type.
-   *
-   * @return  The matching rule ID for this extensible match filter, or
-   *          {@code null} if this is some other type of filter, or if this
-   *          extensible match filter does not have a matching rule ID.
-   */
   public String getMatchingRuleID()
   {
     return matchingRuleID;
   }
 
-
-
-  /**
-   * Retrieves the dnAttributes flag for this extensible match filter.  This is
-   * not applicable for any other filter type.
-   *
-   * @return  The dnAttributes flag for this extensible match filter.
-   */
   public boolean getDNAttributes()
   {
     return dnAttributes;
   }
 
-
-
-  /**
-   * Indicates whether this filter matches the provided entry.  Note that this
-   * is a best-guess effort and may not be completely accurate in all cases.
-   * All matching will be performed using case-ignore string matching, which may
-   * yield an unexpected result for values that should not be treated as simple
-   * strings.  For example:
-   * <UL>
-   *   <LI>Two DN values which are logically equivalent may not be considered
-   *       matches if they have different spacing.</LI>
-   *   <LI>Ordering comparisons against numeric values may yield unexpected
-   *       results (e.g., "2" will be considered greater than "10" because the
-   *       character "2" has a larger ASCII value than the character "1").</LI>
-   * </UL>
-   * <BR>
-   * In addition to the above constraints, it should be noted that neither
-   * approximate matching nor extensible matching are currently supported.
-   *
-   * @param  entry  The entry for which to make the determination.  It must not
-   *                be {@code null}.
-   *
-   * @return  {@code true} if this filter appears to match the provided entry,
-   *          or {@code false} if not.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to make the
-   *                         determination.
-   */
   public boolean matchesEntry(final Entry entry)
          throws LDAPException
   {
@@ -3130,27 +2344,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Indicates whether this filter matches the provided entry.  Note that this
-   * is a best-guess effort and may not be completely accurate in all cases.
-   * If provided, the given schema will be used in an attempt to determine the
-   * appropriate matching rule for making the determinations, but some corner
-   * cases may not be handled accurately.  Neither approximate matching nor
-   * extensible matching are currently supported.
-   *
-   * @param  entry   The entry for which to make the determination.  It must not
-   *                 be {@code null}.
-   * @param  schema  The schema to use when making the determination.  If this
-   *                 is {@code null}, then all matching will be performed using
-   *                 a case-ignore matching rule.
-   *
-   * @return  {@code true} if this filter appears to match the provided entry,
-   *          or {@code false} if not.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to make the
-   *                         determination.
-   */
   public boolean matchesEntry(final Entry entry, final Schema schema)
          throws LDAPException
   {
@@ -3271,12 +2464,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Generates a hash code for this search filter.
-   *
-   * @return  The generated hash code for this search filter.
-   */
   @Override()
   public int hashCode()
   {
@@ -3352,16 +2539,6 @@ attrNameLoop:
     return hashCode;
   }
 
-
-
-  /**
-   * Indicates whether the provided object is equal to this search filter.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object can be considered equal to
-   *          this search filter, or {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -3562,11 +2739,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves a string representation of this search filter.
-   *
-   * @return  A string representation of this search filter.
-   */
   @Override()
   public String toString()
   {
@@ -3581,14 +2753,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Appends a string representation of this search filter to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append a string representation of
-   *                 this search filter.
-   */
   public void toString(final StringBuilder buffer)
   {
     switch (filterType)
@@ -3703,11 +2867,6 @@ attrNameLoop:
 
 
 
-  /**
-   * Retrieves a normalized string representation of this search filter.
-   *
-   * @return  A normalized string representation of this search filter.
-   */
   public String toNormalizedString()
   {
     if (normalizedString == null)
@@ -3721,14 +2880,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Appends a normalized string representation of this search filter to the
-   * provided buffer.
-   *
-   * @param  buffer  The buffer to which to append a normalized string
-   *                 representation of this search filter.
-   */
   public void toNormalizedString(final StringBuilder buffer)
   {
     final CaseIgnoreStringMatchingRule mr =
@@ -3848,18 +2999,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Encodes the provided value into a form suitable for use as the assertion
-   * value in the string representation of a search filter.  Parentheses,
-   * asterisks, backslashes, null characters, and any non-ASCII characters will
-   * be escaped using a backslash before the hexadecimal representation of each
-   * byte in the character to escape.
-   *
-   * @param  value  The value to be encoded.  It must not be {@code null}.
-   *
-   * @return  The encoded representation of the provided string.
-   */
   public static String encodeValue(final String value)
   {
     ensureNotNull(value);
@@ -3870,18 +3009,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Encodes the provided value into a form suitable for use as the assertion
-   * value in the string representation of a search filter.  Parentheses,
-   * asterisks, backslashes, null characters, and any non-ASCII characters will
-   * be escaped using a backslash before the hexadecimal representation of each
-   * byte in the character to escape.
-   *
-   * @param  value  The value to be encoded.  It must not be {@code null}.
-   *
-   * @return  The encoded representation of the provided string.
-   */
   public static String encodeValue(final byte[]value)
   {
     ensureNotNull(value);
@@ -3892,14 +3019,6 @@ attrNameLoop:
   }
 
 
-
-  /**
-   * Appends the assertion value for this filter to the provided buffer,
-   * encoding any special characters as necessary.
-   *
-   * @param  value   The value to be encoded.
-   * @param  buffer  The buffer to which the assertion value should be appended.
-   */
   private static void encodeValue(final ASN1OctetString value,
                                   final StringBuilder buffer)
   {

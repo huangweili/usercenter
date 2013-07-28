@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -49,64 +29,23 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class provides a data structure for holding information about an LDAP
- * modification, which describes a change to apply to an attribute.  A
- * modification includes the following elements:
- * <UL>
- *   <LI>A modification type, which describes the type of change to apply.</LI>
- *   <LI>An attribute name, which specifies which attribute should be
- *       updated.</LI>
- *   <LI>An optional set of values to use for the modification.</LI>
- * </UL>
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class Modification
        implements Serializable
 {
-  /**
-   * The value array that will be used when the modification should not have any
-   * values.
-   */
   private static final ASN1OctetString[] NO_VALUES = new ASN1OctetString[0];
 
-
-
-  /**
-   * The byte array value array that will be used when the modification does not
-   * have any values.
-   */
   private static final byte[][] NO_BYTE_VALUES = new byte[0][];
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 5170107037390858876L;
 
-
-
-  // The set of values for this modification.
   private final ASN1OctetString[] values;
 
-  // The modification type for this modification.
   private final ModificationType modificationType;
 
-  // The name of the attribute to target with this modification.
   private final String attributeName;
 
-
-
-  /**
-   * Creates a new LDAP modification with the provided modification type and
-   * attribute name.  It will not have any values.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName)
   {
@@ -119,16 +58,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Creates a new LDAP modification with the provided information.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   * @param  attributeValue    The attribute value for this modification.  It
-   *                           must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName, final String attributeValue)
   {
@@ -141,16 +70,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Creates a new LDAP modification with the provided information.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   * @param  attributeValue    The attribute value for this modification.  It
-   *                           must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName, final byte[] attributeValue)
   {
@@ -163,16 +82,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Creates a new LDAP modification with the provided information.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   * @param  attributeValues   The set of attribute value for this modification.
-   *                           It must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName,
                       final String... attributeValues)
@@ -190,16 +99,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Creates a new LDAP modification with the provided information.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   * @param  attributeValues   The set of attribute value for this modification.
-   *                           It must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName,
                       final byte[]... attributeValues)
@@ -217,16 +116,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Creates a new LDAP modification with the provided information.
-   *
-   * @param  modificationType  The modification type for this modification.
-   * @param  attributeName     The name of the attribute to target with this
-   *                           modification.  It must not be {@code null}.
-   * @param  attributeValues   The set of attribute value for this modification.
-   *                           It must not be {@code null}.
-   */
   public Modification(final ModificationType modificationType,
                       final String attributeName,
                       final ASN1OctetString[] attributeValues)
@@ -237,24 +126,12 @@ public final class Modification
   }
 
 
-
-  /**
-   * Retrieves the modification type for this modification.
-   *
-   * @return  The modification type for this modification.
-   */
   public ModificationType getModificationType()
   {
     return modificationType;
   }
 
 
-
-  /**
-   * Retrieves the attribute for this modification.
-   *
-   * @return  The attribute for this modification.
-   */
   public Attribute getAttribute()
   {
     return new Attribute(attributeName,
@@ -262,37 +139,18 @@ public final class Modification
   }
 
 
-
-  /**
-   * Retrieves the name of the attribute to target with this modification.
-   *
-   * @return  The name of the attribute to target with this modification.
-   */
   public String getAttributeName()
   {
     return attributeName;
   }
 
 
-
-  /**
-   * Indicates whether this modification has at least one value.
-   *
-   * @return  {@code true} if this modification has one or more values, or
-   *          {@code false} if not.
-   */
   public boolean hasValue()
   {
     return (values.length > 0);
   }
 
 
-
-  /**
-   * Retrieves the set of values for this modification as an array of strings.
-   *
-   * @return  The set of values for this modification as an array of strings.
-   */
   public String[] getValues()
   {
     if (values.length == 0)
@@ -312,14 +170,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Retrieves the set of values for this modification as an array of byte
-   * arrays.
-   *
-   * @return  The set of values for this modification as an array of byte
-   *          arrays.
-   */
   public byte[][] getValueByteArrays()
   {
     if (values.length == 0)
@@ -340,27 +190,12 @@ public final class Modification
 
 
 
-  /**
-   * Retrieves the set of values for this modification as an array of ASN.1
-   * octet strings.
-   *
-   * @return  The set of values for this modification as an array of ASN.1 octet
-   *          strings.
-   */
   public ASN1OctetString[] getRawValues()
   {
     return values;
   }
 
 
-
-  /**
-   * Writes an ASN.1-encoded representation of this modification to the provided
-   * ASN.1 buffer.
-   *
-   * @param  buffer  The ASN.1 buffer to which the encoded representation should
-   *                 be written.
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence modSequence = buffer.beginSequence();
@@ -380,13 +215,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Encodes this modification to an ASN.1 sequence suitable for use in the LDAP
-   * protocol.
-   *
-   * @return  An ASN.1 sequence containing the encoded value.
-   */
   public ASN1Sequence encode()
   {
     final ASN1Element[] attrElements =
@@ -405,19 +233,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Reads and decodes an LDAP modification from the provided ASN.1 stream
-   * reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the
-   *                 modification.
-   *
-   * @return  The decoded modification.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to read or decode
-   *                         the modification.
-   */
   public static Modification readFrom(final ASN1StreamReader reader)
          throws LDAPException
   {
@@ -452,18 +267,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 sequence as an LDAP modification.
-   *
-   * @param  modificationSequence  The ASN.1 sequence to decode as an LDAP
-   *                               modification.  It must not be {@code null}.
-   *
-   * @return  The decoded LDAP modification.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to decode the
-   *                         provided ASN.1 sequence as an LDAP modification.
-   */
   public static Modification decode(final ASN1Sequence modificationSequence)
          throws LDAPException
   {
@@ -540,12 +343,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Calculates a hash code for this LDAP modification.
-   *
-   * @return  The generated hash code for this LDAP modification.
-   */
   @Override()
   public int hashCode()
   {
@@ -561,18 +358,6 @@ public final class Modification
   }
 
 
-
-  /**
-   * Indicates whether the provided object is equal to this LDAP modification.
-   * The provided object will only be considered equal if it is an LDAP
-   * modification with the same modification type, attribute name, and set of
-   * values as this LDAP modification.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object is equal to this modification,
-   *          or {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -626,18 +411,10 @@ public final class Modification
       }
     }
 
-    // If we've gotten here, then we can consider the object equal to this LDAP
-    // modification.
     return true;
   }
 
 
-
-  /**
-   * Retrieves a string representation of this LDAP modification.
-   *
-   * @return  A string representation of this LDAP modification.
-   */
   @Override()
   public String toString()
   {
@@ -648,13 +425,6 @@ public final class Modification
 
 
 
-  /**
-   * Appends a string representation of this LDAP modification to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append the string representation of
-   *                 this LDAP modification.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("LDAPModification(type=");
@@ -721,15 +491,6 @@ public final class Modification
     buffer.append("})");
   }
 
-
-
-  /**
-   * Indicates whether this modification needs to be base64-encoded when
-   * represented as LDIF.
-   *
-   * @return  {@code true} if this modification needs to be base64-encoded when
-   *          represented as LDIF, or {@code false} if not.
-   */
   private boolean needsBase64Encoding()
   {
     for (final ASN1OctetString s : values)

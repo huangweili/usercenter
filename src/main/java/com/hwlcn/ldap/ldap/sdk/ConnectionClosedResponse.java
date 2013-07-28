@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -31,42 +11,22 @@ import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
-
-/**
- * This class provides a special instance of an LDAPResponse object that is used
- * as a marker to indicate that the connection has been closed while a response
- * listener was waiting for a response from the directory server.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 final class ConnectionClosedResponse
       implements LDAPResponse, Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
-  private static final long serialVersionUID = -3931112652935496193L;
+private static final long serialVersionUID = -3931112652935496193L;
 
 
 
-  // The result code that should be used for the closure.
   private final ResultCode resultCode;
 
-  // A message providing additional information about the closure.
   private final String message;
 
 
 
-  /**
-   * Creates a new instance of this class.
-   *
-   * @param  resultCode  The result code that should be used for the closure.
-   *                     It must not be {@code null}.
-   * @param  message     The message that provides additional information about
-   *                     the reason for the closure, or {@code null} if no
-   *                     reason is available.
-   */
   ConnectionClosedResponse(final ResultCode resultCode,
                            final String message)
   {
@@ -76,9 +36,7 @@ final class ConnectionClosedResponse
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public int getMessageID()
   {
     return -1;
@@ -86,12 +44,6 @@ final class ConnectionClosedResponse
 
 
 
-  /**
-   * Retrieves a message with additional information about the closure.
-   *
-   * @return  A message with additional information about the closure, or
-   *          {@code null} if no such information is available.
-   */
   String getMessage()
   {
     return message;
@@ -99,11 +51,6 @@ final class ConnectionClosedResponse
 
 
 
-  /**
-   * Retrieves the result code that should be used for the closure.
-   *
-   * @return  The result code that should be used for the closure.
-   */
   ResultCode getResultCode()
   {
     return resultCode;
@@ -111,11 +58,6 @@ final class ConnectionClosedResponse
 
 
 
-  /**
-   * Retrieves a string representation of this connection closed response.
-   *
-   * @return  A string representation of this connection closed response.
-   */
   @Override()
   public String toString()
   {
@@ -126,12 +68,6 @@ final class ConnectionClosedResponse
 
 
 
-  /**
-   * Appends a string representation of this connection closed response to the
-   * provided buffer.
-   *
-   * @param  buffer  The buffer to which the information should be appended.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("ConnectionClosedResponse(resultCode='");

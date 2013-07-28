@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -99,42 +79,22 @@ public final class CompareRequest
        extends UpdatableLDAPRequest
        implements ReadOnlyCompareRequest, ResponseAcceptor, ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 6343453776330347024L;
 
 
 
-  // The queue that will be used to receive response messages from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue =
        new LinkedBlockingQueue<LDAPResponse>();
 
-  // The assertion value for this compare request.
   private ASN1OctetString assertionValue;
 
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The name of the target attribute.
   private String attributeName;
 
-  // The DN of the entry in which the comparison is to be performed.
   private String dn;
 
 
-
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   */
   public CompareRequest(final String dn, final String attributeName,
                         final String assertionValue)
   {
@@ -149,17 +109,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   */
   public CompareRequest(final String dn, final String attributeName,
                         final byte[] assertionValue)
   {
@@ -174,17 +123,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   */
   public CompareRequest(final DN dn, final String attributeName,
                         final String assertionValue)
   {
@@ -199,17 +137,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   */
+
   public CompareRequest(final DN dn, final String attributeName,
                         final byte[] assertionValue)
   {
@@ -224,18 +152,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   * @param  controls        The set of controls for this compare request.
-   */
+
   public CompareRequest(final String dn, final String attributeName,
                         final String assertionValue, final Control[] controls)
   {
@@ -250,18 +167,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   * @param  controls        The set of controls for this compare request.
-   */
   public CompareRequest(final String dn, final String attributeName,
                         final byte[] assertionValue, final Control[] controls)
   {
@@ -276,18 +181,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   * @param  controls        The set of controls for this compare request.
-   */
   public CompareRequest(final DN dn, final String attributeName,
                         final String assertionValue, final Control[] controls)
   {
@@ -302,18 +195,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   * @param  controls        The set of controls for this compare request.
-   */
   public CompareRequest(final DN dn, final String attributeName,
                         final ASN1OctetString assertionValue,
                         final Control[] controls)
@@ -329,18 +210,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Creates a new compare request with the provided information.
-   *
-   * @param  dn              The DN of the entry in which the comparison is to
-   *                         be performed.  It must not be {@code null}.
-   * @param  attributeName   The name of the target attribute for which the
-   *                         comparison is to be performed.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value to verify within the entry.  It
-   *                         must not be {@code null}.
-   * @param  controls        The set of controls for this compare request.
-   */
   public CompareRequest(final DN dn, final String attributeName,
                         final byte[] assertionValue, final Control[] controls)
   {
@@ -355,9 +224,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String getDN()
   {
     return dn;
@@ -365,12 +231,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the DN of the entry in which the comparison is to be performed.
-   *
-   * @param  dn  The DN of the entry in which the comparison is to be performed.
-   *             It must not be {@code null}.
-   */
+
   public void setDN(final String dn)
   {
     ensureNotNull(dn);
@@ -380,12 +241,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the DN of the entry in which the comparison is to be performed.
-   *
-   * @param  dn  The DN of the entry in which the comparison is to be performed.
-   *             It must not be {@code null}.
-   */
   public void setDN(final DN dn)
   {
     ensureNotNull(dn);
@@ -395,9 +250,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String getAttributeName()
   {
     return attributeName;
@@ -405,13 +257,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the name of the attribute for which the comparison is to be
-   * performed.
-   *
-   * @param  attributeName  The name of the attribute for which the comparison
-   *                        is to be performed.  It must not be {@code null}.
-   */
+
   public void setAttributeName(final String attributeName)
   {
     ensureNotNull(attributeName);
@@ -421,9 +267,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public String getAssertionValue()
   {
     return assertionValue.stringValue();
@@ -431,9 +274,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public byte[] getAssertionValueBytes()
   {
     return assertionValue.getValue();
@@ -441,9 +282,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public ASN1OctetString getRawAssertionValue()
   {
     return assertionValue;
@@ -451,12 +290,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the assertion value to specify within the target entry.
-   *
-   * @param  assertionValue  The assertion value to specify within the target
-   *                         entry.  It must not be {@code null}.
-   */
+
   public void setAssertionValue(final String assertionValue)
   {
     ensureNotNull(assertionValue);
@@ -466,12 +300,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the assertion value to specify within the target entry.
-   *
-   * @param  assertionValue  The assertion value to specify within the target
-   *                         entry.  It must not be {@code null}.
-   */
+
   public void setAssertionValue(final byte[] assertionValue)
   {
     ensureNotNull(assertionValue);
@@ -481,32 +310,19 @@ public final class CompareRequest
 
 
 
-  /**
-   * Specifies the assertion value to specify within the target entry.
-   *
-   * @param  assertionValue  The assertion value to specify within the target
-   *                         entry.  It must not be {@code null}.
-   */
+
   public void setAssertionValue(final ASN1OctetString assertionValue)
   {
     this.assertionValue = assertionValue;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_COMPARE_REQUEST;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence requestSequence =
@@ -521,15 +337,9 @@ public final class CompareRequest
   }
 
 
-
-  /**
-   * Encodes the compare request protocol op to an ASN.1 element.
-   *
-   * @return  The ASN.1 element with the encoded compare request protocol op.
-   */
   public ASN1Element encodeProtocolOp()
   {
-    // Create the compare request protocol op.
+
     final ASN1Element[] avaElements =
     {
       new ASN1OctetString(attributeName),
@@ -548,22 +358,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * Sends this delete request to the directory server over the provided
-   * connection and returns the associated response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the delete processing.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected CompareResult process(final LDAPConnection connection,
                                   final int depth)
@@ -580,7 +374,6 @@ public final class CompareRequest
 
     try
     {
-      // Wait for and process the response.
       final LDAPResponse response;
       try
       {
@@ -611,35 +404,14 @@ public final class CompareRequest
 
 
 
-  /**
-   * Sends this compare request to the directory server over the provided
-   * connection and returns the message ID for the request.
-   *
-   * @param  connection      The connection to use to communicate with the
-   *                         directory server.
-   * @param  resultListener  The async result listener that is to be notified
-   *                         when the response is received.  It may be
-   *                         {@code null} only if the result is to be processed
-   *                         by this class.
-   *
-   * @return  The async request ID created for the operation, or {@code null} if
-   *          the provided {@code resultListener} is {@code null} and the
-   *          operation will not actually be processed asynchronously.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
+
   AsyncRequestID processAsync(final LDAPConnection connection,
                               final AsyncCompareResultListener resultListener)
                  throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message = new LDAPMessage(messageID, this, getControls());
 
-
-    // If the provided async result listener is {@code null}, then we'll use
-    // this class as the message acceptor.  Otherwise, create an async helper
-    // and use it as the message acceptor.
     final AsyncRequestID asyncRequestID;
     if (resultListener == null)
     {
@@ -666,7 +438,6 @@ public final class CompareRequest
     }
 
 
-    // Send the request to the server.
     try
     {
       debugLDAPRequest(this);
@@ -685,37 +456,16 @@ public final class CompareRequest
 
 
 
-  /**
-   * Processes this compare operation in synchronous mode, in which the same
-   * thread will send the request and read the response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  allowRetry   Indicates whether the request may be re-tried on a
-   *                      re-established connection if the initial attempt fails
-   *                      in a way that indicates the connection is no longer
-   *                      valid and autoReconnect is true.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the compare processing.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
+
   private CompareResult processSync(final LDAPConnection connection,
                                     final int depth, final boolean allowRetry)
           throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message =
          new LDAPMessage(messageID,  this, getControls());
 
 
-    // Set the appropriate timeout on the socket.
     try
     {
       connection.getConnectionInternals(true).getSocket().setSoTimeout(
@@ -727,7 +477,6 @@ public final class CompareRequest
     }
 
 
-    // Send the request to the server.
     final long requestTime = System.nanoTime();
     debugLDAPRequest(this);
     connection.getConnectionStatistics().incrementNumCompareRequests();
@@ -802,24 +551,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Performs the necessary processing for handling a response.
-   *
-   * @param  connection   The connection used to read the response.
-   * @param  response     The response to be processed.
-   * @param  requestTime  The time the request was sent to the server.
-   * @param  depth        The current referral depth for this request.  It
-   *                      should always be one for the initial request, and
-   *                      should only be incremented when following referrals.
-   * @param  allowRetry   Indicates whether the request may be re-tried on a
-   *                      re-established connection if the initial attempt fails
-   *                      in a way that indicates the connection is no longer
-   *                      valid and autoReconnect is true.
-   *
-   * @return  The compare result.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs.
-   */
+
   private CompareResult handleResponse(final LDAPConnection connection,
                                        final LDAPResponse response,
                                        final long requestTime, final int depth,
@@ -842,7 +574,6 @@ public final class CompareRequest
          System.nanoTime() - requestTime);
     if (response instanceof ConnectionClosedResponse)
     {
-      // The connection was closed while waiting for the response.
       if (allowRetry)
       {
         final CompareResult retryResult = reconnectAndRetry(connection, depth,
@@ -910,29 +641,13 @@ public final class CompareRequest
     }
   }
 
-
-
-  /**
-   * Attempts to re-establish the connection and retry processing this request
-   * on it.
-   *
-   * @param  connection  The connection to be re-established.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   * @param  resultCode  The result code for the previous operation attempt.
-   *
-   * @return  The result from re-trying the compare, or {@code null} if it could
-   *          not be re-tried.
-   */
-  private CompareResult reconnectAndRetry(final LDAPConnection connection,
+    private CompareResult reconnectAndRetry(final LDAPConnection connection,
                                           final int depth,
                                           final ResultCode resultCode)
   {
     try
     {
-      // We will only want to retry for certain result codes that indicate a
-      // connection problem.
+
       switch (resultCode.intValue())
       {
         case ResultCode.SERVER_DOWN_INT_VALUE:
@@ -952,23 +667,7 @@ public final class CompareRequest
 
 
 
-  /**
-   * Attempts to follow a referral to perform a compare operation in the target
-   * server.
-   *
-   * @param  referralResult  The LDAP result object containing information about
-   *                         the referral to follow.
-   * @param  connection      The connection on which the referral was received.
-   * @param  depth           The number of referrals followed in the course of
-   *                         processing this request.
-   *
-   * @return  The result of attempting to process the compare operation by
-   *          following the referral.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to establish
-   *                         the referral connection, sending the request, or
-   *                         reading the result.
-   */
+
   private CompareResult followReferral(final CompareResult referralResult,
                                        final LDAPConnection connection,
                                        final int depth)
@@ -983,8 +682,7 @@ public final class CompareRequest
 
         if (host == null)
         {
-          // We can't handle a referral in which there is no host.
-          continue;
+        continue;
         }
 
         final CompareRequest compareRequest;
@@ -1017,16 +715,11 @@ public final class CompareRequest
       }
     }
 
-    // If we've gotten here, then we could not follow any of the referral URLs,
-    // so we'll just return the original referral result.
+
     return referralResult;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void responseReceived(final LDAPResponse response)
          throws LDAPException
@@ -1045,9 +738,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
@@ -1056,9 +746,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public OperationType getOperationType()
   {
@@ -1067,9 +754,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public CompareRequest duplicate()
   {
     return duplicate(getControls());
@@ -1077,9 +761,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public CompareRequest duplicate(final Control[] controls)
   {
     final CompareRequest r = new CompareRequest(dn, attributeName,
@@ -1097,9 +778,6 @@ public final class CompareRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

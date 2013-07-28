@@ -1,23 +1,3 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -109,108 +89,28 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class FailoverServerSet
        extends ServerSet
 {
-  // Indicates whether to re-order the server set list if failover occurs.
   private final AtomicBoolean reOrderOnFailover;
 
-  // The server sets for which we will allow failover.
   private final ServerSet[] serverSets;
 
 
-
-  /**
-   * Creates a new failover server set with the specified set of directory
-   * server addresses and port numbers.  It will use the default socket factory
-   * provided by the JVM to create the underlying sockets.
-   *
-   * @param  addresses  The addresses of the directory servers to which the
-   *                    connections should be established.  It must not be
-   *                    {@code null} or empty.
-   * @param  ports      The ports of the directory servers to which the
-   *                    connections should be established.  It must not be
-   *                    {@code null}, and it must have the same number of
-   *                    elements as the {@code addresses} array.  The order of
-   *                    elements in the {@code addresses} array must correspond
-   *                    to the order of elements in the {@code ports} array.
-   */
   public FailoverServerSet(final String[] addresses, final int[] ports)
   {
     this(addresses, ports, null, null);
   }
 
-
-
-  /**
-   * Creates a new failover server set with the specified set of directory
-   * server addresses and port numbers.  It will use the default socket factory
-   * provided by the JVM to create the underlying sockets.
-   *
-   * @param  addresses          The addresses of the directory servers to which
-   *                            the connections should be established.  It must
-   *                            not be {@code null} or empty.
-   * @param  ports              The ports of the directory servers to which the
-   *                            connections should be established.  It must not
-   *                            be {@code null}, and it must have the same
-   *                            number of elements as the {@code addresses}
-   *                            array.  The order of elements in the
-   *                            {@code addresses} array must correspond to the
-   *                            order of elements in the {@code ports} array.
-   * @param  connectionOptions  The set of connection options to use for the
-   *                            underlying connections.
-   */
   public FailoverServerSet(final String[] addresses, final int[] ports,
                            final LDAPConnectionOptions connectionOptions)
   {
     this(addresses, ports, null, connectionOptions);
   }
 
-
-
-  /**
-   * Creates a new failover server set with the specified set of directory
-   * server addresses and port numbers.  It will use the provided socket factory
-   * to create the underlying sockets.
-   *
-   * @param  addresses      The addresses of the directory servers to which the
-   *                        connections should be established.  It must not be
-   *                        {@code null} or empty.
-   * @param  ports          The ports of the directory servers to which the
-   *                        connections should be established.  It must not be
-   *                        {@code null}, and it must have the same number of
-   *                        elements as the {@code addresses} array.  The order
-   *                        of elements in the {@code addresses} array must
-   *                        correspond to the order of elements in the
-   *                        {@code ports} array.
-   * @param  socketFactory  The socket factory to use to create the underlying
-   *                        connections.
-   */
   public FailoverServerSet(final String[] addresses, final int[] ports,
                            final SocketFactory socketFactory)
   {
     this(addresses, ports, socketFactory, null);
   }
 
-
-
-  /**
-   * Creates a new failover server set with the specified set of directory
-   * server addresses and port numbers.  It will use the provided socket factory
-   * to create the underlying sockets.
-   *
-   * @param  addresses          The addresses of the directory servers to which
-   *                            the connections should be established.  It must
-   *                            not be {@code null} or empty.
-   * @param  ports              The ports of the directory servers to which the
-   *                            connections should be established.  It must not
-   *                            be {@code null}, and it must have the same
-   *                            number of elements as the {@code addresses}
-   *                            array.  The order of elements in the
-   *                            {@code addresses} array must correspond to the
-   *                            order of elements in the {@code ports} array.
-   * @param  socketFactory      The socket factory to use to create the
-   *                            underlying connections.
-   * @param  connectionOptions  The set of connection options to use for the
-   *                            underlying connections.
-   */
   public FailoverServerSet(final String[] addresses, final int[] ports,
                            final SocketFactory socketFactory,
                            final LDAPConnectionOptions connectionOptions)
@@ -251,15 +151,6 @@ public final class FailoverServerSet
     }
   }
 
-
-
-  /**
-   * Creates a new failover server set that will fail over between the provided
-   * server sets.
-   *
-   * @param  serverSets  The server sets between which failover should occur.
-   *                     It must not be {@code null} or empty.
-   */
   public FailoverServerSet(final ServerSet... serverSets)
   {
     ensureNotNull(serverSets);
@@ -271,15 +162,6 @@ public final class FailoverServerSet
     reOrderOnFailover = new AtomicBoolean(false);
   }
 
-
-
-  /**
-   * Creates a new failover server set that will fail over between the provided
-   * server sets.
-   *
-   * @param  serverSets  The server sets between which failover should occur.
-   *                     It must not be {@code null} or empty.
-   */
   public FailoverServerSet(final List<ServerSet> serverSets)
   {
     ensureNotNull(serverSets);
@@ -292,68 +174,22 @@ public final class FailoverServerSet
     reOrderOnFailover = new AtomicBoolean(false);
   }
 
-
-
-  /**
-   * Retrieves the server sets over which failover will occur.  If this failover
-   * server set was created from individual servers rather than server sets,
-   * then the elements contained in the returned array will be
-   * {@code SingleServerSet} instances.
-   *
-   * @return  The server sets over which failover will occur.
-   */
   public ServerSet[] getServerSets()
   {
     return serverSets;
   }
 
 
-
-  /**
-   * Indicates whether the list of servers or server sets used by this failover
-   * server set should be re-ordered in the event that a failure is encountered
-   * while attempting to establish a connection.  If {@code true}, then any
-   * failed attempt to establish a connection to a server set at the beginning
-   * of the list may cause that server/set to be moved to the end of the list so
-   * that it will be the last one tried on the next attempt.
-   *
-   * @return  {@code true} if the order of elements in the associated list of
-   *          servers or server sets should be updated if a failure occurs while
-   *          attempting to establish a connection, or {@code false} if the
-   *          original order should be preserved.
-   */
   public boolean reOrderOnFailover()
   {
     return reOrderOnFailover.get();
   }
 
-
-
-  /**
-   * Specifies whether the list of servers or server sets used by this failover
-   * server set should be re-ordered in the event that a failure is encountered
-   * while attempting to establish a connection.  By default, the original
-   * order will be preserved, but if this method is called with a value of
-   * {@code true}, then a failed attempt to establish a connection to the server
-   * or server set at the beginning of the list may cause that server to be
-   * moved to the end of the list so that it will be the last server/set tried
-   * on the next attempt.
-   *
-   * @param  reOrderOnFailover  Indicates whether the list of servers or server
-   *                            sets should be re-ordered in the event that a
-   *                            failure is encountered while attempting to
-   *                            establish a connection.
-   */
   public void setReOrderOnFailover(final boolean reOrderOnFailover)
   {
     this.reOrderOnFailover.set(reOrderOnFailover);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPConnection getConnection()
          throws LDAPException
@@ -361,11 +197,6 @@ public final class FailoverServerSet
     return getConnection(null);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPConnection getConnection(
                              final LDAPConnectionPoolHealthCheck healthCheck)
@@ -375,8 +206,6 @@ public final class FailoverServerSet
     {
       synchronized (this)
       {
-        // First, try to get a connection using the first set in the list.  If
-        // this succeeds, then we don't need to go any further.
         try
         {
           return serverSets[0].getConnection(healthCheck);
@@ -386,8 +215,6 @@ public final class FailoverServerSet
           debugException(le);
         }
 
-        // If we've gotten here, then we will need to re-order the list unless
-        // all other attempts fail.
         int successfulPos = -1;
         LDAPConnection conn = null;
         LDAPException lastException = null;
@@ -451,11 +278,7 @@ public final class FailoverServerSet
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override()
+@Override()
   public void toString(final StringBuilder buffer)
   {
     buffer.append("FailoverServerSet(serverSets={");

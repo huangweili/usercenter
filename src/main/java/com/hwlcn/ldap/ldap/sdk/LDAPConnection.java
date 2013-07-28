@@ -119,7 +119,7 @@ import static com.hwlcn.ldap.util.Validator.*;
  *   <LI>Abandon -- This may be used to request that the server stop processing
  *      on an operation that has been invoked asynchronously.</LI>
  *   <LI>Add -- This may be used to add a new entry to the directory
- *       server.  See the {@link com.hwlcn.ldap.ldap.sdk.AddRequest} class for more information about
+ *       server.  See the {@link AddRequest} class for more information about
  *       processing add operations.</LI>
  *   <LI>Bind -- This may be used to authenticate to the directory server.  See
  *       the {@link com.hwlcn.ldap.ldap.sdk.BindRequest} class for more information about processing

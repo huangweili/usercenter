@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -45,74 +25,39 @@ import static com.hwlcn.ldap.ldap.sdk.LDAPMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
-
-
-/**
- * This class implements the processing necessary to perform an LDAPv3 simple
- * bind operation, which authenticates using a bind DN and password.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class SimpleBindRequest
        extends BindRequest
        implements ResponseAcceptor, ProtocolOp
 {
-  /**
-   * The BER type to use for the credentials element in a simple bind request
-   * protocol op.
-   */
+
   private static final byte CRED_TYPE_SIMPLE = (byte) 0x80;
 
 
 
-  /**
-   * The ASN.1 octet string that will be used for the bind DN if none was
-   * provided.
-   */
   private static final ASN1OctetString NO_BIND_DN = new ASN1OctetString();
 
 
 
-  /**
-   * The ASN.1 octet string that will be used for the bind password if none was
-   * provided.
-   */
   private static final ASN1OctetString NO_PASSWORD =
        new ASN1OctetString(CRED_TYPE_SIMPLE);
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4725871243149974407L;
 
 
-
-  // The message ID from the last LDAP message sent from this request.
   private int messageID = -1;
 
-  // The bind DN for this simple bind request.
   private final ASN1OctetString bindDN;
 
-  // The password for this simple bind request.
   private final ASN1OctetString password;
 
-  // The queue that will be used to receive response messages from the server.
   private final LinkedBlockingQueue<LDAPResponse> responseQueue =
        new LinkedBlockingQueue<LDAPResponse>();
 
-  // The password provider that should be used to obtain the password for this
-  // simple bind request.
   private final PasswordProvider passwordProvider;
 
 
-
-  /**
-   * Creates a new simple bind request that may be used to perform an anonymous
-   * bind to the directory server (i.e., with a zero-length bind DN and a
-   * zero-length password).
-   */
   public SimpleBindRequest()
   {
     this(NO_BIND_DN, NO_PASSWORD, null, NO_CONTROLS);
@@ -120,12 +65,7 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   */
+
   public SimpleBindRequest(final String bindDN, final String password)
   {
     this(bindDN, password, NO_CONTROLS);
@@ -133,25 +73,12 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   */
   public SimpleBindRequest(final String bindDN, final byte[] password)
   {
     this(bindDN, password, NO_CONTROLS);
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   */
   public SimpleBindRequest(final DN bindDN, final String password)
   {
     this(bindDN, password, NO_CONTROLS);
@@ -159,26 +86,12 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   */
   public SimpleBindRequest(final DN bindDN, final byte[] password)
   {
     this(bindDN, password, NO_CONTROLS);
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   * @param  controls  The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final String bindDN, final String password,
                            final Control... controls)
   {
@@ -206,14 +119,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   * @param  controls  The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final String bindDN, final byte[] password,
                            final Control... controls)
   {
@@ -241,14 +146,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   * @param  controls  The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final DN bindDN, final String password,
                            final Control... controls)
   {
@@ -276,14 +173,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN    The bind DN for this simple bind request.
-   * @param  password  The password for this simple bind request.
-   * @param  controls  The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final DN bindDN, final byte[] password,
                            final Control... controls)
   {
@@ -311,18 +200,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and that will
-   * use a password provider in order to obtain the bind password.
-   *
-   * @param  bindDN            The bind DN for this simple bind request.  It
-   *                           must not be {@code null}.
-   * @param  passwordProvider  The password provider that will be used to obtain
-   *                           the password for this simple bind request.  It
-   *                           must not be {@code null}.
-   * @param  controls          The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final String bindDN,
                            final PasswordProvider passwordProvider,
                            final Control... controls)
@@ -337,17 +214,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Creates a new simple bind request with the provided bind DN and that will
-   * use a password provider in order to obtain the bind password.
-   *
-   * @param  bindDN            The bind DN for this simple bind request.  It
-   *                           must not be {@code null}.
-   * @param  passwordProvider  The password provider that will be used to obtain
-   *                           the password for this simple bind request.  It
-   *                           must not be {@code null}.
-   * @param  controls          The set of controls for this simple bind request.
-   */
   public SimpleBindRequest(final DN bindDN,
                            final PasswordProvider passwordProvider,
                            final Control... controls)
@@ -361,16 +227,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Creates a new simple bind request with the provided bind DN and password.
-   *
-   * @param  bindDN            The bind DN for this simple bind request.
-   * @param  password          The password for this simple bind request.
-   * @param  passwordProvider  The password provider that will be used to obtain
-   *                           the password to use for the bind request.
-   * @param  controls          The set of controls for this simple bind request.
-   */
   private SimpleBindRequest(final ASN1OctetString bindDN,
                             final ASN1OctetString password,
                             final PasswordProvider passwordProvider,
@@ -383,61 +239,29 @@ public final class SimpleBindRequest
     this.passwordProvider = passwordProvider;
   }
 
-
-
-  /**
-   * Retrieves the bind DN for this simple bind request.
-   *
-   * @return  The bind DN for this simple bind request.
-   */
   public String getBindDN()
   {
     return bindDN.stringValue();
   }
 
 
-
-  /**
-   * Retrieves the password for this simple bind request, if no password
-   * provider has been configured.
-   *
-   * @return  The password for this simple bind request, or {@code null} if a
-   *          password provider will be used to obtain the password.
-   */
   public ASN1OctetString getPassword()
   {
     return password;
   }
 
-
-
-  /**
-   * Retrieves the password provider for this simple bind request, if defined.
-   *
-   * @return  The password provider for this simple bind request, or
-   *          {@code null} if this bind request was created with an explicit
-   *          password rather than a password provider.
-   */
   public PasswordProvider getPasswordProvider()
   {
     return passwordProvider;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_BIND_REQUEST;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence requestSequence =
@@ -473,16 +297,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   * Use of this method is only supported if the bind request was created with a
-   * static password.  It is not allowed if the password will be obtained
-   * through a password provider.
-   *
-   * @throws  LDAPSDKUsageException  If this bind request was created with a
-   *                                 password provider rather than a static
-   *                                 password.
-   */
   public ASN1Element encodeProtocolOp()
          throws LDAPSDKUsageException
   {
@@ -499,10 +313,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -513,8 +323,6 @@ public final class SimpleBindRequest
            connection.getConnectionOptions().autoReconnect());
     }
 
-    // See if a bind DN was provided without a password.  If that is the case
-    // and this should not be allowed, then throw an exception.
     if (password != null)
     {
       if ((bindDN.getValue().length > 0) && (password.getValue().length == 0) &&
@@ -528,25 +336,19 @@ public final class SimpleBindRequest
     }
 
 
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
     final LDAPMessage message = new LDAPMessage(messageID, this, getControls());
 
-
-    // Register with the connection reader to be notified of responses for the
-    // request that we've created.
     connection.registerResponseAcceptor(messageID, this);
 
 
     try
     {
-      // Send the request to the server.
       debugLDAPRequest(this);
       final long requestTime = System.nanoTime();
       connection.getConnectionStatistics().incrementNumBindRequests();
       connection.sendMessage(message);
 
-      // Wait for and process the response.
       final LDAPResponse response;
       try
       {
@@ -577,23 +379,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Processes this bind operation in synchronous mode, in which the same
-   * thread will send the request and read the response.
-   *
-   * @param  connection  The connection to use to communicate with the directory
-   *                     server.
-   * @param  allowRetry  Indicates whether the request may be re-tried on a
-   *                     re-established connection if the initial attempt fails
-   *                     in a way that indicates the connection is no longer
-   *                     valid and autoReconnect is true.
-   *
-   * @return  An LDAP result object that provides information about the result
-   *          of the bind processing.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   private BindResult processSync(final LDAPConnection connection,
                                  final boolean allowRetry)
           throws LDAPException
@@ -603,8 +388,6 @@ public final class SimpleBindRequest
     final LDAPMessage message =
          new LDAPMessage(messageID, this, getControls());
 
-
-    // Set the appropriate timeout on the socket.
     try
     {
       connection.getConnectionInternals(true).getSocket().setSoTimeout(
@@ -616,7 +399,6 @@ public final class SimpleBindRequest
     }
 
 
-    // Send the request to the server.
     final long requestTime = System.nanoTime();
     debugLDAPRequest(this);
     connection.getConnectionStatistics().incrementNumBindRequests();
@@ -661,21 +443,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * Performs the necessary processing for handling a response.
-   *
-   * @param  connection   The connection used to read the response.
-   * @param  response     The response to be processed.
-   * @param  requestTime  The time the request was sent to the server.
-   * @param  allowRetry   Indicates whether the request may be re-tried on a
-   *                      re-established connection if the initial attempt fails
-   *                      in a way that indicates the connection is no longer
-   *                      valid and autoReconnect is true.
-   *
-   * @return  The bind result.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs.
-   */
   private BindResult handleResponse(final LDAPConnection connection,
                                     final LDAPResponse response,
                                     final long requestTime,
@@ -693,7 +460,6 @@ public final class SimpleBindRequest
          System.nanoTime() - requestTime);
     if (response instanceof ConnectionClosedResponse)
     {
-      // The connection was closed while waiting for the response.
       if (allowRetry)
       {
         final BindResult retryResult = reconnectAndRetry(connection,
@@ -735,24 +501,12 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * Attempts to re-establish the connection and retry processing this request
-   * on it.
-   *
-   * @param  connection  The connection to be re-established.
-   * @param  resultCode  The result code for the previous operation attempt.
-   *
-   * @return  The result from re-trying the bind, or {@code null} if it could
-   *          not be re-tried.
-   */
   private BindResult reconnectAndRetry(final LDAPConnection connection,
                                        final ResultCode resultCode)
   {
     try
     {
-      // We will only want to retry for certain result codes that indicate a
-      // connection problem.
+
       switch (resultCode.intValue())
       {
         case ResultCode.SERVER_DOWN_INT_VALUE:
@@ -772,9 +526,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public SimpleBindRequest getRebindRequest(final String host, final int port)
   {
@@ -783,10 +534,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void responseReceived(final LDAPResponse response)
          throws LDAPException
@@ -804,10 +551,6 @@ public final class SimpleBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getBindType()
   {
@@ -816,20 +559,12 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int getLastMessageID()
   {
     return messageID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public SimpleBindRequest duplicate()
   {
@@ -838,9 +573,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public SimpleBindRequest duplicate(final Control[] controls)
   {
@@ -852,9 +584,6 @@ public final class SimpleBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -60,29 +40,17 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 public final class ANONYMOUSBindRequest
        extends SASLBindRequest
 {
-  /**
-   * The name for the ANONYMOUS SASL mechanism.
-   */
+
   public static final String ANONYMOUS_MECHANISM_NAME = "ANONYMOUS";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4259102841471750866L;
 
 
 
-  // The trace string that should be included in the bind request, if available.
   private final String traceString;
 
-
-
-  /**
-   * Creates a new SASL ANONYMOUS bind request with no trace string and no
-   * controls.
-   */
   public ANONYMOUSBindRequest()
   {
     this(null, NO_CONTROLS);
@@ -90,13 +58,7 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * Creates a new SASL ANONYMOUS bind request with the provided trace string
-   * and no controls.
-   *
-   * @param  traceString  The trace string to include in the bind request, or
-   *                      {@code null} if no trace string is to be provided.
-   */
+
   public ANONYMOUSBindRequest(final String traceString)
   {
     this(traceString, NO_CONTROLS);
@@ -104,12 +66,6 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * Creates a new SASL ANONYMOUS bind request with the provided set of controls
-   * and no trace string.
-   *
-   * @param  controls     The set of controls to include in the request.
-   */
   public ANONYMOUSBindRequest(final Control... controls)
   {
     this(null, controls);
@@ -117,14 +73,7 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * Creates a new SASL ANONYMOUS bind request with the provided trace string
-   * and controls.
-   *
-   * @param  traceString  The trace string to include in the bind request, or
-   *                      {@code null} if no trace string is to be provided.
-   * @param  controls     The set of controls to include in the request.
-   */
+
   public ANONYMOUSBindRequest(final String traceString,
                               final Control... controls)
   {
@@ -135,9 +84,6 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSASLMechanismName()
   {
@@ -146,12 +92,6 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * Retrieves the trace string that will be included with the bind request.
-   *
-   * @return  The trace string that will be included with the bind request, or
-   *          {@code null} if there is to be no trace string.
-   */
   public String getTraceString()
   {
     return traceString;
@@ -159,21 +99,6 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * Sends this bind request to the target server over the provided connection
-   * and returns the corresponding response.
-   *
-   * @param  connection  The connection to use to send this bind request to the
-   *                     server and read the associated response.
-   * @param  depth       The current referral depth for this request.  It should
-   *                     always be one for the initial request, and should only
-   *                     be incremented when following referrals.
-   *
-   * @return  The bind response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @Override()
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
@@ -189,10 +114,6 @@ public final class ANONYMOUSBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ANONYMOUSBindRequest getRebindRequest(final String host,
                                                final int port)
@@ -202,9 +123,6 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ANONYMOUSBindRequest duplicate()
   {
@@ -213,9 +131,7 @@ public final class ANONYMOUSBindRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public ANONYMOUSBindRequest duplicate(final Control[] controls)
   {
@@ -226,10 +142,6 @@ public final class ANONYMOUSBindRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {
