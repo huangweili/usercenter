@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -51,61 +31,34 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides an implementation of a bind response protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class BindResponseProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The BER type for the server SASL credentials element.
-   */
+
   public static final byte TYPE_SERVER_SASL_CREDENTIALS = (byte) 0x87;
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -7757619031268544913L;
 
 
 
-  // The server SASL credentials for this bind response.
   private final ASN1OctetString serverSASLCredentials;
 
-  // The result code for this bind response.
   private final int resultCode;
 
-  // The referral URLs for this bind response.
   private final List<String> referralURLs;
 
-  // The diagnostic message for this bind response.
   private final String diagnosticMessage;
 
-  // The matched DN for this bind response.
   private final String matchedDN;
 
 
 
-  /**
-   * Creates a new instance of this bind response protocol op with the provided
-   * information.
-   *
-   * @param  resultCode             The result code for this response.
-   * @param  matchedDN              The matched DN for this response, if
-   *                                available.
-   * @param  diagnosticMessage      The diagnostic message for this response, if
-   *                                any.
-   * @param  referralURLs           The list of referral URLs for this response,
-   *                                if any.
-   * @param  serverSASLCredentials  The server SASL credentials for this
-   *                                response, if available.
-   */
   public BindResponseProtocolOp(final int resultCode, final String matchedDN,
                                 final String diagnosticMessage,
                                 final List<String> referralURLs,
@@ -135,14 +88,6 @@ public final class BindResponseProtocolOp
     }
   }
 
-
-
-  /**
-   * Creates a new bind response protocol op from the provided bind result
-   * object.
-   *
-   * @param  result  The LDAP result object to use to create this protocol op.
-   */
   public BindResponseProtocolOp(final LDAPResult result)
   {
     resultCode            = result.getResultCode().intValue();
@@ -163,16 +108,7 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Creates a new bind response protocol op read from the provided ASN.1 stream
-   * reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the bind
-   *                 response.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         bind response.
-   */
+
   BindResponseProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -245,11 +181,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the result code for this bind response.
-   *
-   * @return  The result code for this bind response.
-   */
   public int getResultCode()
   {
     return resultCode;
@@ -257,12 +188,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the matched DN for this bind response, if any.
-   *
-   * @return  The matched DN for this bind response, or {@code null} if there is
-   *          no matched DN.
-   */
   public String getMatchedDN()
   {
     return matchedDN;
@@ -270,25 +195,13 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the diagnostic message for this bind response, if any.
-   *
-   * @return  The diagnostic message for this bind response, or {@code null} if
-   *          there is no diagnostic message.
-   */
+
   public String getDiagnosticMessage()
   {
     return diagnosticMessage;
   }
 
 
-
-  /**
-   * Retrieves the list of referral URLs for this bind response.
-   *
-   * @return  The list of referral URLs for this bind response, or an empty list
-   *          if there are no referral URLs.
-   */
   public List<String> getReferralURLs()
   {
     return referralURLs;
@@ -296,32 +209,17 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the server SASL credentials for this bind response, if any.
-   *
-   * @return  The server SASL credentials for this bind response, or
-   *          {@code null} if there are no server SASL credentials.
-   */
   public ASN1OctetString getServerSASLCredentials()
   {
     return serverSASLCredentials;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_BIND_RESPONSE;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(5);
@@ -370,17 +268,6 @@ public final class BindResponseProtocolOp
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 element as a bind response protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded bind response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a bind response protocol op.
-   */
   public static BindResponseProtocolOp decodeProtocolOp(
                                             final ASN1Element element)
          throws LDAPException
@@ -467,9 +354,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -499,15 +383,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Creates a new LDAP result object from this response protocol op.
-   *
-   * @param  controls  The set of controls to include in the LDAP result.  It
-   *                   may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The LDAP result that was created.
-   */
   public BindResult toBindResult(final Control... controls)
   {
     final String[] refs;
@@ -527,11 +402,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -542,9 +412,6 @@ public final class BindResponseProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("BindResponseProtocolOp(resultCode=");

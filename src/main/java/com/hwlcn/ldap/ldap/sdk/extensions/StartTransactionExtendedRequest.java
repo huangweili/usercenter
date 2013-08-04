@@ -1,23 +1,4 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -169,24 +150,12 @@ import static com.hwlcn.ldap.ldap.sdk.extensions.ExtOpMessages.*;
 public final class StartTransactionExtendedRequest
        extends ExtendedRequest
 {
-  /**
-   * The OID (1.3.6.1.1.21.1) for the start transaction extended request.
-   */
+
   public static final String START_TRANSACTION_REQUEST_OID = "1.3.6.1.1.21.1";
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7382735226826929629L;
 
-
-
-  // This is an ugly hack to prevent checkstyle from complaining about imports
-  // for classes that are needed by javadoc @link elements but aren't otherwise
-  // used in the class.  It appears that checkstyle does not recognize the use
-  // of these classes in javadoc @link elements so we must ensure that they are
-  // referenced elsewhere in the class to prevent checkstyle from complaining.
   static
   {
     final TransactionSpecificationRequestControl c = null;
@@ -194,9 +163,6 @@ public final class StartTransactionExtendedRequest
 
 
 
-  /**
-   * Creates a new start transaction extended request.
-   */
   public StartTransactionExtendedRequest()
   {
     super(START_TRANSACTION_REQUEST_OID);
@@ -204,27 +170,12 @@ public final class StartTransactionExtendedRequest
 
 
 
-  /**
-   * Creates a new start transaction extended request.
-   *
-   * @param  controls  The set of controls to include in the request.
-   */
   public StartTransactionExtendedRequest(final Control[] controls)
   {
     super(START_TRANSACTION_REQUEST_OID, controls);
   }
 
 
-
-  /**
-   * Creates a new start transaction extended request from the provided generic
-   * extended request.
-   *
-   * @param  extendedRequest  The generic extended request to use to create this
-   *                          start transaction extended request.
-   *
-   * @throws  LDAPException  If a problem occurs while decoding the request.
-   */
   public StartTransactionExtendedRequest(final ExtendedRequest extendedRequest)
          throws LDAPException
   {
@@ -238,10 +189,6 @@ public final class StartTransactionExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public StartTransactionExtendedResult process(
               final LDAPConnection connection, final int depth)
@@ -253,9 +200,6 @@ public final class StartTransactionExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public StartTransactionExtendedRequest duplicate()
   {
@@ -263,10 +207,6 @@ public final class StartTransactionExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public StartTransactionExtendedRequest duplicate(final Control[] controls)
   {
@@ -277,10 +217,6 @@ public final class StartTransactionExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedRequestName()
   {
@@ -289,9 +225,6 @@ public final class StartTransactionExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

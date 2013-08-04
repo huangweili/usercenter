@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -91,23 +71,16 @@ import static com.hwlcn.ldap.ldap.sdk.extensions.ExtOpMessages.*;
 public final class WhoAmIExtendedRequest
        extends ExtendedRequest
 {
-  /**
-   * The OID (1.3.6.1.4.1.4203.1.11.3) for the "Who Am I?" extended request.
-   */
+
   public static final String WHO_AM_I_REQUEST_OID = "1.3.6.1.4.1.4203.1.11.3";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -2936513698220673318L;
 
 
 
-  /**
-   * Creates a new "Who Am I?" extended request.
-   */
   public WhoAmIExtendedRequest()
   {
     super(WHO_AM_I_REQUEST_OID);
@@ -115,11 +88,6 @@ public final class WhoAmIExtendedRequest
 
 
 
-  /**
-   * Creates a new "Who Am I?" extended request.
-   *
-   * @param  controls  The set of controls to include in the request.
-   */
   public WhoAmIExtendedRequest(final Control[] controls)
   {
     super(WHO_AM_I_REQUEST_OID, controls);
@@ -127,15 +95,7 @@ public final class WhoAmIExtendedRequest
 
 
 
-  /**
-   * Creates a new "Who Am I?" extended request from the provided generic
-   * extended request.
-   *
-   * @param  extendedRequest  The generic extended request to use to create this
-   *                          "Who Am I?" extended request.
-   *
-   * @throws  LDAPException  If a problem occurs while decoding the request.
-   */
+
   public WhoAmIExtendedRequest(final ExtendedRequest extendedRequest)
          throws LDAPException
   {
@@ -149,10 +109,6 @@ public final class WhoAmIExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public WhoAmIExtendedResult process(final LDAPConnection connection,
                                       final int depth)
@@ -163,10 +119,6 @@ public final class WhoAmIExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public WhoAmIExtendedRequest duplicate()
   {
@@ -175,9 +127,6 @@ public final class WhoAmIExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public WhoAmIExtendedRequest duplicate(final Control[] controls)
   {
@@ -186,11 +135,6 @@ public final class WhoAmIExtendedRequest
     return r;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedRequestName()
   {
@@ -198,10 +142,6 @@ public final class WhoAmIExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

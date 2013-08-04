@@ -83,88 +83,30 @@ public final class ActiveDirectoryDirSyncControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.2.840.113556.1.4.841) for the DirSync control.
-   */
+
   public static final String DIRSYNC_OID = "1.2.840.113556.1.4.841";
 
-
-
-  /**
-   * The value of the flag that indicates that the client should only be allowed
-   * to view objects and attributes that are otherwise accessible to the client.
-   */
   public static final int FLAG_OBJECT_SECURITY = 0x00000001;
 
-
-
-  /**
-   * The value of the flag that indicates the server should return parent
-   * objects before child objects.
-   */
   public static final int FLAG_ANCESTORS_FIRST_ORDER = 0x00000800;
 
-
-
-  /**
-   * The value of the flag that indicates that the server should not return
-   * private data in search results.
-   */
   public static final int FLAG_PUBLIC_DATA_ONLY = 0x00002000;
 
-
-
-  /**
-   * The value of the flag that indicates that only changed values of attributes
-   * should be included in search results.
-   */
   public static final int FLAG_INCREMENTAL_VALUES = 0x80000000;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2871267685237800654L;
 
-
-
-  // A cookie that may be used to resume a previous DirSync search.
   private final ASN1OctetString cookie;
 
-  // The value of the flags that should be used for DirSync operation.
   private final int flags;
 
-  // The maximum number of attributes to return.
   private final int maxAttributeCount;
 
-
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   ActiveDirectoryDirSyncControl()
   {
     this(true, 0, 0, null);
   }
 
-
-
-  /**
-   * Creates a new DirSync control with the provided information.
-   *
-   * @param  isCritical         Indicates whether this control should be marked
-   *                            critical.
-   * @param  flags              The value of the flags that should be used for
-   *                            DirSync operation.  This should be zero if no
-   *                            special flags or needed, or a bitwise OR of the
-   *                            values of the individual flags that are desired.
-   * @param  maxAttributeCount  The maximum number of attributes to return.
-   * @param  cookie             A cookie that may be used to resume a previous
-   *                            DirSync search.  This may be {@code null} if
-   *                            no previous cookie is available.
-   */
   public ActiveDirectoryDirSyncControl(final boolean isCritical,
                                        final int flags,
                                        final int maxAttributeCount,
@@ -186,20 +128,6 @@ public final class ActiveDirectoryDirSyncControl
     }
   }
 
-
-
-  /**
-   * Creates a new DirSync control with settings decoded from the provided
-   * control information.
-   *
-   * @param  oid         The OID of the control to be decoded.
-   * @param  isCritical  The criticality of the control to be decoded.
-   * @param  value       The value of the control to be decoded.
-   *
-   * @throws LDAPException  If a problem is encountered while attempting to
-   *                         decode the control value as appropriate for a
-   *                         DirSync control.
-   */
   public ActiveDirectoryDirSyncControl(final String oid,
                                        final boolean isCritical,
                                        final ASN1OctetString value)
@@ -233,22 +161,6 @@ public final class ActiveDirectoryDirSyncControl
   }
 
 
-
-  /**
-   * Encodes the provided information into a format appropriate for use as the
-   * value of a DirSync control.
-   *
-   * @param  flags              The value of the flags that should be used for
-   *                            DirSync operation.  This should be zero if no
-   *                            special flags or needed, or a bitwise OR of the
-   *                            values of the individual flags that are desired.
-   * @param  maxAttributeCount  The maximum number of attributes to return.
-   * @param  cookie             A cookie that may be used to resume a previous
-   *                            DirSync search.  This may be {@code null} if
-   *                            no previous cookie is available.
-   *
-   * @return  An ASN.1 octet string containing the encoded control value.
-   */
   private static ASN1OctetString encodeValue(final int flags,
                                              final int maxAttributeCount,
                                              final ASN1OctetString cookie)
@@ -269,11 +181,6 @@ public final class ActiveDirectoryDirSyncControl
     return new ASN1OctetString(new ASN1Sequence(valueElements).encode());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public ActiveDirectoryDirSyncControl decodeControl(final String oid,
                                             final boolean isCritical,
                                             final ASN1OctetString value)
@@ -283,60 +190,24 @@ public final class ActiveDirectoryDirSyncControl
   }
 
 
-
-
-  /**
-   * Retrieves the value of the flags that should be used for DirSync operation.
-   *
-   * @return  The value of the flags that should be used for DirSync operation.
-   */
   public int getFlags()
   {
     return flags;
   }
 
 
-
-  /**
-   * Retrieves the maximum number of attributes to return.
-   *
-   * @return  The maximum number of attributes to return.
-   */
   public int getMaxAttributeCount()
   {
     return maxAttributeCount;
   }
 
 
-
-  /**
-   * Retrieves a cookie that may be used to resume a previous DirSync search,
-   * if available.
-   *
-   * @return  A cookie that may be used to resume a previous DirSync search, or
-   *          a zero-length cookie if there is none.
-   */
   public ASN1OctetString getCookie()
   {
     return cookie;
   }
 
 
-
-  /**
-   * Extracts a DirSync response control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the DirSync response
-   *                 control.
-   *
-   * @return  The DirSync response control contained in the provided result, or
-   *          {@code null} if the result did not include a DirSync response
-   *          control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the DirSync response control contained in
-   *                         the provided result.
-   */
   public static ActiveDirectoryDirSyncControl get(final SearchResult result)
          throws LDAPException
   {
@@ -358,10 +229,6 @@ public final class ActiveDirectoryDirSyncControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -369,10 +236,6 @@ public final class ActiveDirectoryDirSyncControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

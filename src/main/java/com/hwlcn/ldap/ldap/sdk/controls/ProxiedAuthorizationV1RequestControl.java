@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -102,37 +82,14 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class ProxiedAuthorizationV1RequestControl
        extends Control
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.12) for the proxied authorization v1 request
-   * control.
-   */
+
   public static final String PROXIED_AUTHORIZATION_V1_REQUEST_OID =
        "2.16.840.1.113730.3.4.12";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7312632337431962774L;
 
-
-
-  // The DN of the target user under whose authorization the associated
-  // operation should be performed.
   private final String proxyDN;
 
-
-
-  /**
-   * Creates a new proxied authorization V1 request control that will proxy as
-   * the specified user.
-   *
-   * @param  proxyDN  The DN of the target user under whose authorization the
-   *                  associated request should be performed.  It must not be
-   *                  {@code null}, although it may be an empty string to
-   *                  request an anonymous authorization.
-   */
   public ProxiedAuthorizationV1RequestControl(final String proxyDN)
   {
     super(PROXIED_AUTHORIZATION_V1_REQUEST_OID, true, encodeValue(proxyDN));
@@ -143,15 +100,6 @@ public final class ProxiedAuthorizationV1RequestControl
   }
 
 
-
-  /**
-   * Creates a new proxied authorization V1 request control that will proxy as
-   * the specified user.
-   *
-   * @param  proxyDN  The DN of the target user under whose authorization the
-   *                  associated request should be performed.  It must not be
-   *                  {@code null}.
-   */
   public ProxiedAuthorizationV1RequestControl(final DN proxyDN)
   {
     super(PROXIED_AUTHORIZATION_V1_REQUEST_OID, true,
@@ -161,17 +109,6 @@ public final class ProxiedAuthorizationV1RequestControl
   }
 
 
-
-  /**
-   * Creates a new proxied authorization v1 request control which is decoded
-   * from the provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a proxied
-   *                  authorization v1 request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         proxied authorization v1 request control.
-   */
   public ProxiedAuthorizationV1RequestControl(final Control control)
          throws LDAPException
   {
@@ -200,19 +137,6 @@ public final class ProxiedAuthorizationV1RequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  proxyDN  The DN of the target user under whose authorization the
-   *                  associated request should be performed.  It must not be
-   *                  {@code null}, although it may be an empty string to
-   *                  request an anonymous authorization.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final String proxyDN)
   {
     final ASN1Element[] valueElements =
@@ -224,35 +148,17 @@ public final class ProxiedAuthorizationV1RequestControl
   }
 
 
-
-  /**
-   * Retrieves the DN of the target user under whose authorization the
-   * associated request should be performed.
-   *
-   * @return  The DN of the target user under whose authorization the associated
-   *          request should be performed.
-   */
   public String getProxyDN()
   {
     return proxyDN;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_PROXIED_AUTHZ_V1_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

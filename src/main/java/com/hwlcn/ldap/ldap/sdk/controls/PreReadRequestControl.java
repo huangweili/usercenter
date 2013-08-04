@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -37,93 +18,27 @@ import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 
 
-
-/**
- * This class provides an implementation of the LDAP pre-read request control
- * as defined in <A HREF="http://www.ietf.org/rfc/rfc4527.txt">RFC 4527</A>.  It
- * may be used to request that the server retrieve a copy of the target entry as
- * it appeared immediately before processing a delete, modify, or modify DN
- * operation.
- * <BR><BR>
- * If this control is included in a delete, modify, or modify DN request, then
- * the corresponding response may include a {@link PreReadResponseControl}
- * containing a version of the entry as it before after applying that change.
- * Note that this response control will only be included if the operation was
- * successful, so it will not be provided if the operation failed for some
- * reason (e.g., if the change would have violated the server schema, or if the
- * requester did not have sufficient permission to perform that operation).
- * <BR><BR>
- * The value of this control should contain a set of requested attributes to
- * include in the entry that is returned.  The server should treat this set of
- * requested attributes exactly as it treats the requested attributes from a
- * {@link com.hwlcn.ldap.ldap.sdk.SearchRequest}.  As is the case with a search
- * request, if no attributes are specified, then all user attributes will be
- * included.
- * <BR><BR>
- * The use of the LDAP pre-read request control is virtually identical to the
- * use of the LDAP post-read request control.  See the documentation for the
- * {@link PostReadRequestControl} for an example that illustrates its use.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class PreReadRequestControl
        extends Control
 {
-  /**
-   * The OID (1.3.6.1.1.13.1) for the pre-read request control.
-   */
+
   public static final String PRE_READ_REQUEST_OID = "1.3.6.1.1.13.1";
 
 
-
-  /**
-   * The set of requested attributes that will be used if none are provided.
-   */
   private static final String[] NO_ATTRIBUTES = StaticUtils.NO_STRINGS;
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 1205235290978028739L;
 
-
-
-  // The set of requested attributes to retrieve from the target entry.
   private final String[] attributes;
 
-
-
-  /**
-   * Creates a new pre-read request control that will retrieve the specified set
-   * of attributes from the target entry.  It will be marked critical.
-   *
-   * @param  attributes  The set of attributes to retrieve from the target
-   *                     entry.  It behaves in the same way as the set of
-   *                     requested attributes for a search operation.  If this
-   *                     is empty or {@code null}, then all user attributes
-   *                     will be returned.
-   */
   public PreReadRequestControl(final String... attributes)
   {
     this(true, attributes);
   }
 
-
-
-  /**
-   * Creates a new pre-read request control that will retrieve the specified set
-   * of attributes from the target entry.
-   *
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   * @param  attributes  The set of attributes to retrieve from the target
-   *                     entry.  It behaves in the same way as the set of
-   *                     requested attributes for a search operation.  If this
-   *                     is empty or {@code null}, then all user attributes
-   *                     will be returned.
-   */
   public PreReadRequestControl(final boolean isCritical,
                                final String... attributes)
   {
@@ -140,17 +55,6 @@ public final class PreReadRequestControl
   }
 
 
-
-  /**
-   * Creates a new pre-read request control which is decoded from the provided
-   * generic control.
-   *
-   * @param  control  The generic control to be decoded as a pre-read request
-   *                  control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         pre-read request control.
-   */
   public PreReadRequestControl(final Control control)
          throws LDAPException
   {
@@ -184,20 +88,6 @@ public final class PreReadRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  attributes  The set of attributes to retrieve from the target
-   *                     entry.  It behaves in the same way as the set of
-   *                     requested attributes for a search operation.  If this
-   *                     is empty or {@code null}, then all user attributes
-   *                     will be returned.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final String[] attributes)
   {
     if ((attributes == null) || (attributes.length == 0))
@@ -214,37 +104,17 @@ public final class PreReadRequestControl
     return new ASN1OctetString(new ASN1Sequence(elements).encode());
   }
 
-
-
-  /**
-   * Retrieves the set of attributes that will be requested for inclusion in the
-   * entry returned in the response control.
-   *
-   * @return  The set of attributes that will be requested for inclusion in the
-   *          entry returned in the response control, or an empty array if all
-   *          user attributes should be returned.
-   */
   public String[] getAttributes()
   {
     return attributes;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_PRE_READ_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

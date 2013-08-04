@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldif;
 
 
@@ -41,64 +21,32 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class defines an LDIF delete change record, which can be used to
- * represent an LDAP delete request.  See the documentation for the
- * {@link com.hwlcn.ldap.ldif.LDIFChangeRecord} class for an example demonstrating the process for
- * interacting with LDIF change records.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDIFDeleteChangeRecord
        extends LDIFChangeRecord
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 486284031156138191L;
 
-
-
-  /**
-   * Creates a new LDIF delete change record with the provided DN.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   */
   public LDIFDeleteChangeRecord(final String dn)
   {
     super(dn);
   }
 
 
-
-  /**
-   * Creates a new LDIF delete change record from the provided delete request.
-   *
-   * @param  deleteRequest  The delete request to use to create this LDIF delete
-   *                        change record.  It must not be {@code null}.
-   */
   public LDIFDeleteChangeRecord(final DeleteRequest deleteRequest)
   {
     super(deleteRequest.getDN());
   }
 
 
-
-  /**
-   * Creates a delete request from this LDIF delete change record.
-   *
-   * @return  The delete request created from this LDIF delete change record.
-   */
   public DeleteRequest toDeleteRequest()
   {
     return new DeleteRequest(getDN());
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ChangeType getChangeType()
   {
@@ -106,10 +54,6 @@ public final class LDIFDeleteChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPResult processChange(final LDAPInterface connection)
          throws LDAPException
@@ -119,9 +63,6 @@ public final class LDIFDeleteChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String[] toLDIF(final int wrapColumn)
   {
@@ -148,9 +89,6 @@ public final class LDIFDeleteChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIF(final ByteStringBuffer buffer, final int wrapColumn)
   {
@@ -163,10 +101,6 @@ public final class LDIFDeleteChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIFString(final StringBuilder buffer, final int wrapColumn)
   {
@@ -179,10 +113,6 @@ public final class LDIFDeleteChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -198,10 +128,6 @@ public final class LDIFDeleteChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -235,9 +161,6 @@ public final class LDIFDeleteChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.matchingrules;
 
 
@@ -36,88 +16,31 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class defines the API for an LDAP matching rule, which may be used to
- * determine whether two values are equal to each other, and to normalize values
- * so that they may be more easily compared.
- */
 @Extensible()
 @ThreadSafety(level=ThreadSafetyLevel.INTERFACE_THREADSAFE)
 public abstract class MatchingRule
        implements Serializable
 {
-  /**
-   * The substring element type used for subInitial substring assertion
-   * components.
-   */
+
   public static final byte SUBSTRING_TYPE_SUBINITIAL = (byte) 0x80;
 
 
-
-  /**
-   * The substring element type used for subAny substring assertion components.
-   */
   public static final byte SUBSTRING_TYPE_SUBANY = (byte) 0x81;
 
-
-
-  /**
-   * The substring element type used for subFinal substring assertion
-   * components.
-   */
   public static final byte SUBSTRING_TYPE_SUBFINAL = (byte) 0x82;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 6050276733546358513L;
 
-
-
-  /**
-   * Creates a new instance of this matching rule.
-   */
   protected MatchingRule()
   {
-    // No implementation is required.
   }
 
 
-
-  /**
-   * Retrieves the name for this matching rule when used to perform equality
-   * matching, if appropriate.
-   *
-   * @return  The name for this matching rule when used to perform equality
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for equality matching.
-   */
   public abstract String getEqualityMatchingRuleName();
 
 
-
-  /**
-   * Retrieves the OID for this matching rule when used to perform equality
-   * matching, if appropriate.
-   *
-   * @return  The OID for this matching rule when used to perform equality
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for equality matching.
-   */
   public abstract String getEqualityMatchingRuleOID();
 
-
-
-  /**
-   * Retrieves the name for this matching rule when used to perform equality
-   * matching if defined, or the OID if no name is available.
-   *
-   * @return  The name or OID for this matching rule when used to perform
-   *          equality matching, or {@code null} if this matching rule cannot
-   *          be used to perform equality matching.
-   */
   public String getEqualityMatchingRuleNameOrOID()
   {
     final String name = getEqualityMatchingRuleName();
@@ -132,39 +55,12 @@ public abstract class MatchingRule
   }
 
 
-
-  /**
-   * Retrieves the name for this matching rule when used to perform ordering
-   * matching, if appropriate.
-   *
-   * @return  The name for this matching rule when used to perform ordering
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for ordering matching.
-   */
   public abstract String getOrderingMatchingRuleName();
 
-
-
-  /**
-   * Retrieves the OID for this matching rule when used to perform ordering
-   * matching, if appropriate.
-   *
-   * @return  The OID for this matching rule when used to perform ordering
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for ordering matching.
-   */
   public abstract String getOrderingMatchingRuleOID();
 
 
 
-  /**
-   * Retrieves the name for this matching rule when used to perform ordering
-   * matching if defined, or the OID if no name is available.
-   *
-   * @return  The name or OID for this matching rule when used to perform
-   *          ordering matching, or {@code null} if this matching rule cannot
-   *          be used to perform equality matching.
-   */
   public String getOrderingMatchingRuleNameOrOID()
   {
     final String name = getOrderingMatchingRuleName();
@@ -178,40 +74,10 @@ public abstract class MatchingRule
     }
   }
 
-
-
-  /**
-   * Retrieves the name for this matching rule when used to perform substring
-   * matching, if appropriate.
-   *
-   * @return  The name for this matching rule when used to perform substring
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for substring matching.
-   */
   public abstract String getSubstringMatchingRuleName();
 
-
-
-  /**
-   * Retrieves the OID for this matching rule when used to perform substring
-   * matching, if appropriate.
-   *
-   * @return  The OID for this matching rule when used to perform substring
-   *          matching, or {@code null} if this matching rule is not intended
-   *          to be used for substring matching.
-   */
   public abstract String getSubstringMatchingRuleOID();
 
-
-
-  /**
-   * Retrieves the name for this matching rule when used to perform substring
-   * matching if defined, or the OID if no name is available.
-   *
-   * @return  The name or OID for this matching rule when used to perform
-   *          substring matching, or {@code null} if this matching rule cannot
-   *          be used to perform equality matching.
-   */
   public String getSubstringMatchingRuleNameOrOID()
   {
     final String name = getSubstringMatchingRuleName();
@@ -225,47 +91,11 @@ public abstract class MatchingRule
     }
   }
 
-
-
-  /**
-   * Indicates whether the provided values are equal to each other, according to
-   * the constraints of this matching rule.
-   *
-   * @param  value1  The first value for which to make the determination.
-   * @param  value2  The second value for which to make the determination.
-   *
-   * @return  {@code true} if the provided values are considered equal, or
-   *          {@code false} if not.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while making the determination,
-   *                         or if this matching rule does not support equality
-   *                         matching.
-   */
   public abstract boolean valuesMatch(final ASN1OctetString value1,
                                       final ASN1OctetString value2)
          throws LDAPException;
 
 
-
-  /**
-   * Indicates whether the provided value matches the given substring assertion,
-   * according to the constraints of this matching rule.
-   *
-   * @param  value       The value for which to make the determination.
-   * @param  subInitial  The subInitial portion of the substring assertion, or
-   *                     {@code null} if there is no subInitial element.
-   * @param  subAny      The subAny elements of the substring assertion, or
-   *                     {@code null} if there are no subAny elements.
-   * @param  subFinal    The subFinal portion of the substring assertion, or
-   *                     {@code null} if there is no subFinal element.
-   *
-   * @return  {@code true} if the provided value matches the substring
-   *          assertion, or {@code false} if not.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while making the determination,
-   *                         or if this matching rule does not support substring
-   *                         matching.
-   */
   public abstract boolean matchesSubstring(final ASN1OctetString value,
                                            final ASN1OctetString subInitial,
                                            final ASN1OctetString[] subAny,
@@ -273,61 +103,16 @@ public abstract class MatchingRule
          throws LDAPException;
 
 
-
-  /**
-   * Compares the provided values to determine their relative order in a sorted
-   * list.
-   *
-   * @param  value1  The first value to compare.
-   * @param  value2  The second value to compare.
-   *
-   * @return  A negative value if {@code value1} should come before
-   *          {@code value2} in a sorted list, a positive value if
-   *          {@code value1} should come after {@code value2} in a sorted list,
-   *          or zero if the values are equal or there is no distinction between
-   *          their orders in a sorted list.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while making the determination,
-   *                         or if this matching rule does not support ordering
-   *                         matching.
-   */
   public abstract int compareValues(final ASN1OctetString value1,
                                     final ASN1OctetString value2)
          throws LDAPException;
 
 
-
-  /**
-   * Normalizes the provided value for easier matching.
-   *
-   * @param  value  The value to be normalized.
-   *
-   * @return  The normalized form of the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while normalizing the provided
-   *                         value.
-   */
   public abstract ASN1OctetString normalize(final ASN1OctetString value)
          throws LDAPException;
 
 
 
-  /**
-   * Normalizes the provided value for use as part of a substring assertion.
-   *
-   * @param  value          The value to be normalized for use as part of a
-   *                        substring assertion.
-   * @param  substringType  The substring assertion component type for the
-   *                        provided value.  It should be one of
-   *                        {@code SUBSTRING_TYPE_SUBINITIAL},
-   *                        {@code SUBSTRING_TYPE_SUBANY}, or
-   *                        {@code SUBSTRING_TYPE_SUBFINAL}.
-   *
-   * @return  The normalized form of the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while normalizing the provided
-   *                         value.
-   */
   public abstract ASN1OctetString normalizeSubstring(
                                        final ASN1OctetString value,
                                        final byte substringType)
@@ -335,20 +120,7 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule to use for equality
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default equality matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null}, then the default
-   *                   equality matching rule will be selected.
-   *
-   * @return  The selected matching rule.
-   */
+
   public static MatchingRule selectEqualityMatchingRule(final String attrName,
                                                         final Schema schema)
   {
@@ -357,27 +129,7 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule to use for equality
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default equality matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.  It may be {@code null} if the matching rule
-   *                   should be selected using the matching rule ID.
-   * @param  ruleID    The OID of the desired matching rule.  It may be
-   *                   {@code null} if the matching rule should be selected only
-   *                   using the attribute name.  If a rule ID is provided, then
-   *                   it will be the only criteria used to select the matching
-   *                   rule.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null} and no rule ID
-   *                   was provided, then the default equality matching rule
-   *                   will be selected.
-   *
-   * @return  The selected matching rule.
-   */
+
   public static MatchingRule selectEqualityMatchingRule(final String attrName,
                                   final String ruleID, final Schema schema)
   {
@@ -414,16 +166,6 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule to use for equality
-   * matching using the specified matching rule.  If an appropriate matching
-   * rule cannot be determined, then the default equality matching rule will be
-   * selected.
-   *
-   * @param  ruleID  The name or OID of the desired matching rule.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectEqualityMatchingRule(final String ruleID)
   {
     if ((ruleID == null) || (ruleID.length() == 0))
@@ -466,10 +208,7 @@ public abstract class MatchingRule
              lowerName.equals("uniquemembermatch") ||
              lowerName.equals("2.5.13.23"))
     {
-      // NOTE -- Technically uniqueMember should use a name and optional UID
-      // matching rule, but the SDK doesn't currently provide one and the
-      // distinguished name matching rule should be sufficient the vast
-      // majority of the time.
+
       return DistinguishedNameMatchingRule.getInstance();
     }
     else if (lowerName.equals(
@@ -507,37 +246,12 @@ public abstract class MatchingRule
     }
   }
 
-
-
-  /**
-   * Retrieves the default matching rule that will be used for equality matching
-   * if no other matching rule is specified or available.  The rule returned
-   * will perform case-ignore string matching.
-   *
-   * @return  The default matching rule that will be used for equality matching
-   *          if no other matching rule is specified or available.
-   */
   public static MatchingRule getDefaultEqualityMatchingRule()
   {
     return CaseIgnoreStringMatchingRule.getInstance();
   }
 
 
-
-  /**
-   * Attempts to select the appropriate matching rule to use for ordering
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default ordering matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null}, then the default
-   *                   ordering matching rule will be selected.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectOrderingMatchingRule(final String attrName,
                                                         final Schema schema)
   {
@@ -545,28 +259,6 @@ public abstract class MatchingRule
   }
 
 
-
-  /**
-   * Attempts to select the appropriate matching rule to use for ordering
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default ordering matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.  It may be {@code null} if the matching rule
-   *                   should be selected using the matching rule ID.
-   * @param  ruleID    The OID of the desired matching rule.  It may be
-   *                   {@code null} if the matching rule should be selected only
-   *                   using the attribute name.  If a rule ID is provided, then
-   *                   it will be the only criteria used to select the matching
-   *                   rule.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null} and no rule ID
-   *                   was provided, then the default ordering matching rule
-   *                   will be selected.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectOrderingMatchingRule(final String attrName,
                                                         final String ruleID,
                                                         final Schema schema)
@@ -604,16 +296,6 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule to use for ordering
-   * matching using the specified matching rule.  If an appropriate matching
-   * rule cannot be determined, then the default ordering matching rule will be
-   * selected.
-   *
-   * @param  ruleID  The name or OID of the desired matching rule.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectOrderingMatchingRule(final String ruleID)
   {
     if ((ruleID == null) || (ruleID.length() == 0))
@@ -665,35 +347,12 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Retrieves the default matching rule that will be used for ordering matching
-   * if no other matching rule is specified or available.  The rule returned
-   * will perform case-ignore string matching.
-   *
-   * @return  The default matching rule that will be used for ordering matching
-   *          if no other matching rule is specified or available.
-   */
   public static MatchingRule getDefaultOrderingMatchingRule()
   {
     return CaseIgnoreStringMatchingRule.getInstance();
   }
 
 
-
-  /**
-   * Attempts to select the appropriate matching rule to use for substring
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default substring matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null}, then the default
-   *                   substring matching rule will be selected.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectSubstringMatchingRule(final String attrName,
                                                          final Schema schema)
   {
@@ -702,27 +361,6 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule to use for substring
-   * matching against the specified attribute.  If an appropriate matching rule
-   * cannot be determined, then the default substring matching rule will be
-   * selected.
-   *
-   * @param  attrName  The name of the attribute to examine in the provided
-   *                   schema.  It may be {@code null} if the matching rule
-   *                   should be selected using the matching rule ID.
-   * @param  ruleID    The OID of the desired matching rule.  It may be
-   *                   {@code null} if the matching rule should be selected only
-   *                   using the attribute name.  If a rule ID is provided, then
-   *                   it will be the only criteria used to select the matching
-   *                   rule.
-   * @param  schema    The schema to examine to make the appropriate
-   *                   determination.  If this is {@code null} and no rule ID
-   *                   was provided, then the default substring matching rule
-   *                   will be selected.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectSubstringMatchingRule(final String attrName,
                                                          final String ruleID,
                                                          final Schema schema)
@@ -759,17 +397,6 @@ public abstract class MatchingRule
   }
 
 
-
-  /**
-   * Attempts to select the appropriate matching rule to use for substring
-   * matching using the specified matching rule.  If an appropriate matching
-   * rule cannot be determined, then the default substring matching rule will be
-   * selected.
-   *
-   * @param  ruleID  The name or OID of the desired matching rule.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectSubstringMatchingRule(final String ruleID)
   {
     if ((ruleID == null) || (ruleID.length() == 0))
@@ -825,15 +452,6 @@ public abstract class MatchingRule
   }
 
 
-
-  /**
-   * Retrieves the default matching rule that will be used for substring
-   * matching if no other matching rule is specified or available.  The rule
-   * returned will perform case-ignore string matching.
-   *
-   * @return  The default matching rule that will be used for substring matching
-   *          if no other matching rule is specified or available.
-   */
   public static MatchingRule getDefaultSubstringMatchingRule()
   {
     return CaseIgnoreStringMatchingRule.getInstance();
@@ -841,16 +459,6 @@ public abstract class MatchingRule
 
 
 
-  /**
-   * Attempts to select the appropriate matching rule for use with the syntax
-   * with the specified OID.  If an appropriate matching rule cannot be
-   * determined, then the case-ignore string matching rule will be selected.
-   *
-   * @param  syntaxOID  The OID of the attribute syntax for which to make the
-   *                    determination.
-   *
-   * @return  The selected matching rule.
-   */
   public static MatchingRule selectMatchingRuleForSyntax(final String syntaxOID)
   {
     if (syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.7"))
@@ -879,13 +487,13 @@ public abstract class MatchingRule
     {
       return NumericStringMatchingRule.getInstance();
     }
-    else if (syntaxOID.equals("1.3.6.1.4.1.4203.1.1.2") || // auth password
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.5") || // binary
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.8") || // certificate
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.9") || // cert list
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.10") || // cert pair
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.28") || // JPEG
-         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.40")) // octet string
+    else if (syntaxOID.equals("1.3.6.1.4.1.4203.1.1.2") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.5") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.8") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.9") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.10") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.28") ||
+         syntaxOID.equals("1.3.6.1.4.1.1466.115.121.1.40"))
     {
       return OctetStringMatchingRule.getInstance();
     }

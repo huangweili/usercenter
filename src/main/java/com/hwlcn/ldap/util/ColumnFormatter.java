@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -35,20 +15,12 @@ import static com.hwlcn.ldap.util.UtilityMessages.*;
 
 
 
-/**
- * This class provides a utility for formatting output in multiple columns.
- * Each column will have a defined width and alignment.  It can alternately
- * generate output as tab-delimited text or comma-separated values (CSV).
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class ColumnFormatter
        implements Serializable
 {
-  /**
-   * The symbols to use for special characters that might be encountered when
-   * using a decimal formatter.
-   */
+
   private static final DecimalFormatSymbols DECIMAL_FORMAT_SYMBOLS =
        new DecimalFormatSymbols();
   static
@@ -58,69 +30,35 @@ public final class ColumnFormatter
   }
 
 
-
-  /**
-   * The default output format to use.
-   */
   private static final OutputFormat DEFAULT_OUTPUT_FORMAT =
        OutputFormat.COLUMNS;
 
-
-
-  /**
-   * The default spacer to use between columns.
-   */
   private static final String DEFAULT_SPACER = " ";
 
 
-
-  /**
-   * The default date format string that will be used for timestamps.
-   */
   private static final String DEFAULT_TIMESTAMP_FORMAT = "HH:mm:ss";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2524398424293401200L;
 
-
-
-  // Indicates whether to insert a timestamp before the first column.
   private final boolean includeTimestamp;
 
-  // The column to use for the timestamp.
   private final FormattableColumn timestampColumn;
-
-  // The columns to be formatted.
   private final FormattableColumn[] columns;
 
-  // The output format to use.
   private final OutputFormat outputFormat;
 
-  // The string to insert between columns.
   private final String spacer;
 
-  // The format string to use for the timestamp.
   private final String timestampFormat;
 
-  // The thread-local formatter to use for floating-point values.
   private final transient ThreadLocal<DecimalFormat> decimalFormatter;
 
-  // The thread-local formatter to use when formatting timestamps.
   private final transient ThreadLocal<SimpleDateFormat> timestampFormatter;
 
 
 
-  /**
-   * Creates a column formatter that will format the provided columns with the
-   * default settings.
-   *
-   * @param  columns  The columns to be formatted.  At least one column must be
-   *                  provided.
-   */
   public ColumnFormatter(final FormattableColumn... columns)
   {
     this(false, null, null, null, columns);
@@ -128,25 +66,6 @@ public final class ColumnFormatter
 
 
 
-  /**
-   * Creates a column formatter that will format the provided columns.
-   *
-   * @param  includeTimestamp  Indicates whether to insert a timestamp before
-   *                           the first column when generating data lines
-   * @param  timestampFormat   The format string to use for the timestamp.  It
-   *                           may be {@code null} if no timestamp should be
-   *                           included or the default format should be used.
-   *                           If a format is provided, then it should be one
-   *                           that will always generate timestamps with a
-   *                           constant width.
-   * @param  outputFormat      The output format to use.
-   * @param  spacer            The spacer to use between columns.  It may be
-   *                           {@code null} if the default spacer should be
-   *                           used.  This will only apply for an output format
-   *                           of {@code COLUMNS}.
-   * @param  columns           The columns to be formatted.  At least one
-   *                           column must be provided.
-   */
   public ColumnFormatter(final boolean includeTimestamp,
                          final String timestampFormat,
                          final OutputFormat outputFormat, final String spacer,
@@ -207,61 +126,30 @@ public final class ColumnFormatter
   }
 
 
-
-  /**
-   * Indicates whether timestamps will be included in the output.
-   *
-   * @return  {@code true} if timestamps should be included, or {@code false}
-   *          if not.
-   */
   public boolean includeTimestamps()
   {
     return includeTimestamp;
   }
 
 
-
-  /**
-   * Retrieves the format string that will be used for generating timestamps.
-   *
-   * @return  The format string that will be used for generating timestamps.
-   */
   public String getTimestampFormatString()
   {
     return timestampFormat;
   }
 
 
-
-  /**
-   * Retrieves the output format that will be used.
-   *
-   * @return  The output format for this formatter.
-   */
   public OutputFormat getOutputFormat()
   {
     return outputFormat;
   }
 
 
-
-  /**
-   * Retrieves the spacer that will be used between columns.
-   *
-   * @return  The spacer that will be used between columns.
-   */
   public String getSpacer()
   {
     return spacer;
   }
 
 
-
-  /**
-   * Retrieves the set of columns for this formatter.
-   *
-   * @return  The set of columns for this formatter.
-   */
   public FormattableColumn[] getColumns()
   {
     final FormattableColumn[] copy = new FormattableColumn[columns.length];
@@ -271,14 +159,6 @@ public final class ColumnFormatter
 
 
 
-  /**
-   * Obtains the lines that should comprise the column headers.
-   *
-   * @param  includeDashes  Indicates whether to include a row of dashes below
-   *                        the headers if appropriate for the output format.
-   *
-   * @return  The lines that should comprise the column headers.
-   */
   public String[] getHeaderLines(final boolean includeDashes)
   {
     if (outputFormat == OutputFormat.COLUMNS)
@@ -405,14 +285,6 @@ public final class ColumnFormatter
 
 
 
-  /**
-   * Formats a row of data.  The provided data must correspond to the columns
-   * used when creating this formatter.
-   *
-   * @param  columnData  The elements to include in each row of the data.
-   *
-   * @return  A string containing the formatted row.
-   */
   public String formatRow(final Object... columnData)
   {
     final StringBuilder buffer = new StringBuilder();
@@ -463,18 +335,7 @@ public final class ColumnFormatter
 
 
 
-  /**
-   * Retrieves a string representation of the provided object.  If the object
-   * is {@code null}, then the empty string will be returned.  If the object is
-   * a {@code Float} or {@code Double}, then it will be formatted using a
-   * DecimalFormat with a format string of "0.000".  Otherwise, the
-   * {@code String.valueOf} method will be used to obtain the string
-   * representation.
-   *
-   * @param  o  The object for which to retrieve the string representation.
-   *
-   * @return  A string representation of the provided object.
-   */
+
   private String toString(final Object o)
   {
     if (o == null)

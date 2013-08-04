@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -43,41 +24,25 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides an implementation of an LDAP compare request protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class CompareRequestProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -562642367801440060L;
 
 
 
-  // The assertion value for this compare request.
   private final ASN1OctetString assertionValue;
 
-  // The attribute name for this compare request.
   private final String attributeName;
 
-  // The entry DN for this compare request.
   private final String dn;
 
 
 
-  /**
-   * Creates a new compare request protocol op with the provided information.
-   *
-   * @param  dn              The DN for this compare request.
-   * @param  attributeName   The attribute name for this compare request.
-   * @param  assertionValue  The assertion value for this compare request.
-   */
   public CompareRequestProtocolOp(final String dn, final String attributeName,
                                   final ASN1OctetString assertionValue)
   {
@@ -87,14 +52,6 @@ public final class CompareRequestProtocolOp
   }
 
 
-
-  /**
-   * Creates a new compare request protocol op from the provided compare request
-   * object.
-   *
-   * @param  request  The compare request object to use to create this protocol
-   *                  op.
-   */
   public CompareRequestProtocolOp(final CompareRequest request)
   {
     dn             = request.getDN();
@@ -104,16 +61,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * Creates a new compare request protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the compare
-   *                 request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         compare request.
-   */
   CompareRequestProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -138,11 +85,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * Retrieves the DN for this compare request.
-   *
-   * @return  The DN for this compare request.
-   */
   public String getDN()
   {
     return dn;
@@ -150,11 +92,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * Retrieves the attribute name for this compare request.
-   *
-   * @return  The attribute name for this compare request.
-   */
   public String getAttributeName()
   {
     return attributeName;
@@ -162,11 +99,7 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * Retrieves the assertion value for this compare request.
-   *
-   * @return  The assertion value for this compare request.
-   */
+
   public ASN1OctetString getAssertionValue()
   {
     return assertionValue;
@@ -174,9 +107,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_COMPARE_REQUEST;
@@ -184,9 +114,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     return new ASN1Sequence(LDAPMessage.PROTOCOL_OP_TYPE_COMPARE_REQUEST,
@@ -197,17 +124,6 @@ public final class CompareRequestProtocolOp
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 element as a compare request protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded compare request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a compare request protocol op.
-   */
   public static CompareRequestProtocolOp decodeProtocolOp(
                                               final ASN1Element element)
          throws LDAPException
@@ -239,9 +155,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -257,15 +170,6 @@ public final class CompareRequestProtocolOp
 
 
 
-  /**
-   * Creates a compare request from this protocol op.
-   *
-   * @param  controls  The set of controls to include in the compare request.
-   *                   It may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The compare request that was created.
-   */
   public CompareRequest toCompareRequest(final Control... controls)
   {
     return new CompareRequest(dn, attributeName, assertionValue.getValue(),
@@ -273,12 +177,6 @@ public final class CompareRequestProtocolOp
   }
 
 
-
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -288,10 +186,6 @@ public final class CompareRequestProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("CompareRequestProtocolOp(dn='");

@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -46,54 +27,25 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides an implementation of an LDAP intermediate response
- * protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class IntermediateResponseProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The BER type for the OID element.
-   */
+
   public static final byte TYPE_OID = (byte) 0x80;
 
 
 
-  /**
-   * The BER type for the value element.
-   */
   public static final byte TYPE_VALUE = (byte) 0x81;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 118549806265654465L;
 
-
-
-  // The value for this intermediate response.
   private final ASN1OctetString value;
 
-  // The OID for this intermediate response.
   private final String oid;
 
-
-
-  /**
-   * Creates a new intermediate response protocol op with the provided
-   * information.
-   *
-   * @param  oid    The OID for this intermediate response, or {@code null} if
-   *                there should not be an OID.
-   * @param  value  The value for this intermediate response, or {@code null} if
-   *                there should not be a value.
-   */
   public IntermediateResponseProtocolOp(final String oid,
                                         final ASN1OctetString value)
   {
@@ -109,33 +61,12 @@ public final class IntermediateResponseProtocolOp
     }
   }
 
-
-
-  /**
-   * Creates a new intermediate response protocol op from the provided
-   * intermediate response object.
-   *
-   * @param  response  The intermediate response object to use to create this
-   *                   protocol op.
-   */
   public IntermediateResponseProtocolOp(final IntermediateResponse response)
   {
     oid   = response.getOID();
     value = response.getValue();
   }
 
-
-
-  /**
-   * Creates a new intermediate response protocol op read from the provided
-   * ASN.1 stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the intermediate
-   *                 response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         intermediate response.
-   */
   IntermediateResponseProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -181,14 +112,6 @@ public final class IntermediateResponseProtocolOp
     }
   }
 
-
-
-  /**
-   * Retrieves the OID for this intermediate response, if any.
-   *
-   * @return  The OID for this intermediate response, or {@code null} if there
-   *          is no response OID.
-   */
   public String getOID()
   {
     return oid;
@@ -196,32 +119,16 @@ public final class IntermediateResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the value for this intermediate response, if any.
-   *
-   * @return  The value for this intermediate response, or {@code null} if there
-   *          is no response value.
-   */
   public ASN1OctetString getValue()
   {
     return value;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_INTERMEDIATE_RESPONSE;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(2);
@@ -240,18 +147,6 @@ public final class IntermediateResponseProtocolOp
          elements);
   }
 
-
-
-  /**
-   * Decodes the provided ASN.1 element as a intermediate response protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded intermediate response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a intermediate response protocol op.
-   */
   public static IntermediateResponseProtocolOp decodeProtocolOp(
                                                     final ASN1Element element)
          throws LDAPException
@@ -294,11 +189,6 @@ public final class IntermediateResponseProtocolOp
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence = buffer.beginSequence(
@@ -317,29 +207,12 @@ public final class IntermediateResponseProtocolOp
     opSequence.end();
   }
 
-
-
-  /**
-   * Creates a intermediate response from this protocol op.
-   *
-   * @param  controls  The set of controls to include in the intermediate
-   *                   response.  It may be empty or {@code null} if no controls
-   *                   should be included.
-   *
-   * @return  The intermediate response that was created.
-   */
   public IntermediateResponse toIntermediateResponse(final Control... controls)
   {
     return new IntermediateResponse(-1, oid, value, controls);
   }
 
 
-
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -349,10 +222,6 @@ public final class IntermediateResponseProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("IntermediateResponseProtocolOp(");

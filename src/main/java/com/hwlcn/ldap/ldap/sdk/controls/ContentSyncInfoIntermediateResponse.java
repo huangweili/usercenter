@@ -1,23 +1,4 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -49,74 +30,29 @@ import com.hwlcn.ldap.util.Validator;
 import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 
 
-
-/**
- * This class provides an implementation of the sync info message, which is
- * an intermediate response message used by the content synchronization
- * operation as defined in
- * <a href="http://www.ietf.org/rfc/rfc4533.txt">RFC 4533</a>.  Directory
- * servers may return this response in the course of processing a search
- * request containing the content synchronization request control.  See the
- * documentation for the {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncRequestControl} class for more
- * information about using the content synchronization operation.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ContentSyncInfoIntermediateResponse
        extends IntermediateResponse
 {
-  /**
-   * The OID (1.3.6.1.4.1.4203.1.9.1.4) for the sync info intermediate response.
-   */
+
   public static final String SYNC_INFO_OID = "1.3.6.1.4.1.4203.1.9.1.4";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4464376009337157433L;
 
 
-
-  // An updated state cookie, if available.
   private final ASN1OctetString cookie;
 
-  // Indicates whether the provided set of UUIDs represent entries that have
-  // been removed.
   private final boolean refreshDeletes;
 
-  // Indicates whether the refresh phase is complete.
   private final boolean refreshDone;
 
-  // The type of content synchronization information represented in this
-  // response.
   private final ContentSyncInfoType type;
 
-  // A list of entryUUIDs for the set of entries associated with this message.
   private final List<UUID> entryUUIDs;
 
 
-
-  /**
-   * Creates a new content synchronization info intermediate response with the
-   * provided information.
-   *
-   * @param  type            The type of content synchronization information
-   *                         represented in this response.
-   * @param  value           The encoded value for the intermediate response, if
-   *                         any.
-   * @param  cookie          An updated state cookie for the synchronization
-   *                         session, if available.
-   * @param  refreshDone     Indicates whether the refresh phase of the
-   *                         synchronization session is complete.
-   * @param  refreshDeletes  Indicates whether the provided set of UUIDs
-   *                         represent entries that have been removed.
-   * @param  entryUUIDs      A list of entryUUIDs for the set of entries
-   *                         associated with this message.
-   * @param  controls        The set of controls to include in the intermediate
-   *                         response, if any.
-   */
   private ContentSyncInfoIntermediateResponse(final ContentSyncInfoType type,
                  final ASN1OctetString value, final ASN1OctetString cookie,
                  final boolean refreshDone, final boolean refreshDeletes,
@@ -133,18 +69,6 @@ public final class ContentSyncInfoIntermediateResponse
 
 
 
-  /**
-   * Creates a new sync info intermediate response with a type of
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#NEW_COOKIE}.
-   *
-   * @param  cookie    The updated state cookie for the synchronization session.
-   *                   It must not be {@code null}.
-   * @param  controls  An optional set of controls to include in the response.
-   *                   It may be {@code null} or empty if no controls should be
-   *                   included.
-   *
-   * @return  The created sync info intermediate response.
-   */
   public static ContentSyncInfoIntermediateResponse createNewCookieResponse(
                      final ASN1OctetString cookie, final Control... controls)
   {
@@ -159,21 +83,6 @@ public final class ContentSyncInfoIntermediateResponse
 
 
 
-  /**
-   * Creates a new sync info intermediate response with a type of
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#REFRESH_DELETE}.
-   *
-   * @param  cookie       The updated state cookie for the synchronization
-   *                      session.  It may be {@code null} if no new cookie is
-   *                      available.
-   * @param  refreshDone  Indicates whether the refresh phase of the
-   *                      synchronization operation has completed.
-   * @param  controls     An optional set of controls to include in the
-   *                      response.  It may be {@code null} or empty if no
-   *                      controls should be included.
-   *
-   * @return  The created sync info intermediate response.
-   */
   public static ContentSyncInfoIntermediateResponse createRefreshDeleteResponse(
                      final ASN1OctetString cookie, final boolean refreshDone,
                      final Control... controls)
@@ -187,21 +96,6 @@ public final class ContentSyncInfoIntermediateResponse
 
 
 
-  /**
-   * Creates a new sync info intermediate response with a type of
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#REFRESH_PRESENT}.
-   *
-   * @param  cookie       The updated state cookie for the synchronization
-   *                      session.  It may be {@code null} if no new cookie is
-   *                      available.
-   * @param  refreshDone  Indicates whether the refresh phase of the
-   *                      synchronization operation has completed.
-   * @param  controls     An optional set of controls to include in the
-   *                      response.  It may be {@code null} or empty if no
-   *                      controls should be included.
-   *
-   * @return  The created sync info intermediate response.
-   */
   public static ContentSyncInfoIntermediateResponse
                      createRefreshPresentResponse(final ASN1OctetString cookie,
                                                   final boolean refreshDone,
@@ -216,24 +110,6 @@ public final class ContentSyncInfoIntermediateResponse
 
 
 
-  /**
-   * Creates a new sync info intermediate response with a type of
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#SYNC_ID_SET}.
-   *
-   * @param  cookie          The updated state cookie for the synchronization
-   *                         session.  It may be {@code null} if no new cookie
-   *                         is available.
-   * @param  entryUUIDs      The set of entryUUIDs for the entries referenced in
-   *                         this response.  It must not be {@code null}.
-   * @param  refreshDeletes  Indicates whether the entryUUIDs represent entries
-   *                         that have been removed rather than those that have
-   *                         remained unchanged.
-   * @param  controls        An optional set of controls to include in the
-   *                         response.  It may be {@code null} or empty if no
-   *                         controls should be included.
-   *
-   * @return  The created sync info intermediate response.
-   */
   public static ContentSyncInfoIntermediateResponse createSyncIDSetResponse(
                      final ASN1OctetString cookie, final List<UUID> entryUUIDs,
                      final boolean refreshDeletes, final Control... controls)
@@ -249,20 +125,6 @@ public final class ContentSyncInfoIntermediateResponse
   }
 
 
-
-  /**
-   * Decodes the provided generic intermediate response as a sync info
-   * intermediate response.
-   *
-   * @param  r  The intermediate response to be decoded as a sync info
-   *            intermediate response.  It must not be {@code null}.
-   *
-   * @return  The decoded sync info intermediate response.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to decode the
-   *                         provided intermediate response as a sync info
-   *                         response.
-   */
   public static ContentSyncInfoIntermediateResponse decode(
                      final IntermediateResponse r)
          throws LDAPException
@@ -398,22 +260,6 @@ public final class ContentSyncInfoIntermediateResponse
   }
 
 
-
-  /**
-   * Encodes the provided information into a form suitable for use as the value
-   * of this intermediate response.
-   *
-   * @param  type            The type for this sync info message.
-   * @param  cookie          The updated sync state cookie.
-   * @param  refreshDone     Indicates whether the refresh phase of the
-   *                         synchronization operation is complete.
-   * @param  entryUUIDs      The set of entryUUIDs for the entries referenced
-   *                         in this message.
-   * @param  refreshDeletes  Indicates whether the associated entryUUIDs are for
-   *                         entries that have been removed.
-   *
-   * @return  The encoded value.
-   */
   private static ASN1OctetString encodeValue(final ContentSyncInfoType type,
                                              final ASN1OctetString cookie,
                                              final boolean refreshDone,
@@ -468,55 +314,24 @@ public final class ContentSyncInfoIntermediateResponse
         break;
 
       default:
-        // This should never happen.
         throw new AssertionError("Unexpected sync info type:  " + type.name());
     }
 
     return new ASN1OctetString(e.encode());
   }
 
-
-
-  /**
-   * Retrieves the type of content synchronization information represented in
-   * this response.
-   *
-   * @return  The type of content synchronization information represented in
-   *          this response.
-   */
   public ContentSyncInfoType getType()
   {
     return type;
   }
 
 
-
-  /**
-   * Retrieves an updated state cookie for the synchronization session, if
-   * available.  It will always be non-{@code null} for a type of
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#NEW_COOKIE}, and may or may not be {@code null}
-   * for other types.
-   *
-   * @return  An updated state cookie for the synchronization session, or
-   *          {@code null} if none is available.
-   */
   public ASN1OctetString getCookie()
   {
     return cookie;
   }
 
 
-
-  /**
-   * Indicates whether the refresh phase of the synchronization operation has
-   * completed.  This is only applicable for the
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#REFRESH_DELETE} and
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#REFRESH_PRESENT} types.
-   *
-   * @return  {@code true} if the refresh phase of the synchronization operation
-   *          has completed, or {@code false} if not or if it is not applicable
-   *          for this message type.
-   */
   public boolean refreshDone()
   {
     return refreshDone;
@@ -524,53 +339,24 @@ public final class ContentSyncInfoIntermediateResponse
 
 
 
-  /**
-   * Retrieves a list of the entryUUID values for the entries referenced in this
-   * message.  This is only applicable for the
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#SYNC_ID_SET} type.
-   *
-   * @return  A list of the entryUUID values for the entries referenced in this
-   *          message, or {@code null} if it is not applicable for this message
-   *          type.
-   */
   public List<UUID> getEntryUUIDs()
   {
     return entryUUIDs;
   }
 
 
-
-  /**
-   * Indicates whether the provided set of UUIDs represent entries that have
-   * been removed.  This is only applicable for the
-   * {@link com.hwlcn.ldap.ldap.sdk.controls.ContentSyncInfoType#SYNC_ID_SET} type.
-   *
-   * @return  {@code true} if the associated set of entryUUIDs represent entries
-   *          that have been deleted, or {@code false} if they represent entries
-   *          that remain unchanged or if it is not applicable for this message
-   *          type.
-   */
   public boolean refreshDeletes()
   {
     return refreshDeletes;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getIntermediateResponseName()
   {
     return INFO_INTERMEDIATE_RESPONSE_NAME_SYNC_INFO.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String valueToString()
   {
@@ -617,7 +403,6 @@ public final class ContentSyncInfoIntermediateResponse
 
       case NEW_COOKIE:
       default:
-        // No additional content is needed.
         break;
     }
 
@@ -625,10 +410,6 @@ public final class ContentSyncInfoIntermediateResponse
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {
@@ -656,7 +437,6 @@ public final class ContentSyncInfoIntermediateResponse
     switch (type)
     {
       case NEW_COOKIE:
-        // No additional content is needed.
         break;
 
       case REFRESH_DELETE:

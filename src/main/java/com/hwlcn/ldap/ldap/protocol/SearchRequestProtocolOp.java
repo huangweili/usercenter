@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -54,66 +35,34 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
-
-/**
- * This class provides an implementation of an LDAP search request protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class SearchRequestProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -8521750809606744181L;
 
-
-
-  // The typesOnly flag for this search request.
   private final boolean typesOnly;
 
-  // The dereference policy for this search request.
   private final DereferencePolicy derefPolicy;
 
-  // The filter for this search request.
   private final Filter filter;
 
-  // The size limit for this search request.
   private final int sizeLimit;
 
-  // The time limit for this search request.
   private final int timeLimit;
 
-  // The set of attributes for this search request.
   private final List<String> attributes;
 
-  // The scope for this search request.
   private final SearchScope scope;
 
-  // The base DN for this search request.
   private final String baseDN;
 
 
 
-  /**
-   * Creates a new search request protocol op with the provided information.
-   *
-   * @param  baseDN       The base DN for this search request.
-   * @param  scope        The scope for this search request.
-   * @param  derefPolicy  The policy to use for aliases encountered during the
-   *                      search.
-   * @param  sizeLimit    The maximum number of entries to return for the
-   *                      search, or zero for no limit.
-   * @param  timeLimit    The maximum length of time to spend processing the
-   *                      search, or zero for no limit.
-   * @param  typesOnly    Indicates whether to return only attribute types or
-   *                      both types and values.
-   * @param  filter       The filter for this search request.
-   * @param  attributes   The names of attributes to include in matching
-   *                      entries.
-   */
+
   public SearchRequestProtocolOp(final String baseDN, final SearchScope scope,
               final DereferencePolicy derefPolicy, final int sizeLimit,
               final int timeLimit, final boolean typesOnly, final Filter filter,
@@ -162,14 +111,6 @@ public final class SearchRequestProtocolOp
   }
 
 
-
-  /**
-   * Creates a new search request protocol op from the provided search request
-   * object.
-   *
-   * @param  request  The search request object to use to create this protocol
-   *                  op.
-   */
   public SearchRequestProtocolOp(final SearchRequest request)
   {
     baseDN      = request.getBaseDN();
@@ -184,16 +125,6 @@ public final class SearchRequestProtocolOp
 
 
 
-  /**
-   * Creates a new search request protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the search
-   *                 request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         search request.
-   */
   SearchRequestProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -231,37 +162,18 @@ public final class SearchRequestProtocolOp
     }
   }
 
-
-
-  /**
-   * Retrieves the base DN for this search request.
-   *
-   * @return  The base DN for this search request.
-   */
   public String getBaseDN()
   {
     return baseDN;
   }
 
 
-
-  /**
-   * Retrieves the scope for this search request.
-   *
-   * @return  The scope for this search request.
-   */
   public SearchScope getScope()
   {
     return scope;
   }
 
 
-
-  /**
-   * Retrieves the policy to use for any aliases encountered during the search.
-   *
-   * @return  The policy to use for any aliases encountered during the search.
-   */
   public DereferencePolicy getDerefPolicy()
   {
     return derefPolicy;
@@ -269,65 +181,29 @@ public final class SearchRequestProtocolOp
 
 
 
-  /**
-   * Retrieves the maximum number of entries that the server should return for
-   * the search.
-   *
-   * @return  The maximum number of entries that the server should return for
-   *          the search, or zero if there is no limit.
-   */
   public int getSizeLimit()
   {
     return sizeLimit;
   }
 
-
-
-  /**
-   * Retrieves the maximum length of time in seconds the server should spend
-   * processing the search.
-   *
-   * @return  The maximum length of time in seconds the server should spend
-   *          processing the search, or zero if there is no limit.
-   */
   public int getTimeLimit()
   {
     return timeLimit;
   }
 
 
-
-  /**
-   * Indicates whether the server should return only attribute types or both
-   * attribute types and values.
-   *
-   * @return  {@code true} if the server should return only attribute types, or
-   *          {@code false} if both types and values should be returned.
-   */
   public boolean typesOnly()
   {
     return typesOnly;
   }
 
 
-
-  /**
-   * Retrieves the filter for this search request.
-   *
-   * @return  The filter for this search request.
-   */
   public Filter getFilter()
   {
     return filter;
   }
 
 
-
-  /**
-   * Retrieves the set of requested attributes for this search request.
-   *
-   * @return  The set of requested attributes for this search request.
-   */
   public List<String> getAttributes()
   {
     return attributes;
@@ -335,19 +211,12 @@ public final class SearchRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_SEARCH_REQUEST;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> attrElements =
@@ -369,17 +238,6 @@ public final class SearchRequestProtocolOp
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 element as a search request protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded search request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a search request protocol op.
-   */
   public static SearchRequestProtocolOp decodeProtocolOp(
                                              final ASN1Element element)
          throws LDAPException
@@ -422,10 +280,6 @@ public final class SearchRequestProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -448,16 +302,6 @@ public final class SearchRequestProtocolOp
   }
 
 
-
-  /**
-   * Creates a search request from this protocol op.
-   *
-   * @param  controls  The set of controls to include in the search request.
-   *                   It may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The search request that was created.
-   */
   public SearchRequest toSearchRequest(final Control... controls)
   {
     final String[] attrArray = new String[attributes.size()];
@@ -469,11 +313,6 @@ public final class SearchRequestProtocolOp
 
 
 
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -483,10 +322,6 @@ public final class SearchRequestProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("SearchRequestProtocolOp(baseDN='");

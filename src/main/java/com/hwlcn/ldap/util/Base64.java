@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -81,41 +61,25 @@ import static com.hwlcn.ldap.util.Validator.*;
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class Base64
 {
-  /**
-   * The set of characters in the base64 alphabet.
-   */
+
   private static final char[] BASE64_ALPHABET =
        ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
         "0123456789+/").toCharArray();
 
-
-
-  /**
-   * The set of characters in the base64url alphabet.
-   */
   private static final char[] BASE64URL_ALPHABET =
        ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
         "0123456789-_").toCharArray();
 
 
 
-  /**
-   * Prevent this class from being instantiated.
-   */
+
   private Base64()
   {
-    // No implementation is required.
+
   }
 
 
 
-  /**
-   * Encodes the UTF-8 representation of the provided string in base64 format.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   *
-   * @return  The base64-encoded representation of the provided data.
-   */
   public static String encode(final String data)
   {
     ensureNotNull(data);
@@ -125,13 +89,6 @@ public final class Base64
 
 
 
-  /**
-   * Encodes the provided data in base64 format.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   *
-   * @return  The base64-encoded representation of the provided data.
-   */
   public static String encode(final byte[] data)
   {
     ensureNotNull(data);
@@ -142,15 +99,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Appends a base64-encoded version of the contents of the provided buffer
-   * (using a UTF-8 representation) to the given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final String data, final StringBuilder buffer)
   {
     ensureNotNull(data);
@@ -160,14 +108,6 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64-encoded version of the contents of the provided buffer
-   * (using a UTF-8 representation) to the given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final String data, final ByteStringBuffer buffer)
   {
     ensureNotNull(data);
@@ -177,32 +117,12 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final StringBuilder buffer)
   {
     encode(BASE64_ALPHABET, data, 0, data.length, buffer, "=");
   }
 
 
-
-  /**
-   * Appends a base64-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The array containing the raw data to be encoded.  It must
-   *                 not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final int off, final int length,
                             final StringBuilder buffer)
   {
@@ -211,14 +131,6 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final ByteStringBuffer buffer)
   {
     encode(BASE64_ALPHABET, data, 0, data.length, buffer, "=");
@@ -226,54 +138,18 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final int off, final int length,
                             final ByteStringBuffer buffer)
   {
     encode(BASE64_ALPHABET, data, off, length, buffer, "=");
   }
 
-
-
-  /**
-   * Retrieves a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   * @param  pad   Indicates whether to pad the URL if necessary.  Padding will
-   *               use "%3d", as the URL-escaped representation of the equal
-   *               sign.
-   *
-   * @return  A base64url-encoded representation of the provided data to the
-   *          given buffer.
-   */
   public static String urlEncode(final String data, final boolean pad)
   {
     return urlEncode(StaticUtils.getBytes(data), pad);
   }
 
 
-
-  /**
-   * Retrieves a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   * @param  pad     Indicates whether to pad the URL if necessary.  Padding
-   *                 will use "%3d", as the URL-escaped representation of the
-   *                 equal sign.
-   */
   public static void urlEncode(final String data, final StringBuilder buffer,
                                final boolean pad)
   {
@@ -283,18 +159,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Retrieves a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   * @param  pad     Indicates whether to pad the URL if necessary.  Padding
-   *                 will use "%3d", as the URL-escaped representation of the
-   *                 equal sign.
-   */
   public static void urlEncode(final String data, final ByteStringBuffer buffer,
                                final boolean pad)
   {
@@ -305,18 +169,6 @@ public final class Base64
 
 
 
-  /**
-   * Retrieves a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   * @param  pad   Indicates whether to pad the URL if necessary.  Padding will
-   *               use "%3d", as the URL-escaped representation of the equal
-   *               sign.
-   *
-   * @return  A base64url-encoded representation of the provided data to the
-   *          given buffer.
-   */
   public static String urlEncode(final byte[] data, final boolean pad)
   {
     final StringBuilder buffer = new StringBuilder(4*data.length/3+6);
@@ -327,19 +179,6 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   * @param  pad     Indicates whether to pad the URL if necessary.  Padding
-   *                 will use "%3d", as the URL-escaped representation of the
-   *                 equal sign.
-   */
   public static void urlEncode(final byte[] data, final int off,
                                final int length, final StringBuilder buffer,
                                final boolean pad)
@@ -348,20 +187,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Appends a base64url-encoded representation of the provided data to the
-   * given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base64-encoded data is to be
-   *                 written.
-   * @param  pad     Indicates whether to pad the URL if necessary.  Padding
-   *                 will use "%3d", as the URL-escaped representation of the
-   *                 equal sign.
-   */
   public static void urlEncode(final byte[] data, final int off,
                                final int length, final ByteStringBuffer buffer,
                                final boolean pad)
@@ -371,21 +196,6 @@ public final class Base64
 
 
 
-  /**
-   * Appends a base64-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  alphabet  The alphabet of base64 characters to use for the
-   *                   encoding.
-   * @param  data      The raw data to be encoded.  It must not be {@code null}.
-   * @param  off       The offset in the array at which the data to encode
-   *                   begins.
-   * @param  length    The number of bytes to be encoded.
-   * @param  buffer    The buffer to which the base64-encoded data is to be
-   *                   written.
-   * @param  padStr    The string to use for padding.  It may be {@code null} if
-   *                   no padding should be applied.
-   */
   private static void encode(final char[] alphabet, final byte[] data,
                              final int off, final int length,
                              final Appendable buffer, final String padStr)
@@ -449,18 +259,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Decodes the contents of the provided base64-encoded string.
-   *
-   * @param  data  The base64-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A byte array containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base64-encoded data.
-   */
   public static byte[] decode(final String data)
          throws ParseException
   {
@@ -696,18 +494,12 @@ public final class Base64
             switch (length - stringPos)
             {
               case 0:
-                // The string ended with a single equal sign, so there are only
-                // two bytes left.  Shift the value eight bits to the right and
-                // read those two bytes.
                 intValue >>= 8;
                 b[arrayPos++] = (byte) ((intValue >> 8) & 0xFF);
                 b[arrayPos]   = (byte) (intValue & 0xFF);
                 return b;
 
               case 1:
-                // The string ended with two equal signs, so there is only one
-                // byte left.  Shift the value ten bits to the right and read
-                // that single byte.
                 intValue >>= 10;
                 b[arrayPos] = (byte) (intValue & 0xFF);
                 return b;
@@ -734,20 +526,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Decodes the contents of the provided base64-encoded string to a string
-   * containing the raw data using the UTF-8 encoding.
-   *
-   * @param  data  The base64-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A string containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base64-encoded data using the UTF-8
-   *                          encoding.
-   */
   public static String decodeToString(final String data)
          throws ParseException
   {
@@ -758,18 +536,6 @@ public final class Base64
   }
 
 
-
-  /**
-   * Decodes the contents of the provided base64url-encoded string.
-   *
-   * @param  data  The base64url-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A byte array containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base64url-encoded data.
-   */
   public static byte[] urlDecode(final String data)
          throws ParseException
   {
@@ -789,8 +555,6 @@ decodeLoop:
       int intValue = 0x00;
       for (int i=0; i < 4; i++)
       {
-        // Since the value may not be padded, then we need to handle the
-        // possibility of missing characters.
         final char c;
         if (stringPos >= length)
         {
@@ -1002,25 +766,16 @@ decodeLoop:
             switch ((stringPos-1) % 4)
             {
               case 2:
-                // The string should have two padding tokens, so only a single
-                // byte of data remains.  Shift the value ten bits to the right
-                // and read that single byte.
                 intValue >>= 10;
                 buffer.append((byte) (intValue & 0xFF));
                 break decodeLoop;
               case 3:
-                // The string should have a single padding token, so two bytes
-                // of data remain.  Shift the value eight bits to the right and
-                // read those two bytes.
                 intValue >>= 8;
                 buffer.append((byte) ((intValue >> 8) & 0xFF));
                 buffer.append((byte) (intValue & 0xFF));
                 break decodeLoop;
             }
 
-            // If we've gotten here, then that must mean the string had padding
-            // when none was needed, or it had an invalid length.  That's an
-            // error.
             throw new ParseException(ERR_BASE64_URLDECODE_INVALID_LENGTH.get(),
                  (stringPos-1));
 
@@ -1041,20 +796,6 @@ decodeLoop:
   }
 
 
-
-  /**
-   * Decodes the contents of the provided base64-encoded string to a string
-   * containing the raw data using the UTF-8 encoding.
-   *
-   * @param  data  The base64-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A string containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base64-encoded data using the UTF-8
-   *                          encoding.
-   */
   public static String urlDecodeToString(final String data)
          throws ParseException
   {

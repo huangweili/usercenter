@@ -203,9 +203,6 @@ public final class DNSSRVRecordServerSet
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

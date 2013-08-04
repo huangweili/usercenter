@@ -1,23 +1,3 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -46,33 +26,16 @@ import com.hwlcn.ldap.util.Validator;
 import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 
 
-
-/**
- * This class provides an implementation of the LDAP content synchronization
- * state control as defined in
- * <a href="http://www.ietf.org/rfc/rfc4533.txt">RFC 4533</a>.  Directory
- * servers may include this control in search result entry and search result
- * reference messages returned for a search request containing the content
- * synchronization request control.  See the documentation for the
- * {@link ContentSyncRequestControl} class for more information information
- * about using the content synchronization operation.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ContentSyncStateControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.3.6.1.4.1.4203.1.9.1.2) for the sync state control.
-   */
+
   public static final String SYNC_STATE_OID = "1.3.6.1.4.1.4203.1.9.1.2";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4796325788870542241L;
 
 

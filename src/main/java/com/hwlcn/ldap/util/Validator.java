@@ -15,7 +15,6 @@ public final class Validator
 
   private Validator()
   {
-    // No implementation is required.
   }
 
 
@@ -34,15 +33,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that the provided object is not {@code null}.
-   *
-   * @param  o        The object to examine.
-   * @param  message  The message to include in the exception thrown if the
-   *                  provided object is {@code null}.
-   *
-   * @throws  LDAPSDKUsageException  If the provided object is {@code null}.
-   */
   public static void ensureNotNullWithMessage(final Object o,
                                               final String message)
          throws LDAPSDKUsageException
@@ -59,15 +49,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that none of the provided objects is {@code null}.
-   *
-   * @param  o1  The first object for which to make the determination.
-   * @param  o2  The second object for which to make the determination.
-   *
-   * @throws  LDAPSDKUsageException  If any of the provided objects is
-   *                                 {@code null}.
-   */
   public static void ensureNotNull(final Object o1, final Object o2)
          throws LDAPSDKUsageException
   {
@@ -93,16 +74,7 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that none of the provided objects is {@code null}.
-   *
-   * @param  o1  The first object for which to make the determination.
-   * @param  o2  The second object for which to make the determination.
-   * @param  o3  The third object for which to make the determination.
-   *
-   * @throws  LDAPSDKUsageException  If any of the provided objects is
-   *                                 {@code null}.
-   */
+
   public static void ensureNotNull(final Object o1, final Object o2,
                                    final Object o3)
          throws LDAPSDKUsageException
@@ -133,17 +105,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that none of the provided objects is {@code null}.
-   *
-   * @param  o1  The first object for which to make the determination.
-   * @param  o2  The second object for which to make the determination.
-   * @param  o3  The third object for which to make the determination.
-   * @param  o4  The fourth object for which to make the determination.
-   *
-   * @throws  LDAPSDKUsageException  If any of the provided objects is
-   *                                 {@code null}.
-   */
   public static void ensureNotNull(final Object o1, final Object o2,
                                    final Object o3, final Object o4)
          throws LDAPSDKUsageException
@@ -178,18 +139,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that none of the provided objects is {@code null}.
-   *
-   * @param  o1  The first object for which to make the determination.
-   * @param  o2  The second object for which to make the determination.
-   * @param  o3  The third object for which to make the determination.
-   * @param  o4  The fourth object for which to make the determination.
-   * @param  o5  The fifth object for which to make the determination.
-   *
-   * @throws  LDAPSDKUsageException  If any of the provided objects is
-   *                                 {@code null}.
-   */
   public static void ensureNotNull(final Object o1, final Object o2,
                                    final Object o3, final Object o4,
                                    final Object o5)
@@ -229,14 +178,6 @@ public final class Validator
   }
 
 
-
-  /**
-   * Ensures that the provided condition is {@code true}.
-   *
-   * @param  condition  The condition to verify.
-   *
-   * @throws  LDAPSDKUsageException  If the provided condition is {@code false}.
-   */
   public static void ensureTrue(final boolean condition)
          throws LDAPSDKUsageException
   {
@@ -252,15 +193,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that the provided condition is {@code true}.
-   *
-   * @param  condition  The condition to verify.
-   * @param  message    The message to include in the exception thrown if the
-   *                    provided object is {@code null}.
-   *
-   * @throws  LDAPSDKUsageException  If the provided condition is {@code false}.
-   */
   public static void ensureTrue(final boolean condition, final String message)
          throws LDAPSDKUsageException
   {
@@ -276,13 +208,6 @@ public final class Validator
 
 
 
-  /**
-   * Ensures that the provided condition is {@code false}.
-   *
-   * @param  condition  The condition to verify.
-   *
-   * @throws  LDAPSDKUsageException  If the provided condition is {@code true}.
-   */
   public static void ensureFalse(final boolean condition)
          throws LDAPSDKUsageException
   {
@@ -297,16 +222,6 @@ public final class Validator
   }
 
 
-
-  /**
-   * Ensures that the provided condition is {@code false}.
-   *
-   * @param  condition  The condition to verify.
-   * @param  message    The message to include in the exception thrown if the
-   *                    provided object is {@code null}.
-   *
-   * @throws  LDAPSDKUsageException  If the provided condition is {@code true}.
-   */
   public static void ensureFalse(final boolean condition, final String message)
          throws LDAPSDKUsageException
   {

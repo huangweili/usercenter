@@ -1,23 +1,3 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -43,48 +23,27 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 
 
-
-/**
- * This class provides an implementation of the LDAP content synchronization
- * done control as defined in
- * <a href="http://www.ietf.org/rfc/rfc4533.txt">RFC 4533</a>.  Directory
- * servers may include this control in the search result done message for a
- * search request containing the content synchronization request control.  See
- * the documentation for the {@link ContentSyncRequestControl} class for more
- * information about using the content synchronization operation.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ContentSyncDoneControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.3.6.1.4.1.4203.1.9.1.3) for the sync done control.
-   */
+
   public static final String SYNC_DONE_OID = "1.3.6.1.4.1.4203.1.9.1.3";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2723009401737612274L;
 
 
 
-  // The synchronization state cookie.
   private final ASN1OctetString cookie;
 
-  // Indicates whether to refresh information about deleted entries.
   private final boolean refreshDeletes;
 
 
 
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   ContentSyncDoneControl()
   {
     cookie         = null;
@@ -93,16 +52,6 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * Creates a new content synchronization done control that provides updated
-   * information about the state of a content synchronization session.
-   *
-   * @param  cookie          A cookie with an updated synchronization state.  It
-   *                         may be {@code null} if no updated state is
-   *                         available.
-   * @param  refreshDeletes  Indicates whether the synchronization processing
-   *                         has completed a delete phase.
-   */
   public ContentSyncDoneControl(final ASN1OctetString cookie,
                                 final boolean refreshDeletes)
   {
@@ -114,17 +63,6 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * Creates a new content synchronization done control which is decoded from
-   * the provided information from a generic control.
-   *
-   * @param  oid         The OID for the control used to create this control.
-   * @param  isCritical  Indicates whether the control is marked critical.
-   * @param  value       The encoded value for the control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         content synchronization done control.
-   */
   public ContentSyncDoneControl(final String oid, final boolean isCritical,
                                 final ASN1OctetString value)
          throws LDAPException
@@ -204,19 +142,6 @@ public final class ContentSyncDoneControl
   }
 
 
-
-  /**
-   * Encodes the provided information into a form suitable for use as the value
-   * of this control.
-   *
-   * @param  cookie          A cookie with an updated synchronization state.  It
-   *                         may be {@code null} if no updated state is
-   *                         available.
-   * @param  refreshDeletes  Indicates whether the synchronization processing
-   *                         has completed a delete phase.
-   *
-   * @return  An ASN.1 octet string containing the encoded control value.
-   */
   private static ASN1OctetString encodeValue(final ASN1OctetString cookie,
                                              final boolean refreshDeletes)
   {
@@ -236,10 +161,6 @@ public final class ContentSyncDoneControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ContentSyncDoneControl decodeControl(final String oid,
                                               final boolean isCritical,
                                               final ASN1OctetString value)
@@ -250,20 +171,7 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * Extracts a content synchronization done control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the content
-   *                 synchronization done control.
-   *
-   * @return  The content synchronization done control contained in the provided
-   *          result, or {@code null} if the result did not contain a content
-   *          synchronization done control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the content synchronization done control
-   *                         contained in the provided result.
-   */
+
   public static ContentSyncDoneControl get(final LDAPResult result)
          throws LDAPException
   {
@@ -287,14 +195,7 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * Retrieves a cookie providing updated state information for the
-   * synchronization session, if available.
-   *
-   * @return  A cookie providing updated state information for the
-   *          synchronization session, or {@code null} if none was included in
-   *          the control.
-   */
+
   public ASN1OctetString getCookie()
   {
     return cookie;
@@ -302,13 +203,6 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * Indicates whether the synchronization processing has completed a delete
-   * phase.
-   *
-   * @return  {@code true} if the synchronization processing has completed a
-   *          delete phase, or {@code false} if not.
-   */
   public boolean refreshDeletes()
   {
     return refreshDeletes;
@@ -316,9 +210,6 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -327,9 +218,6 @@ public final class ContentSyncDoneControl
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

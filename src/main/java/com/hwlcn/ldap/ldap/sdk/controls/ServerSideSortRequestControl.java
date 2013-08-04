@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -81,34 +61,16 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class ServerSideSortRequestControl
        extends Control
 {
-  /**
-   * The OID (1.2.840.113556.1.4.473) for the server-side sort request control.
-   */
+
   public static final String SERVER_SIDE_SORT_REQUEST_OID =
        "1.2.840.113556.1.4.473";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -3021901578330574772L;
 
-
-
-  // The set of sort keys to use with this control.
   private final SortKey[] sortKeys;
 
 
-
-  /**
-   * Creates a new server-side sort control that will sort the results based on
-   * the provided set of sort keys.
-   *
-   * @param  sortKeys  The set of sort keys to define the desired order in which
-   *                   the results should be returned.  It must not be
-   *                   {@code null} or empty.
-   */
   public ServerSideSortRequestControl(final SortKey... sortKeys)
   {
     super(SERVER_SIDE_SORT_REQUEST_OID, false, encodeValue(sortKeys));
@@ -116,18 +78,6 @@ public final class ServerSideSortRequestControl
     this.sortKeys = sortKeys;
   }
 
-
-
-  /**
-   * Creates a new server-side sort control that will sort the results based on
-   * the provided set of sort keys.
-   *
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   * @param  sortKeys    The set of sort keys to define the desired order in
-   *                     which the results should be returned.  It must not be
-   *                     {@code null} or empty.
-   */
   public ServerSideSortRequestControl(final boolean isCritical,
                                       final SortKey... sortKeys)
   {
@@ -137,17 +87,6 @@ public final class ServerSideSortRequestControl
   }
 
 
-
-  /**
-   * Creates a new server-side sort request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a server-side sort
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         server-side sort request control.
-   */
   public ServerSideSortRequestControl(final Control control)
          throws LDAPException
   {
@@ -179,19 +118,6 @@ public final class ServerSideSortRequestControl
     }
   }
 
-
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  sortKeys  The set of sort keys to define the desired order in which
-   *                   the results should be returned.  It must not be
-   *                   {@code null} or empty.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final SortKey[] sortKeys)
   {
     ensureNotNull(sortKeys);
@@ -207,36 +133,17 @@ public final class ServerSideSortRequestControl
     return new ASN1OctetString(new ASN1Sequence(valueElements).encode());
   }
 
-
-
-  /**
-   * Retrieves the set of sort keys that define the desired order in which the
-   * results should be returned.
-   *
-   * @return  The set of sort keys that define the desired order in which the
-   *          results should be returned.
-   */
   public SortKey[] getSortKeys()
   {
     return sortKeys;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_SORT_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

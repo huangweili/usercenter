@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.persist;
 
 
@@ -38,10 +19,6 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class provides a set of utilities that may be used in the course of
- * persistence processing.
- */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class PersistUtils
 {
@@ -50,43 +27,17 @@ public final class PersistUtils
    */
   private PersistUtils()
   {
-    // No implementation required.
+
   }
 
 
 
-  /**
-   * Indicates whether the provided string could be used as a valid attribute or
-   * object class name.  Numeric OIDs will also be considered acceptable.
-   *
-   * @param  s  The string for which to make the determination.
-   * @param  r  A buffer to which the unacceptable reason may be appended.  It
-   *            must not be {@code null}.
-   *
-   * @return  {@code true} if the provided string is acceptable for use as an
-   *          LDAP attribute or object class name, or {@code false} if not.
-   */
   public static boolean isValidLDAPName(final String s, final StringBuilder r)
   {
     return isValidLDAPName(s, false, r);
   }
 
 
-
-  /**
-   * Indicates whether the provided string could be used as a valid attribute or
-   * object class name.  Numeric OIDs will also be considered acceptable.
-   *
-   * @param  s  The string for which to make the determination.
-   * @param  o  Indicates whether the name should be allowed to contain
-   *            attribute options (e.g., a semicolon with one or more valid
-   *            characters after it).
-   * @param  r  A buffer to which the unacceptable reason may be appended.  It
-   *            must not be {@code null}.
-   *
-   * @return  {@code true} if the provided string is acceptable for use as an
-   *          LDAP attribute or object class name, or {@code false} if not.
-   */
   public static boolean isValidLDAPName(final String s, final boolean o,
                                         final StringBuilder r)
   {
@@ -133,11 +84,11 @@ public final class PersistUtils
       if (((c >= 'a') && (c <= 'z')) ||
           ((c >= 'A') && (c <= 'Z')))
       {
-        // This will always be acceptable.
+
       }
       else if (((c >= '0') && (c <= '9')) || (c == '-'))
       {
-        // This will be acceptable for all but the first character.
+
         if (i == 0)
         {
           r.append(ERR_LDAP_NAME_VALIDATOR_INVALID_FIRST_CHAR.get(s));
@@ -154,23 +105,6 @@ public final class PersistUtils
     return true;
   }
 
-
-
-  /**
-   * Indicates whether the provided string represents a valid set of attribute
-   * options.  It should not contain the initial semicolon.
-   *
-   * @param  b  The base name for the attribute, without the option string or
-   *            the semicolon used to delimit the option string from the base
-   *            name.
-   * @param  o  The option string to examine.  It must not be {@code null}, and
-   *            must not contain the initial semicolon.
-   * @param  r  A buffer to which the unacceptable reason may be appended.  It
-   *            must not be {@code null}.
-   *
-   * @return  {@code true} if the provided string represents a valid set of
-   *          options, or {@code false} if not.
-   */
   private static boolean isValidOptionSet(final String b, final String o,
                                           final StringBuilder r)
   {
@@ -223,22 +157,6 @@ public final class PersistUtils
 
 
 
-  /**
-   * Indicates whether the provided string could be used as a valid Java
-   * identifier.  The identifier must begin with an ASCII letter or underscore,
-   * and must contain only ASCII letters, ASCII digits, and the underscore
-   * character.  Even though a dollar sign is technically allowed, it will not
-   * be considered valid for the purpose of this method.  Similarly, even though
-   * Java keywords are not allowed, they will not be rejected by this method.
-   *
-   * @param  s  The string for which to make the determination.  It must not be
-   *            {@code null}.
-   * @param  r  A buffer to which the unacceptable reason may be appended.  It
-   *            must not be {@code null}.
-   *
-   * @return  {@code true} if the provided string is acceptable for use as a
-   *          Java identifier, or {@code false} if not.
-   */
   public static boolean isValidJavaIdentifier(final String s,
                                               final StringBuilder r)
   {
@@ -271,24 +189,11 @@ public final class PersistUtils
   }
 
 
-
-  /**
-   * Transforms the provided string if necessary so that it may be used as a
-   * valid Java identifier.  If the provided string is already a valid Java
-   * identifier, then it will be returned as-is.  Otherwise, it will be
-   * transformed to make it more suitable.
-   *
-   * @param  s  The attribute or object class name to be converted to a Java
-   *            identifier.
-   *
-   * @return  A string that may be used as a valid Java identifier.
-   */
   public static String toJavaIdentifier(final String s)
   {
     final int length;
     if ((s == null) || ((length = s.length()) == 0))
     {
-      // This will be ugly, but safe.
       return toJavaIdentifier(UUID.randomUUID().toString());
     }
 
@@ -315,8 +220,7 @@ public final class PersistUtils
       {
         if (i == 0)
         {
-          // Java identifiers can't begin with a digit, but they can begin with
-          // an underscore followed by a digit, so we'll use that instead.
+
           b.append('_');
         }
 
@@ -325,17 +229,14 @@ public final class PersistUtils
       }
       else
       {
-        // If the provided string was a valid LDAP attribute or object class
-        // name, then this should be a dash, but we'll be safe and take the same
-        // action for any remaining character.
+
         nextUpper = true;
       }
     }
 
     if (b.length() == 0)
     {
-      // This should only happen if the provided string wasn't a valid LDAP
-      // attribute or object class name to start with.
+
       return toJavaIdentifier(UUID.randomUUID().toString());
     }
 
@@ -343,28 +244,6 @@ public final class PersistUtils
   }
 
 
-
-  /**
-   * Retrieves the entry with the specified DN and decodes it as an object of
-   * the specified type.
-   *
-   * @param  <T>  The type of object as which to decode the entry.
-   *
-   * @param  dn    The DN of the entry to retrieve.  It must not be
-   *               {@code null}.
-   * @param  type  The type of object as which the entry should be decoded.  It
-   *               must not be {@code null}, and the class must be marked with
-   *               the {@link com.hwlcn.ldap.ldap.sdk.persist.LDAPObject} annotation type.
-   * @param  conn  The connection that should be used to retrieve the entry.  It
-   *               must not be {@code null}.
-   *
-   * @return  The object decoded from the specified entry, or {@code null} if
-   *          the entry cannot be retrieved (e.g., because it does not exist or
-   *          is not readable by the authenticated user).
-   *
-   * @throws  LDAPException  If a problem occurs while trying to retrieve the
-   *                         entry or decode it as the specified type of object.
-   */
   public static <T> T getEntryAsObject(final DN dn, final Class<T> type,
                                        final LDAPInterface conn)
          throws LDAPException
@@ -385,26 +264,6 @@ public final class PersistUtils
 
 
 
-  /**
-   * Retrieves and decodes the indicated entries as objects of the specified
-   * type.
-   *
-   * @param  <T>  The type of object as which to decode the entries.
-   *
-   * @param  dns   The DNs of the entries to retrieve.  It must not be
-   *               {@code null}.
-   * @param  type  The type of object as which the entries should be decoded.
-   *               It must not be {@code null}, and the class must be marked
-   *               with the {@link com.hwlcn.ldap.ldap.sdk.persist.LDAPObject} annotation type.
-   * @param  conn  The connection that should be used to retrieve the entries.
-   *               It must not be {@code null}.
-   *
-   * @return  A {@code PersistedObjects} result that may be used to access the
-   *          objects decoded from the provided set of DNs.
-   *
-   * @throws  LDAPPersistException  If the requested type cannot be used with
-   *                                the LDAP SDK persistence framework.
-   */
   public static <T> PersistedObjects<T> getEntriesAsObjects(final DN[] dns,
                                              final Class<T> type,
                                              final LDAPInterface conn)

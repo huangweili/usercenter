@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2007-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.experimental;
 
 
@@ -97,42 +77,19 @@ import static com.hwlcn.ldap.ldap.sdk.experimental.ExperimentalMessages.*;
 public final class DraftZeilengaLDAPNoOp12RequestControl
        extends Control
 {
-  /**
-   * The OID (1.3.6.1.4.1.4203.1.10.2) for the LDAP no-op request control.
-   */
+
   public static final String NO_OP_REQUEST_OID =
        "1.3.6.1.4.1.4203.1.10.2";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -7435407787971958294L;
 
 
-
-  /**
-   * Creates a new no-op request control.  It will be marked critical, as
-   * required by the control specification.
-   */
   public DraftZeilengaLDAPNoOp12RequestControl()
   {
     super(NO_OP_REQUEST_OID, true, null);
   }
 
 
-
-  /**
-   * Creates a new no-op request control which is decoded from the provided
-   * generic control.
-   *
-   * @param  control  The generic control to be decoded as a no-op request
-   *                  control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         no-op request control.
-   */
   public DraftZeilengaLDAPNoOp12RequestControl(final Control control)
          throws LDAPException
   {
@@ -146,21 +103,12 @@ public final class DraftZeilengaLDAPNoOp12RequestControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_NOOP_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

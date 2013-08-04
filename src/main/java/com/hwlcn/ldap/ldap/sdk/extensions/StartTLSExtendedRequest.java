@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -90,31 +71,15 @@ import static com.hwlcn.ldap.util.Debug.*;
 public final class StartTLSExtendedRequest
        extends ExtendedRequest
 {
-  /**
-   * The OID (1.3.6.1.4.1.1466.20037) for the StartTLS extended request.
-   */
+
   public static final String STARTTLS_REQUEST_OID = "1.3.6.1.4.1.1466.20037";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -3234194603452821233L;
 
-
-
-  // The SSL context to use to perform the negotiation.
   private final SSLContext sslContext;
 
 
-
-  /**
-   * Creates a new StartTLS extended request using a default SSL context.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to initialize a
-   *                         default SSL context.
-   */
   public StartTLSExtendedRequest()
          throws LDAPException
   {
@@ -122,15 +87,6 @@ public final class StartTLSExtendedRequest
   }
 
 
-
-  /**
-   * Creates a new StartTLS extended request using a default SSL context.
-   *
-   * @param  controls  The set of controls to include in the request.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to initialize a
-   *                         default SSL context.
-   */
   public StartTLSExtendedRequest(final Control[] controls)
          throws LDAPException
   {
@@ -139,37 +95,12 @@ public final class StartTLSExtendedRequest
 
 
 
-  /**
-   * Creates a new StartTLS extended request using the provided SSL context.
-   *
-   * @param  sslContext  The SSL context to use to perform the negotiation.  It
-   *                     may be {@code null} to indicate that a default SSL
-   *                     context should be used.  If an SSL context is provided,
-   *                     then it must already be initialized.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to initialize a
-   *                         default SSL context.
-   */
   public StartTLSExtendedRequest(final SSLContext sslContext)
          throws LDAPException
   {
     this(sslContext, null);
   }
 
-
-
-  /**
-   * Creates a new StartTLS extended request.
-   *
-   * @param  sslContext  The SSL context to use to perform the negotiation.  It
-   *                     may be {@code null} to indicate that a default SSL
-   *                     context should be used.  If an SSL context is provided,
-   *                     then it must already be initialized.
-   * @param  controls    The set of controls to include in the request.
-   *
-   * @throws  LDAPException  If a problem occurs while trying to initialize a
-   *                         default SSL context.
-   */
   public StartTLSExtendedRequest(final SSLContext sslContext,
                                  final Control[] controls)
          throws LDAPException
@@ -198,16 +129,6 @@ public final class StartTLSExtendedRequest
   }
 
 
-
-  /**
-   * Creates a new StartTLS extended request from the provided generic extended
-   * request.
-   *
-   * @param  extendedRequest  The generic extended request to use to create this
-   *                          StartTLS extended request.
-   *
-   * @throws  LDAPException  If a problem occurs while decoding the request.
-   */
   public StartTLSExtendedRequest(final ExtendedRequest extendedRequest)
          throws LDAPException
   {
@@ -222,16 +143,12 @@ public final class StartTLSExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public ExtendedResult process(final LDAPConnection connection,
                                 final int depth)
          throws LDAPException
   {
-    // Set an SO_TIMEOUT on the connection if it's not operating in synchronous
-    // mode to make it more responsive during the negotiation phase.
     InternalSDKHelper.setSoTimeout(connection, 50);
 
     final ExtendedResult result = super.process(connection, depth);
@@ -245,9 +162,6 @@ public final class StartTLSExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public StartTLSExtendedRequest duplicate()
   {
@@ -255,10 +169,6 @@ public final class StartTLSExtendedRequest
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public StartTLSExtendedRequest duplicate(final Control[] controls)
   {
@@ -271,8 +181,6 @@ public final class StartTLSExtendedRequest
     }
     catch (Exception e)
     {
-      // This should never happen, since an exception should only be thrown if
-      // there is no SSL context, but this instance already has a context.
       debugException(e);
       return null;
     }
@@ -280,9 +188,6 @@ public final class StartTLSExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedRequestName()
   {
@@ -291,9 +196,6 @@ public final class StartTLSExtendedRequest
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

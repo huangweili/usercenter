@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -96,43 +76,18 @@ public final class PasswordExpiredControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.4) for the password expired response
-   * control.
-   */
+
   public static final String PASSWORD_EXPIRED_OID = "2.16.840.1.113730.3.4.4";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2731704592689892224L;
 
 
-
-  /**
-   * Creates a new password expired control.
-   */
   public PasswordExpiredControl()
   {
     super(PASSWORD_EXPIRED_OID, false, new ASN1OctetString("0"));
   }
 
-
-
-  /**
-   * Creates a new password expired control with the provided information.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         password expired response control.
-   */
   public PasswordExpiredControl(final String oid, final boolean isCritical,
                                 final ASN1OctetString value)
          throws LDAPException
@@ -158,10 +113,6 @@ public final class PasswordExpiredControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public PasswordExpiredControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -170,22 +121,6 @@ public final class PasswordExpiredControl
     return new PasswordExpiredControl(oid, isCritical, value);
   }
 
-
-
-  /**
-   * Extracts a password expired control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the password expired
-   *                 control.
-   *
-   * @return  The password expired control contained in the provided result, or
-   *          {@code null} if the result did not contain a password expired
-   *          control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the password expired control contained in
-   *                         the provided result.
-   */
   public static PasswordExpiredControl get(final LDAPResult result)
          throws LDAPException
   {
@@ -206,11 +141,6 @@ public final class PasswordExpiredControl
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -218,10 +148,6 @@ public final class PasswordExpiredControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -54,51 +54,28 @@ final class AsyncHelper
     createTime       = System.nanoTime();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public AsyncRequestID getAsyncRequestID()
   {
     return asyncRequestID;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public LDAPConnection getConnection()
   {
     return connection;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public long getCreateTimeNanos()
   {
     return createTime;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public OperationType getOperationType()
   {
     return operationType;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void responseReceived(final LDAPResponse response)
          throws LDAPException
@@ -153,10 +130,6 @@ final class AsyncHelper
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @InternalUseOnly()
   public void intermediateResponseReturned(
                    final IntermediateResponse intermediateResponse)

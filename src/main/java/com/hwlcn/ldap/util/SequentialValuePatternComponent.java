@@ -1,23 +1,4 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util;
 
 
@@ -25,53 +6,24 @@ package com.hwlcn.ldap.util;
 import java.text.DecimalFormat;
 import java.util.concurrent.atomic.AtomicLong;
 
-
-
-/**
- * This class defines a sequential numeric value pattern component, which will
- * generate numeric values in sequential order, optionally using an increment
- * and format string.
- */
 final class SequentialValuePatternComponent
       extends ValuePatternComponent
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -3553865579642557953L;
 
-
-
-  // The next value to return.
   private final AtomicLong nextValue;
 
-  // The increment for this component.
   private final long increment;
 
-  // The lower bound for this component.
   private final long lowerBound;
 
-  // The upper bound for this component.
   private final long upperBound;
 
-  // The format string that will be used by the decimal formatter.
   private final String formatString;
 
-  // The decimal format that will be used by this component, if applicable.
   private final ThreadLocal<DecimalFormat> decimalFormat;
 
 
-
-  /**
-   * Creates a new sequential numeric value pattern component with the provided
-   * information.
-   *
-   * @param  lowerBound    The lower bound that will be used by this component.
-   * @param  upperBound    The upper bound that will be used by this component.
-   * @param  increment     The increment that will be used by this component.
-   * @param  formatString  The format string that will be used by this
-   *                       component, if any.
-   */
   SequentialValuePatternComponent(final long lowerBound, final long upperBound,
                                   final long increment,
                                   final String formatString)
@@ -117,10 +69,6 @@ final class SequentialValuePatternComponent
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   void append(final StringBuilder buffer)
   {
@@ -183,9 +131,6 @@ final class SequentialValuePatternComponent
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   boolean supportsBackReference()
   {

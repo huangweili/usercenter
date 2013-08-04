@@ -63,55 +63,25 @@ import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 public final class ManageDsaITRequestControl
        extends Control
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.2) for the ManageDsaIT request control.
-   */
+
   public static final String MANAGE_DSA_IT_REQUEST_OID =
        "2.16.840.1.113730.3.4.2";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -4540943247829123783L;
 
-
-
-  /**
-   * Creates a new ManageDsaIT request control.  The control will not be marked
-   * critical.
-   */
   public ManageDsaITRequestControl()
   {
     super(MANAGE_DSA_IT_REQUEST_OID, false, null);
   }
 
 
-
-  /**
-   * Creates a new ManageDsaIT request control.
-   *
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   */
   public ManageDsaITRequestControl(final boolean isCritical)
   {
     super(MANAGE_DSA_IT_REQUEST_OID, isCritical, null);
   }
 
 
-
-  /**
-   * Creates a new ManageDsaIT request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a ManageDsaIT request
-   *                  control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         ManageDsaIT request control.
-   */
   public ManageDsaITRequestControl(final Control control)
          throws LDAPException
   {
@@ -124,11 +94,6 @@ public final class ManageDsaITRequestControl
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -136,10 +101,6 @@ public final class ManageDsaITRequestControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

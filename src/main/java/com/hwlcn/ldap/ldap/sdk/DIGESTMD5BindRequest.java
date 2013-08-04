@@ -312,7 +312,6 @@ public final class DIGESTMD5BindRequest
       }
       else
       {
-        // This is an unexpected callback.
         if (debugEnabled(DebugType.LDAP))
         {
           debug(Level.WARNING, DebugType.LDAP,

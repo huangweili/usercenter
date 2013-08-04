@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.schema;
 
 
@@ -39,80 +19,44 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a data structure that describes an LDAP attribute type
- * schema element.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class AttributeTypeDefinition
        extends SchemaElement
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -6688185196734362719L;
 
-
-
-  // The usage for this attribute type.
   private final AttributeUsage usage;
 
-  // Indicates whether this attribute type is declared collective.
   private final boolean isCollective;
 
-  // Indicates whether this attribute type is declared no-user-modification.
   private final boolean isNoUserModification;
-
-  // Indicates whether this attribute type is declared obsolete.
   private final boolean isObsolete;
 
-  // Indicates whether this attribute type is declared single-valued.
   private final boolean isSingleValued;
 
-  // The set of extensions for this attribute type.
   private final Map<String,String[]> extensions;
 
-  // The string representation of this attribute type.
   private final String attributeTypeString;
 
-  // The description for this attribute type.
   private final String description;
 
-  // The name/OID of the equality matching rule for this attribute type.
   private final String equalityMatchingRule;
 
-  // The OID for this attribute type.
   private final String oid;
 
-  // The name/OID of the ordering matching rule for this attribute type.
   private final String orderingMatchingRule;
 
-  // The name/OID of the substring matching rule for this attribute type.
   private final String substringMatchingRule;
 
-  // The name of the superior type for this attribute type.
   private final String superiorType;
 
-  // The OID of the syntax for this attribute type.
   private final String syntaxOID;
 
-  // The set of names for this attribute type.
   private final String[] names;
 
 
-
-  /**
-   * Creates a new attribute type from the provided string representation.
-   *
-   * @param  s  The string representation of the attribute type to create, using
-   *            the syntax described in RFC 4512 section 4.1.2.  It must not be
-   *            {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as an
-   *                         attribute type definition.
-   */
   public AttributeTypeDefinition(final String s)
          throws LDAPException
   {
@@ -120,7 +64,6 @@ public final class AttributeTypeDefinition
 
     attributeTypeString = s.trim();
 
-    // The first character must be an opening parenthesis.
     final int length = attributeTypeString.length();
     if (length == 0)
     {
@@ -134,19 +77,12 @@ public final class AttributeTypeDefinition
                                    attributeTypeString));
     }
 
-
-    // Skip over any spaces until we reach the start of the OID, then read the
-    // OID until we find the next space.
     int pos = skipSpaces(attributeTypeString, 1, length);
 
     StringBuilder buffer = new StringBuilder();
     pos = readOID(attributeTypeString, pos, length, buffer);
     oid = buffer.toString();
 
-
-    // Technically, attribute type elements are supposed to appear in a specific
-    // order, but we'll be lenient and allow remaining elements to come in any
-    // order.
     final ArrayList<String> nameList = new ArrayList<String>(1);
     AttributeUsage       attrUsage   = null;
     Boolean              collective  = null;
@@ -163,11 +99,8 @@ public final class AttributeTypeDefinition
 
     while (true)
     {
-      // Skip over any spaces until we find the next element.
       pos = skipSpaces(attributeTypeString, pos, length);
 
-      // Read until we find the next space or the end of the string.  Use that
-      // token to figure out what to do next.
       final int tokenStartPos = pos;
       while ((pos < length) && (attributeTypeString.charAt(pos) != ' '))
       {
@@ -176,9 +109,6 @@ public final class AttributeTypeDefinition
 
       String token = attributeTypeString.substring(tokenStartPos, pos);
 
-      // It's possible that the token could be smashed right up against the
-      // closing parenthesis.  If that's the case, then extract just the token
-      // and handle the closing parenthesis the next time through.
       if ((token.length() > 1) && (token.endsWith(")")))
       {
         token = token.substring(0, token.length() - 1);
@@ -188,8 +118,6 @@ public final class AttributeTypeDefinition
       final String lowerToken = toLowerCase(token);
       if (lowerToken.equals(")"))
       {
-        // This indicates that we're at the end of the value.  There should not
-        // be any more closing characters.
         if (pos < length)
         {
           throw new LDAPException(ResultCode.DECODING_ERROR,
@@ -463,51 +391,7 @@ public final class AttributeTypeDefinition
 
 
 
-  /**
-   * Creates a new attribute type with the provided information.
-   *
-   * @param  oid                    The OID for this attribute type.  It must
-   *                                not be {@code null}.
-   * @param  names                  The set of names for this attribute type.
-   *                                It may be {@code null} or empty if the
-   *                                attribute type should only be referenced by
-   *                                OID.
-   * @param  description            The description for this attribute type.  It
-   *                                may be {@code null} if there is no
-   *                                description.
-   * @param  isObsolete             Indicates whether this attribute type is
-   *                                declared obsolete.
-   * @param  superiorType           The name or OID of the superior attribute
-   *                                type.  It may be {@code null} if there is no
-   *                                superior type.
-   * @param  equalityMatchingRule   The name or OID of the equality matching
-   *                                rule for this attribute type.  It may be
-   *                                {@code null} if a default rule is to be
-   *                                inherited.
-   * @param  orderingMatchingRule   The name or OID of the ordering matching
-   *                                rule for this attribute type.  It may be
-   *                                {@code null} if a default rule is to be
-   *                                inherited.
-   * @param  substringMatchingRule  The name or OID of the substring matching
-   *                                rule for this attribute type.  It may be
-   *                                {@code null} if a default rule is to be
-   *                                inherited.
-   * @param  syntaxOID              The syntax OID for this attribute type.  It
-   *                                may be {@code null} if a default syntax is
-   *                                to be inherited.
-   * @param  isSingleValued         Indicates whether attributes of this type
-   *                                are only allowed to have a single value.
-   * @param  isCollective           Indicates whether this attribute type should
-   *                                be considered collective.
-   * @param  isNoUserModification   Indicates whether clients should be allowed
-   *                                to modify attributes of this type.
-   * @param  usage                  The attribute usage for this attribute type.
-   *                                It may be {@code null} if the default usage
-   *                                of userApplications is to be used.
-   * @param  extensions             The set of extensions for this attribute
-   *                                type.  It may be {@code null} or empty if
-   *                                there should not be any extensions.
-   */
+
   public AttributeTypeDefinition(final String oid, final String[] names,
                                  final String description,
                                  final boolean isObsolete,
@@ -570,13 +454,6 @@ public final class AttributeTypeDefinition
 
 
 
-  /**
-   * Constructs a string representation of this attribute type definition in the
-   * provided buffer.
-   *
-   * @param  buffer  The buffer in which to construct a string representation of
-   *                 this attribute type definition.
-   */
   private void createDefinitionString(final StringBuilder buffer)
   {
     buffer.append("( ");
@@ -690,41 +567,17 @@ public final class AttributeTypeDefinition
     buffer.append(" )");
   }
 
-
-
-  /**
-   * Retrieves the OID for this attribute type.
-   *
-   * @return  The OID for this attribute type.
-   */
   public String getOID()
   {
     return oid;
   }
 
-
-
-  /**
-   * Retrieves the set of names for this attribute type.
-   *
-   * @return  The set of names for this attribute type, or an empty array if it
-   *          does not have any names.
-   */
   public String[] getNames()
   {
     return names;
   }
 
 
-
-  /**
-   * Retrieves the primary name that can be used to reference this attribute
-   * type.  If one or more names are defined, then the first name will be used.
-   * Otherwise, the OID will be returned.
-   *
-   * @return  The primary name that can be used to reference this attribute
-   *          type.
-   */
   public String getNameOrOID()
   {
     if (names.length == 0)
@@ -738,17 +591,6 @@ public final class AttributeTypeDefinition
   }
 
 
-
-  /**
-   * Indicates whether the provided string matches the OID or any of the names
-   * for this attribute type.
-   *
-   * @param  s  The string for which to make the determination.  It must not be
-   *            {@code null}.
-   *
-   * @return  {@code true} if the provided string matches the OID or any of the
-   *          names for this attribute type, or {@code false} if not.
-   */
   public boolean hasNameOrOID(final String s)
   {
     for (final String name : names)
@@ -762,58 +604,21 @@ public final class AttributeTypeDefinition
     return s.equalsIgnoreCase(oid);
   }
 
-
-
-  /**
-   * Retrieves the description for this attribute type, if available.
-   *
-   * @return  The description for this attribute type, or {@code null} if there
-   *          is no description defined.
-   */
   public String getDescription()
   {
     return description;
   }
 
-
-
-  /**
-   * Indicates whether this attribute type is declared obsolete.
-   *
-   * @return  {@code true} if this attribute type is declared obsolete, or
-   *          {@code false} if it is not.
-   */
   public boolean isObsolete()
   {
     return isObsolete;
   }
 
-
-
-  /**
-   * Retrieves the name or OID of the superior type for this attribute type, if
-   * available.
-   *
-   * @return  The name or OID of the superior type for this attribute type, or
-   *          {@code null} if no superior type is defined.
-   */
   public String getSuperiorType()
   {
     return superiorType;
   }
 
-
-
-  /**
-   * Retrieves the superior attribute type definition for this attribute type,
-   * if available.
-   *
-   * @param  schema  The schema to use to get the superior attribute type.
-   *
-   * @return  The superior attribute type definition for this attribute type, or
-   *          {@code null} if no superior type is defined, or if the superior
-   *          type is not included in the provided schema.
-   */
   public AttributeTypeDefinition getSuperiorType(final Schema schema)
   {
     if (superiorType != null)
@@ -825,31 +630,12 @@ public final class AttributeTypeDefinition
   }
 
 
-
-  /**
-   * Retrieves the name or OID of the equality matching rule for this attribute
-   * type, if available.
-   *
-   * @return  The name or OID of the equality matching rule for this attribute
-   *          type, or {@code null} if no equality matching rule is defined or a
-   *          default rule will be inherited.
-   */
   public String getEqualityMatchingRule()
   {
     return equalityMatchingRule;
   }
 
 
-
-  /**
-   * Retrieves the name or OID of the equality matching rule for this attribute
-   * type, examining superior attribute types if necessary.
-   *
-   * @param  schema  The schema to use to get the superior attribute type.
-   *
-   * @return  The name or OID of the equality matching rule for this attribute
-   *          type, or {@code null} if no equality matching rule is defined.
-   */
   public String getEqualityMatchingRule(final Schema schema)
   {
     if (equalityMatchingRule == null)
@@ -864,32 +650,11 @@ public final class AttributeTypeDefinition
     return equalityMatchingRule;
   }
 
-
-
-  /**
-   * Retrieves the name or OID of the ordering matching rule for this attribute
-   * type, if available.
-   *
-   * @return  The name or OID of the ordering matching rule for this attribute
-   *          type, or {@code null} if no ordering matching rule is defined or a
-   *          default rule will be inherited.
-   */
   public String getOrderingMatchingRule()
   {
     return orderingMatchingRule;
   }
 
-
-
-  /**
-   * Retrieves the name or OID of the ordering matching rule for this attribute
-   * type, examining superior attribute types if necessary.
-   *
-   * @param  schema  The schema to use to get the superior attribute type.
-   *
-   * @return  The name or OID of the ordering matching rule for this attribute
-   *          type, or {@code null} if no ordering matching rule is defined.
-   */
   public String getOrderingMatchingRule(final Schema schema)
   {
     if (orderingMatchingRule == null)
@@ -904,32 +669,12 @@ public final class AttributeTypeDefinition
     return orderingMatchingRule;
   }
 
-
-
-  /**
-   * Retrieves the name or OID of the substring matching rule for this attribute
-   * type, if available.
-   *
-   * @return  The name or OID of the substring matching rule for this attribute
-   *          type, or {@code null} if no substring matching rule is defined or
-   *          a default rule will be inherited.
-   */
   public String getSubstringMatchingRule()
   {
     return substringMatchingRule;
   }
 
 
-
-  /**
-   * Retrieves the name or OID of the substring matching rule for this attribute
-   * type, examining superior attribute types if necessary.
-   *
-   * @param  schema  The schema to use to get the superior attribute type.
-   *
-   * @return  The name or OID of the substring matching rule for this attribute
-   *          type, or {@code null} if no substring matching rule is defined.
-   */
   public String getSubstringMatchingRule(final Schema schema)
   {
     if (substringMatchingRule == null)
@@ -944,32 +689,11 @@ public final class AttributeTypeDefinition
     return substringMatchingRule;
   }
 
-
-
-  /**
-   * Retrieves the OID of the syntax for this attribute type, if available.  It
-   * may optionally include a minimum upper bound in curly braces.
-   *
-   * @return  The OID of the syntax for this attribute type, or {@code null} if
-   *          the syntax will be inherited.
-   */
   public String getSyntaxOID()
   {
     return syntaxOID;
   }
 
-
-
-  /**
-   * Retrieves the OID of the syntax for this attribute type, examining superior
-   * types if necessary.  It may optionally include a minimum upper bound in
-   * curly braces.
-   *
-   * @param  schema  The schema to use to get the superior attribute type.
-   *
-   * @return  The OID of the syntax for this attribute type, or {@code null} if
-   *          no syntax is defined.
-   */
   public String getSyntaxOID(final Schema schema)
   {
     if (syntaxOID == null)
@@ -984,54 +708,16 @@ public final class AttributeTypeDefinition
     return syntaxOID;
   }
 
-
-
-  /**
-   * Retrieves the OID of the syntax for this attribute type, if available.  If
-   * the attribute type definition includes a minimum upper bound in curly
-   * braces, it will be removed from the value that is returned.
-   *
-   * @return  The OID of the syntax for this attribute type, or {@code null} if
-   *          the syntax will be inherited.
-   */
   public String getBaseSyntaxOID()
   {
     return getBaseSyntaxOID(syntaxOID);
   }
 
-
-
-  /**
-   * Retrieves the base OID of the syntax for this attribute type, examining
-   * superior types if necessary.    If the attribute type definition includes a
-   * minimum upper bound in curly braces, it will be removed from the value that
-   * is returned.
-   *
-   * @param  schema  The schema to use to get the superior attribute type, if
-   *                 necessary.
-   *
-   * @return  The OID of the syntax for this attribute type, or {@code null} if
-   *          no syntax is defined.
-   */
   public String getBaseSyntaxOID(final Schema schema)
   {
     return getBaseSyntaxOID(getSyntaxOID(schema));
   }
 
-
-
-  /**
-   * Retrieves the base OID of the syntax for this attribute type, examining
-   * superior types if necessary.    If the attribute type definition includes a
-   * minimum upper bound in curly braces, it will be removed from the value that
-   * is returned.
-   *
-   * @param  syntaxOID  The syntax OID (optionally including the minimum upper
-   *                    bound element) to examine.
-   *
-   * @return  The OID of the syntax for this attribute type, or {@code null} if
-   *          no syntax is defined.
-   */
   public static String getBaseSyntaxOID(final String syntaxOID)
   {
     if (syntaxOID == null)
@@ -1050,67 +736,16 @@ public final class AttributeTypeDefinition
     }
   }
 
-
-
-  /**
-   * Retrieves the value of the minimum upper bound element of the syntax
-   * definition for this attribute type, if defined.  If a minimum upper bound
-   * is present (as signified by an integer value in curly braces immediately
-   * following the syntax OID without any space between them), then it should
-   * serve as an indication to the directory server that it should be prepared
-   * to handle values with at least that number of (possibly multi-byte)
-   * characters.
-   *
-   * @return  The value of the minimum upper bound element of the syntax
-   *          definition for this attribute type, or -1 if no syntax is defined
-   *          defined or if it does not have a valid minimum upper bound.
-   */
   public int getSyntaxMinimumUpperBound()
   {
     return getSyntaxMinimumUpperBound(syntaxOID);
   }
 
-
-
-  /**
-   * Retrieves the value of the minimum upper bound element of the syntax
-   * definition for this attribute type, if defined.  If a minimum upper bound
-   * is present (as signified by an integer value in curly braces immediately
-   * following the syntax OID without any space between them), then it should
-   * serve as an indication to the directory server that it should be prepared
-   * to handle values with at least that number of (possibly multi-byte)
-   * characters.
-   *
-   * @param  schema  The schema to use to get the superior attribute type, if
-   *                 necessary.
-   *
-   * @return  The value of the minimum upper bound element of the syntax
-   *          definition for this attribute type, or -1 if no syntax is defined
-   *          defined or if it does not have a valid minimum upper bound.
-   */
   public int getSyntaxMinimumUpperBound(final Schema schema)
   {
     return getSyntaxMinimumUpperBound(getSyntaxOID(schema));
   }
 
-
-
-  /**
-   * Retrieves the value of the minimum upper bound element of the syntax
-   * definition for this attribute type, if defined.  If a minimum upper bound
-   * is present (as signified by an integer value in curly braces immediately
-   * following the syntax OID without any space between them), then it should
-   * serve as an indication to the directory server that it should be prepared
-   * to handle values with at least that number of (possibly multi-byte)
-   * characters.
-   *
-   * @param  syntaxOID  The syntax OID (optionally including the minimum upper
-   *                    bound element) to examine.
-   *
-   * @return  The value of the minimum upper bound element of the provided
-   *          syntax OID, or -1 if the provided syntax OID is {@code null} or
-   *          does not have a valid minimum upper bound.
-   */
   public static int getSyntaxMinimumUpperBound(final String syntaxOID)
   {
     if (syntaxOID == null)
@@ -1138,105 +773,44 @@ public final class AttributeTypeDefinition
     }
   }
 
-
-
-  /**
-   * Indicates whether this attribute type is declared single-valued, and
-   * therefore attributes of this type will only be allowed to have at most one
-   * value.
-   *
-   * @return  {@code true} if this attribute type is declared single-valued, or
-   *          {@code false} if not.
-   */
   public boolean isSingleValued()
   {
     return isSingleValued;
   }
 
 
-
-  /**
-   * Indicates whether this attribute type is declared collective, and therefore
-   * values may be dynamically generated as described in RFC 3671.
-   *
-   * @return  {@code true} if this attribute type is declared collective, or
-   *          {@code false} if not.
-   */
   public boolean isCollective()
   {
     return isCollective;
   }
 
 
-
-  /**
-   * Indicates whether this attribute type is declared no-user-modification,
-   * and therefore attributes of this type will not be allowed to be altered
-   * by clients.
-   *
-   * @return  {@code true} if this attribute type is declared
-   *          no-user-modification, or {@code false} if not.
-   */
   public boolean isNoUserModification()
   {
     return isNoUserModification;
   }
 
-
-
-  /**
-   * Retrieves the attribute usage for this attribute type.
-   *
-   * @return  The attribute usage for this attribute type.
-   */
   public AttributeUsage getUsage()
   {
     return usage;
   }
 
-
-
-  /**
-   * Indicates whether this attribute type has an operational attribute usage.
-   *
-   * @return  {@code true} if this attribute type has an operational attribute
-   *          usage, or {@code false} if not.
-   */
   public boolean isOperational()
   {
     return usage.isOperational();
   }
 
-
-
-  /**
-   * Retrieves the set of extensions for this attribute type.  They will be
-   * mapped from the extension name (which should start with "X-") to the set of
-   * values for that extension.
-   *
-   * @return  The set of extensions for this attribute type.
-   */
   public Map<String,String[]> getExtensions()
   {
     return extensions;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
     return oid.hashCode();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -1275,14 +849,6 @@ public final class AttributeTypeDefinition
          extensionsEqual(extensions, d.extensions));
   }
 
-
-
-  /**
-   * Retrieves a string representation of this attribute type definition, in the
-   * format described in RFC 4512 section 4.1.2.
-   *
-   * @return  A string representation of this attribute type definition.
-   */
   @Override()
   public String toString()
   {

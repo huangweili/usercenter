@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.matchingrules;
 
 
@@ -39,104 +20,59 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides an implementation of a matching rule that may be used to
- * process values containing lists of items, in which each item is separated by
- * a dollar sign ($) character.  Substring matching is also supported, but
- * ordering matching is not.
- */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class CaseIgnoreListMatchingRule
        extends MatchingRule
 {
-  /**
-   * The singleton instance that will be returned from the {@code getInstance}
-   * method.
-   */
+
   private static final CaseIgnoreListMatchingRule INSTANCE =
        new CaseIgnoreListMatchingRule();
 
 
 
-  /**
-   * The name for the caseIgnoreListMatch equality matching rule.
-   */
+
   public static final String EQUALITY_RULE_NAME = "caseIgnoreListMatch";
 
 
 
-  /**
-   * The name for the caseIgnoreListMatch equality matching rule, formatted in
-   * all lowercase characters.
-   */
+
   static final String LOWER_EQUALITY_RULE_NAME =
        toLowerCase(EQUALITY_RULE_NAME);
 
 
 
-  /**
-   * The OID for the caseIgnoreListMatch equality matching rule.
-   */
   public static final String EQUALITY_RULE_OID = "2.5.13.11";
 
 
-
-  /**
-   * The name for the caseIgnoreListSubstringsMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_NAME =
        "caseIgnoreListSubstringsMatch";
 
 
 
-  /**
-   * The name for the caseIgnoreListSubstringsMatch substring matching rule,
-   * formatted in all lowercase characters.
-   */
   static final String LOWER_SUBSTRING_RULE_NAME =
        toLowerCase(SUBSTRING_RULE_NAME);
 
 
 
-  /**
-   * The OID for the caseIgnoreListSubstringsMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_OID = "2.5.13.12";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7795143670808983466L;
 
 
-
-  /**
-   * Creates a new instance of this case-ignore list matching rule.
-   */
   public CaseIgnoreListMatchingRule()
   {
-    // No implementation is required.
+
   }
 
 
 
-  /**
-   * Retrieves a singleton instance of this matching rule.
-   *
-   * @return  A singleton instance of this matching rule.
-   */
   public static CaseIgnoreListMatchingRule getInstance()
   {
     return INSTANCE;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getEqualityMatchingRuleName()
   {
@@ -144,10 +80,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getEqualityMatchingRuleOID()
   {
@@ -155,10 +87,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getOrderingMatchingRuleName()
   {
@@ -166,10 +94,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getOrderingMatchingRuleOID()
   {
@@ -178,9 +102,6 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSubstringMatchingRuleName()
   {
@@ -189,9 +110,6 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSubstringMatchingRuleOID()
   {
@@ -199,10 +117,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean valuesMatch(final ASN1OctetString value1,
                              final ASN1OctetString value2)
@@ -212,10 +126,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean matchesSubstring(final ASN1OctetString value,
                                   final ASN1OctetString subInitial,
@@ -291,10 +201,6 @@ public final class CaseIgnoreListMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int compareValues(final ASN1OctetString value1,
                            final ASN1OctetString value2)
@@ -304,11 +210,6 @@ public final class CaseIgnoreListMatchingRule
          ERR_CASE_IGNORE_LIST_ORDERING_MATCHING_NOT_SUPPORTED.get());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ASN1OctetString normalize(final ASN1OctetString value)
          throws LDAPException
@@ -331,9 +232,7 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public ASN1OctetString normalizeSubstring(final ASN1OctetString value,
                                             final byte substringType)
@@ -345,18 +244,6 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Retrieves a list of the items contained in the provided value.  The items
-   * will use the case of the provided value.
-   *
-   * @param  value  The value for which to obtain the list of items.  It must
-   *                not be {@code null}.
-   *
-   * @return  An unmodifiable list of the items contained in the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided value does not represent a valid
-   *                         list in accordance with this matching rule.
-   */
   public static List<String> getItems(final ASN1OctetString value)
          throws LDAPException
   {
@@ -365,18 +252,7 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Retrieves a list of the items contained in the provided value.  The items
-   * will use the case of the provided value.
-   *
-   * @param  value  The value for which to obtain the list of items.  It must
-   *                not be {@code null}.
-   *
-   * @return  An unmodifiable list of the items contained in the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided value does not represent a valid
-   *                         list in accordance with this matching rule.
-   */
+
   public static List<String> getItems(final String value)
          throws LDAPException
   {
@@ -440,18 +316,6 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Retrieves a list of the lowercase representations of the items contained in
-   * the provided value.
-   *
-   * @param  value  The value for which to obtain the list of items.  It must
-   *                not be {@code null}.
-   *
-   * @return  An unmodifiable list of the items contained in the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided value does not represent a valid
-   *                         list in accordance with this matching rule.
-   */
   public static List<String> getLowercaseItems(final ASN1OctetString value)
          throws LDAPException
   {
@@ -460,18 +324,7 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Retrieves a list of the lowercase representations of the items contained in
-   * the provided value.
-   *
-   * @param  value  The value for which to obtain the list of items.  It must
-   *                not be {@code null}.
-   *
-   * @return  An unmodifiable list of the items contained in the provided value.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided value does not represent a valid
-   *                         list in accordance with this matching rule.
-   */
+
   public static List<String> getLowercaseItems(final String value)
          throws LDAPException
   {
@@ -480,14 +333,6 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Normalizes the provided list item.
-   *
-   * @param  buffer  The buffer to which to append the normalized representation
-   *                 of the given item.
-   * @param  item    The item to be normalized.  It must already be trimmed and
-   *                 all characters converted to lowercase.
-   */
   static void normalizeItem(final StringBuilder buffer, final String item)
   {
     final int length = item.length();
@@ -524,18 +369,7 @@ public final class CaseIgnoreListMatchingRule
 
 
 
-  /**
-   * Reads two characters from the specified position in the provided string and
-   * returns the character that they represent.
-   *
-   * @param  s  The string from which to take the hex characters.
-   * @param  p  The position at which the hex characters begin.
-   *
-   * @return  The character that was read and decoded.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If either of the characters are not hexadecimal
-   *                         digits.
-   */
+
   static char decodeHexChar(final String s, final int p)
          throws LDAPException
   {

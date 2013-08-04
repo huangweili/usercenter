@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -31,42 +11,16 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.extensions.ExtOpMessages.*;
 
-
-
-/**
- * This class implements a data structure for storing the information from an
- * extended result for the "Who Am I?" extended request as defined in
- * <A HREF="http://www.ietf.org/rfc/rfc4532.txt">RFC 4532</A>.  It is able to
- * decode a generic extended result to extract the returned authorization
- * identify from it.
- * <BR><BR>
- * See the documentation for the {@link WhoAmIExtendedRequest} class for an
- * example that demonstrates using the "Who Am I?" extended operation.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class WhoAmIExtendedResult
        extends ExtendedResult
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 7466531316632846077L;
 
-
-
-  // The authorization identity string returned by the server.
   private final String authorizationID;
 
-
-
-  /**
-   * Creates a new "Who Am I?" extended result from the provided extended
-   * result.
-   *
-   * @param  extendedResult  The extended result to be decoded as a "Who Am I?"
-   *                         extended result.
-   */
   public WhoAmIExtendedResult(final ExtendedResult extendedResult)
   {
     super(extendedResult);
@@ -82,24 +36,6 @@ public final class WhoAmIExtendedResult
     }
   }
 
-
-
-  /**
-   * Creates a new "Who Am I?" extended result with the provided information.
-   *
-   * @param  messageID          The message ID for the LDAP message that is
-   *                            associated with this LDAP result.
-   * @param  resultCode         The result code from the response.
-   * @param  diagnosticMessage  The diagnostic message from the response, if
-   *                            available.
-   * @param  matchedDN          The matched DN from the response, if available.
-   * @param  referralURLs       The set of referral URLs from the response, if
-   *                            available.
-   * @param  authorizationID    The authorization ID for this response, if
-   *                            available.
-   * @param  responseControls   The set of controls from the response, if
-   *                            available.
-   */
   public WhoAmIExtendedResult(final int messageID, final ResultCode resultCode,
                               final String diagnosticMessage,
                               final String matchedDN,
@@ -114,15 +50,6 @@ public final class WhoAmIExtendedResult
   }
 
 
-
-  /**
-   * Encodes the value for this extended result using the provided information.
-   *
-   * @param  authorizationID  The authorization ID for this response.
-   *
-   * @return  An ASN.1 octet string containing the encoded value, or
-   *          {@code null} if there should not be an encoded value.
-   */
   private static ASN1OctetString encodeValue(final String authorizationID)
   {
     if (authorizationID == null)
@@ -135,40 +62,17 @@ public final class WhoAmIExtendedResult
     }
   }
 
-
-
-  /**
-   * Retrieves the authorization ID for this "Who Am I?" extended result, if
-   * available.
-   *
-   * @return  The authorization ID for this "Who Am I?" extended result, or
-   *          {@code null} if none was provided.
-   */
   public String getAuthorizationID()
   {
     return authorizationID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedResultName()
   {
     return INFO_EXTENDED_RESULT_NAME_WHO_AM_I.get();
   }
 
-
-
-  /**
-   * Appends a string representation of this extended result to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which a string representation of this
-   *                 extended result will be appended.
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldif;
 
 
@@ -46,37 +26,16 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class defines an LDIF add change record, which can be used to represent
- * an LDAP add request.  See the documentation for the {@link com.hwlcn.ldap.ldif.LDIFChangeRecord}
- * class for an example demonstrating the process for interacting with LDIF
- * change records.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDIFAddChangeRecord
        extends LDIFChangeRecord
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 5717427836786488295L;
 
-
-
-  // The set of attributes for this add change record.
   private final Attribute[] attributes;
 
-
-
-  /**
-   * Creates a new LDIF add change record with the provided DN and attributes.
-   *
-   * @param  dn          The DN for this LDIF add change record.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes for this LDIF add change record.
-   *                     It must not be {@code null} or empty.
-   */
   public LDIFAddChangeRecord(final String dn, final Attribute... attributes)
   {
     super(dn);
@@ -88,16 +47,6 @@ public final class LDIFAddChangeRecord
     this.attributes = attributes;
   }
 
-
-
-  /**
-   * Creates a new LDIF add change record with the provided DN and attributes.
-   *
-   * @param  dn          The DN for this LDIF add change record.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes for this LDIF add change record.
-   *                     It must not be {@code null} or empty.
-   */
   public LDIFAddChangeRecord(final String dn, final List<Attribute> attributes)
   {
     super(dn);
@@ -111,13 +60,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * Creates a new LDIF add change record from the provided entry.
-   *
-   * @param  entry  The entry to use to create this LDIF add change record.  It
-   *                must not be {@code null}.
-   */
   public LDIFAddChangeRecord(final Entry entry)
   {
     super(entry.getDN());
@@ -133,13 +75,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * Creates a new LDIF add change record from the provided add request.
-   *
-   * @param  addRequest  The add request to use to create this LDIF add change
-   *                     record.  It must not be {@code null}.
-   */
   public LDIFAddChangeRecord(final AddRequest addRequest)
   {
     super(addRequest.getDN());
@@ -154,37 +89,18 @@ public final class LDIFAddChangeRecord
     }
   }
 
-
-
-  /**
-   * Retrieves the set of attributes for this add change record.
-   *
-   * @return  The set of attributes for this add change record.
-   */
   public Attribute[] getAttributes()
   {
     return attributes;
   }
 
 
-
-  /**
-   * Retrieves the entry that would be created by this add change record.
-   *
-   * @return  The entry that would be created by this add change record.
-   */
   public Entry getEntryToAdd()
   {
     return new Entry(getDN(), attributes);
   }
 
 
-
-  /**
-   * Creates an add request from this LDIF add change record.
-   *
-   * @return  The add request created from this LDIF add change record.
-   */
   public AddRequest toAddRequest()
   {
     return new AddRequest(getDN(), attributes);
@@ -192,9 +108,6 @@ public final class LDIFAddChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ChangeType getChangeType()
   {
@@ -202,10 +115,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPResult processChange(final LDAPInterface connection)
          throws LDAPException
@@ -215,9 +124,6 @@ public final class LDIFAddChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String[] toLDIF(final int wrapColumn)
   {
@@ -246,10 +152,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIF(final ByteStringBuffer buffer, final int wrapColumn)
   {
@@ -272,10 +174,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIFString(final StringBuilder buffer, final int wrapColumn)
   {
@@ -299,10 +197,6 @@ public final class LDIFAddChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -323,11 +217,6 @@ public final class LDIFAddChangeRecord
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -355,9 +244,6 @@ public final class LDIFAddChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -99,46 +80,14 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class ProxiedAuthorizationV2RequestControl
        extends Control
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.18) for the proxied authorization v2 request
-   * control.
-   */
+
   public static final String PROXIED_AUTHORIZATION_V2_REQUEST_OID =
        "2.16.840.1.113730.3.4.18";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 1054244283964851067L;
 
-
-
-  // The authorization ID string that may be used to identify the user under
-  // whose authorization the associated operation should be performed.
   private final String authorizationID;
 
-
-
-  /**
-   * Creates a new proxied authorization V2 request control that will proxy as
-   * the specified user.
-   *
-   * @param  authorizationID  The authorization ID string that will be used to
-   *                          identify the user under whose authorization the
-   *                          associated operation should be performed.  It may
-   *                          take one of three forms:  it can be an empty
-   *                          string (to indicate that the operation should use
-   *                          anonymous authorization), a string that begins
-   *                          with "dn:" and is followed by the DN of the target
-   *                          user, or a string that begins with "u:" and is
-   *                          followed by the username for the target user
-   *                          (where the process of mapping the provided
-   *                          username to the corresponding entry will depend on
-   *                          the server configuration).  It must not be
-   *                          {@code null}.
-   */
   public ProxiedAuthorizationV2RequestControl(final String authorizationID)
   {
     super(PROXIED_AUTHORIZATION_V2_REQUEST_OID, true,
@@ -149,18 +98,6 @@ public final class ProxiedAuthorizationV2RequestControl
     this.authorizationID = authorizationID;
   }
 
-
-
-  /**
-   * Creates a new proxied authorization v2 request control which is decoded
-   * from the provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a proxied
-   *                  authorization v2 request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         proxied authorization v2 request control.
-   */
   public ProxiedAuthorizationV2RequestControl(final Control control)
          throws LDAPException
   {
@@ -176,27 +113,11 @@ public final class ProxiedAuthorizationV2RequestControl
     authorizationID = value.stringValue();
   }
 
-
-
-  /**
-   * Retrieves the authorization ID string that will be used to identify the
-   * user under whose authorization the associated operation should be
-   * performed.
-   *
-   * @return  The authorization ID string that will be used to identify the user
-   *          under whose authorization the associated operation should be
-   *          performed.
-   */
   public String getAuthorizationID()
   {
     return authorizationID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -204,10 +125,6 @@ public final class ProxiedAuthorizationV2RequestControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

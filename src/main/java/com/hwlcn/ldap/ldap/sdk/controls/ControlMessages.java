@@ -28,14 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 
-/**
- * This enum defines a set of message keys for messages in the
- * com.hwlcn.ldap.ldap.sdk.controls package, which correspond to messages in the
- * ldap-ldapsdk-controls.properties properties file.
- * <BR><BR>
- * This source file was generated from the properties file.
- * Do not edit it directly.
- */
 enum ControlMessages
 {
   /**

@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.migrate.ldapjdk;
 
 
@@ -29,48 +10,25 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
 
-/**
- * This class provides a data structure which may be used to define a set of
- * constraints that may be used when processing search operations.
- * <BR><BR>
- * This class is primarily intended to be used in the process of updating
- * applications which use the Netscape Directory SDK for Java to switch to or
- * coexist with the UnboundID LDAP SDK for Java.  For applications not written
- * using the Netscape Directory SDK for Java, the
- * {@link com.hwlcn.ldap.ldap.sdk.LDAPConnectionOptions} class should be used
- * instead.
- */
 @NotExtensible()
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public class LDAPSearchConstraints
        extends LDAPConstraints
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -487551577157782460L;
 
 
-
-  // The result batch size.
   private int batchSize;
 
-  // The alias dereferencing policy.
   private int derefPolicy;
 
-  // The maximum number of results to return for a search.
   private int sizeLimit;
 
-  // The maximum length of time in seconds the server should spend processing a
-  // search.
   private int timeLimit;
 
 
-
-  /**
-   * Creates a new set of search constraints with the default settings.
-   */
   public LDAPSearchConstraints()
   {
     super();
@@ -81,24 +39,6 @@ public class LDAPSearchConstraints
     timeLimit   = 0;
   }
 
-
-
-  /**
-   * Creates a new set of search constraints with the specified information.
-   *
-   * @param  msLimit      The maximum length of time in milliseconds to spend
-   *                      waiting for the response.
-   * @param  dereference  The policy to use when dereferencing aliases.
-   * @param  maxResults   The maximum number of entries to return from the
-   *                      server.
-   * @param  doReferrals  Indicates whether to follow referrals.
-   * @param  batchSize    The batch size to use when retrieving results.
-   * @param  rebindProc   The object to use to obtain information for
-   *                      authenticating the connection for use when following
-   *                      referrals.
-   * @param  hopLimit     The maximum number of hops to take when following
-   *                      referrals.
-   */
   public LDAPSearchConstraints(final int msLimit, final int dereference,
                                final int maxResults, final boolean doReferrals,
                                final int batchSize, final LDAPRebind rebindProc,
@@ -118,24 +58,6 @@ public class LDAPSearchConstraints
 
 
 
-  /**
-   * Creates a new set of search constraints with the specified information.
-   *
-   * @param  msLimit      The maximum length of time in milliseconds to spend
-   *                      waiting for the response.
-   * @param  timeLimit    The maximum length of time in seconds the server
-   *                      should spend processing the request.
-   * @param  dereference  The policy to use when dereferencing aliases.
-   * @param  maxResults   The maximum number of entries to return from the
-   *                      server.
-   * @param  doReferrals  Indicates whether to follow referrals.
-   * @param  batchSize    The batch size to use when retrieving results.
-   * @param  rebindProc   The object to use to obtain information for
-   *                      authenticating the connection for use when following
-   *                      referrals.
-   * @param  hopLimit     The maximum number of hops to take when following
-   *                      referrals.
-   */
   public LDAPSearchConstraints(final int msLimit, final int timeLimit,
                                final int dereference,
                                final int maxResults, final boolean doReferrals,
@@ -156,24 +78,6 @@ public class LDAPSearchConstraints
   }
 
 
-
-  /**
-   * Creates a new set of search constraints with the specified information.
-   *
-   * @param  msLimit      The maximum length of time in milliseconds to spend
-   *                      waiting for the response.
-   * @param  timeLimit    The maximum length of time in seconds the server
-   *                      should spend processing the request.
-   * @param  dereference  The policy to use when dereferencing aliases.
-   * @param  maxResults   The maximum number of entries to return from the
-   *                      server.
-   * @param  doReferrals  Indicates whether to follow referrals.
-   * @param  batchSize    The batch size to use when retrieving results.
-   * @param  bindProc     The object to use to obtain authenticating the
-   *                      connection for use when following referrals.
-   * @param  hopLimit     The maximum number of hops to take when following
-   *                      referrals.
-   */
   public LDAPSearchConstraints(final int msLimit, final int timeLimit,
                                final int dereference,
                                final int maxResults, final boolean doReferrals,
@@ -193,25 +97,11 @@ public class LDAPSearchConstraints
     setHopLimit(hopLimit);
   }
 
-
-
-  /**
-   * Retrieves the suggested batch size to use when retrieving results.
-   *
-   * @return  The suggested batch size to use when retrieving results.
-   */
   public int getBatchSize()
   {
     return batchSize;
   }
 
-
-
-  /**
-   * Specifies the suggested batch size to use when retrieving results.
-   *
-   * @param  batchSize  The suggested batch size to use when retrieving results.
-   */
   public void setBatchSize(final int batchSize)
   {
     if (batchSize < 1)
@@ -225,12 +115,6 @@ public class LDAPSearchConstraints
   }
 
 
-
-  /**
-   * Retrieves the alias dereferencing policy that should be used.
-   *
-   * @return  The alias dereferencing policy that should be used.
-   */
   public int getDereference()
   {
     return derefPolicy;
@@ -238,25 +122,11 @@ public class LDAPSearchConstraints
 
 
 
-  /**
-   * Specifies the alias dereferencing policy that should be used.
-   *
-   * @param  dereference  The alias dereferencing policy that should be used.
-   */
   public void setDereference(final int dereference)
   {
     derefPolicy = dereference;
   }
 
-
-
-  /**
-   * Retrieves the maximum number of entries that should be returned for a
-   * search.
-   *
-   * @return  The maximum number of entries that should be returned for a
-   *          search.
-   */
   public int getMaxResults()
   {
     return sizeLimit;
@@ -264,13 +134,6 @@ public class LDAPSearchConstraints
 
 
 
-  /**
-   * Specifies the maximum number of entries that should be returned for a
-   * search.
-   *
-   * @param  maxResults  The maximum number of entries that should be returned
-   *                     for a search.
-   */
   public void setMaxResults(final int maxResults)
   {
     if (maxResults < 0)
@@ -285,27 +148,12 @@ public class LDAPSearchConstraints
 
 
 
-  /**
-   * Retrieves the maximum length of time in seconds that the server should
-   * spend processing a search.
-   *
-   * @return  The maximum length of time in seconds that the server should spend
-   *          processing a search.
-   */
   public int getServerTimeLimit()
   {
     return timeLimit;
   }
 
 
-
-  /**
-   * Specifies the maximum length of time in seconds that the server should
-   * spend processing a search.
-   *
-   * @param  limit  The maximum length of time in seconds that the server should
-   *                spend processing a search.
-   */
   public void setServerTimeLimit(final int limit)
   {
     if (limit < 0)
@@ -319,12 +167,6 @@ public class LDAPSearchConstraints
   }
 
 
-
-  /**
-   * Creates a duplicate of this search constraints object.
-   *
-   * @return  A duplicate of this search constraints object.
-   */
   @Override()
   public LDAPSearchConstraints duplicate()
   {
@@ -348,11 +190,6 @@ public class LDAPSearchConstraints
 
 
 
-  /**
-   * Retrieves a string representation of this search constraints object.
-   *
-   * @return  A string representation of this search constraints object.
-   */
   @Override()
   public String toString()
   {

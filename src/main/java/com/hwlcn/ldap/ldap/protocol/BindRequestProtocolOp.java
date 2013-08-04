@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -47,64 +28,37 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
-
-
-/**
- * This class provides an implementation of an LDAP bind request protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class BindRequestProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The credentials type for simple bind requests.
-   */
+
   public static final byte CRED_TYPE_SIMPLE = (byte) 0x80;
 
 
-
-  /**
-   * The credentials type for SASL bind requests.
-   */
   public static final byte CRED_TYPE_SASL = (byte) 0xA3;
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 6661208657485444954L;
 
 
 
-  // The credentials to use for SASL authentication.
+
   private final ASN1OctetString saslCredentials;
 
-  // The password to use for simple authentication.
   private final ASN1OctetString simplePassword;
 
-  // The credentials type for this bind request.
   private final byte credentialsType;
 
-  // The protocol version for this bind request.
   private final int version;
 
-  // The bind DN to use for this bind request.
   private final String bindDN;
 
-  // The name of the SASL mechanism.
   private final String saslMechanism;
 
 
-
-  /**
-   * Creates a new bind request protocol op for a simple bind.
-   *
-   * @param  bindDN    The DN for this bind request.
-   * @param  password  The password for this bind request.
-   */
   public BindRequestProtocolOp(final String bindDN, final String password)
   {
     if (bindDN == null)
@@ -132,13 +86,6 @@ public final class BindRequestProtocolOp
   }
 
 
-
-  /**
-   * Creates a new bind request protocol op for a simple bind.
-   *
-   * @param  bindDN    The DN for this bind request.
-   * @param  password  The password for this bind request.
-   */
   public BindRequestProtocolOp(final String bindDN, final byte[] password)
   {
     if (bindDN == null)
@@ -167,15 +114,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Creates a new bind request protocol op for a SASL bind.
-   *
-   * @param  bindDN           The DN for this bind request.
-   * @param  saslMechanism    The name of the SASL mechanism for this bind
-   *                          request.  It must not be {@code null}.
-   * @param  saslCredentials  The SASL credentials for this bind request, if
-   *                          any.
-   */
   public BindRequestProtocolOp(final String bindDN, final String saslMechanism,
                                final ASN1OctetString saslCredentials)
   {
@@ -198,18 +136,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Creates a new bind request protocol op from the provided bind request
-   * object.
-   *
-   * @param  request  The simple bind request to use to create this protocol op.
-   *                  It must have been created with a static password rather
-   *                  than using a password provider.
-   *
-   * @throws  LDAPSDKUsageException  If the provided simple bind request is
-   *                                 configured to use a password provider
-   *                                 rather than a static password.
-   */
   public BindRequestProtocolOp(final SimpleBindRequest request)
          throws LDAPSDKUsageException
   {
@@ -229,13 +155,7 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Creates a new bind request protocol op from the provided bind request
-   * object.
-   *
-   * @param  request  The generic SASL bind request to use to create this
-   *                  protocol op.
-   */
+
   public BindRequestProtocolOp(final GenericSASLBindRequest request)
   {
     version         = 3;
@@ -248,16 +168,7 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Creates a new bind request protocol op read from the provided ASN.1 stream
-   * reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the bind request
-   *                 protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         bind request.
-   */
+
   BindRequestProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -315,19 +226,6 @@ public final class BindRequestProtocolOp
   }
 
 
-
-  /**
-   * Creates a new bind request protocol op with the provided information.
-   *
-   * @param  version          The protocol version.
-   * @param  bindDN           The bind DN.  It must not be {@code null} (but may
-   *                          be empty).
-   * @param  credentialsType  The type of credentials supplied.
-   * @param  simplePassword   The password for simple authentication, if
-   *                          appropriate.
-   * @param  saslMechanism    The name of the SASL mechanism, if appropriate.
-   * @param  saslCredentials  The SASL credentials, if appropriate.
-   */
   private BindRequestProtocolOp(final int version, final String bindDN,
                                 final byte credentialsType,
                                 final ASN1OctetString simplePassword,
@@ -344,77 +242,35 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Retrieves the protocol version for this bind request.
-   *
-   * @return  The protocol version for this bind request.
-   */
   public int getVersion()
   {
     return version;
   }
 
 
-
-  /**
-   * Retrieves the bind DN for this bind request.
-   *
-   * @return  The bind DN for this bind request, or an empty string if none was
-   *          provided.
-   */
   public String getBindDN()
   {
     return bindDN;
   }
 
 
-
-  /**
-   * Retrieves the credentials type for this bind request.  It will either be
-   * {@link #CRED_TYPE_SIMPLE} or {@link #CRED_TYPE_SASL}.
-   *
-   * @return  The credentials type for this bind request.
-   */
   public byte getCredentialsType()
   {
     return credentialsType;
   }
 
-
-
-  /**
-   * Retrieves the password to use for simple authentication.
-   *
-   * @return  The password to use for simple authentication, or {@code null} if
-   *          SASL authentication will be used.
-   */
   public ASN1OctetString getSimplePassword()
   {
     return simplePassword;
   }
 
 
-
-  /**
-   * Retrieves the name of the SASL mechanism for this bind request.
-   *
-   * @return  The name of the SASL mechanism for this bind request, or
-   *          {@code null} if simple authentication will be used.
-   */
   public String getSASLMechanism()
   {
     return saslMechanism;
   }
 
 
-
-  /**
-   * Retrieves the credentials to use for SASL authentication, if any.
-   *
-   * @return  The credentials to use for SASL authentication, or {@code null} if
-   *          there are no SASL credentials or if simple authentication will be
-   *          used.
-   */
   public ASN1OctetString getSASLCredentials()
   {
     return saslCredentials;
@@ -422,19 +278,12 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_BIND_REQUEST;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ASN1Element credentials;
@@ -465,16 +314,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Decodes the provided ASN.1 element as a bind request protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded bind request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a bind request protocol op.
-   */
   public static BindRequestProtocolOp decodeProtocolOp(
                                            final ASN1Element element)
          throws LDAPException
@@ -541,9 +380,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -572,15 +408,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * Creates a new bind request object from this bind request protocol op.
-   *
-   * @param  controls  The set of controls to include in the bind request.  It
-   *                   may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The bind request that was created.
-   */
   public BindRequest toBindRequest(final Control... controls)
   {
     if (credentialsType == CRED_TYPE_SIMPLE)
@@ -596,12 +423,6 @@ public final class BindRequestProtocolOp
   }
 
 
-
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -612,9 +433,6 @@ public final class BindRequestProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("BindRequestProtocolOp(version=");

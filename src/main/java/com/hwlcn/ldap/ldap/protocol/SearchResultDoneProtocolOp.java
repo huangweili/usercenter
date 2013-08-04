@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -43,35 +24,16 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import static com.hwlcn.ldap.ldap.protocol.ProtocolMessages.*;
 
 
-
-/**
- * This class provides an implementation of a search result done protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class SearchResultDoneProtocolOp
        extends GenericResponseProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -8246922907244250622L;
 
 
-
-  /**
-   * Creates a new instance of this search result done protocol op with the
-   * provided information.
-   *
-   * @param  resultCode         The result code for this search result done.
-   * @param  matchedDN          The matched DN for this search result done, if
-   *                            any.
-   * @param  diagnosticMessage  The diagnostic message for this search result
-   *                            done, if any.
-   * @param  referralURLs       The list of referral URLs for this search result
-   *                            done, if any.
-   */
   public SearchResultDoneProtocolOp(final int resultCode,
                                     final String matchedDN,
                                     final String diagnosticMessage,
@@ -81,14 +43,6 @@ public final class SearchResultDoneProtocolOp
           matchedDN, diagnosticMessage, referralURLs);
   }
 
-
-
-  /**
-   * Creates a new search result done protocol op from the provided LDAP result
-   * object.
-   *
-   * @param  result  The LDAP result object to use to create this protocol op.
-   */
   public SearchResultDoneProtocolOp(final LDAPResult result)
   {
     super(LDAPMessage.PROTOCOL_OP_TYPE_SEARCH_RESULT_DONE,
@@ -98,17 +52,6 @@ public final class SearchResultDoneProtocolOp
   }
 
 
-
-  /**
-   * Creates a new search result done protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the search
-   *                 result done protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         search result done.
-   */
   SearchResultDoneProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -116,10 +59,6 @@ public final class SearchResultDoneProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(4);
@@ -163,16 +102,6 @@ public final class SearchResultDoneProtocolOp
 
 
 
-  /**
-   * Decodes the provided ASN.1 element as a search result done protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded search result done protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a search result done protocol op.
-   */
   public static SearchResultDoneProtocolOp decodeProtocolOp(
                                                 final ASN1Element element)
          throws LDAPException

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldif;
 
 
@@ -44,54 +24,26 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class defines an LDIF modify DN change record, which can be used to
- * represent an LDAP modify DN request.  See the documentation for the
- * {@link com.hwlcn.ldap.ldif.LDIFChangeRecord} class for an example demonstrating the process for
- * interacting with LDIF change records.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDIFModifyDNChangeRecord
        extends LDIFChangeRecord
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -2356367870035948998L;
 
-
-
-  // Indicates whether to delete the current RDN value.
   private final boolean deleteOldRDN;
 
-  // The parsed new superior DN for the entry.
   private volatile DN parsedNewSuperiorDN;
 
-  // The parsed new RDN for the entry.
   private volatile RDN parsedNewRDN;
 
-  // The new RDN value for the entry.
   private final String newRDN;
 
-  // The new superior DN for the entry, if available.
   private final String newSuperiorDN;
 
 
 
-  /**
-   * Creates a new LDIF modify DN change record with the provided information.
-   *
-   * @param  dn             The current DN for the entry.  It must not be
-   *                        {@code null}.
-   * @param  newRDN         The new RDN value for the entry.  It must not be
-   *                        {@code null}.
-   * @param  deleteOldRDN   Indicates whether to delete the currentRDN value
-   *                        from the entry.
-   * @param  newSuperiorDN  The new superior DN for this LDIF modify DN change
-   *                        record.  It may be {@code null} if the entry is not
-   *                        to be moved below a new parent.
-   */
   public LDIFModifyDNChangeRecord(final String dn, final String newRDN,
                                   final boolean deleteOldRDN,
                                   final String newSuperiorDN)
@@ -106,15 +58,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * Creates a new LDIF modify DN change record from the provided modify DN
-   * request.
-   *
-   * @param  modifyDNRequest  The modify DN request to use to create this LDIF
-   *                          modify DN change record.  It must not be
-   *                          {@code null}.
-   */
   public LDIFModifyDNChangeRecord(final ModifyDNRequest modifyDNRequest)
   {
     super(modifyDNRequest.getDN());
@@ -124,28 +67,12 @@ public final class LDIFModifyDNChangeRecord
     newSuperiorDN = modifyDNRequest.getNewSuperiorDN();
   }
 
-
-
-  /**
-   * Retrieves the new RDN value for the entry.
-   *
-   * @return  The new RDN value for the entry.
-   */
   public String getNewRDN()
   {
     return newRDN;
   }
 
 
-
-  /**
-   * Retrieves the parsed new RDN value for the entry.
-   *
-   * @return  The parsed new RDN value for the entry.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while trying to parse the new
-   *                         RDN.
-   */
   public RDN getParsedNewRDN()
          throws LDAPException
   {
@@ -157,43 +84,18 @@ public final class LDIFModifyDNChangeRecord
     return parsedNewRDN;
   }
 
-
-
-  /**
-   * Indicates whether to delete the current RDN value from the entry.
-   *
-   * @return  {@code true} if the current RDN value should be removed from the
-   *          entry, or {@code false} if not.
-   */
   public boolean deleteOldRDN()
   {
     return deleteOldRDN;
   }
 
 
-
-  /**
-   * Retrieves the new superior DN for the entry, if applicable.
-   *
-   * @return  The new superior DN for the entry, or {@code null} if the entry is
-   *          not to be moved below a new parent.
-   */
   public String getNewSuperiorDN()
   {
     return newSuperiorDN;
   }
 
 
-
-  /**
-   * Retrieves the parsed new superior DN for the entry, if applicable.
-   *
-   * @return  The parsed new superior DN for the entry, or {@code null} if the
-   *          entry is not to be moved below a new parent.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while trying to parse the new
-   *                         superior DN.
-   */
   public DN getParsedNewSuperiorDN()
          throws LDAPException
   {
@@ -206,17 +108,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * Retrieves the DN that the entry should have after the successful completion
-   * of the operation.
-   *
-   * @return  The DN that the entry should have after the successful completion
-   *          of the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while trying to parse the
-   *                         target DN, new RDN, or new superior DN.
-   */
   public DN getNewDN()
          throws LDAPException
   {
@@ -238,24 +129,12 @@ public final class LDIFModifyDNChangeRecord
     }
   }
 
-
-
-  /**
-   * Creates a modify DN request from this LDIF modify DN change record.
-   *
-   * @return  The modify DN request created from this LDIF modify DN change
-   *          record.
-   */
   public ModifyDNRequest toModifyDNRequest()
   {
     return new ModifyDNRequest(getDN(), newRDN, deleteOldRDN, newSuperiorDN);
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ChangeType getChangeType()
   {
@@ -263,10 +142,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPResult processChange(final LDAPInterface connection)
          throws LDAPException
@@ -275,10 +150,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String[] toLDIF(final int wrapColumn)
   {
@@ -312,11 +183,6 @@ public final class LDIFModifyDNChangeRecord
     return ldifLines.toArray(lineArray);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIF(final ByteStringBuffer buffer, final int wrapColumn)
   {
@@ -354,10 +220,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIFString(final StringBuilder buffer, final int wrapColumn)
   {
@@ -395,10 +257,6 @@ public final class LDIFModifyDNChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -432,9 +290,6 @@ public final class LDIFModifyDNChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -523,9 +378,6 @@ public final class LDIFModifyDNChangeRecord
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

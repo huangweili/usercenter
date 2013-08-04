@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -145,87 +125,30 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class VirtualListViewRequestControl
        extends Control
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.9) for the virtual list view request
-   * control.
-   */
+
   public static final String VIRTUAL_LIST_VIEW_REQUEST_OID =
        "2.16.840.1.113730.3.4.9";
 
-
-
-  /**
-   * The BER type that will be used for the target element when the target is
-   * specified by offset.
-   */
   private static final byte TARGET_TYPE_OFFSET = (byte) 0xA0;
 
-
-
-  /**
-   * The BER type that will be used for the target element when the target is
-   * specified by an assertion value.
-   */
   private static final byte TARGET_TYPE_GREATER_OR_EQUAL = (byte) 0x81;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4348423177859960815L;
 
-
-
-  // The assertion value that will be used to identify the start of the
-  // requested page of results for a greater-or-equal target type.
   private final ASN1OctetString assertionValue;
 
-  // The context ID that may be used to help the server continue in the same
-  // result set for subsequent searches.
   private final ASN1OctetString contextID;
 
-  // The maximum number of entries to return after the target entry.
   private final int afterCount;
 
-  // The maximum number of entries to return before the target entry.
   private final int beforeCount;
 
-  // The estimated number of entries in the complete result set.
   private final int contentCount;
 
-  // The position of the entry at the start of the requested page of results for
-  // an offset-based target type.
   private final int targetOffset;
 
 
 
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by a target offset.  It will be marked
-   * critical.
-   *
-   * @param  targetOffset  The position of the entry that should be used as the
-   *                       start of the result set.
-   * @param  beforeCount   The maximum number of entries that should be returned
-   *                       before the entry with the specified target offset.
-   * @param  afterCount    The maximum number of entries that should be returned
-   *                       after the entry with the specified target offset.
-   * @param  contentCount  The estimated number of entries in the result set.
-   *                       For the first request in a series of searches with
-   *                       the VLV control, it should be zero.  For subsequent
-   *                       searches in the VLV sequence, it should be the
-   *                       content count included in the response control from
-   *                       the previous search.
-   * @param  contextID     The context ID that may be used to help the server
-   *                       continue in the same result set for subsequent
-   *                       searches.  For the first request in a series of
-   *                       searches with the VLV control, it should be
-   *                       {@code null}.  For subsequent searches in the VLV
-   *                       sequence, it should be the (possibly {@code null}
-   *                       context ID included in the response control from the
-   *                       previous search.
-   */
   public VirtualListViewRequestControl(final int targetOffset,
               final int beforeCount, final int afterCount,
               final int contentCount,  final ASN1OctetString contextID)
@@ -235,33 +158,6 @@ public final class VirtualListViewRequestControl
 
 
 
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   */
   public VirtualListViewRequestControl(final String assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID)
@@ -271,34 +167,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   */
   public VirtualListViewRequestControl(final byte[] assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID)
@@ -308,34 +176,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   */
   public VirtualListViewRequestControl(final ASN1OctetString assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID)
@@ -343,35 +183,6 @@ public final class VirtualListViewRequestControl
     this(assertionValue, beforeCount, afterCount, contextID, true);
   }
 
-
-
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by a target offset.
-   *
-   * @param  targetOffset  The position of the entry that should be used as the
-   *                       start of the result set.
-   * @param  beforeCount   The maximum number of entries that should be returned
-   *                       before the entry with the specified target offset.
-   * @param  afterCount    The maximum number of entries that should be returned
-   *                       after the entry with the specified target offset.
-   * @param  contentCount  The estimated number of entries in the result set.
-   *                       For the first request in a series of searches with
-   *                       the VLV control, it should be zero.  For subsequent
-   *                       searches in the VLV sequence, it should be the
-   *                       content count included in the response control from
-   *                       the previous search.
-   * @param  contextID     The context ID that may be used to help the server
-   *                       continue in the same result set for subsequent
-   *                       searches.  For the first request in a series of
-   *                       searches with the VLV control, it should be
-   *                       {@code null}.  For subsequent searches in the VLV
-   *                       sequence, it should be the (possibly {@code null}
-   *                       context ID included in the response control from the
-   *                       previous search.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public VirtualListViewRequestControl(final int targetOffset,
               final int beforeCount, final int afterCount,
               final int contentCount,  final ASN1OctetString contextID,
@@ -390,37 +201,6 @@ public final class VirtualListViewRequestControl
     assertionValue = null;
   }
 
-
-
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public VirtualListViewRequestControl(final String assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID, final boolean isCritical)
@@ -430,36 +210,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public VirtualListViewRequestControl(final byte[] assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID, final boolean isCritical)
@@ -470,35 +220,6 @@ public final class VirtualListViewRequestControl
 
 
 
-  /**
-   * Creates a new virtual list view request control that will identify the
-   * beginning of the result set by an assertion value.  It will be marked
-   * critical.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.  It must not be {@code null}.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public VirtualListViewRequestControl(final ASN1OctetString assertionValue,
               final int beforeCount, final int afterCount,
               final ASN1OctetString contextID, final boolean isCritical)
@@ -516,17 +237,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a virtual list view
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         virtual list view request control.
-   */
   public VirtualListViewRequestControl(final Control control)
          throws LDAPException
   {
@@ -595,35 +305,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  targetOffset  The position of the entry that should be used as the
-   *                       start of the result set.
-   * @param  beforeCount   The maximum number of entries that should be returned
-   *                       before the entry with the specified target offset.
-   * @param  afterCount    The maximum number of entries that should be returned
-   *                       after the entry with the specified target offset.
-   * @param  contentCount  The estimated number of entries in the result set.
-   *                       For the first request in a series of searches with
-   *                       the VLV control, it should be zero.  For subsequent
-   *                       searches in the VLV sequence, it should be the
-   *                       content count included in the response control from
-   *                       the previous search.
-   * @param  contextID     The context ID that may be used to help the server
-   *                       continue in the same result set for subsequent
-   *                       searches.  For the first request in a series of
-   *                       searches with the VLV control, it should be
-   *                       {@code null}.  For subsequent searches in the VLV
-   *                       sequence, it should be the (possibly {@code null}
-   *                       context ID included in the response control from the
-   *                       previous search.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final int targetOffset,
                                              final int beforeCount,
                                              final int afterCount,
@@ -661,36 +342,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  assertionValue  The assertion value that will be used to identify
-   *                         the start of the result set.  The target entry will
-   *                         be the first entry with a value for the primary
-   *                         sort attribute that is greater than or equal to
-   *                         this assertion value.
-   * @param  beforeCount     The maximum number of entries that should be
-   *                         returned before the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  afterCount      The maximum number of entries that should be
-   *                         returned after the first entry with a value
-   *                         greater than or equal to the provided assertion
-   *                         value.
-   * @param  contextID       The context ID that may be used to help the server
-   *                         continue in the same result set for subsequent
-   *                         searches.  For the first request in a series of
-   *                         searches with the VLV control, it should be
-   *                         {@code null}.  For subsequent searches in the VLV
-   *                         sequence, it should be the (possibly {@code null}
-   *                         context ID included in the response control from
-   *                         the previous search.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(
                                       final ASN1OctetString assertionValue,
                                       final int beforeCount,
@@ -726,29 +377,12 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Retrieves the target offset position for this virtual list view request
-   * control, if applicable.
-   *
-   * @return  The target offset position for this virtual list view request
-   *          control, or -1 if the target is specified by an assertion value.
-   */
   public int getTargetOffset()
   {
     return targetOffset;
   }
 
 
-
-  /**
-   * Retrieves the string representation of the assertion value for this virtual
-   * list view request control, if applicable.
-   *
-   * @return  The string representation of the assertion value for this virtual
-   *          list view request control, or {@code null} if the target is
-   *          specified by offset.
-   */
   public String getAssertionValueString()
   {
     if (assertionValue == null)
@@ -762,15 +396,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Retrieves the byte array representation of the assertion value for this
-   * virtual list view request control, if applicable.
-   *
-   * @return  The byte array representation of the assertion value for this
-   *          virtual list view request control, or {@code null} if the target
-   *          is specified by offset.
-   */
   public byte[] getAssertionValueBytes()
   {
     if (assertionValue == null)
@@ -784,81 +409,33 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * Retrieves the assertion value for this virtual list view request control,
-   * if applicable.
-   *
-   * @return  The assertion value for this virtual list view request control, or
-   *          {@code null} if the target is specified by offset.
-   */
   public ASN1OctetString getAssertionValue()
   {
     return assertionValue;
   }
 
-
-
-  /**
-   * Retrieves the number of entries that should be retrieved before the target
-   * entry.
-   *
-   * @return  The number of entries that should be retrieved before the target
-   *          entry.
-   */
   public int getBeforeCount()
   {
     return beforeCount;
   }
 
-
-
-  /**
-   * Retrieves the number of entries that should be retrieved after the target
-   * entry.
-   *
-   * @return  The number of entries that should be retrieved after the target
-   *          entry.
-   */
   public int getAfterCount()
   {
     return afterCount;
   }
 
 
-
-  /**
-   * Retrieves the estimated number of entries in the result set, if applicable.
-   *
-   * @return  The estimated number of entries in the result set, zero if it
-   *          is not known (for the first search in a sequence where the
-   *          target is specified by offset), or -1 if the target is specified
-   *          by an assertion value.
-   */
   public int getContentCount()
   {
     return contentCount;
   }
 
 
-
-  /**
-   * Retrieves the context ID for this virtual list view request control, if
-   * available.
-   *
-   * @return  The context ID for this virtual list view request control, or
-   *          {@code null} if there is none.
-   */
   public ASN1OctetString getContextID()
   {
     return contextID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -866,10 +443,6 @@ public final class VirtualListViewRequestControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

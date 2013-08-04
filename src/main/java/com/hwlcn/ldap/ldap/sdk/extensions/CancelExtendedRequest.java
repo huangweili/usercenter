@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -106,60 +86,24 @@ import static com.hwlcn.ldap.util.Debug.*;
 public final class CancelExtendedRequest
        extends ExtendedRequest
 {
-  /**
-   * The OID (1.3.6.1.1.8) for the cancel extended request.
-   */
+
   public static final String CANCEL_REQUEST_OID = "1.3.6.1.1.8";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -7170687636394194183L;
 
-
-
-  // The message ID of the request to cancel.
   private final int targetMessageID;
 
-
-
-  /**
-   * Creates a new cancel extended request that will cancel the request with the
-   * specified async request ID.
-   *
-   * @param  requestID  The async request ID of the request to cancel.  It must
-   *                    not be {@code null}.
-   */
   public CancelExtendedRequest(final AsyncRequestID requestID)
   {
     this(requestID.getMessageID(), null);
   }
 
-
-
-  /**
-   * Creates a new cancel extended request that will cancel the request with the
-   * specified message ID.
-   *
-   * @param  targetMessageID  The message ID of the request to cancel.
-   */
   public CancelExtendedRequest(final int targetMessageID)
   {
     this(targetMessageID, null);
   }
 
-
-
-  /**
-   * Creates a new cancel extended request that will cancel the request with the
-   * specified request ID.
-   *
-   * @param  requestID  The async request ID of the request to cancel.  It must
-   *                    not be {@code null}.
-   * @param  controls   The set of controls to include in the request.
-   */
   public CancelExtendedRequest(final AsyncRequestID requestID,
                                final Control[] controls)
   {
@@ -167,14 +111,6 @@ public final class CancelExtendedRequest
   }
 
 
-
-  /**
-   * Creates a new cancel extended request that will cancel the request with the
-   * specified message ID.
-   *
-   * @param  targetMessageID  The message ID of the request to cancel.
-   * @param  controls         The set of controls to include in the request.
-   */
   public CancelExtendedRequest(final int targetMessageID,
                                final Control[] controls)
   {
@@ -183,17 +119,6 @@ public final class CancelExtendedRequest
     this.targetMessageID = targetMessageID;
   }
 
-
-
-  /**
-   * Creates a new cancel extended request from the provided generic extended
-   * request.
-   *
-   * @param  extendedRequest  The generic extended request to use to create this
-   *                          cancel extended request.
-   *
-   * @throws  LDAPException  If a problem occurs while decoding the request.
-   */
   public CancelExtendedRequest(final ExtendedRequest extendedRequest)
          throws LDAPException
   {
@@ -221,16 +146,6 @@ public final class CancelExtendedRequest
     }
   }
 
-
-
-  /**
-   * Generates a properly-encoded request value for this cancel extended
-   * request.
-   *
-   * @param  targetMessageID  The message ID of the request to cancel.
-   *
-   * @return  An ASN.1 octet string containing the encoded request value.
-   */
   private static ASN1OctetString encodeValue(final int targetMessageID)
   {
     final ASN1Element[] sequenceValues =
@@ -241,11 +156,6 @@ public final class CancelExtendedRequest
     return new ASN1OctetString(new ASN1Sequence(sequenceValues).encode());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   protected ExtendedResult process(final LDAPConnection connection,
                                    final int depth)
@@ -260,34 +170,17 @@ public final class CancelExtendedRequest
     return super.process(connection, depth);
   }
 
-
-
-  /**
-   * Retrieves the message ID of the request to cancel.
-   *
-   * @return  The message ID of the request to cancel.
-   */
   public int getTargetMessageID()
   {
     return targetMessageID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public CancelExtendedRequest duplicate()
   {
     return duplicate(getControls());
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public CancelExtendedRequest duplicate(final Control[] controls)
   {
@@ -297,22 +190,12 @@ public final class CancelExtendedRequest
     return cancelRequest;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedRequestName()
   {
     return INFO_EXTENDED_REQUEST_NAME_CANCEL.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

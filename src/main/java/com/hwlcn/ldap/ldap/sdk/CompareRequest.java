@@ -808,3 +808,4 @@ public final class CompareRequest
     buffer.append(')');
   }
 }
+

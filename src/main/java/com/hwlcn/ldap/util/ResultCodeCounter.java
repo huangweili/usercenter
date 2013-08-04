@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util;
 
 
@@ -38,58 +19,28 @@ import com.hwlcn.ldap.ldap.sdk.ResultCode;
 
 
 
-/**
- * This class provides a utility that may be used to count operation results and
- * categorize them based on the total number of results of each type.  It also
- * provides a method for retrieving result code counts, sorted by the number of
- * occurrences for each.
- */
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ResultCodeCounter
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -2280620218815022241L;
 
+ private final AtomicReference<ConcurrentHashMap<ResultCode,AtomicLong>> rcMap;
 
-
-  // The reference to the current map used to hold result code counts.
-  private final AtomicReference<ConcurrentHashMap<ResultCode,AtomicLong>> rcMap;
-
-
-
-  /**
-   * Creates a new instance of this result code counter.
-   */
   public ResultCodeCounter()
   {
     rcMap = new AtomicReference<ConcurrentHashMap<ResultCode,AtomicLong>>();
     rcMap.set(new ConcurrentHashMap<ResultCode,AtomicLong>());
   }
 
-
-
-  /**
-   * Increments the count for the provided result code.
-   *
-   * @param  resultCode  The result code for which to increment the count.
-   */
   public void increment(final ResultCode resultCode)
   {
     increment(resultCode, 1);
   }
 
 
-
-  /**
-   * Increments the count for the provided result code by the specified amount.
-   *
-   * @param  resultCode  The result code for which to increment the count.
-   * @param  amount      The amount by which to increment the count.
-   */
   public void increment(final ResultCode resultCode, final int amount)
   {
     final ConcurrentHashMap<ResultCode,AtomicLong> m = rcMap.get();
@@ -109,11 +60,6 @@ public final class ResultCodeCounter
   }
 
 
-
-  /**
-   * Clears all collected data from the result code counter.  Any
-   * previously-collected data will be lost.
-   */
   public void reset()
   {
     rcMap.set(new ConcurrentHashMap<ResultCode, AtomicLong>());
@@ -121,17 +67,6 @@ public final class ResultCodeCounter
 
 
 
-  /**
-   * Retrieves a list of the result codes of each type along with their
-   * respective counts.  The returned list will be sorted by number of
-   * occurrences, from most frequent to least frequent.
-   *
-   * @param  reset  Indicates whether to clear the results after obtaining
-   *                them.
-   *
-   * @return  A list of the result codes of each type along with their
-   *          respective counts.
-   */
   public List<ObjectPair<ResultCode,Long>> getCounts(final boolean reset)
   {
     final ConcurrentHashMap<ResultCode,AtomicLong> m;

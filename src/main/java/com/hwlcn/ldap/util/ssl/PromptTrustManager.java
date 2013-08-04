@@ -1,23 +1,4 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util.ssl;
 
 
@@ -47,30 +28,14 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.ssl.SSLMessages.*;
 
 
-
-/**
- * This class provides an SSL trust manager that will interactively prompt the
- * user to determine whether to trust any certificate that is presented to it.
- * It provides the ability to cache information about certificates that had been
- * previously trusted so that the user is not prompted about the same
- * certificate repeatedly, and it can be configured to store trusted
- * certificates in a file so that the trust information can be persisted.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class PromptTrustManager
        implements X509TrustManager
 {
-  /**
-   * The message digest that will be used for MD5 hashes.
-   */
+
   private static final MessageDigest MD5;
 
-
-
-  /**
-   * The message digest that will be used for SHA-1 hashes.
-   */
   private static final MessageDigest SHA1;
 
 
@@ -103,33 +68,17 @@ public final class PromptTrustManager
   }
 
 
-
-  // Indicates whether to examine the validity dates for the certificate in
-  // addition to whether the certificate has been previously trusted.
   private final boolean examineValidityDates;
 
-  // The set of previously-accepted certificates.  The certificates will be
-  // mapped from an all-lowercase hexadecimal string representation of the
-  // certificate signature to a flag that indicates whether the certificate has
-  // already been manually trusted even if it is outside of the validity window.
   private final ConcurrentHashMap<String,Boolean> acceptedCerts;
 
-  // The input stream from which the user input will be read.
   private final InputStream in;
 
-  // The print stream that will be used to display the prompt.
   private final PrintStream out;
 
-  // The path to the file to which the set of accepted certificates should be
-  // persisted.
   private final String acceptedCertsFile;
 
 
-
-  /**
-   * Creates a new instance of this prompt trust manager.  It will cache trust
-   * information in memory but not on disk.
-   */
   public PromptTrustManager()
   {
     this(null, true, null, null);
@@ -137,41 +86,12 @@ public final class PromptTrustManager
 
 
 
-  /**
-   * Creates a new instance of this prompt trust manager.  It may optionally
-   * cache trust information on disk.
-   *
-   * @param  acceptedCertsFile  The path to a file in which the certificates
-   *                            that have been previously accepted will be
-   *                            cached.  It may be {@code null} if the cache
-   *                            should only be maintained in memory.
-   */
   public PromptTrustManager(final String acceptedCertsFile)
   {
     this(acceptedCertsFile, true, null, null);
   }
 
 
-
-  /**
-   * Creates a new instance of this prompt trust manager.  It may optionally
-   * cache trust information on disk, and may also be configured to examine or
-   * ignore validity dates.
-   *
-   * @param  acceptedCertsFile     The path to a file in which the certificates
-   *                               that have been previously accepted will be
-   *                               cached.  It may be {@code null} if the cache
-   *                               should only be maintained in memory.
-   * @param  examineValidityDates  Indicates whether to reject certificates if
-   *                               the current time is outside the validity
-   *                               window for the certificate.
-   * @param  in                    The input stream that will be used to read
-   *                               input from the user.  If this is {@code null}
-   *                               then {@code System.in} will be used.
-   * @param  out                   The print stream that will be used to display
-   *                               the prompt to the user.  If this is
-   *                               {@code null} then System.out will be used.
-   */
   public PromptTrustManager(final String acceptedCertsFile,
                             final boolean examineValidityDates,
                             final InputStream in, final PrintStream out)
@@ -241,12 +161,6 @@ public final class PromptTrustManager
   }
 
 
-
-  /**
-   * Writes an updated copy of the trusted certificate cache to disk.
-   *
-   * @throws  java.io.IOException  If a problem occurs.
-   */
   private void writeCacheFile()
           throws IOException
   {
@@ -286,24 +200,10 @@ public final class PromptTrustManager
     tempFile.renameTo(cacheFile);
   }
 
-
-
-  /**
-   * Performs the necessary validity check for the provided certificate array.
-   *
-   * @param  chain       The chain of certificates for which to make the
-   *                     determination.
-   * @param  serverCert  Indicates whether the certificate was presented as a
-   *                     server certificate or as a client certificate.
-   *
-   * @throws  java.security.cert.CertificateException  If the provided certificate chain should not
-   *                                be trusted.
-   */
   private synchronized void checkCertificateChain(final X509Certificate[] chain,
                                                   final boolean serverCert)
           throws CertificateException
   {
-    // See if the certificate is currently within the validity window.
     String validityWarning = null;
     final Date currentDate = new Date();
     final X509Certificate c = chain[0];
@@ -320,8 +220,6 @@ public final class PromptTrustManager
     }
 
 
-    // If the certificate is within the validity window, or if we don't care
-    // about validity dates, then see if it's in the cache.
     if ((! examineValidityDates) || (validityWarning == null))
     {
       final String certBytes = toLowerCase(toHex(c.getSignature()));
@@ -331,17 +229,12 @@ public final class PromptTrustManager
         if ((validityWarning == null) || (! examineValidityDates) ||
             Boolean.TRUE.equals(accepted))
         {
-          // The certificate was found in the cache.  It's either in the
-          // validity window, we don't care about the validity window, or has
-          // already been manually trusted outside of the validity window.
-          // We'll consider it trusted without the need to re-prompt.
           return;
         }
       }
     }
 
 
-    // If we've gotten here, then we need to display a prompt to the user.
     if (serverCert)
     {
       out.println(INFO_PROMPT_SERVER_HEADING.get());
@@ -395,12 +288,10 @@ public final class PromptTrustManager
         final String line = reader.readLine();
         if (line.equalsIgnoreCase("y") || line.equalsIgnoreCase("yes"))
         {
-          // The certificate should be considered trusted.
           break;
         }
         else if (line.equalsIgnoreCase("n") || line.equalsIgnoreCase("no"))
         {
-          // The certificate should not be trusted.
           throw new CertificateException(
                ERR_CERTIFICATE_REJECTED_BY_USER.get());
         }
@@ -432,19 +323,6 @@ public final class PromptTrustManager
   }
 
 
-
-  /**
-   * Computes the fingerprint for the provided certificate using the given
-   * digest.
-   *
-   * @param  c  The certificate for which to obtain the fingerprint.
-   * @param  d  The message digest to use when creating the fingerprint.
-   *
-   * @return  The generated certificate fingerprint.
-   *
-   * @throws  java.security.cert.CertificateException  If a problem is encountered while generating
-   *                                the certificate fingerprint.
-   */
   private static String getFingerprint(final X509Certificate c,
                                        final MessageDigest d)
           throws CertificateException
@@ -464,16 +342,6 @@ public final class PromptTrustManager
 
 
 
-  /**
-   * Indicate whether to prompt about certificates contained in the cache if the
-   * current time is outside the validity window for the certificate.
-   *
-   * @return  {@code true} if the certificate validity time should be examined
-   *          for cached certificates and the user should be prompted if they
-   *          are expired or not yet valid, or {@code false} if cached
-   *          certificates should be accepted even outside of the validity
-   *          window.
-   */
   public boolean examineValidityDates()
   {
     return examineValidityDates;
@@ -481,17 +349,6 @@ public final class PromptTrustManager
 
 
 
-  /**
-   * Checks to determine whether the provided client certificate chain should be
-   * trusted.
-   *
-   * @param  chain     The client certificate chain for which to make the
-   *                   determination.
-   * @param  authType  The authentication type based on the client certificate.
-   *
-   * @throws  java.security.cert.CertificateException  If the provided client certificate chain
-   *                                should not be trusted.
-   */
   public void checkClientTrusted(final X509Certificate[] chain,
                                  final String authType)
          throws CertificateException
@@ -499,19 +356,6 @@ public final class PromptTrustManager
     checkCertificateChain(chain, false);
   }
 
-
-
-  /**
-   * Checks to determine whether the provided server certificate chain should be
-   * trusted.
-   *
-   * @param  chain     The server certificate chain for which to make the
-   *                   determination.
-   * @param  authType  The key exchange algorithm used.
-   *
-   * @throws  java.security.cert.CertificateException  If the provided server certificate chain
-   *                                should not be trusted.
-   */
   public void checkServerTrusted(final X509Certificate[] chain,
                                  final String authType)
          throws CertificateException
@@ -520,13 +364,6 @@ public final class PromptTrustManager
   }
 
 
-
-  /**
-   * Retrieves the accepted issuer certificates for this trust manager.  This
-   * will always return an empty array.
-   *
-   * @return  The accepted issuer certificates for this trust manager.
-   */
   public X509Certificate[] getAcceptedIssuers()
   {
     return new X509Certificate[0];

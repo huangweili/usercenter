@@ -1,23 +1,3 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -146,41 +126,19 @@ import static com.hwlcn.ldap.util.UtilityMessages.*;
 public final class ValuePattern
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 4502778464751705304L;
 
-
-
-  // Indicates whether the provided value pattern includes one or more
-  // back-references.
   private final boolean hasBackReference;
 
-  // The string that was originally used to create this value pattern.
   private final String pattern;
 
-  // The thread-local array list that will be used to hold values for
-  // back-references.
   private final ThreadLocal<ArrayList<String>> refLists;
 
-  // The thread-local string builder that will be used to build values.
   private final ThreadLocal<StringBuilder> buffers;
 
-  // The value pattern components that will be used to generate values.
   private final ValuePatternComponent[] components;
 
 
-
-  /**
-   * Creates a new value pattern from the provided string.
-   *
-   * @param  s  The string representation of the value pattern to create.  It
-   *            must not be {@code null}.
-   *
-   * @throws  java.text.ParseException  If the provided string cannot be parsed as a valid
-   *                          value pattern string.
-   */
   public ValuePattern(final String s)
          throws ParseException
   {
@@ -189,17 +147,6 @@ public final class ValuePattern
 
 
 
-  /**
-   * Creates a new value pattern from the provided string.
-   *
-   * @param  s  The string representation of the value pattern to create.  It
-   *            must not be {@code null}.
-   * @param  r  The seed to use for the random number generator.  It may be
-   *            {@code null} if no seed is required.
-   *
-   * @throws  java.text.ParseException  If the provided string cannot be parsed as a valid
-   *                          value pattern string.
-   */
   public ValuePattern(final String s, final Long r)
          throws ParseException
   {
@@ -255,33 +202,11 @@ public final class ValuePattern
 
 
 
-  /**
-   * Recursively parses the provided string into a list of value pattern
-   * components.
-   *
-   * @param  s    The string representation of the value pattern to create.  It
-   *              may be a portion of the entire value pattern string.
-   * @param  o    The offset of the first character of the provided string in
-   *              the full value pattern string.
-   * @param  l    The list into which the parsed components should be added.
-   * @param  r    The random number generator to use to seed random number
-   *              generators used by components.
-   * @param  ref  A value that may be updated if the pattern contains any
-   *              back-references.
-   *
-   * @throws  java.text.ParseException  If the provided string cannot be parsed as a valid
-   *                          value pattern string.
-   */
   private static void parse(final String s, final int o,
                             final ArrayList<ValuePatternComponent> l,
                             final Random r, final AtomicBoolean ref)
           throws ParseException
   {
-    // Find the first occurrence of "[[".  Parse the portion of the string
-    // before it, into the list, then add a string value pattern containing "[",
-    // then parse the portion of the string after it.
-    // First, parse out any occurrences of "[[" and replace them with string
-    // value pattern components containing only "[".
     int pos = s.indexOf("[[");
     if (pos >= 0)
     {
@@ -299,9 +224,6 @@ public final class ValuePattern
       return;
     }
 
-    // Find the first occurrence of "]]".  Parse the portion of the string
-    // before it, into the list, then add a string value pattern containing "]",
-    // then parse the portion of the string after it.
     pos = s.indexOf("]]");
     if (pos >= 0)
     {
@@ -319,9 +241,6 @@ public final class ValuePattern
       return;
     }
 
-    // Find the first occurrence of "[" and the corresponding "]".  The part
-    // before that will be a string.  Then parse out the numeric or URL
-    // component, and parse the rest of the string after the "]".
     pos = s.indexOf('[');
     if (pos >= 0)
     {
@@ -414,9 +333,6 @@ public final class ValuePattern
       return;
     }
 
-
-    // If there are any occurrences of "]" without a corresponding open, then
-    // that's invalid.
     pos = s.indexOf(']');
     if (pos >= 0)
     {
@@ -424,27 +340,12 @@ public final class ValuePattern
            ERR_VALUE_PATTERN_UNMATCHED_CLOSE.get(o+pos), (o+pos));
     }
 
-    // There are no brackets, so it's just a static string.
     l.add(new StringValuePatternComponent(s));
   }
 
 
 
-  /**
-   * Parses the specified portion of the provided string as either a
-   * sequential or random numeric value pattern component.
-   *
-   * @param  s  The string to parse, not including the square brackets.
-   * @param  o  The offset in the overall value pattern string at which the
-   *            provided substring begins.
-   * @param  r  The random number generator to use to seed random number
-   *            generators used by components.
-   *
-   * @return  The parsed numeric value pattern component.
-   *
-   * @throws  java.text.ParseException  If the specified substring cannot be parsed as a
-   *
-   */
+
   private static ValuePatternComponent parseNumericComponent(final String s,
                                                              final int o,
                                                              final Random r)
@@ -470,18 +371,15 @@ lowerBoundLoop:
         case '7':
         case '8':
         case '9':
-          // These are all acceptable.
           break;
 
         case '-':
           if (pos == 0)
           {
-            // This indicates that the value is negative.
             break;
           }
           else
           {
-            // This indicates the end of the lower bound.
             delimiterFound = true;
             sequential     = false;
 
@@ -563,13 +461,11 @@ upperBoundLoop:
         case '7':
         case '8':
         case '9':
-          // These are all acceptable.
           break;
 
         case '-':
           if (pos == startPos)
           {
-            // This indicates that the value is negative.
             break;
           }
           else
@@ -693,13 +589,11 @@ incrementLoop:
           case '7':
           case '8':
           case '9':
-            // These are all acceptable.
             break;
 
           case '-':
             if (pos == startPos)
             {
-              // This indicates that the value is negative.
               break;
             }
             else
@@ -794,11 +688,6 @@ incrementLoop:
 
 
 
-  /**
-   * Retrieves the next value generated from the value pattern.
-   *
-   * @return  The next value generated from the value pattern.
-   */
   public String nextValue()
   {
     StringBuilder buffer = buffers.get();
@@ -860,12 +749,6 @@ incrementLoop:
 
 
 
-  /**
-   * Retrieves a string representation of this value pattern, which will be the
-   * original pattern string used to create it.
-   *
-   * @return  A string representation of this value pattern.
-   */
   @Override()
   public String toString()
   {

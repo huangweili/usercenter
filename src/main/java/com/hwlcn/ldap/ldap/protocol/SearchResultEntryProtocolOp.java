@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -51,40 +32,19 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides an implementation of an LDAP search result entry protocol
- * op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class SearchResultEntryProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 6501366526364541767L;
 
-
-
-  // The list of attributes for this search result entry.
   private final List<Attribute> attributes;
 
-  // The entry DN for this search result entry.
   private final String dn;
 
-
-
-  /**
-   * Creates a new search result entry protocol op with the provided
-   * information.
-   *
-   * @param  dn          The entry DN for this search result entry.
-   * @param  attributes  The list of attributes to include in this search result
-   *                     entry.
-   */
   public SearchResultEntryProtocolOp(final String dn,
                                      final List<Attribute> attributes)
   {
@@ -92,13 +52,6 @@ public final class SearchResultEntryProtocolOp
     this.attributes = Collections.unmodifiableList(attributes);
   }
 
-
-
-  /**
-   * Creates a new search result entry protocol op from the provided entry.
-   *
-   * @param  entry  The entry to use to create this protocol op.
-   */
   public SearchResultEntryProtocolOp(final Entry entry)
   {
     dn = entry.getDN();
@@ -106,18 +59,6 @@ public final class SearchResultEntryProtocolOp
          entry.getAttributes()));
   }
 
-
-
-  /**
-   * Creates a new search result entry protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the search
-   *                 result entry protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         search result entry.
-   */
   SearchResultEntryProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -151,44 +92,21 @@ public final class SearchResultEntryProtocolOp
   }
 
 
-
-  /**
-   * Retrieves the DN for this search result entry.
-   *
-   * @return  The DN for this search result entry.
-   */
   public String getDN()
   {
     return dn;
   }
 
-
-
-  /**
-   * Retrieves the list of attributes for this search result entry.
-   *
-   * @return  The list of attributes for this search result entry.
-   */
   public List<Attribute> getAttributes()
   {
     return attributes;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_SEARCH_RESULT_ENTRY;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> attrElements =
@@ -203,18 +121,6 @@ public final class SearchResultEntryProtocolOp
          new ASN1Sequence(attrElements));
   }
 
-
-
-  /**
-   * Decodes the provided ASN.1 element as a search result entry protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded search result entry protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a search result entry protocol op.
-   */
   public static SearchResultEntryProtocolOp decodeProtocolOp(
                                                  final ASN1Element element)
          throws LDAPException
@@ -246,11 +152,6 @@ public final class SearchResultEntryProtocolOp
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -266,29 +167,11 @@ public final class SearchResultEntryProtocolOp
     opSequence.end();
   }
 
-
-
-  /**
-   * Creates a search result entry from this protocol op.
-   *
-   * @param  controls  The set of controls to include in the search result
-   *                   entry.  It may be empty or {@code null} if no controls
-   *                   should be included.
-   *
-   * @return  The search result entry that was created.
-   */
   public SearchResultEntry toSearchResultEntry(final Control... controls)
   {
     return new SearchResultEntry(dn, attributes, controls);
   }
 
-
-
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -297,11 +180,6 @@ public final class SearchResultEntryProtocolOp
     return buffer.toString();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("SearchResultEntryProtocolOp(dn='");

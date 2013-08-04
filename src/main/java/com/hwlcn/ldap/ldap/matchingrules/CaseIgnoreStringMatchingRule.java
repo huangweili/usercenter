@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.matchingrules;
 
 
@@ -29,116 +10,63 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
-
-/**
- * This class provides an implementation of a matching rule that uses
- * case-insensitive matching that also treats multiple consecutive (non-escaped)
- * spaces as a single space.
- */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class CaseIgnoreStringMatchingRule
        extends AcceptAllSimpleMatchingRule
 {
-  /**
-   * The singleton instance that will be returned from the {@code getInstance}
-   * method.
-   */
+
   private static final CaseIgnoreStringMatchingRule INSTANCE =
        new CaseIgnoreStringMatchingRule();
 
 
 
-  /**
-   * The name for the caseIgnoreMatch equality matching rule.
-   */
   public static final String EQUALITY_RULE_NAME = "caseIgnoreMatch";
 
 
 
-  /**
-   * The name for the caseIgnoreMatch equality matching rule, formatted in all
-   * lowercase characters.
-   */
   static final String LOWER_EQUALITY_RULE_NAME =
        toLowerCase(EQUALITY_RULE_NAME);
 
 
 
-  /**
-   * The OID for the caseIgnoreMatch equality matching rule.
-   */
   public static final String EQUALITY_RULE_OID = "2.5.13.2";
 
 
 
-  /**
-   * The name for the caseIgnoreOrderingMatch ordering matching rule.
-   */
   public static final String ORDERING_RULE_NAME = "caseIgnoreOrderingMatch";
 
 
-
-  /**
-   * The name for the caseIgnoreOrderingMatch ordering matching rule, formatted
-   * in all lowercase characters.
-   */
   static final String LOWER_ORDERING_RULE_NAME =
        toLowerCase(ORDERING_RULE_NAME);
 
 
-
-  /**
-   * The OID for the caseIgnoreOrderingMatch ordering matching rule.
-   */
   public static final String ORDERING_RULE_OID = "2.5.13.3";
 
 
 
-  /**
-   * The name for the caseIgnoreSubstringsMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_NAME = "caseIgnoreSubstringsMatch";
 
 
 
-  /**
-   * The name for the caseIgnoreSubstringsMatch substring matching rule,
-   * formatted in all lowercase characters.
-   */
   static final String LOWER_SUBSTRING_RULE_NAME =
        toLowerCase(SUBSTRING_RULE_NAME);
 
 
 
-  /**
-   * The OID for the caseIgnoreSubstringsMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_OID = "2.5.13.4";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -1293370922676445525L;
 
 
 
-  /**
-   * Creates a new instance of this case ignore string matching rule.
-   */
   public CaseIgnoreStringMatchingRule()
   {
-    // No implementation is required.
   }
 
 
 
-  /**
-   * Retrieves a singleton instance of this matching rule.
-   *
-   * @return  A singleton instance of this matching rule.
-   */
   public static CaseIgnoreStringMatchingRule getInstance()
   {
     return INSTANCE;
@@ -146,9 +74,6 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getEqualityMatchingRuleName()
   {
@@ -157,9 +82,7 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public String getEqualityMatchingRuleOID()
   {
@@ -168,9 +91,7 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public String getOrderingMatchingRuleName()
   {
@@ -179,9 +100,6 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getOrderingMatchingRuleOID()
   {
@@ -190,9 +108,6 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSubstringMatchingRuleName()
   {
@@ -200,10 +115,6 @@ public final class CaseIgnoreStringMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSubstringMatchingRuleOID()
   {
@@ -211,17 +122,11 @@ public final class CaseIgnoreStringMatchingRule
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean valuesMatch(final ASN1OctetString value1,
                              final ASN1OctetString value2)
   {
-    // Try to use a quick, no-copy determination if possible.  If this fails,
-    // then we'll fall back on a more thorough, but more costly, approach.
-    final byte[] value1Bytes = value1.getValue();
+   final byte[] value1Bytes = value1.getValue();
     final byte[] value2Bytes = value2.getValue();
     if (value1Bytes.length == value2Bytes.length)
     {
@@ -264,7 +169,6 @@ public final class CaseIgnoreStringMatchingRule
         }
       }
 
-      // If we've gotten to this point, then the values must be equal.
       return true;
     }
     else
@@ -276,9 +180,7 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public ASN1OctetString normalize(final ASN1OctetString value)
   {
@@ -287,9 +189,6 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ASN1OctetString normalizeSubstring(final ASN1OctetString value,
                                             final byte substringType)
@@ -299,19 +198,7 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * Normalizes the provided value for use in either an equality or substring
-   * matching operation.
-   *
-   * @param  value          The value to be normalized.
-   * @param  isSubstring    Indicates whether the value should be normalized as
-   *                        part of a substring assertion rather than an
-   *                        equality assertion.
-   * @param  substringType  The substring type for the element, if it is to be
-   *                        part of a substring assertion.
-   *
-   * @return  The appropriately normalized form of the provided value.
-   */
+
   private static ASN1OctetString normalizeInternal(final ASN1OctetString value,
                                                    final boolean isSubstring,
                                                    final byte substringType)
@@ -350,9 +237,7 @@ public final class CaseIgnoreStringMatchingRule
       trimFinal   = true;
     }
 
-    // Count the number of duplicate spaces in the value, and determine whether
-    // there are any non-space characters.  Also, see if there are any non-ASCII
-    // characters.
+
     boolean containsNonSpace = false;
     boolean lastWasSpace = trimInitial;
     int numDuplicates = 0;
@@ -392,7 +277,6 @@ public final class CaseIgnoreStringMatchingRule
     }
 
 
-    // Create a new byte array to hold the normalized value.
     lastWasSpace = trimInitial;
     int targetPos = 0;
     final byte[] normalizedBytes = new byte[valueBytes.length - numDuplicates];
@@ -403,12 +287,9 @@ public final class CaseIgnoreStringMatchingRule
         case ' ':
           if (lastWasSpace || (trimFinal && (i == (valueBytes.length - 1))))
           {
-            // No action is required.
           }
           else
           {
-            // This condition is needed to handle the special case in which
-            // there are multiple spaces at the end of the value.
             if (targetPos < normalizedBytes.length)
             {
               normalizedBytes[targetPos++] = ' ';
@@ -534,18 +415,6 @@ public final class CaseIgnoreStringMatchingRule
 
 
 
-  /**
-   * Normalizes the provided value a string representation, properly handling
-   * any non-ASCII characters.
-   *
-   * @param  value        The value to be normalized.
-   * @param  trimInitial  Indicates whether to trim off all leading spaces at
-   *                      the beginning of the value.
-   * @param  trimFinal    Indicates whether to trim off all trailing spaces at
-   *                      the end of the value.
-   *
-   * @return  The normalized form of the value.
-   */
   private static ASN1OctetString normalizeNonASCII(final ASN1OctetString value,
                                                    final boolean trimInitial,
                                                    final boolean trimFinal)
@@ -579,8 +448,6 @@ public final class CaseIgnoreStringMatchingRule
       }
     }
 
-    // It is possible that there could be an extra space at the end.  If that's
-    // the case, then remove it.
     if (trimFinal && (buffer.length() > 0) &&
         (buffer.charAt(buffer.length() - 1) == ' '))
     {

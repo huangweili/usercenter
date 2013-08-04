@@ -151,6 +151,5 @@ public final class DNEntrySource
   @Override()
   public void close()
   {
-    // No implementation is required.
   }
 }

@@ -1,23 +1,3 @@
-/*
- * Copyright 2010-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2010-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.extensions;
 
 
@@ -34,60 +14,18 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import static com.hwlcn.ldap.ldap.sdk.extensions.ExtOpMessages.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
-
-
-/**
- * This class provides an implementation of the aborted transaction extended
- * result as defined in
- * <A HREF="http://www.ietf.org/rfc/rfc5805.txt">RFC 5805</A>, which is used as
- * an unsolicited notification to indicate that the server has aborted an LDAP
- * transaction without the client's explicit request.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class AbortedTransactionExtendedResult
        extends ExtendedResult
 {
-  /**
-   * The OID (1.3.6.1.1.21.4) for the aborted transaction extended result.
-   */
+
   public static final String ABORTED_TRANSACTION_RESULT_OID = "1.3.6.1.1.21.4";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 7521522597566232465L;
 
-
-
-  // The transaction ID for the transaction that has been aborted.
   private final ASN1OctetString transactionID;
 
-
-
-  /**
-   * Creates a new instance of this aborted transaction extended result with the
-   * provided information.
-   *
-   * @param  transactionID      The transaction ID of the transaction that has
-   *                            been aborted.  It must not be {@code null}.
-   * @param  resultCode         The result code for this aborted transaction
-   *                            result.  It must not be {@code null}.
-   * @param  diagnosticMessage  The diagnostic message for this aborted
-   *                            transaction result.  It may be {@code null} if
-   *                            there is no diagnostic message.
-   * @param  matchedDN          The matched DN for this aborted transaction
-   *                            result.  It may be {@code null} if there is no
-   *                            matched DN.
-   * @param  referralURLs       The referral URLs for this aborted transaction
-   *                            result.  It may be {@code null} or empty if
-   *                            there are no referral URLs.
-   * @param  controls           The controls for this aborted transaction
-   *                            result.  It may be {@code null} or empty if
-   *                            there are no controls.
-   */
   public AbortedTransactionExtendedResult(final ASN1OctetString transactionID,
                                           final ResultCode resultCode,
                                           final String diagnosticMessage,
@@ -103,18 +41,6 @@ public final class AbortedTransactionExtendedResult
     this.transactionID = transactionID;
   }
 
-
-
-  /**
-   * Creates a new instance of this aborted transaction extended result from the
-   * provided generic extended result.
-   *
-   * @param  extendedResult  The extended result to use to create this aborted
-   *                         transaction extended result.
-   *
-   * @throws  LDAPException  If the provided extended result cannot be decoded
-   *                         as an aborted transaction extended result.
-   */
   public AbortedTransactionExtendedResult(final ExtendedResult extendedResult)
          throws LDAPException
   {
@@ -128,23 +54,11 @@ public final class AbortedTransactionExtendedResult
     }
   }
 
-
-
-  /**
-   * Retrieves the transaction ID of the transaction that has been aborted.
-   *
-   * @return  The transaction ID of the transaction that has been aborted.
-   */
   public ASN1OctetString getTransactionID()
   {
     return transactionID;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getExtendedResultName()
   {
@@ -152,14 +66,6 @@ public final class AbortedTransactionExtendedResult
   }
 
 
-
-  /**
-   * Appends a string representation of this extended result to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which a string representation of this
-   *                 extended result will be appended.
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

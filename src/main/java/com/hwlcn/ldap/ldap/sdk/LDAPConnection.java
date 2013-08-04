@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -191,162 +171,76 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class LDAPConnection
        implements LDAPInterface, ReferralConnector
 {
-  /**
-   * The counter that will be used when assigning connection IDs to connections.
-   */
+
   private static final AtomicLong NEXT_CONNECTION_ID = new AtomicLong(0L);
 
-
-
-  /**
-   * The default socket factory that will be used if no alternate factory is
-   * provided.
-   */
   private static final SocketFactory DEFAULT_SOCKET_FACTORY =
                                           SocketFactory.getDefault();
 
-
-
-  /**
-   * A set of weak references to schema objects that can be shared across
-   * connections if they are identical.
-   */
   private static final WeakHashSet<Schema> SCHEMA_SET =
        new WeakHashSet<Schema>();
 
-
-
-  // The connection pool with which this connection is associated, if
-  // applicable.
   private AbstractConnectionPool connectionPool;
 
-  // Indicates whether to perform a reconnect before the next write.
   private final AtomicBoolean needsReconnect;
 
-  // The last successful bind request processed on this connection.
   private BindRequest lastBindRequest;
 
-  // Indicates whether a request has been made to close this connection.
   private volatile boolean closeRequested;
 
-  // Indicates whether an unbind request has been sent over this connection.
   private volatile boolean unbindRequestSent;
 
-  // The disconnect information for this connection.
   private final AtomicReference<DisconnectInfo> disconnectInfo;
 
-  // The port of the server to which a connection should be re-established.
   private int reconnectPort = -1;
 
-  // The connection internals used to actually perform the network
-  // communication.
   private volatile LDAPConnectionInternals connectionInternals;
 
-  // The set of connection options for this connection.
   private LDAPConnectionOptions connectionOptions;
 
-  // The set of statistics for this connection.
   private final LDAPConnectionStatistics connectionStatistics;
 
-  // The unique identifier assigned to this connection when it was created.  It
-  // will not change over the life of the connection, even if the connection is
-  // closed and re-established (or even re-established to a different server).
   private final long connectionID;
 
-  // The time of the last rebind attempt.
   private long lastReconnectTime;
 
-  // The referral connector that will be used to establish connections to remote
-  // servers when following a referral.
   private volatile ReferralConnector referralConnector;
 
-  // The cached schema read from the server.
   private volatile Schema cachedSchema;
 
-  // The socket factory used for the last connection attempt.
   private SocketFactory lastUsedSocketFactory;
 
-  // The socket factory used to create sockets for subsequent connection
-  // attempts.
   private volatile SocketFactory socketFactory;
 
-  // A stack trace of the thread that last established this connection.
   private StackTraceElement[] connectStackTrace;
 
-  // The user-friendly name assigned to this connection.
   private String connectionName;
 
-  // The user-friendly name assigned to the connection pool with which this
-  // connection is associated.
   private String connectionPoolName;
 
-  // A string representation of the host and port to which the last connection
-  // attempt (whether successful or not, and whether it is still established)
-  // was made.
   private String hostPort;
 
-  // The address of the server to which a connection should be re-established.
   private String reconnectAddress;
 
-  // A timer that may be used to enforce timeouts for asynchronous operations.
   private Timer timer;
 
-
-
-  /**
-   * Creates a new LDAP connection using the default socket factory and default
-   * set of connection options.  No actual network connection will be
-   * established.
-   */
   public LDAPConnection()
   {
     this(null, null);
   }
 
 
-
-  /**
-   * Creates a new LDAP connection using the default socket factory and provided
-   * set of connection options.  No actual network connection will be
-   * established.
-   *
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   */
   public LDAPConnection(final LDAPConnectionOptions connectionOptions)
   {
     this(null, connectionOptions);
   }
 
-
-
-  /**
-   * Creates a new LDAP connection using the specified socket factory.  No
-   * actual network connection will be established.
-   *
-   * @param  socketFactory  The socket factory to use when establishing
-   *                        connections.  If it is {@code null}, then a default
-   *                        socket factory will be used.
-   */
   public LDAPConnection(final SocketFactory socketFactory)
   {
     this(socketFactory, null);
   }
 
 
-
-  /**
-   * Creates a new LDAP connection using the specified socket factory.  No
-   * actual network connection will be established.
-   *
-   * @param  socketFactory      The socket factory to use when establishing
-   *                            connections.  If it is {@code null}, then a
-   *                            default socket factory will be used.
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   */
   public LDAPConnection(final SocketFactory socketFactory,
                         final LDAPConnectionOptions connectionOptions)
   {
@@ -405,20 +299,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new, unauthenticated LDAP connection that is established to the
-   * specified server.
-   *
-   * @param  host  The address of the server to which the connection should be
-   *               established.  It must not be {@code null}.
-   * @param  port  The port number of the server to which the connection should
-   *               be established.  It should be a value between 1 and 65535,
-   *               inclusive.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final String host, final int port)
          throws LDAPException
   {
@@ -426,24 +306,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new, unauthenticated LDAP connection that is established to the
-   * specified server.
-   *
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   * @param  host               The address of the server to which the
-   *                            connection should be established.  It must not
-   *                            be {@code null}.
-   * @param  port               The port number of the server to which the
-   *                            connection should be established.  It should be
-   *                            a value between 1 and 65535, inclusive.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final LDAPConnectionOptions connectionOptions,
                         final String host, final int port)
          throws LDAPException
@@ -452,23 +314,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new, unauthenticated LDAP connection that is established to the
-   * specified server.
-   *
-   * @param  socketFactory  The socket factory to use when establishing
-   *                        connections.  If it is {@code null}, then a default
-   *                        socket factory will be used.
-   * @param  host           The address of the server to which the connection
-   *                        should be established.  It must not be {@code null}.
-   * @param  port           The port number of the server to which the
-   *                        connection should be established.  It should be a
-   *                        value between 1 and 65535, inclusive.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final SocketFactory socketFactory, final String host,
                         final int port)
          throws LDAPException
@@ -476,28 +321,6 @@ public final class LDAPConnection
     this(socketFactory, null, host, port);
   }
 
-
-
-  /**
-   * Creates a new, unauthenticated LDAP connection that is established to the
-   * specified server.
-   *
-   * @param  socketFactory      The socket factory to use when establishing
-   *                            connections.  If it is {@code null}, then a
-   *                            default socket factory will be used.
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   * @param  host               The address of the server to which the
-   *                            connection should be established.  It must not
-   *                            be {@code null}.
-   * @param  port               The port number of the server to which the
-   *                            connection should be established.  It should be
-   *                            a value between 1 and 65535, inclusive.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final SocketFactory socketFactory,
                         final LDAPConnectionOptions connectionOptions,
                         final String host, final int port)
@@ -508,26 +331,6 @@ public final class LDAPConnection
     connect(host, port);
   }
 
-
-
-  /**
-   * Creates a new LDAP connection that is established to the specified server
-   * and is authenticated as the specified user (via LDAP simple
-   * authentication).
-   *
-   * @param  host          The address of the server to which the connection
-   *                       should be established.  It must not be {@code null}.
-   * @param  port          The port number of the server to which the
-   *                       connection should be established.  It should be a
-   *                       value between 1 and 65535, inclusive.
-   * @param  bindDN        The DN to use to authenticate to the directory
-   *                       server.
-   * @param  bindPassword  The password to use to authenticate to the directory
-   *                       server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final String host, final int port, final String bindDN,
                         final String bindPassword)
          throws LDAPException
@@ -536,29 +339,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new LDAP connection that is established to the specified server
-   * and is authenticated as the specified user (via LDAP simple
-   * authentication).
-   *
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   * @param  host               The address of the server to which the
-   *                            connection should be established.  It must not
-   *                            be {@code null}.
-   * @param  port               The port number of the server to which the
-   *                            connection should be established.  It should be
-   *                            a value between 1 and 65535, inclusive.
-   * @param  bindDN             The DN to use to authenticate to the directory
-   *                            server.
-   * @param  bindPassword       The password to use to authenticate to the
-   *                            directory server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final LDAPConnectionOptions connectionOptions,
                         final String host, final int port, final String bindDN,
                         final String bindPassword)
@@ -568,28 +348,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new LDAP connection that is established to the specified server
-   * and is authenticated as the specified user (via LDAP simple
-   * authentication).
-   *
-   * @param  socketFactory  The socket factory to use when establishing
-   *                        connections.  If it is {@code null}, then a default
-   *                        socket factory will be used.
-   * @param  host           The address of the server to which the connection
-   *                        should be established.  It must not be {@code null}.
-   * @param  port           The port number of the server to which the
-   *                        connection should be established.  It should be a
-   *                        value between 1 and 65535, inclusive.
-   * @param  bindDN         The DN to use to authenticate to the directory
-   *                        server.
-   * @param  bindPassword   The password to use to authenticate to the directory
-   *                        server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final SocketFactory socketFactory, final String host,
                         final int port, final String bindDN,
                         final String bindPassword)
@@ -599,32 +357,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Creates a new LDAP connection that is established to the specified server
-   * and is authenticated as the specified user (via LDAP simple
-   * authentication).
-   *
-   * @param  socketFactory      The socket factory to use when establishing
-   *                            connections.  If it is {@code null}, then a
-   *                            default socket factory will be used.
-   * @param  connectionOptions  The set of connection options to use for this
-   *                            connection.  If it is {@code null}, then a
-   *                            default set of options will be used.
-   * @param  host               The address of the server to which the
-   *                            connection should be established.  It must not
-   *                            be {@code null}.
-   * @param  port               The port number of the server to which the
-   *                            connection should be established.  It should be
-   *                            a value between 1 and 65535, inclusive.
-   * @param  bindDN             The DN to use to authenticate to the directory
-   *                            server.
-   * @param  bindPassword       The password to use to authenticate to the
-   *                            directory server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to connect to
-   *                         the specified server.
-   */
   public LDAPConnection(final SocketFactory socketFactory,
                         final LDAPConnectionOptions connectionOptions,
                         final String host, final int port, final String bindDN,
@@ -647,28 +379,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Establishes an unauthenticated connection to the directory server using the
-   * provided information.  If the connection is already established, then it
-   * will be closed and re-established.
-   * <BR><BR>
-   * If this method is invoked while any operations are in progress on this
-   * connection, then the directory server may or may not abort processing for
-   * those operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation.  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to re-establish an active connection.
-   *
-   * @param  host  The address of the server to which the connection should be
-   *               established.  It must not be {@code null}.
-   * @param  port  The port number of the server to which the connection should
-   *               be established.  It should be a value between 1 and 65535,
-   *               inclusive.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while attempting to establish
-   *                         the connection.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public void connect(final String host, final int port)
          throws LDAPException
@@ -676,34 +386,6 @@ public final class LDAPConnection
     connect(host, port, connectionOptions.getConnectTimeoutMillis());
   }
 
-
-
-  /**
-   * Establishes an unauthenticated connection to the directory server using the
-   * provided information.  If the connection is already established, then it
-   * will be closed and re-established.
-   * <BR><BR>
-   * If this method is invoked while any operations are in progress on this
-   * connection, then the directory server may or may not abort processing for
-   * those operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation.  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to re-establish an active connection.
-   *
-   * @param  host     The address of the server to which the connection should
-   *                  be established.  It must not be {@code null}.
-   * @param  port     The port number of the server to which the connection
-   *                  should be established.  It should be a value between 1 and
-   *                  65535, inclusive.
-   * @param  timeout  The maximum length of time in milliseconds to wait for the
-   *                  connection to be established before failing, or zero to
-   *                  indicate that no timeout should be enforced (although if
-   *                  the attempt stalls long enough, then the underlying
-   *                  operating system may cause it to timeout).
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while attempting to establish
-   *                         the connection.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public void connect(final String host, final int port, final int timeout)
          throws LDAPException
@@ -758,21 +440,12 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Attempts to re-establish a connection to the server and re-authenticate if
-   * appropriate.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to re-connect
-   *                         or re-authenticate.
-   */
   public void reconnect()
          throws LDAPException
   {
     needsReconnect.set(false);
     if ((System.currentTimeMillis() - lastReconnectTime) < 1000L)
     {
-      // If the last reconnect attempt was less than 1 second ago, then abort.
       throw new LDAPException(ResultCode.SERVER_DOWN,
                               ERR_CONN_MULTIPLE_FAILURES.get());
     }
@@ -818,25 +491,12 @@ public final class LDAPConnection
     lastReconnectTime = System.currentTimeMillis();
   }
 
-
-
-  /**
-   * Sets a flag indicating that the connection should be re-established before
-   * sending the next request.
-   */
   void setNeedsReconnect()
   {
     needsReconnect.set(true);
   }
 
 
-
-  /**
-   * Indicates whether this connection is currently established.
-   *
-   * @return  {@code true} if this connection is currently established, or
-   *          {@code false} if it is not.
-   */
   public boolean isConnected()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -856,19 +516,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Converts this clear-text connection to one that encrypts all communication
-   * using Transport Layer Security.  This method is intended for use as a
-   * helper for processing in the course of the StartTLS extended operation and
-   * should not be used for other purposes.
-   *
-   * @param  sslContext  The SSL context to use when performing the negotiation.
-   *                     It must not be {@code null}.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while converting this
-   *                         connection to use TLS.
-   */
   void convertToTLS(final SSLContext sslContext)
        throws LDAPException
   {
@@ -884,29 +531,11 @@ public final class LDAPConnection
     }
   }
 
-
-  /**
-   * Retrieves the set of connection options for this connection.  Changes to
-   * the object that is returned will directly impact this connection.
-   *
-   * @return  The set of connection options for this connection.
-   */
   public LDAPConnectionOptions getConnectionOptions()
   {
     return connectionOptions;
   }
 
-
-
-  /**
-   * Specifies the set of connection options for this connection.  Some changes
-   * may not take effect for operations already in progress, and some changes
-   * may not take effect for a connection that is already established.
-   *
-   * @param  connectionOptions  The set of connection options for this
-   *                            connection.  It may be {@code null} if a default
-   *                            set of options is to be used.
-   */
   public void setConnectionOptions(
                    final LDAPConnectionOptions connectionOptions)
   {
@@ -944,15 +573,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the socket factory that was used when creating the socket for the
-   * last connection attempt (whether successful or unsuccessful) for this LDAP
-   * connection.
-   *
-   * @return  The socket factory that was used when creating the socket for the
-   *          last connection attempt for this LDAP connection, or {@code null}
-   *          if no attempt has yet been made to establish this connection.
-   */
   public SocketFactory getLastUsedSocketFactory()
   {
     return lastUsedSocketFactory;
@@ -960,28 +580,12 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the socket factory to use to create the socket for subsequent
-   * connection attempts.  This may or may not be the socket factory that was
-   * used to create the current established connection.
-   *
-   * @return  The socket factory to use to create the socket for subsequent
-   *          connection attempts.
-   */
   public SocketFactory getSocketFactory()
   {
     return socketFactory;
   }
 
 
-
-  /**
-   * Specifies the socket factory to use to create the socket for subsequent
-   * connection attempts.  This will not impact any established connection.
-   *
-   * @param  socketFactory  The socket factory to use to create the socket for
-   *                        subsequent connection attempts.
-   */
   public void setSocketFactory(final SocketFactory socketFactory)
   {
     if (socketFactory == null)
@@ -994,46 +598,18 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Retrieves a value that uniquely identifies this connection within the JVM
-   * Each {@code LDAPConnection} object will be assigned a different connection
-   * ID, and that connection ID will not change over the life of the object,
-   * even if the connection is closed and re-established (whether re-established
-   * to the same server or a different server).
-   *
-   * @return  A value that uniquely identifies this connection within the JVM.
-   */
   public long getConnectionID()
   {
     return connectionID;
   }
 
 
-
-  /**
-   * Retrieves the user-friendly name that has been assigned to this connection.
-   *
-   * @return  The user-friendly name that has been assigned to this connection,
-   *          or {@code null} if none has been assigned.
-   */
   public String getConnectionName()
   {
     return connectionName;
   }
 
 
-
-  /**
-   * Specifies the user-friendly name that should be used for this connection.
-   * This name may be used in debugging to help identify the purpose of this
-   * connection.  This will have no effect for connections which are part of a
-   * connection pool.
-   *
-   * @param  connectionName  The user-friendly name that should be used for this
-   *                         connection.
-   */
   public void setConnectionName(final String connectionName)
   {
     if (connectionPool == null)
@@ -1049,45 +625,18 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the connection pool with which this connection is associated, if
-   * any.
-   *
-   * @return  The connection pool with which this connection is associated, or
-   *          {@code null} if it is not associated with any connection pool.
-   */
   AbstractConnectionPool getConnectionPool()
   {
     return connectionPool;
   }
 
 
-
-  /**
-   * Retrieves the user-friendly name that has been assigned to the connection
-   * pool with which this connection is associated.
-   *
-   * @return  The user-friendly name that has been assigned to the connection
-   *          pool with which this connection is associated, or {@code null} if
-   *          none has been assigned or this connection is not associated with a
-   *          connection pool.
-   */
   public String getConnectionPoolName()
   {
     return connectionPoolName;
   }
 
 
-
-  /**
-   * Specifies the user-friendly name that should be used for the connection
-   * pool with which this connection is associated.
-   *
-   * @param  connectionPoolName  The user-friendly name that should be used for
-   *                             the connection pool with which this connection
-   *                             is associated.
-   */
   void setConnectionPoolName(final String connectionPoolName)
   {
     this.connectionPoolName = connectionPoolName;
@@ -1100,17 +649,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves a string representation of the host and port for the server to
-   * to which the last connection attempt was made.  It does not matter whether
-   * the connection attempt was successful, nor does it matter whether it is
-   * still established.  This is intended for internal use in error messages.
-   *
-   * @return  A string representation of the host and port for the server to
-   *          which the last connection attempt was made, or an empty string if
-   *          no connection attempt has yet been made on this connection.
-   */
   String getHostPort()
   {
     if (hostPort == null)
@@ -1124,15 +662,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the address of the directory server to which this connection is
-   * currently established.
-   *
-   * @return  The address of the directory server to which this connection is
-   *          currently established, or {@code null} if the connection is not
-   *          established.
-   */
   public String getConnectedAddress()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -1148,13 +677,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the port of the directory server to which this connection is
-   * currently established.
-   *
-   * @return  The port of the directory server to which this connection is
-   *          currently established, or -1 if the connection is not established.
-   */
   public int getConnectedPort()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -1169,49 +691,18 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves a stack trace of the thread that last attempted to establish this
-   * connection.  Note that this will only be available if an attempt has been
-   * made to establish this connection and the
-   * {@link LDAPConnectionOptions#captureConnectStackTrace()} method for the
-   * associated connection options returns {@code true}.
-   *
-   * @return  A stack trace of the thread that last attempted to establish this
-   *          connection, or {@code null} connect stack traces are not enabled,
-   *          or if no attempt has been made to establish this connection.
-   */
   public StackTraceElement[] getConnectStackTrace()
   {
     return connectStackTrace;
   }
 
 
-
-  /**
-   * Provides a stack trace for the thread that last attempted to establish this
-   * connection.
-   *
-   * @param  connectStackTrace  A stack trace for the thread that last attempted
-   *                            to establish this connection.
-   */
   void setConnectStackTrace(final StackTraceElement[] connectStackTrace)
   {
     this.connectStackTrace = connectStackTrace;
   }
 
 
-
-  /**
-   * Unbinds from the server and closes the connection.
-   * <BR><BR>
-   * If this method is invoked while any operations are in progress on this
-   * connection, then the directory server may or may not abort processing for
-   * those operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation.  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to close an active connection.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public void close()
   {
@@ -1229,22 +720,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Unbinds from the server and closes the connection, optionally including
-   * the provided set of controls in the unbind request.
-   * <BR><BR>
-   * If this method is invoked while any operations are in progress on this
-   * connection, then the directory server may or may not abort processing for
-   * those operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation.  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to close an active connection.
-   *
-   * @param  controls  The set of controls to include in the unbind request.  It
-   *                   may be {@code null} if there are not to be any controls
-   *                   sent in the unbind request.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public void close(final Control[] controls)
   {
@@ -1261,18 +736,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Unbinds from the server and closes the connection, optionally including the
-   * provided set of controls in the unbind request.  This method is only
-   * intended for internal use, since it does not make any attempt to release
-   * the connection back to its associated connection pool, if there is one.
-   *
-   * @param  controls  The set of controls to include in the unbind request.  It
-   *                   may be {@code null} if there are not to be any controls
-   *                   sent in the unbind request.
-   */
   void terminate(final Control[] controls)
   {
     if (isConnected() && (! unbindRequestSent))
@@ -1300,58 +763,24 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Indicates whether a request has been made to close this connection.
-   *
-   * @return  {@code true} if a request has been made to close this connection,
-   *          or {@code false} if not.
-   */
   boolean closeRequested()
   {
     return closeRequested;
   }
 
 
-
-  /**
-   * Indicates whether an unbind request has been sent over this connection.
-   *
-   * @return  {@code true} if an unbind request has been sent over this
-   *          connection, or {@code false} if not.
-   */
   boolean unbindRequestSent()
   {
     return unbindRequestSent;
   }
 
 
-
-  /**
-   * Indicates that this LDAP connection is part of the specified
-   * connection pool.
-   *
-   * @param  connectionPool  The connection pool with which this LDAP connection
-   *                         is associated.
-   */
   void setConnectionPool(final AbstractConnectionPool connectionPool)
   {
     this.connectionPool = connectionPool;
   }
 
 
-
-  /**
-   * Retrieves the directory server root DSE, which provides information about
-   * the directory server, including the capabilities that it provides and the
-   * type of data that it is configured to handle.
-   *
-   * @return  The directory server root DSE, or {@code null} if it is not
-   *          available.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to retrieve
-   *                         the server root DSE.
-   */
   public RootDSE getRootDSE()
          throws LDAPException
   {
@@ -1359,21 +788,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the directory server schema definitions, using the subschema
-   * subentry DN contained in the server's root DSE.  For directory servers
-   * containing a single schema, this should be sufficient for all purposes.
-   * For servers with multiple schemas, it may be necessary to specify the DN
-   * of the target entry for which to obtain the associated schema.
-   *
-   * @return  The directory server schema definitions, or {@code null} if the
-   *          schema information could not be retrieved (e.g, the client does
-   *          not have permission to read the server schema).
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to retrieve
-   *                         the server schema.
-   */
   public Schema getSchema()
          throws LDAPException
   {
@@ -1381,47 +795,12 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the directory server schema definitions that govern the specified
-   * entry.  The subschemaSubentry attribute will be retrieved from the target
-   * entry, and then the appropriate schema definitions will be loaded from the
-   * entry referenced by that attribute.  This may be necessary to ensure
-   * correct behavior in servers that support multiple schemas.
-   *
-   * @param  entryDN  The DN of the entry for which to retrieve the associated
-   *                  schema definitions.  It may be {@code null} or an empty
-   *                  string if the subschemaSubentry attribute should be
-   *                  retrieved from the server's root DSE.
-   *
-   * @return  The directory server schema definitions, or {@code null} if the
-   *          schema information could not be retrieved (e.g, the client does
-   *          not have permission to read the server schema).
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while attempting to retrieve
-   *                         the server schema.
-   */
   public Schema getSchema(final String entryDN)
          throws LDAPException
   {
     return Schema.getSchema(this, entryDN);
   }
 
-
-
-  /**
-   * Retrieves the entry with the specified DN.  All user attributes will be
-   * requested in the entry to return.
-   *
-   * @param  dn  The DN of the entry to retrieve.  It must not be {@code null}.
-   *
-   * @return  The requested entry, or {@code null} if the target entry does not
-   *          exist or no entry was returned (e.g., if the authenticated user
-   *          does not have permission to read the target entry).
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   public SearchResultEntry getEntry(final String dn)
          throws LDAPException
   {
@@ -1429,23 +808,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the entry with the specified DN.
-   *
-   * @param  dn          The DN of the entry to retrieve.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to request for the target entry.
-   *                     If it is {@code null}, then all user attributes will be
-   *                     requested.
-   *
-   * @return  The requested entry, or {@code null} if the target entry does not
-   *          exist or no entry was returned (e.g., if the authenticated user
-   *          does not have permission to read the target entry).
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   public SearchResultEntry getEntry(final String dn, final String... attributes)
          throws LDAPException
   {
@@ -1487,16 +849,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes an abandon request with the provided information.
-   *
-   * @param  requestID  The async request ID for the request to abandon.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request to
-   *                         the server.
-   */
   public void abandon(final AsyncRequestID requestID)
          throws LDAPException
   {
@@ -1504,18 +856,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an abandon request with the provided information.
-   *
-   * @param  requestID  The async request ID for the request to abandon.
-   * @param  controls   The set of controls to include in the abandon request.
-   *                    It may be {@code null} or empty if there are no
-   *                    controls.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request to
-   *                         the server.
-   */
   public void abandon(final AsyncRequestID requestID, final Control[] controls)
          throws LDAPException
   {
@@ -1538,17 +878,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Sends an abandon request with the provided information.
-   *
-   * @param  messageID  The message ID for the request to abandon.
-   * @param  controls   The set of controls to include in the abandon request.
-   *                    It may be {@code null} or empty if there are no
-   *                    controls.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request to
-   *                         the server.
-   */
   void abandon(final int messageID, final Control... controls)
        throws LDAPException
   {
@@ -1564,21 +893,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an add operation with the provided information.
-   *
-   * @param  dn          The DN of the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final String dn, final Attribute... attributes)
          throws LDAPException
   {
@@ -1588,21 +902,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an add operation with the provided information.
-   *
-   * @param  dn          The DN of the entry to add.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes to include in the entry to add.
-   *                     It must not be {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final String dn, final Collection<Attribute> attributes)
          throws LDAPException
   {
@@ -1612,18 +911,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an add operation with the provided information.
-   *
-   * @param  entry  The entry to add.  It must not be {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final Entry entry)
          throws LDAPException
   {
@@ -1633,22 +920,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an add operation with the provided information.
-   *
-   * @param  ldifLines  The lines that comprise an LDIF representation of the
-   *                    entry to add.  It must not be empty or {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  LDIFException  If the provided entry lines cannot be decoded as an
-   *                         entry in LDIF form.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final String... ldifLines)
          throws LDIFException, LDAPException
   {
@@ -1656,19 +927,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided add request.
-   *
-   * @param  addRequest  The add request to be processed.  It must not be
-   *                     {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final AddRequest addRequest)
          throws LDAPException
   {
@@ -1688,19 +946,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided add request.
-   *
-   * @param  addRequest  The add request to be processed.  It must not be
-   *                     {@code null}.
-   *
-   * @return  The result of processing the add operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the add request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult add(final ReadOnlyAddRequest addRequest)
          throws LDAPException
   {
@@ -1708,20 +953,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided add request as an asynchronous operation.
-   *
-   * @param  addRequest      The add request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the add operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncAdd(final AddRequest addRequest,
                                  final AsyncResultListener resultListener)
          throws LDAPException
@@ -1738,20 +969,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided add request as an asynchronous operation.
-   *
-   * @param  addRequest      The add request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the add operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncAdd(final ReadOnlyAddRequest addRequest,
                                  final AsyncResultListener resultListener)
          throws LDAPException
@@ -1767,31 +984,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Processes a simple bind request with the provided DN and password.
-   * <BR><BR>
-   * The LDAP protocol specification forbids clients from attempting to perform
-   * a bind on a connection in which one or more other operations are already in
-   * progress.  If a bind is attempted while any operations are in progress,
-   * then the directory server may or may not abort processing for those
-   * operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation (unless the bind
-   * request is one that will not cause the server to attempt to change the
-   * identity of this connection, for example by including the retain identity
-   * request control in the bind request if using the Commercial Edition of the
-   * LDAP SDK in conjunction with an UnboundID Directory Server).  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to perform a bind on an active connection.
-   *
-   * @param  bindDN    The bind DN for the bind operation.
-   * @param  password  The password for the simple bind operation.
-   *
-   * @return  The result of processing the bind operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the bind request, or if a
-   *                         problem occurs while sending the request or reading
-   *                         the response.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public BindResult bind(final String bindDN, final String password)
          throws LDAPException
@@ -1800,32 +992,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided bind request.
-   * <BR><BR>
-   * The LDAP protocol specification forbids clients from attempting to perform
-   * a bind on a connection in which one or more other operations are already in
-   * progress.  If a bind is attempted while any operations are in progress,
-   * then the directory server may or may not abort processing for those
-   * operations, depending on the type of operation and how far along the
-   * server has already gotten while processing that operation (unless the bind
-   * request is one that will not cause the server to attempt to change the
-   * identity of this connection, for example by including the retain identity
-   * request control in the bind request if using the Commercial Edition of the
-   * LDAP SDK in conjunction with an UnboundID Directory Server).  It is
-   * recommended that all active operations be abandoned, canceled, or allowed
-   * to complete before attempting to perform a bind on an active connection.
-   *
-   * @param  bindRequest  The bind request to be processed.  It must not be
-   *                      {@code null}.
-   *
-   * @return  The result of processing the bind operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the bind request, or if a
-   *                         problem occurs while sending the request or reading
-   *                         the response.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public BindResult bind(final BindRequest bindRequest)
          throws LDAPException
@@ -1838,10 +1004,7 @@ public final class LDAPConnection
 
     if (bindResult.getResultCode().equals(ResultCode.SUCCESS))
     {
-      // We don't want to update the last bind request or update the cached
-      // schema for this connection if it included the retain identity control.
-      // However, that's only available in the Commercial Edition, so just
-      // reference it by OID here.
+
       boolean hasRetainIdentityControl = false;
       for (final Control c : bindRequest.getControls())
       {
@@ -1883,23 +1046,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes a compare operation with the provided information.
-   *
-   * @param  dn              The DN of the entry in which to make the
-   *                         comparison.  It must not be {@code null}.
-   * @param  attributeName   The attribute name for which to make the
-   *                         comparison.  It must not be {@code null}.
-   * @param  assertionValue  The assertion value to verify in the target entry.
-   *                         It must not be {@code null}.
-   *
-   * @return  The result of processing the compare operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the compare request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public CompareResult compare(final String dn, final String attributeName,
                                final String assertionValue)
          throws LDAPException
@@ -1910,19 +1056,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided compare request.
-   *
-   * @param  compareRequest  The compare request to be processed.  It must not
-   *                         be {@code null}.
-   *
-   * @return  The result of processing the compare operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the compare request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public CompareResult compare(final CompareRequest compareRequest)
          throws LDAPException
   {
@@ -1941,19 +1074,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided compare request.
-   *
-   * @param  compareRequest  The compare request to be processed.  It must not
-   *                         be {@code null}.
-   *
-   * @return  The result of processing the compare operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the compare request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public CompareResult compare(final ReadOnlyCompareRequest compareRequest)
          throws LDAPException
   {
@@ -1961,20 +1081,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided compare request as an asynchronous operation.
-   *
-   * @param  compareRequest  The compare request to be processed.  It must not
-   *                         be {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the compare operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncCompare(final CompareRequest compareRequest,
                              final AsyncCompareResultListener resultListener)
          throws LDAPException
@@ -1990,21 +1096,6 @@ public final class LDAPConnection
     return compareRequest.processAsync(this, resultListener);
   }
 
-
-
-  /**
-   * Processes the provided compare request as an asynchronous operation.
-   *
-   * @param  compareRequest  The compare request to be processed.  It must not
-   *                         be {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the compare operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncCompare(
                              final ReadOnlyCompareRequest compareRequest,
                              final AsyncCompareResultListener resultListener)
@@ -2020,18 +1111,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Deletes the entry with the specified DN.
-   *
-   * @param  dn  The DN of the entry to delete.  It must not be {@code null}.
-   *
-   * @return  The result of processing the delete operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the delete request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult delete(final String dn)
          throws LDAPException
   {
@@ -2039,19 +1118,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided delete request.
-   *
-   * @param  deleteRequest  The delete request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  The result of processing the delete operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the delete request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult delete(final DeleteRequest deleteRequest)
          throws LDAPException
   {
@@ -2071,19 +1137,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided delete request.
-   *
-   * @param  deleteRequest  The delete request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  The result of processing the delete operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the delete request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult delete(final ReadOnlyDeleteRequest deleteRequest)
          throws LDAPException
   {
@@ -2092,19 +1145,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Processes the provided delete request as an asynchronous operation.
-   *
-   * @param  deleteRequest   The delete request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the delete operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncDelete(final DeleteRequest deleteRequest,
                              final AsyncResultListener resultListener)
          throws LDAPException
@@ -2121,20 +1161,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided delete request as an asynchronous operation.
-   *
-   * @param  deleteRequest   The delete request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the delete operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncDelete(final ReadOnlyDeleteRequest deleteRequest,
                              final AsyncResultListener resultListener)
          throws LDAPException
@@ -2149,38 +1175,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an extended request with the provided request OID.  Note that
-   * because some types of extended operations return unusual result codes under
-   * "normal" conditions, the server may not always throw an exception for a
-   * failed extended operation like it does for other types of operations.  It
-   * will throw an exception under conditions where there appears to be a
-   * problem with the connection or the server to which the connection is
-   * established, but there may be many circumstances in which an extended
-   * operation is not processed correctly but this method does not throw an
-   * exception.  In the event that no exception is thrown, it is the
-   * responsibility of the caller to interpret the result to determine whether
-   * the operation was processed as expected.
-   * <BR><BR>
-   * Note that extended operations which may change the state of this connection
-   * (e.g., the StartTLS extended operation, which will add encryption to a
-   * previously-unencrypted connection) should not be invoked while any other
-   * operations are active on the connection.  It is recommended that all active
-   * operations be abandoned, canceled, or allowed to complete before attempting
-   * to process an extended operation that may change the state of this
-   * connection.
-   *
-   * @param  requestOID  The OID for the extended request to process.  It must
-   *                     not be {@code null}.
-   *
-   * @return  The extended result object that provides information about the
-   *          result of the request processing.  It may or may not indicate that
-   *          the operation was successful.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public ExtendedResult processExtendedOperation(final String requestOID)
          throws LDAPException
@@ -2191,41 +1185,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes an extended request with the provided request OID and value.
-   * Note that because some types of extended operations return unusual result
-   * codes under "normal" conditions, the server may not always throw an
-   * exception for a failed extended operation like it does for other types of
-   * operations.  It will throw an exception under conditions where there
-   * appears to be a problem with the connection or the server to which the
-   * connection is established, but there may be many circumstances in which an
-   * extended operation is not processed correctly but this method does not
-   * throw an exception.  In the event that no exception is thrown, it is the
-   * responsibility of the caller to interpret the result to determine whether
-   * the operation was processed as expected.
-   * <BR><BR>
-   * Note that extended operations which may change the state of this connection
-   * (e.g., the StartTLS extended operation, which will add encryption to a
-   * previously-unencrypted connection) should not be invoked while any other
-   * operations are active on the connection.  It is recommended that all active
-   * operations be abandoned, canceled, or allowed to complete before attempting
-   * to process an extended operation that may change the state of this
-   * connection.
-   *
-   * @param  requestOID    The OID for the extended request to process.  It must
-   *                       not be {@code null}.
-   * @param  requestValue  The encoded value for the extended request to
-   *                       process.  It may be {@code null} if there does not
-   *                       need to be a value for the requested operation.
-   *
-   * @return  The extended result object that provides information about the
-   *          result of the request processing.  It may or may not indicate that
-   *          the operation was successful.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public ExtendedResult processExtendedOperation(final String requestOID,
                              final ASN1OctetString requestValue)
@@ -2238,37 +1197,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided extended request.  Note that because some types of
-   * extended operations return unusual result codes under "normal" conditions,
-   * the server may not always throw an exception for a failed extended
-   * operation like it does for other types of operations.  It will throw an
-   * exception under conditions where there appears to be a problem with the
-   * connection or the server to which the connection is established, but there
-   * may be many circumstances in which an extended operation is not processed
-   * correctly but this method does not throw an exception.  In the event that
-   * no exception is thrown, it is the responsibility of the caller to interpret
-   * the result to determine whether the operation was processed as expected.
-   * <BR><BR>
-   * Note that extended operations which may change the state of this connection
-   * (e.g., the StartTLS extended operation, which will add encryption to a
-   * previously-unencrypted connection) should not be invoked while any other
-   * operations are active on the connection.  It is recommended that all active
-   * operations be abandoned, canceled, or allowed to complete before attempting
-   * to process an extended operation that may change the state of this
-   * connection.
-   *
-   * @param  extendedRequest  The extended request to be processed.  It must not
-   *                          be {@code null}.
-   *
-   * @return  The extended result object that provides information about the
-   *          result of the request processing.  It may or may not indicate that
-   *          the operation was successful.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.
-   */
   @ThreadSafety(level=ThreadSafetyLevel.METHOD_NOT_THREADSAFE)
   public ExtendedResult processExtendedOperation(
                                final ExtendedRequest extendedRequest)
@@ -2303,20 +1231,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Applies the provided modification to the specified entry.
-   *
-   * @param  dn   The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mod  The modification to apply to the target entry.  It must not
-   *              be {@code null}.
-   *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult modify(final String dn, final Modification mod)
          throws LDAPException
   {
@@ -2327,18 +1241,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Applies the provided set of modifications to the specified entry.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the target entry.  It
-   *               must not be {@code null} or empty.  *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult modify(final String dn, final Modification... mods)
          throws LDAPException
   {
@@ -2348,20 +1250,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Applies the provided set of modifications to the specified entry.
-   *
-   * @param  dn    The DN of the entry to modify.  It must not be {@code null}.
-   * @param  mods  The set of modifications to apply to the target entry.  It
-   *               must not be {@code null} or empty.
-   *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult modify(final String dn, final List<Modification> mods)
          throws LDAPException
   {
@@ -2371,25 +1259,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes a modify request from the provided LDIF representation of the
-   * changes.
-   *
-   * @param  ldifModificationLines  The lines that comprise an LDIF
-   *                                representation of a modify change record.
-   *                                It must not be {@code null} or empty.
-   *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  LDIFException  If the provided set of lines cannot be parsed as an
-   *                         LDIF modify change record.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   *
-   */
   public LDAPResult modify(final String... ldifModificationLines)
          throws LDIFException, LDAPException
   {
@@ -2399,19 +1268,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify request.
-   *
-   * @param  modifyRequest  The modify request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult modify(final ModifyRequest modifyRequest)
          throws LDAPException
   {
@@ -2431,19 +1287,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify request.
-   *
-   * @param  modifyRequest  The modify request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  The result of processing the modify operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify request, or if a
-   *                         problem is encountered while sending the request or
-   *                         reading the response.
-   */
   public LDAPResult modify(final ReadOnlyModifyRequest modifyRequest)
          throws LDAPException
   {
@@ -2451,20 +1294,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify request as an asynchronous operation.
-   *
-   * @param  modifyRequest   The modify request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the modify operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncModify(final ModifyRequest modifyRequest,
                              final AsyncResultListener resultListener)
          throws LDAPException
@@ -2481,20 +1310,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify request as an asynchronous operation.
-   *
-   * @param  modifyRequest   The modify request to be processed.  It must not be
-   *                         {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the modify operation.  It must not be
-   *                         {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncModify(final ReadOnlyModifyRequest modifyRequest,
                              final AsyncResultListener resultListener)
          throws LDAPException
@@ -2509,23 +1324,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Performs a modify DN operation with the provided information.
-   *
-   * @param  dn            The current DN for the entry to rename.  It must not
-   *                       be {@code null}.
-   * @param  newRDN        The new RDN to use for the entry.  It must not be
-   *                       {@code null}.
-   * @param  deleteOldRDN  Indicates whether to delete the current RDN value
-   *                       from the entry.
-   *
-   * @return  The result of processing the modify DN operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify DN request, or if
-   *                         a problem is encountered while sending the request
-   *                         or reading the response.
-   */
   public LDAPResult modifyDN(final String dn, final String newRDN,
                              final boolean deleteOldRDN)
          throws LDAPException
@@ -2537,25 +1335,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Performs a modify DN operation with the provided information.
-   *
-   * @param  dn             The current DN for the entry to rename.  It must not
-   *                        be {@code null}.
-   * @param  newRDN         The new RDN to use for the entry.  It must not be
-   *                        {@code null}.
-   * @param  deleteOldRDN   Indicates whether to delete the current RDN value
-   *                        from the entry.
-   * @param  newSuperiorDN  The new superior DN for the entry.  It may be
-   *                        {@code null} if the entry is not to be moved below a
-   *                        new parent.
-   *
-   * @return  The result of processing the modify DN operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify DN request, or if
-   *                         a problem is encountered while sending the request
-   *                         or reading the response.
-   */
   public LDAPResult modifyDN(final String dn, final String newRDN,
                              final boolean deleteOldRDN,
                              final String newSuperiorDN)
@@ -2568,19 +1347,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify DN request.
-   *
-   * @param  modifyDNRequest  The modify DN request to be processed.  It must
-   *                          not be {@code null}.
-   *
-   * @return  The result of processing the modify DN operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify DN request, or if
-   *                         a problem is encountered while sending the request
-   *                         or reading the response.
-   */
   public LDAPResult modifyDN(final ModifyDNRequest modifyDNRequest)
          throws LDAPException
   {
@@ -2599,20 +1365,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes the provided modify DN request.
-   *
-   * @param  modifyDNRequest  The modify DN request to be processed.  It must
-   *                          not be {@code null}.
-   *
-   * @return  The result of processing the modify DN operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the server rejects the modify DN request, or if
-   *                         a problem is encountered while sending the request
-   *                         or reading the response.
-   */
   public LDAPResult modifyDN(final ReadOnlyModifyDNRequest modifyDNRequest)
          throws LDAPException
   {
@@ -2621,19 +1373,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Processes the provided modify DN request as an asynchronous operation.
-   *
-   * @param  modifyDNRequest  The modify DN request to be processed.  It must
-   *                          not be {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the modify DN operation.  It must not
-   *                         be {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncModifyDN(final ModifyDNRequest modifyDNRequest,
                              final AsyncResultListener resultListener)
          throws LDAPException
@@ -2650,20 +1389,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided modify DN request as an asynchronous operation.
-   *
-   * @param  modifyDNRequest  The modify DN request to be processed.  It must
-   *                          not be {@code null}.
-   * @param  resultListener  The async result listener to use to handle the
-   *                         response for the modify DN operation.  It must not
-   *                         be {@code null}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   public AsyncRequestID asyncModifyDN(
                              final ReadOnlyModifyDNRequest modifyDNRequest,
                              final AsyncResultListener resultListener)
@@ -2678,48 +1403,6 @@ public final class LDAPConnection
     return asyncModifyDN((ModifyDNRequest) modifyDNRequest, resultListener);
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  The search
-   * result entries and references will be collected internally and included in
-   * the {@code SearchResult} object that is returned.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN      The base DN for the search request.  It must not be
-   *                     {@code null}.
-   * @param  scope       The scope that specifies the range of entries that
-   *                     should be examined for the search.
-   * @param  filter      The string representation of the filter to use to
-   *                     identify matching entries.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes that should be returned in
-   *                     matching entries.  It may be {@code null} or empty if
-   *                     the default attribute set (all user attributes) is to
-   *                     be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, including the set of matching entries
-   *          and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while parsing
-   *                               the provided filter string, sending the
-   *                               request, or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final String baseDN, final SearchScope scope,
                              final String filter, final String... attributes)
          throws LDAPSearchException
@@ -2743,45 +1426,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes a search operation with the provided information.  The search
-   * result entries and references will be collected internally and included in
-   * the {@code SearchResult} object that is returned.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN      The base DN for the search request.  It must not be
-   *                     {@code null}.
-   * @param  scope       The scope that specifies the range of entries that
-   *                     should be examined for the search.
-   * @param  filter      The filter to use to identify matching entries.  It
-   *                     must not be {@code null}.
-   * @param  attributes  The set of attributes that should be returned in
-   *                     matching entries.  It may be {@code null} or empty if
-   *                     the default attribute set (all user attributes) is to
-   *                     be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, including the set of matching entries
-   *          and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final String baseDN, final SearchScope scope,
                              final Filter filter, final String... attributes)
          throws LDAPSearchException
@@ -2791,54 +1435,6 @@ public final class LDAPConnection
     return search(new SearchRequest(baseDN, scope, filter, attributes));
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchResultListener  The search result listener that should be
-   *                               used to return results to the client.  It may
-   *                               be {@code null} if the search results should
-   *                               be collected internally and returned in the
-   *                               {@code SearchResult} object.
-   * @param  baseDN                The base DN for the search request.  It must
-   *                               not be {@code null}.
-   * @param  scope                 The scope that specifies the range of entries
-   *                               that should be examined for the search.
-   * @param  filter                The string representation of the filter to
-   *                               use to identify matching entries.  It must
-   *                               not be {@code null}.
-   * @param  attributes            The set of attributes that should be returned
-   *                               in matching entries.  It may be {@code null}
-   *                               or empty if the default attribute set (all
-   *                               user attributes) is to be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while parsing
-   *                               the provided filter string, sending the
-   *                               request, or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final SearchResultListener searchResultListener,
                              final String baseDN, final SearchScope scope,
                              final String filter, final String... attributes)
@@ -2863,52 +1459,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchResultListener  The search result listener that should be
-   *                               used to return results to the client.  It may
-   *                               be {@code null} if the search results should
-   *                               be collected internally and returned in the
-   *                               {@code SearchResult} object.
-   * @param  baseDN                The base DN for the search request.  It must
-   *                               not be {@code null}.
-   * @param  scope                 The scope that specifies the range of entries
-   *                               that should be examined for the search.
-   * @param  filter                The filter to use to identify matching
-   *                               entries.  It must not be {@code null}.
-   * @param  attributes            The set of attributes that should be returned
-   *                               in matching entries.  It may be {@code null}
-   *                               or empty if the default attribute set (all
-   *                               user attributes) is to be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final SearchResultListener searchResultListener,
                              final String baseDN, final SearchScope scope,
                              final Filter filter, final String... attributes)
@@ -2933,58 +1483,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  The search
-   * result entries and references will be collected internally and included in
-   * the {@code SearchResult} object that is returned.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN       The base DN for the search request.  It must not be
-   *                      {@code null}.
-   * @param  scope        The scope that specifies the range of entries that
-   *                      should be examined for the search.
-   * @param  derefPolicy  The dereference policy the server should use for any
-   *                      aliases encountered while processing the search.
-   * @param  sizeLimit    The maximum number of entries that the server should
-   *                      return for the search.  A value of zero indicates that
-   *                      there should be no limit.
-   * @param  timeLimit    The maximum length of time in seconds that the server
-   *                      should spend processing this search request.  A value
-   *                      of zero indicates that there should be no limit.
-   * @param  typesOnly    Indicates whether to return only attribute names in
-   *                      matching entries, or both attribute names and values.
-   * @param  filter       The string representation of the filter to use to
-   *                      identify matching entries.  It must not be
-   *                      {@code null}.
-   * @param  attributes   The set of attributes that should be returned in
-   *                      matching entries.  It may be {@code null} or empty if
-   *                      the default attribute set (all user attributes) is to
-   *                      be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, including the set of matching entries
-   *          and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while parsing
-   *                               the provided filter string, sending the
-   *                               request, or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final String baseDN, final SearchScope scope,
                              final DereferencePolicy derefPolicy,
                              final int sizeLimit, final int timeLimit,
@@ -3012,56 +1510,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  The search
-   * result entries and references will be collected internally and included in
-   * the {@code SearchResult} object that is returned.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN       The base DN for the search request.  It must not be
-   *                      {@code null}.
-   * @param  scope        The scope that specifies the range of entries that
-   *                      should be examined for the search.
-   * @param  derefPolicy  The dereference policy the server should use for any
-   *                      aliases encountered while processing the search.
-   * @param  sizeLimit    The maximum number of entries that the server should
-   *                      return for the search.  A value of zero indicates that
-   *                      there should be no limit.
-   * @param  timeLimit    The maximum length of time in seconds that the server
-   *                      should spend processing this search request.  A value
-   *                      of zero indicates that there should be no limit.
-   * @param  typesOnly    Indicates whether to return only attribute names in
-   *                      matching entries, or both attribute names and values.
-   * @param  filter       The filter to use to identify matching entries.  It
-   *                      must not be {@code null}.
-   * @param  attributes   The set of attributes that should be returned in
-   *                      matching entries.  It may be {@code null} or empty if
-   *                      the default attribute set (all user attributes) is to
-   *                      be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, including the set of matching entries
-   *          and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final String baseDN, final SearchScope scope,
                              final DereferencePolicy derefPolicy,
                              final int sizeLimit, final int timeLimit,
@@ -3075,67 +1523,6 @@ public final class LDAPConnection
                                     timeLimit, typesOnly, filter, attributes));
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchResultListener  The search result listener that should be
-   *                               used to return results to the client.  It may
-   *                               be {@code null} if the search results should
-   *                               be collected internally and returned in the
-   *                               {@code SearchResult} object.
-   * @param  baseDN                The base DN for the search request.  It must
-   *                               not be {@code null}.
-   * @param  scope                 The scope that specifies the range of entries
-   *                               that should be examined for the search.
-   * @param  derefPolicy           The dereference policy the server should use
-   *                               for any aliases encountered while processing
-   *                               the search.
-   * @param  sizeLimit             The maximum number of entries that the server
-   *                               should return for the search.  A value of
-   *                               zero indicates that there should be no limit.
-   * @param  timeLimit             The maximum length of time in seconds that
-   *                               the server should spend processing this
-   *                               search request.  A value of zero indicates
-   *                               that there should be no limit.
-   * @param  typesOnly             Indicates whether to return only attribute
-   *                               names in matching entries, or both attribute
-   *                               names and values.
-   * @param  filter                The string representation of the filter to
-   *                               use to identify matching entries.  It must
-   *                               not be {@code null}.
-   * @param  attributes            The set of attributes that should be returned
-   *                               in matching entries.  It may be {@code null}
-   *                               or empty if the default attribute set (all
-   *                               user attributes) is to be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while parsing
-   *                               the provided filter string, sending the
-   *                               request, or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final SearchResultListener searchResultListener,
                              final String baseDN, final SearchScope scope,
                              final DereferencePolicy derefPolicy,
@@ -3164,65 +1551,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchResultListener  The search result listener that should be
-   *                               used to return results to the client.  It may
-   *                               be {@code null} if the search results should
-   *                               be collected internally and returned in the
-   *                               {@code SearchResult} object.
-   * @param  baseDN                The base DN for the search request.  It must
-   *                               not be {@code null}.
-   * @param  scope                 The scope that specifies the range of entries
-   *                               that should be examined for the search.
-   * @param  derefPolicy           The dereference policy the server should use
-   *                               for any aliases encountered while processing
-   *                               the search.
-   * @param  sizeLimit             The maximum number of entries that the server
-   *                               should return for the search.  A value of
-   *                               zero indicates that there should be no limit.
-   * @param  timeLimit             The maximum length of time in seconds that
-   *                               the server should spend processing this
-   *                               search request.  A value of zero indicates
-   *                               that there should be no limit.
-   * @param  typesOnly             Indicates whether to return only attribute
-   *                               names in matching entries, or both attribute
-   *                               names and values.
-   * @param  filter                The filter to use to identify matching
-   *                               entries.  It must not be {@code null}.
-   * @param  attributes            The set of attributes that should be returned
-   *                               in matching entries.  It may be {@code null}
-   *                               or empty if the default attribute set (all
-   *                               user attributes) is to be requested.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final SearchResultListener searchResultListener,
                              final String baseDN, final SearchScope scope,
                              final DereferencePolicy derefPolicy,
@@ -3238,39 +1566,6 @@ public final class LDAPConnection
                                     typesOnly, filter, attributes));
   }
 
-
-
-  /**
-   * Processes the provided search request.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchRequest  The search request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final SearchRequest searchRequest)
          throws LDAPSearchException
   {
@@ -3300,88 +1595,12 @@ public final class LDAPConnection
     return searchResult;
   }
 
-
-
-  /**
-   * Processes the provided search request.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references (although if a search result listener was provided,
-   * then it will have been used to make any entries and references available,
-   * and they will not be available through the {@code getSearchEntries} and
-   * {@code getSearchReferences} methods).
-   *
-   * @param  searchRequest  The search request to be processed.  It must not be
-   *                        {@code null}.
-   *
-   * @return  A search result object that provides information about the
-   *          processing of the search, potentially including the set of
-   *          matching entries and search references returned by the server.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               or if a problem is encountered while sending
-   *                               the request or reading the response.  If one
-   *                               or more entries or references were returned
-   *                               before the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResult search(final ReadOnlySearchRequest searchRequest)
          throws LDAPSearchException
   {
     return search((SearchRequest) searchRequest);
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  It is expected
-   * that at most one entry will be returned from the search, and that no
-   * additional content from the successful search result (e.g., diagnostic
-   * message or response controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN      The base DN for the search request.  It must not be
-   *                     {@code null}.
-   * @param  scope       The scope that specifies the range of entries that
-   *                     should be examined for the search.
-   * @param  filter      The string representation of the filter to use to
-   *                     identify matching entries.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes that should be returned in
-   *                     matching entries.  It may be {@code null} or empty if
-   *                     the default attribute set (all user attributes) is to
-   *                     be requested.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(final String baseDN,
                                           final SearchScope scope,
                                           final String filter,
@@ -3403,49 +1622,6 @@ public final class LDAPConnection
     return searchForEntry(r);
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  It is expected
-   * that at most one entry will be returned from the search, and that no
-   * additional content from the successful search result (e.g., diagnostic
-   * message or response controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN      The base DN for the search request.  It must not be
-   *                     {@code null}.
-   * @param  scope       The scope that specifies the range of entries that
-   *                     should be examined for the search.
-   * @param  filter      The string representation of the filter to use to
-   *                     identify matching entries.  It must not be
-   *                     {@code null}.
-   * @param  attributes  The set of attributes that should be returned in
-   *                     matching entries.  It may be {@code null} or empty if
-   *                     the default attribute set (all user attributes) is to
-   *                     be requested.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(final String baseDN,
                                           final SearchScope scope,
                                           final Filter filter,
@@ -3457,55 +1633,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes a search operation with the provided information.  It is expected
-   * that at most one entry will be returned from the search, and that no
-   * additional content from the successful search result (e.g., diagnostic
-   * message or response controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN       The base DN for the search request.  It must not be
-   *                      {@code null}.
-   * @param  scope        The scope that specifies the range of entries that
-   *                      should be examined for the search.
-   * @param  derefPolicy  The dereference policy the server should use for any
-   *                      aliases encountered while processing the search.
-   * @param  timeLimit    The maximum length of time in seconds that the server
-   *                      should spend processing this search request.  A value
-   *                      of zero indicates that there should be no limit.
-   * @param  typesOnly    Indicates whether to return only attribute names in
-   *                      matching entries, or both attribute names and values.
-   * @param  filter       The string representation of the filter to use to
-   *                      identify matching entries.  It must not be
-   *                      {@code null}.
-   * @param  attributes   The set of attributes that should be returned in
-   *                      matching entries.  It may be {@code null} or empty if
-   *                      the default attribute set (all user attributes) is to
-   *                      be requested.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(final String baseDN,
                                           final SearchScope scope,
                                           final DereferencePolicy derefPolicy,
@@ -3530,55 +1657,6 @@ public final class LDAPConnection
     return searchForEntry(r);
   }
 
-
-
-  /**
-   * Processes a search operation with the provided information.  It is expected
-   * that at most one entry will be returned from the search, and that no
-   * additional content from the successful search result (e.g., diagnostic
-   * message or response controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  baseDN       The base DN for the search request.  It must not be
-   *                      {@code null}.
-   * @param  scope        The scope that specifies the range of entries that
-   *                      should be examined for the search.
-   * @param  derefPolicy  The dereference policy the server should use for any
-   *                      aliases encountered while processing the search.
-   * @param  timeLimit    The maximum length of time in seconds that the server
-   *                      should spend processing this search request.  A value
-   *                      of zero indicates that there should be no limit.
-   * @param  typesOnly    Indicates whether to return only attribute names in
-   *                      matching entries, or both attribute names and values.
-   * @param  filter       The filter to use to identify matching entries.  It
-   *                      must not be {@code null}.
-   * @param  attributes   The set of attributes that should be returned in
-   *                      matching entries.  It may be {@code null} or empty if
-   *                      the default attribute set (all user attributes) is to
-   *                      be requested.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(final String baseDN,
                                           final SearchScope scope,
                                           final DereferencePolicy derefPolicy,
@@ -3593,41 +1671,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided search request.  It is expected that at most one
-   * entry will be returned from the search, and that no additional content from
-   * the successful search result (e.g., diagnostic message or response
-   * controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  searchRequest  The search request to be processed.  If it is
-   *                        configured with a search result listener or a size
-   *                        limit other than one, then the provided request will
-   *                        be duplicated with the appropriate settings.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(final SearchRequest searchRequest)
          throws LDAPSearchException
   {
@@ -3680,42 +1723,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Processes the provided search request.  It is expected that at most one
-   * entry will be returned from the search, and that no additional content from
-   * the successful search result (e.g., diagnostic message or response
-   * controls) are needed.
-   * <BR><BR>
-   * Note that if the search does not complete successfully, an
-   * {@code LDAPSearchException} will be thrown  In some cases, one or more
-   * search result entries or references may have been returned before the
-   * failure response is received.  In this case, the
-   * {@code LDAPSearchException} methods like {@code getEntryCount},
-   * {@code getSearchEntries}, {@code getReferenceCount}, and
-   * {@code getSearchReferences} may be used to obtain information about those
-   * entries and references.
-   *
-   * @param  searchRequest  The search request to be processed.  If it is
-   *                        configured with a search result listener or a size
-   *                        limit other than one, then the provided request will
-   *                        be duplicated with the appropriate settings.
-   *
-   * @return  The entry that was returned from the search, or {@code null} if no
-   *          entry was returned or the base entry does not exist.
-   *
-   * @throws  LDAPSearchException  If the search does not complete successfully,
-   *                               if more than a single entry is returned, or
-   *                               if a problem is encountered while parsing the
-   *                               provided filter string, sending the request,
-   *                               or reading the response.  If one or more
-   *                               entries or references were returned before
-   *                               the failure was encountered, then the
-   *                               {@code LDAPSearchException} object may be
-   *                               examined to obtain information about those
-   *                               entries and/or references.
-   */
   public SearchResultEntry searchForEntry(
                                 final ReadOnlySearchRequest searchRequest)
          throws LDAPSearchException
@@ -3724,22 +1731,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided search request as an asynchronous operation.
-   *
-   * @param  searchRequest  The search request to be processed.  It must not be
-   *                        {@code null}, and it must be configured with a
-   *                        search result listener that is an
-   *                        {@code AsyncSearchResultListener}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided search request does not have a
-   *                         search result listener that is an
-   *                         {@code AsyncSearchResultListener}, or if a problem
-   *                         occurs while sending the request.
-   */
   public AsyncRequestID asyncSearch(final SearchRequest searchRequest)
          throws LDAPException
   {
@@ -3773,22 +1764,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided search request as an asynchronous operation.
-   *
-   * @param  searchRequest  The search request to be processed.  It must not be
-   *                        {@code null}, and it must be configured with a
-   *                        search result listener that is an
-   *                        {@code AsyncSearchResultListener}.
-   *
-   * @return  An async request ID that may be used to reference the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided search request does not have a
-   *                         search result listener that is an
-   *                         {@code AsyncSearchResultListener}, or if a problem
-   *                         occurs while sending the request.
-   */
   public AsyncRequestID asyncSearch(final ReadOnlySearchRequest searchRequest)
          throws LDAPException
   {
@@ -3802,21 +1777,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Processes the provided generic request and returns the result.  This may
-   * be useful for cases in which it is not known what type of operation the
-   * request represents.
-   *
-   * @param  request  The request to be processed.
-   *
-   * @return  The result obtained from processing the request.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request or
-   *                         reading the response.  Note simply having a
-   *                         non-success result code in the response will not
-   *                         cause an exception to be thrown.
-   */
   public LDAPResult processOperation(final LDAPRequest request)
          throws LDAPException
   {
@@ -3825,13 +1785,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the referral connector that should be used to establish
-   * connections for use when following referrals.
-   *
-   * @return  The referral connector that should be used to establish
-   *          connections for use when following referrals.
-   */
   public ReferralConnector getReferralConnector()
   {
     if (referralConnector == null)
@@ -3844,16 +1797,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Specifies the referral connector that should be used to establish
-   * connections for use when following referrals.
-   *
-   * @param  referralConnector  The referral connector that should be used to
-   *                            establish connections for use when following
-   *                            referrals.
-   */
   public void setReferralConnector(final ReferralConnector referralConnector)
   {
     if (referralConnector == null)
@@ -3868,13 +1811,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Sends the provided LDAP message to the server over this connection.
-   *
-   * @param  message  The LDAP message to send to the target server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while sending the request.
-   */
   void sendMessage(final LDAPMessage message)
          throws LDAPException
   {
@@ -3897,13 +1833,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the message ID that should be used for the next request sent
-   * over this connection.
-   *
-   * @return  The message ID that should be used for the next request sent over
-   *          this connection, or -1 if this connection is not established.
-   */
   int nextMessageID()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -3917,39 +1846,12 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Retrieves the disconnect info object for this connection, if available.
-   *
-   * @return  The disconnect info for this connection, or {@code null} if none
-   *          is set.
-   */
   DisconnectInfo getDisconnectInfo()
   {
     return disconnectInfo.get();
   }
 
 
-
-  /**
-   * Sets the disconnect type, message, and cause for this connection, if those
-   * values have not been previously set.  It will not overwrite any values that
-   * had been previously set.
-   * <BR><BR>
-   * This method may be called by code which is not part of the LDAP SDK to
-   * provide additional information about the reason for the closure.  In that
-   * case, this method must be called before the call to
-   * {@link com.hwlcn.ldap.ldap.sdk.LDAPConnection#close}.
-   *
-   * @param  type     The disconnect type.  It must not be {@code null}.
-   * @param  message  A message providing additional information about the
-   *                  disconnect.  It may be {@code null} if no message is
-   *                  available.
-   * @param  cause    The exception that was caught to trigger the disconnect.
-   *                  It may be {@code null} if the disconnect was not triggered
-   *                  by an exception.
-   */
   public void setDisconnectInfo(final DisconnectType type, final String message,
                                 final Throwable cause)
   {
@@ -3959,14 +1861,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Sets the disconnect info for this connection, if it is not already set.
-   *
-   * @param  info  The disconnect info to be set, if it is not already set.
-   *
-   * @return  The disconnect info set for the connection, whether it was
-   *          previously or newly set.
-   */
   DisconnectInfo setDisconnectInfo(final DisconnectInfo info)
   {
     disconnectInfo.compareAndSet(null, info);
@@ -3974,13 +1868,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the disconnect type for this connection, if available.
-   *
-   * @return  The disconnect type for this connection, or {@code null} if no
-   *          disconnect type has been set.
-   */
   public DisconnectType getDisconnectType()
   {
     final DisconnectInfo di = disconnectInfo.get();
@@ -3996,13 +1883,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the disconnect message for this connection, which may provide
-   * additional information about the reason for the disconnect, if available.
-   *
-   * @return  The disconnect message for this connection, or {@code null} if
-   *          no disconnect message has been set.
-   */
   public String getDisconnectMessage()
   {
     final DisconnectInfo di = disconnectInfo.get();
@@ -4017,14 +1897,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the disconnect cause for this connection, which is an exception
-   * or error that triggered the connection termination, if available.
-   *
-   * @return  The disconnect cause for this connection, or {@code null} if no
-   *          disconnect cause has been set.
-   */
   public Throwable getDisconnectCause()
   {
     final DisconnectInfo di = disconnectInfo.get();
@@ -4038,12 +1910,6 @@ public final class LDAPConnection
     }
   }
 
-
-
-  /**
-   * Indicates that this connection has been closed and is no longer available
-   * for use.
-   */
   void setClosed()
   {
     needsReconnect.set(false);
@@ -4089,16 +1955,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Registers the provided response acceptor with the connection reader.
-   *
-   * @param  messageID         The message ID for which the acceptor is to be
-   *                           registered.
-   * @param  responseAcceptor  The response acceptor to register.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If another message acceptor is already registered
-   *                         with the provided message ID.
-   */
   void registerResponseAcceptor(final int messageID,
                                 final ResponseAcceptor responseAcceptor)
        throws LDAPException
@@ -4121,13 +1977,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Deregisters the response acceptor associated with the provided message ID.
-   *
-   * @param  messageID  The message ID for which to deregister the associated
-   *                    response acceptor.
-   */
   void deregisterResponseAcceptor(final int messageID)
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -4138,12 +1987,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves a timer for use with this connection, creating one if necessary.
-   *
-   * @return  A timer for use with this connection.
-   */
   synchronized Timer getTimer()
   {
     if (timer == null)
@@ -4156,9 +1999,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public LDAPConnection getReferralConnection(final LDAPURL referralURL,
                                               final LDAPConnection connection)
          throws LDAPException
@@ -4202,13 +2042,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the last successful bind request processed on this connection.
-   *
-   * @return  The last successful bind request processed on this connection.  It
-   *          may be {@code null} if no bind has been performed, or if the last
-   *          bind attempt was not successful.
-   */
   BindRequest getLastBindRequest()
   {
     return lastBindRequest;
@@ -4216,21 +2049,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves an instance of the {@code LDAPConnectionInternals} object for
-   * this connection.
-   *
-   * @param  throwIfDisconnected  Indicates whether to throw an
-   *                              {@code LDAPException} if the connection is not
-   *                              established.
-   *
-   * @return  The {@code LDAPConnectionInternals} object for this connection, or
-   *          {@code null} if the connection is not established and no exception
-   *          should be thrown.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the connection is not established and
-   *                         {@code throwIfDisconnected} is {@code true}.
-   */
   LDAPConnectionInternals getConnectionInternals(
                                final boolean throwIfDisconnected)
        throws LDAPException
@@ -4249,40 +2067,18 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the cached schema for this connection, if applicable.
-   *
-   * @return  The cached schema for this connection, or {@code null} if it is
-   *          not available (e.g., because the connection is not established,
-   *          because {@link LDAPConnectionOptions#useSchema()} is false, or
-   *          because an error occurred when trying to read the server schema).
-   */
   Schema getCachedSchema()
   {
     return cachedSchema;
   }
 
 
-
-  /**
-   * Sets the cached schema for this connection.
-   *
-   * @param  cachedSchema  The cached schema for this connection.  It may be
-   *                       {@code null} if no cached schema is available.
-   */
   void setCachedSchema(final Schema cachedSchema)
   {
     this.cachedSchema = cachedSchema;
   }
 
 
-
-  /**
-   * Indicates whether this connection is operating in synchronous mode.
-   *
-   * @return  {@code true} if this connection is operating in synchronous mode,
-   *          or {@code false} if not.
-   */
   public boolean synchronousMode()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -4297,22 +2093,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Reads a response from the server, blocking if necessary until the response
-   * has been received.  This should only be used for connections operating in
-   * synchronous mode.
-   *
-   * @param  messageID  The message ID for the response to be read.  Any
-   *                    response read with a different message ID will be
-   *                    discarded, unless it is an unsolicited notification in
-   *                    which case it will be provided to any registered
-   *                    unsolicited notification handler.
-   *
-   * @return  The response read from the server.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading the response.
-   */
   LDAPResponse readResponse(final int messageID)
                throws LDAPException
   {
@@ -4338,15 +2118,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the time that this connection was established in the number of
-   * milliseconds since January 1, 1970 UTC (the same format used by
-   * {@code System.currentTimeMillis}.
-   *
-   * @return  The time that this connection was established, or -1 if the
-   *          connection is not currently established.
-   */
   public long getConnectTime()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -4361,12 +2132,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves the connection statistics for this LDAP connection.
-   *
-   * @return  The connection statistics for this LDAP connection.
-   */
   public LDAPConnectionStatistics getConnectionStatistics()
   {
     return connectionStatistics;
@@ -4374,15 +2139,7 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the number of outstanding operations on this LDAP connection
-   * (i.e., the number of operations currently in progress).  The value will
-   * only be valid for connections not configured to use synchronous mode.
-   *
-   * @return  The number of outstanding operations on this LDAP connection, or
-   *          -1 if it cannot be determined (e.g., because the connection is not
-   *          established or is operating in synchronous mode).
-   */
+
   public int getActiveOperationCount()
   {
     final LDAPConnectionInternals internals = connectionInternals;
@@ -4406,19 +2163,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Retrieves the schema from the provided connection.  If the retrieved schema
-   * matches schema that's already in use by other connections, the common
-   * schema will be used instead of the newly-retrieved version.
-   *
-   * @param  c  The connection for which to retrieve the schema.
-   *
-   * @return  The schema retrieved from the given connection, or a cached
-   *          schema if it matched a schema that was already in use.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem is encountered while retrieving or
-   *                         parsing the schema.
-   */
   private static Schema getCachedSchema(final LDAPConnection c)
          throws LDAPException
   {
@@ -4432,12 +2176,6 @@ public final class LDAPConnection
 
 
 
-  /**
-   * Performs any necessary cleanup to ensure that this connection is properly
-   * closed before it is garbage collected.
-   *
-   * @throws  Throwable  If the superclass finalizer throws an exception.
-   */
   @Override()
   protected void finalize()
             throws Throwable
@@ -4449,12 +2187,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Retrieves a string representation of this LDAP connection.
-   *
-   * @return  A string representation of this LDAP connection.
-   */
   @Override()
   public String toString()
   {
@@ -4464,14 +2196,6 @@ public final class LDAPConnection
   }
 
 
-
-  /**
-   * Appends a string representation of this LDAP connection to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append a string representation of
-   *                 this LDAP connection.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("LDAPConnection(");

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -62,55 +42,23 @@ import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 public final class SubtreeDeleteRequestControl
        extends Control
 {
-  /**
-   * The OID (1.2.840.113556.1.4.805) for the subtree delete request control.
-   */
+
   public static final String SUBTREE_DELETE_REQUEST_OID =
        "1.2.840.113556.1.4.805";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 3748121547717081961L;
 
-
-
-  /**
-   * Creates a new subtree delete request control.  The control will not be
-   * marked critical.
-   */
   public SubtreeDeleteRequestControl()
   {
     super(SUBTREE_DELETE_REQUEST_OID, false, null);
   }
 
-
-
-  /**
-   * Creates a new subtree delete request control.
-   *
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   */
   public SubtreeDeleteRequestControl(final boolean isCritical)
   {
     super(SUBTREE_DELETE_REQUEST_OID, isCritical, null);
   }
 
 
-
-  /**
-   * Creates a new subtree delete request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a subtree delete
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         subtree delete request control.
-   */
   public SubtreeDeleteRequestControl(final Control control)
          throws LDAPException
   {
@@ -123,22 +71,12 @@ public final class SubtreeDeleteRequestControl
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_SUBTREE_DELETE_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

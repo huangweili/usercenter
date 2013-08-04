@@ -1,23 +1,4 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util;
 
 
@@ -37,80 +18,39 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.UtilityMessages.*;
 
 
-
-/**
- * This class provides a growable byte array to which data can be appended.
- * Methods in this class are not synchronized.
- */
 @Mutable()
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class ByteStringBuffer
        implements Serializable, Appendable
 {
-  /**
-   * The default initial capacity for this buffer.
-   */
+
   private static final int DEFAULT_INITIAL_CAPACITY = 20;
 
 
 
-  /**
-   * The pre-allocated array that will be used for a boolean value of "false".
-   */
   private static final byte[] FALSE_VALUE_BYTES = StaticUtils.getBytes("false");
 
-
-
-  /**
-   * The pre-allocated array that will be used for a boolean value of "true".
-   */
   private static final byte[] TRUE_VALUE_BYTES = StaticUtils.getBytes("true");
 
-
-
-  /**
-   * A thread-local byte array that will be used for holding numeric values
-   * to append to the buffer.
-   */
   private static final ThreadLocal<byte[]> TEMP_NUMBER_BUFFER =
        new ThreadLocal<byte[]>();
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 2899392249591230998L;
 
-
-
-  // The backing array for this buffer.
   private byte[] array;
 
-  // The length of the backing array.
   private int capacity;
 
-  // The position at which to append the next data.
   private int endPos;
 
 
-
-  /**
-   * Creates a new empty byte string buffer with a default initial capacity.
-   */
   public ByteStringBuffer()
   {
     this(DEFAULT_INITIAL_CAPACITY);
   }
 
 
-
-  /**
-   * Creates a new byte string buffer with the specified capacity.
-   *
-   * @param  initialCapacity  The initial capacity to use for the buffer.  It
-   *                          must be greater than or equal to zero.
-   */
   public ByteStringBuffer(final int initialCapacity)
   {
     array    = new byte[initialCapacity];
@@ -119,14 +59,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Appends the provided boolean value to this buffer.
-   *
-   * @param  b  The boolean value to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer append(final boolean b)
   {
     if (b)
@@ -140,14 +72,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Appends the provided byte to this buffer.
-   *
-   * @param  b  The byte to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer append(final byte b)
   {
     ensureCapacity(endPos + 1);
@@ -157,16 +81,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the contents of the provided byte array to this buffer.
-   *
-   * @param  b  The array whose contents should be appended to this buffer.  It
-   *            must not be {@code null}.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   */
   public ByteStringBuffer append(final byte[] b)
          throws NullPointerException
   {
@@ -181,23 +95,6 @@ public final class ByteStringBuffer
     return append(b, 0, b.length);
   }
 
-
-
-  /**
-   * Appends the specified portion of the provided byte array to this buffer.
-   *
-   * @param  b    The array whose contents should be appended to this buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of bytes to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the offset or length are negative,
-   *                                     if the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer append(final byte[] b, final int off, final int len)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -242,17 +139,6 @@ public final class ByteStringBuffer
     return this;
   }
 
-
-
-  /**
-   * Appends the provided byte string to this buffer.
-   *
-   * @param  b  The byte string to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided byte string is {@code null}.
-   */
   public ByteStringBuffer append(final ByteString b)
          throws NullPointerException
   {
@@ -270,16 +156,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the provided byte string buffer to this buffer.
-   *
-   * @param  buffer  The buffer whose contents should be appended to this
-   *                 buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided buffer is {@code null}.
-   */
   public ByteStringBuffer append(final ByteStringBuffer buffer)
          throws NullPointerException
   {
@@ -295,14 +171,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Appends the provided character to this buffer.
-   *
-   * @param  c  The character to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer append(final char c)
   {
     final byte b = (byte) (c & 0x7F);
@@ -321,15 +189,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the contents of the provided character array to this buffer.
-   *
-   * @param  c  The array whose contents should be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   */
+
   public ByteStringBuffer append(final char[] c)
          throws NullPointerException
   {
@@ -346,22 +206,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the specified portion of the provided character array to this
-   * buffer.
-   *
-   * @param  c    The array whose contents should be appended to this buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of characters to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the offset or length are negative,
-   *                                     if the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer append(final char[] c, final int off, final int len)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -420,17 +264,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Appends the provided character sequence to this buffer.
-   *
-   * @param  s  The character sequence to append to this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided character sequence is
-   *                                {@code null}.
-   */
   public ByteStringBuffer append(final CharSequence s)
          throws NullPointerException
   {
@@ -439,24 +272,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the provided character sequence to this buffer.
-   *
-   * @param  s      The character sequence to append to this buffer.
-   * @param  start  The position in the sequence of the first character in the
-   *                sequence to be appended to this buffer.
-   * @param  end    The position in the sequence immediately after the position
-   *                of the last character to be appended.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided character sequence is
-   *                                {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the provided start or end positions
-   *                                     are outside the bounds of the given
-   *                                     character sequence.
-   */
   public ByteStringBuffer append(final CharSequence s, final int start,
                                  final int end)
          throws NullPointerException, IndexOutOfBoundsException
@@ -491,13 +306,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the provided integer value to this buffer.
-   *
-   * @param  i  The integer value to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer append(final int i)
   {
     final int length = getBytes(i);
@@ -506,13 +314,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Appends the provided long value to this buffer.
-   *
-   * @param  l  The long value to be appended to this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer append(final long l)
   {
     final int length = getBytes(l);
@@ -521,17 +322,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the provided boolean value to this buffer.
-   *
-   * @param  pos  The position at which the value is to be inserted.
-   * @param  b    The boolean value to be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final boolean b)
          throws  IndexOutOfBoundsException
   {
@@ -546,18 +336,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Inserts the provided byte at the specified position in this buffer.
-   *
-   * @param  pos  The position at which the byte is to be inserted.
-   * @param  b    The byte to be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final byte b)
          throws IndexOutOfBoundsException
   {
@@ -592,20 +370,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the contents of the provided byte array at the specified position
-   * in this buffer.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  b    The array whose contents should be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
+
   public ByteStringBuffer insert(final int pos, final byte[] b)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -622,27 +387,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts a portion of the data in the provided array at the specified
-   * position in this buffer.
-   *
-   * Appends the specified portion of the provided byte array to this buffer.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  b    The array whose contents should be inserted into this buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of bytes to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length, if
-   *                                     the offset or length are negative, if
-   *                                     the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer insert(final int pos, final byte[] b, final int off,
                                  final int len)
          throws NullPointerException, IndexOutOfBoundsException
@@ -702,22 +446,6 @@ public final class ByteStringBuffer
     return this;
   }
 
-
-
-  /**
-   * Inserts the provided byte string into this buffer at the specified
-   * position.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  b    The byte string to insert into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided buffer is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final ByteString b)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -734,21 +462,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the provided byte string buffer into this buffer at the specified
-   * position.
-   *
-   * @param  pos     The position at which the data is to be inserted.
-   * @param  buffer  The buffer whose contents should be inserted into this
-   *                 buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided buffer is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final ByteStringBuffer buffer)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -765,17 +478,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the provided character into this buffer at the provided position.
-   *
-   * @param  pos  The position at which the character is to be inserted.
-   * @param  c    The character to be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
+
   public ByteStringBuffer insert(final int pos, final char c)
          throws IndexOutOfBoundsException
   {
@@ -819,20 +522,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the contents of the provided character array into this buffer at
-   * the specified position.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  c    The array whose contents should be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final char[] c)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -849,25 +538,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the specified portion of the provided character array to this
-   * buffer at the specified position.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  c    The array whose contents should be inserted into this buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of characters to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length, if
-   *                                     the offset or length are negative, if
-   *                                     the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer insert(final int pos, final char[] c, final int off,
                                  final int len)
          throws NullPointerException, IndexOutOfBoundsException
@@ -885,21 +555,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the provided character sequence to this buffer at the specified
-   * position.
-   *
-   * @param  pos  The position at which the data is to be inserted.
-   * @param  s    The character sequence to insert into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided character sequence is
-   *                                {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final CharSequence s)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -939,18 +594,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Inserts the provided integer value to this buffer.
-   *
-   * @param  pos  The position at which the value is to be inserted.
-   * @param  i    The integer value to be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
   public ByteStringBuffer insert(final int pos, final int i)
          throws IndexOutOfBoundsException
   {
@@ -960,17 +603,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Inserts the provided long value to this buffer.
-   *
-   * @param  pos  The position at which the value is to be inserted.
-   * @param  l    The long value to be inserted into this buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified position is negative
-   *                                     or greater than the current length.
-   */
+
   public ByteStringBuffer insert(final int pos, final long l)
          throws IndexOutOfBoundsException
   {
@@ -980,18 +613,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Deletes the specified number of bytes from the beginning of the buffer.
-   *
-   * @param  len  The number of bytes to delete.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the specified length is negative,
-   *                                     or if it is greater than the number of
-   *                                     bytes currently contained in this
-   *                                     buffer.
-   */
   public ByteStringBuffer delete(final int len)
          throws IndexOutOfBoundsException
   {
@@ -1000,21 +621,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Deletes the indicated number of bytes from the specified location in the
-   * buffer.
-   *
-   * @param  off  The position in the buffer at which the content to delete
-   *              begins.
-   * @param  len  The number of bytes to remove from the buffer.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  IndexOutOfBoundsException  If the offset or length is negative, or
-   *                                     if the combination of the offset and
-   *                                     length is greater than the end of the
-   *                                     content in the buffer.
-   */
   public ByteStringBuffer delete(final int off, final int len)
          throws IndexOutOfBoundsException
   {
@@ -1071,14 +677,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to include only the provided boolean
-   * value.
-   *
-   * @param  b  The boolean value to use as the content for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final boolean b)
   {
     if (b)
@@ -1093,13 +691,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to include only the provided byte.
-   *
-   * @param  b  The byte to use as the content for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final byte b)
   {
     endPos = 0;
@@ -1108,16 +699,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to the contents of the provided byte
-   * array.
-   *
-   * @param  b  The byte array containing the content to use for this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @return  A reference to this buffer.
-   */
+
   public ByteStringBuffer set(final byte[] b)
          throws NullPointerException
   {
@@ -1134,23 +716,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the contents of this buffer to the specified portion of the provided
-   * byte array.
-   *
-   * @param  b    The byte array containing the content to use for this buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of bytes to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the offset or length are negative,
-   *                                     if the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer set(final byte[] b, final int off, final int len)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -1190,18 +755,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the contents of this buffer to the contents of the provided byte
-   * string.
-   *
-   * @param  b  The byte string that should be used as the content for this
-   *            buffer.
-   *
-   * @throws  NullPointerException  If the provided byte string is {@code null}.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final ByteString b)
          throws NullPointerException
   {
@@ -1220,17 +773,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to the contents of the provided byte
-   * string buffer.
-   *
-   * @param  buffer  The buffer whose contents should be used as the content for
-   *                 this buffer.
-   *
-   * @throws  NullPointerException  If the provided buffer is {@code null}.
-   *
-   * @return  A reference to this buffer.
-   */
+
   public ByteStringBuffer set(final ByteStringBuffer buffer)
          throws NullPointerException
   {
@@ -1247,14 +790,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the contents of this buffer to include only the provided character.
-   *
-   * @param  c  The character use as the content for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final char c)
   {
     endPos = 0;
@@ -1263,17 +798,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to the contents of the provided character
-   * array.
-   *
-   * @param  c  The character array containing the content to use for this
-   *            buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final char[] c)
          throws NullPointerException
   {
@@ -1290,24 +814,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the contents of this buffer to the specified portion of the provided
-   * character array.
-   *
-   * @param  c    The character array containing the content to use for this
-   *              buffer.
-   * @param  off  The offset within the array at which to begin copying data.
-   * @param  len  The number of characters to copy.
-   *
-   * @return  A reference to this buffer.
-   *
-   * @throws  NullPointerException  If the provided array is {@code null}.
-   *
-   * @throws  IndexOutOfBoundsException  If the offset or length are negative,
-   *                                     if the offset plus the length is beyond
-   *                                     the end of the provided array.
-   */
   public ByteStringBuffer set(final char[] c, final int off, final int len)
          throws NullPointerException, IndexOutOfBoundsException
   {
@@ -1348,17 +854,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to the specified portion of the provided
-   * character sequence.
-   *
-   * @param  s  The character sequence to use as the content for this buffer.
-   *
-   * @throws  NullPointerException  If the provided character sequence is
-   *                                {@code null}.
-   *
-   * @return  A reference to this buffer.
-   */
+
   public ByteStringBuffer set(final CharSequence s)
          throws NullPointerException
   {
@@ -1376,14 +872,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the contents of this buffer to include only the provided integer
-   * value.
-   *
-   * @param  i  The integer value to use as the content for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final int i)
   {
     final int length = getBytes(i);
@@ -1391,14 +879,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the contents of this buffer to include only the provided long value.
-   *
-   * @param  l  The long value to use as the content for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer set(final long l)
   {
     final int length = getBytes(l);
@@ -1406,12 +886,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Clears the contents of this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer clear()
   {
     endPos = 0;
@@ -1420,15 +894,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Clears the contents of this buffer.
-   *
-   * @param  zero  Indicates whether to overwrite the content of the backing
-   *               array with all zeros in order to wipe out any sensitive data
-   *               it may contain.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer clear(final boolean zero)
   {
     endPos = 0;
@@ -1443,12 +908,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Retrieves the current backing array for this buffer.  The data will begin
-   * at position 0 and will contain {@link com.hwlcn.ldap.util.ByteStringBuffer#length} bytes.
-   *
-   * @return  The current backing array for this buffer.
-   */
   public byte[] getBackingArray()
   {
     return array;
@@ -1456,12 +915,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Indicates whether this buffer is currently empty.
-   *
-   * @return  {@code true} if this buffer is currently empty, or {@code false}
-   *          if not.
-   */
   public boolean isEmpty()
   {
     return (endPos == 0);
@@ -1469,11 +922,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Retrieves the number of bytes contained in this buffer.
-   *
-   * @return  The number of bytes contained in this buffer.
-   */
   public int length()
   {
     return endPos;
@@ -1481,15 +929,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Sets the length of this buffer to the specified value.  If the new length
-   * is greater than the current length, the value will be padded with zeroes.
-   *
-   * @param  length  The new length to use for the buffer.  It must be greater
-   *                 than or equal to zero.
-   *
-   * @throws  IndexOutOfBoundsException  If the provided length is negative.
-   */
   public void setLength(final int length)
          throws IndexOutOfBoundsException
   {
@@ -1513,13 +952,6 @@ public final class ByteStringBuffer
     }
   }
 
-
-
-  /**
-   * Returns the current capacity for this buffer.
-   *
-   * @return  The current capacity for this buffer.
-   */
   public int capacity()
   {
     return capacity;
@@ -1527,12 +959,7 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Ensures that the total capacity of this buffer is at least equal to the
-   * specified size.
-   *
-   * @param  minimumCapacity  The minimum capacity for this buffer.
-   */
+
   public void ensureCapacity(final int minimumCapacity)
   {
     if (capacity < minimumCapacity)
@@ -1546,17 +973,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Sets the capacity equal to the specified value.  If the provided capacity
-   * is less than the current length, then the length will be reduced to the
-   * new capacity.
-   *
-   * @param  capacity  The new capacity for this buffer.  It must be greater
-   *                   than or equal to zero.
-   *
-   * @throws  IndexOutOfBoundsException  If the provided capacity is negative.
-   */
   public void setCapacity(final int capacity)
          throws IndexOutOfBoundsException
   {
@@ -1591,11 +1007,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Trims the backing array to the minimal size required for this buffer.
-   *
-   * @return  A reference to this buffer.
-   */
   public ByteStringBuffer trimToSize()
   {
     if (endPos != capacity)
@@ -1610,12 +1021,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Returns a new byte array with the content from this buffer.
-   *
-   * @return  A byte array containing the content from this buffer.
-   */
   public byte[] toByteArray()
   {
     final byte[] newArray = new byte[endPos];
@@ -1624,25 +1029,12 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Returns a new byte string with the content from this buffer.
-   *
-   * @return  A byte string with the content from this buffer.
-   */
   public ByteString toByteString()
   {
     return new ASN1OctetString(toByteArray());
   }
 
 
-
-  /**
-   * Creates an input stream that may be used to read content from this buffer.
-   * This buffer should not be altered while the input stream is being used.
-   *
-   * @return  An input stream that may be used to read content from this buffer.
-   */
   public InputStream asInputStream()
   {
     return new ByteArrayInputStream(array, 0, endPos);
@@ -1650,16 +1042,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Writes the contents of this byte string buffer to the provided output
-   * stream.
-   *
-   * @param  outputStream  The output stream to which the data should be
-   *                       written.
-   *
-   * @throws  java.io.IOException  If a problem occurs while writing to the provided
-   *                       output stream.
-   */
   public void write(final OutputStream outputStream)
          throws IOException
   {
@@ -1667,19 +1049,8 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Adds the bytes comprising the string representation of the provided long
-   * value to the temporary number buffer.
-   *
-   * @param  l  The long value to be appended.
-   *
-   * @return  The number of bytes in the string representation of the value.
-   */
   private static int getBytes(final long l)
   {
-    // NOTE:  This method is probably not as efficient as it could be, but it is
-    // more important to avoid the need for memory allocation.
     byte[] b = TEMP_NUMBER_BUFFER.get();
     if (b == null)
     {
@@ -1867,12 +1238,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Retrieves a hash code for this byte array.
-   *
-   * @return  A hash code for this byte array.
-   */
   @Override()
   public int hashCode()
   {
@@ -1887,16 +1252,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Indicates whether the provided object is a byte string buffer with contents
-   * that are identical to that of this buffer.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object is considered equal to this
-   *          buffer, or {@code false} if not.
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -1933,14 +1288,6 @@ public final class ByteStringBuffer
   }
 
 
-
-  /**
-   * Creates a duplicate of this byte string buffer.  It will have identical
-   * content but with a different backing array.  Changes to this byte string
-   * buffer will not impact the duplicate, and vice-versa.
-   *
-   * @return  A duplicate of this byte string buffer.
-   */
   public ByteStringBuffer duplicate()
   {
     final ByteStringBuffer newBuffer = new ByteStringBuffer(endPos);
@@ -1949,11 +1296,6 @@ public final class ByteStringBuffer
 
 
 
-  /**
-   * Retrieves a string representation of the contents for this buffer.
-   *
-   * @return  A string representation of the contents for this buffer.
-   */
   @Override()
   public String toString()
   {

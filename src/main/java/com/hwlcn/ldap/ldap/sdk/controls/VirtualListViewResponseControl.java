@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -40,67 +20,25 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 
-
-
-/**
- * This class provides an implementation of the virtual list view (VLV) response
- * control, as defined in draft-ietf-ldapext-ldapv3-vlv.  It may be used to
- * provide information about the result of virtual list view processing for a
- * search containing the {@link com.hwlcn.ldap.ldap.sdk.controls.VirtualListViewRequestControl}.
- * <BR><BR>
- * The virtual list view response control may include the following elements:
- * <UL>
- *   <LI>{@code resultCode} -- A result code that indicates the result of the
- *       virtual list view processing.  It may be the same as or different from
- *       the result code contained in the search result done message.</LI>
- *   <LI>{@code targetPosition} -- The offset of the target entry specified by
- *       the client in the result set.</LI>
- *   <LI>{@code contentCount} -- The estimated total number of entries in the
- *       entire result set.</LI>
- *   <LI>{@code contextID} -- An optional cookie that the client should include
- *       in the next request as part of the virtual list view sequence.</LI>
- * </UL>
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class VirtualListViewResponseControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.10) for the virtual list view response
-   * control.
-   */
+
   public static final String VIRTUAL_LIST_VIEW_RESPONSE_OID =
        "2.16.840.1.113730.3.4.10";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -534656674756287217L;
 
+ private final ASN1OctetString contextID;
 
-
-  // The context ID for this VLV response control, if available.
-  private final ASN1OctetString contextID;
-
-  // The estimated total number of entries in the result set.
-  private final int contentCount;
-
-  // The result code for this VLV response control.
+ private final int contentCount;
   private final ResultCode resultCode;
-
-  // The offset of the target entry for this VLV response control.
-  private final int targetPosition;
+ private final int targetPosition;
 
 
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   VirtualListViewResponseControl()
   {
     targetPosition = -1;
@@ -110,19 +48,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view response control with the provided
-   * information.  It will not be marked critical.
-   *
-   * @param  targetPosition  The offset of the target entry for this VLV
-   *                         response control.
-   * @param  contentCount    The estimated total number of entries in the
-   *                         result set.
-   * @param  resultCode      The result code for this VLV response control.
-   * @param  contextID       The context ID for this VLV response control.  It
-   *                         may be {@code null} if no context ID is available.
-   */
   public VirtualListViewResponseControl(final int targetPosition,
               final int contentCount, final ResultCode resultCode,
               final ASN1OctetString contextID)
@@ -137,21 +62,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * Creates a new virtual list view response control from the information
-   * contained in the provided control.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to decode the
-   *                         provided control as a virtual list view response
-   *                         control.
-   */
   public VirtualListViewResponseControl(final String oid,
                                         final boolean isCritical,
                                         final ASN1OctetString value)
@@ -233,10 +143,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public VirtualListViewResponseControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -246,21 +152,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * Extracts a virtual list view response control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the virtual list view
-   *                 response control.
-   *
-   * @return  The virtual list view response  control contained in the provided
-   *          result, or {@code null} if the result did not contain a virtual
-   *          list view response control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the virtual list view response  control
-   *                         contained in the provided result.
-   */
   public static VirtualListViewResponseControl get(final SearchResult result)
          throws LDAPException
   {
@@ -282,22 +173,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  targetPosition  The offset of the target entry for this VLV
-   *                         response control.
-   * @param  contentCount    The estimated total number of entries in the
-   *                         result set.
-   * @param  resultCode      The result code for this VLV response control.
-   * @param  contextID       The context ID for this VLV response control.  It
-   *                         may be {@code null} if no context ID is available.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final int targetPosition,
                                              final int contentCount,
                                              final ResultCode resultCode,
@@ -328,62 +203,27 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * Retrieves the offset of the target entry for this virtual list view
-   * response control.
-   *
-   * @return  The offset of the target entry for this virtual list view response
-   *          control.
-   */
   public int getTargetPosition()
   {
     return targetPosition;
   }
 
-
-
-  /**
-   * Retrieves the estimated total number of entries in the result set.
-   *
-   * @return  The estimated total number of entries in the result set.
-   */
   public int getContentCount()
   {
     return contentCount;
   }
 
-
-
-  /**
-   * Retrieves the result code for this virtual list view response control.
-   *
-   * @return  The result code for this virtual list view response control.
-   */
   public ResultCode getResultCode()
   {
     return resultCode;
   }
 
-
-
-  /**
-   * Retrieves the context ID for this virtual list view response control, if
-   * available.
-   *
-   * @return  The context ID for this virtual list view response control, or
-   *          {@code null} if none was provided.
-   */
   public ASN1OctetString getContextID()
   {
     return contextID;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -391,10 +231,6 @@ public final class VirtualListViewResponseControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

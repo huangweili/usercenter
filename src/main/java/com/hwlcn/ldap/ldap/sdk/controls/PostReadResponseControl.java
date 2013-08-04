@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -44,63 +24,24 @@ import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
-
-
-/**
- * This class provides an implementation of the LDAP post-read response control
- * as defined in <A HREF="http://www.ietf.org/rfc/rfc4527.txt">RFC 4527</A>.  It
- * may be used to return a copy of the target entry immediately after processing
- * an add, modify, or modify DN operation.
- * <BR><BR>
- * If the corresponding add, modify, or modify DN request included the
- * {@link com.hwlcn.ldap.ldap.sdk.controls.PostReadRequestControl} and the operation was successful, then the
- * response for that operation should include the post-read response control
- * with a read-only copy of the entry as it appeared immediately after
- * processing the request.  If the operation was not successful, then the
- * post-read response control will not be returned.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class PostReadResponseControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.3.6.1.1.13.2) for the post-read response control.
-   */
+
   public static final String POST_READ_RESPONSE_OID = "1.3.6.1.1.13.2";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -6918729231330354924L;
 
-
-
-  // The entry returned in the response control.
   private final ReadOnlyEntry entry;
 
-
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   PostReadResponseControl()
   {
     entry = null;
   }
 
-
-
-  /**
-   * Creates a new post-read response control including the provided entry.
-   *
-   * @param  entry  The entry to include in this post-read response control.  It
-   *                must not be {@code null}.
-   */
   public PostReadResponseControl(final ReadOnlyEntry entry)
   {
     super(POST_READ_RESPONSE_OID, false, encodeValue(entry));
@@ -108,20 +49,6 @@ public final class PostReadResponseControl
     this.entry = entry;
   }
 
-
-
-  /**
-   * Creates a new post-read response control with the provided information.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         post-read response control.
-   */
   public PostReadResponseControl(final String oid, final boolean isCritical,
                                 final ASN1OctetString value)
          throws LDAPException
@@ -192,11 +119,6 @@ public final class PostReadResponseControl
     entry = new ReadOnlyEntry(dn, attrs);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public PostReadResponseControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -205,22 +127,6 @@ public final class PostReadResponseControl
     return new PostReadResponseControl(oid, isCritical, value);
   }
 
-
-
-  /**
-   * Extracts a post-read response control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the post-read response
-   *                 control.
-   *
-   * @return  The post-read response control contained in the provided result,
-   *          or {@code null} if the result did not contain a post-read response
-   *          control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the post-read response control contained in
-   *                         the provided result.
-   */
   public static PostReadResponseControl get(final LDAPResult result)
          throws LDAPException
   {
@@ -242,17 +148,6 @@ public final class PostReadResponseControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  entry  The entry to include in this post-read response control.  It
-   *                must not be {@code null}.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final ReadOnlyEntry entry)
   {
     ensureNotNull(entry);
@@ -275,35 +170,17 @@ public final class PostReadResponseControl
   }
 
 
-
-  /**
-   * Retrieves a read-only copy of the entry returned by this post-read response
-   * control.
-   *
-   * @return  A read-only copy of the entry returned by this post-read response
-   *          control.
-   */
   public ReadOnlyEntry getEntry()
   {
     return entry;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_POST_READ_RESPONSE.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

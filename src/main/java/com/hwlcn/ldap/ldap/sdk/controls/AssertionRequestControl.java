@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -95,35 +75,15 @@ import static com.hwlcn.ldap.util.Debug.*;
 public final class AssertionRequestControl
        extends Control
 {
-  /**
-   * The OID (1.3.6.1.1.12) for the assertion request control.
-   */
+
   public static final String ASSERTION_REQUEST_OID = "1.3.6.1.1.12";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 6592634203410511095L;
 
 
-
-  // The search filter for this assertion request control.
   private final Filter filter;
 
 
-
-  /**
-   * Creates a new assertion request control with the provided filter.  It will
-   * be marked as critical.
-   *
-   * @param  filter  The string representation of the filter for this assertion
-   *                 control.  It must not be {@code null}.
-   *
-   * @throws  LDAPException  If the provided filter string cannot be decoded as
-   *                         a search filter.
-   */
   public AssertionRequestControl(final String filter)
          throws LDAPException
   {
@@ -131,50 +91,17 @@ public final class AssertionRequestControl
   }
 
 
-
-  /**
-   * Creates a new assertion request control with the provided filter.  It will
-   * be marked as critical.
-   *
-   * @param  filter  The filter for this assertion control.  It must not be
-   *                 {@code null}.
-   */
   public AssertionRequestControl(final Filter filter)
   {
     this(filter, true);
   }
 
-
-
-  /**
-   * Creates a new assertion request control with the provided filter.  It will
-   * be marked as critical.
-   *
-   * @param  filter      The string representation of the filter for this
-   *                     assertion control.  It must not be {@code null}.
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   *
-   * @throws  LDAPException  If the provided filter string cannot be decoded as
-   *                         a search filter.
-   */
   public AssertionRequestControl(final String filter, final boolean isCritical)
          throws LDAPException
   {
     this(Filter.create(filter), isCritical);
   }
 
-
-
-  /**
-   * Creates a new assertion request control with the provided filter.  It will
-   * be marked as critical.
-   *
-   * @param  filter      The filter for this assertion control.  It must not be
-   *                     {@code null}.
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   */
   public AssertionRequestControl(final Filter filter, final boolean isCritical)
   {
     super(ASSERTION_REQUEST_OID, isCritical, encodeValue(filter));
@@ -182,18 +109,6 @@ public final class AssertionRequestControl
     this.filter = filter;
   }
 
-
-
-  /**
-   * Creates a new assertion request control which is decoded from the provided
-   * generic control.
-   *
-   * @param  control  The generic control to be decoded as an assertion request
-   *                  control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as an
-   *                         assertion request control.
-   */
   public AssertionRequestControl(final Control control)
          throws LDAPException
   {
@@ -221,23 +136,6 @@ public final class AssertionRequestControl
   }
 
 
-
-  /**
-   * Generates an assertion request control that may be used to help ensure
-   * that some or all of the attributes in the specified entry have not changed
-   * since it was read from the server.
-   *
-   * @param  sourceEntry  The entry from which to take the attributes to include
-   *                      in the assertion request control.  It must not be
-   *                      {@code null} and should have at least one attribute to
-   *                      be included in the generated filter.
-   * @param  attributes   The names of the attributes to include in the
-   *                      assertion request control.  If this is empty or
-   *                      {@code null}, then all attributes in the provided
-   *                      entry will be used.
-   *
-   * @return  The generated assertion request control.
-   */
   public static AssertionRequestControl generate(final Entry sourceEntry,
                                                  final String... attributes)
   {
@@ -285,50 +183,22 @@ public final class AssertionRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  filter  The filter for this assertion control.  It must not be
-   *                 {@code null}.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(final Filter filter)
   {
     return new ASN1OctetString(filter.encode().encode());
   }
 
-
-
-  /**
-   * Retrieves the filter for this assertion control.
-   *
-   * @return  The filter for this assertion control.
-   */
   public Filter getFilter()
   {
     return filter;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_ASSERTION_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -39,80 +19,36 @@ import java.util.UUID;
 import com.hwlcn.HwlcnException;
 import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.ldap.sdk.Control;
-import com.hwlcn.ldap.ldap.sdk.Version;
 
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.UtilityMessages.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a number of static utility functions.
- */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class StaticUtils
 {
-  /**
-   * A pre-allocated byte array containing zero bytes.
-   */
+
   public static final byte[] NO_BYTES = new byte[0];
 
 
-
-  /**
-   * A pre-allocated empty control array.
-   */
   public static final Control[] NO_CONTROLS = new Control[0];
 
-
-
-  /**
-   * A pre-allocated empty string array.
-   */
   public static final String[] NO_STRINGS = new String[0];
 
-
-
-  /**
-   * The end-of-line marker for this platform.
-   */
   public static final String EOL = System.getProperty("line.separator");
 
-
-
-  /**
-   * A byte array containing the end-of-line marker for this platform.
-   */
   public static final byte[] EOL_BYTES = getBytes(EOL);
 
-
-
-  /**
-   * The thread-local date formatter used to encode generalized time values.
-   */
   private static final ThreadLocal<SimpleDateFormat> dateFormatters =
        new ThreadLocal<SimpleDateFormat>();
 
 
-
-  /**
-   * Prevent this class from being instantiated.
-   */
   private StaticUtils()
   {
-    // No implementation is required.
   }
 
 
-
-  /**
-   * Retrieves a UTF-8 byte representation of the provided string.
-   *
-   * @param  s  The string for which to retrieve the UTF-8 byte representation.
-   *
-   * @return  The UTF-8 byte representation for the provided string.
-   */
   public static byte[] getBytes(final String s)
   {
     final int length;
@@ -137,7 +73,6 @@ public final class StaticUtils
         }
         catch (Exception e)
         {
-          // This should never happen.
           debugException(e);
           return s.getBytes();
         }
@@ -149,18 +84,7 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the contents of the provided byte array represent an
-   * ASCII string, which is also known in LDAP terminology as an IA5 string.
-   * An ASCII string is one that contains only bytes in which the most
-   * significant bit is zero.
-   *
-   * @param  b  The byte array for which to make the determination.  It must
-   *            not be {@code null}.
-   *
-   * @return  {@code true} if the contents of the provided array represent an
-   *          ASCII string, or {@code false} if not.
-   */
+
   public static boolean isASCIIString(final byte[] b)
   {
     for (final byte by : b)
@@ -176,29 +100,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the contents of the provided byte array represent a
-   * printable LDAP string, as per RFC 4517 section 3.2.  The only characters
-   * allowed in a printable string are:
-   * <UL>
-   *   <LI>All uppercase and lowercase ASCII alphabetic letters</LI>
-   *   <LI>All ASCII numeric digits</LI>
-   *   <LI>The following additional ASCII characters:  single quote, left
-   *       parenthesis, right parenthesis, plus, comma, hyphen, period, equals,
-   *       forward slash, colon, question mark, space.</LI>
-   * </UL>
-   * If the provided array contains anything other than the above characters
-   * (i.e., if the byte array contains any non-ASCII characters, or any ASCII
-   * control characters, or if it contains excluded ASCII characters like
-   * the exclamation point, double quote, octothorpe, dollar sign, etc.), then
-   * it will not be considered printable.
-   *
-   * @param  b  The byte array for which to make the determination.  It must
-   *            not be {@code null}.
-   *
-   * @return  {@code true} if the contents of the provided byte array represent
-   *          a printable LDAP string, or {@code false} if not.
-   */
   public static boolean isPrintableString(final byte[] b)
   {
     for (final byte by : b)
@@ -240,15 +141,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a string generated from the provided byte array using the UTF-8
-   * encoding.
-   *
-   * @param  b  The byte array for which to return the associated string.
-   *
-   * @return  The string generated from the provided byte array using the UTF-8
-   *          encoding.
-   */
   public static String toUTF8String(final byte[] b)
   {
     try
@@ -257,7 +149,6 @@ public final class StaticUtils
     }
     catch (Exception e)
     {
-      // This should never happen.
       debugException(e);
       return new String(b);
     }
@@ -265,17 +156,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a string generated from the specified portion of the provided
-   * byte array using the UTF-8 encoding.
-   *
-   * @param  b       The byte array for which to return the associated string.
-   * @param  offset  The offset in the array at which the value begins.
-   * @param  length  The number of bytes in the value to convert to a string.
-   *
-   * @return  The string generated from the specified portion of the provided
-   *          byte array using the UTF-8 encoding.
-   */
   public static String toUTF8String(final byte[] b, final int offset,
                                     final int length)
   {
@@ -285,25 +165,13 @@ public final class StaticUtils
     }
     catch (Exception e)
     {
-      // This should never happen.
+
       debugException(e);
       return new String(b, offset, length);
     }
   }
 
 
-
-  /**
-   * Retrieves a version of the provided string with the first character
-   * converted to lowercase but all other characters retaining their original
-   * capitalization.
-   *
-   * @param  s  The string to be processed.
-   *
-   * @return  A version of the provided string with the first character
-   *          converted to lowercase but all other characters retaining their
-   *          original capitalization.
-   */
   public static String toInitialLowerCase(final String s)
   {
     if ((s == null) || (s.length() == 0))
@@ -331,14 +199,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Retrieves an all-lowercase version of the provided string.
-   *
-   * @param  s  The string for which to retrieve the lowercase version.
-   *
-   * @return  An all-lowercase version of the provided string.
-   */
   public static String toLowerCase(final String s)
   {
     if (s == null)
@@ -444,14 +304,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the provided character is a valid hexadecimal digit.
-   *
-   * @param  c  The character for which to make the determination.
-   *
-   * @return  {@code true} if the provided character does represent a valid
-   *          hexadecimal digit, or {@code false} if not.
-   */
   public static boolean isHex(final char c)
   {
     switch (c)
@@ -487,14 +339,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a hexadecimal representation of the provided byte.
-   *
-   * @param  b  The byte to encode as hexadecimal.
-   *
-   * @return  A string containing the hexadecimal representation of the provided
-   *          byte.
-   */
   public static String toHex(final byte b)
   {
     final StringBuilder buffer = new StringBuilder(2);
@@ -504,14 +348,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Appends a hexadecimal representation of the provided byte to the given
-   * buffer.
-   *
-   * @param  b       The byte to encode as hexadecimal.
-   * @param  buffer  The buffer to which the hexadecimal representation is to be
-   *                 appended.
-   */
   public static void toHex(final byte b, final StringBuilder buffer)
   {
     switch (b & 0xF0)
@@ -621,17 +457,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a hexadecimal representation of the contents of the provided byte
-   * array.  No delimiter character will be inserted between the hexadecimal
-   * digits for each byte.
-   *
-   * @param  b  The byte array to be represented as a hexadecimal string.  It
-   *            must not be {@code null}.
-   *
-   * @return  A string containing a hexadecimal representation of the contents
-   *          of the provided byte array.
-   */
   public static String toHex(final byte[] b)
   {
     ensureNotNull(b);
@@ -643,16 +468,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a hexadecimal representation of the contents of the provided byte
-   * array.  No delimiter character will be inserted between the hexadecimal
-   * digits for each byte.
-   *
-   * @param  b       The byte array to be represented as a hexadecimal string.
-   *                 It must not be {@code null}.
-   * @param  buffer  A buffer to which the hexadecimal representation of the
-   *                 contents of the provided byte array should be appended.
-   */
   public static void toHex(final byte[] b, final StringBuilder buffer)
   {
     toHex(b, null, buffer);
@@ -660,18 +475,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a hexadecimal representation of the contents of the provided byte
-   * array.  No delimiter character will be inserted between the hexadecimal
-   * digits for each byte.
-   *
-   * @param  b          The byte array to be represented as a hexadecimal
-   *                    string.  It must not be {@code null}.
-   * @param  delimiter  A delimiter to be inserted between bytes.  It may be
-   *                    {@code null} if no delimiter should be used.
-   * @param  buffer     A buffer to which the hexadecimal representation of the
-   *                    contents of the provided byte array should be appended.
-   */
   public static void toHex(final byte[] b, final String delimiter,
                            final StringBuilder buffer)
   {
@@ -693,23 +496,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a hex-encoded representation of the contents of the provided
-   * array, along with an ASCII representation of its contents next to it.  The
-   * output will be split across multiple lines, with up to sixteen bytes per
-   * line.  For each of those sixteen bytes, the two-digit hex representation
-   * will be appended followed by a space.  Then, the ASCII representation of
-   * those sixteen bytes will follow that, with a space used in place of any
-   * byte that does not have an ASCII representation.
-   *
-   * @param  array   The array whose contents should be processed.
-   * @param  indent  The number of spaces to insert on each line prior to the
-   *                 first hex byte.
-   *
-   * @return  A hex-encoded representation of the contents of the provided
-   *          array, along with an ASCII representation of its contents next to
-   *          it.
-   */
   public static String toHexPlusASCII(final byte[] array, final int indent)
   {
     final StringBuilder buffer = new StringBuilder();
@@ -719,20 +505,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Appends a hex-encoded representation of the contents of the provided array
-   * to the given buffer, along with an ASCII representation of its contents
-   * next to it.  The output will be split across multiple lines, with up to
-   * sixteen bytes per line.  For each of those sixteen bytes, the two-digit hex
-   * representation will be appended followed by a space.  Then, the ASCII
-   * representation of those sixteen bytes will follow that, with a space used
-   * in place of any byte that does not have an ASCII representation.
-   *
-   * @param  array   The array whose contents should be processed.
-   * @param  indent  The number of spaces to insert on each line prior to the
-   *                 first hex byte.
-   * @param  buffer  The buffer to which the encoded data should be appended.
-   */
   public static void toHexPlusASCII(final byte[] array, final int indent,
                                     final StringBuilder buffer)
   {
@@ -780,7 +552,6 @@ public final class StaticUtils
       }
     }
 
-    // If the last line isn't complete yet, then finish it off.
     if ((array.length % 16) != 0)
     {
       final int missingBytes = (16 - (array.length % 16));
@@ -808,16 +579,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Appends a hex-encoded representation of the provided character to the given
-   * buffer.  Each byte of the hex-encoded representation will be prefixed with
-   * a backslash.
-   *
-   * @param  c       The character to be encoded.
-   * @param  buffer  The buffer to which the hex-encoded representation should
-   *                 be appended.
-   */
   public static void hexEncode(final char c, final StringBuilder buffer)
   {
     final byte[] charBytes;
@@ -838,19 +599,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Retrieves a single-line string representation of the stack trace for the
-   * provided {@code Throwable}.  It will include the unqualified name of the
-   * {@code Throwable} class, a list of source files and line numbers (if
-   * available) for the stack trace, and will also include the stack trace for
-   * the cause (if present).
-   *
-   * @param  t  The {@code Throwable} for which to retrieve the stack trace.
-   *
-   * @return  A single-line string representation of the stack trace for the
-   *          provided {@code Throwable}.
-   */
   public static String getStackTrace(final Throwable t)
   {
     final StringBuilder buffer = new StringBuilder();
@@ -860,17 +608,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Appends a single-line string representation of the stack trace for the
-   * provided {@code Throwable} to the given buffer.  It will include the
-   * unqualified name of the {@code Throwable} class, a list of source files and
-   * line numbers (if available) for the stack trace, and will also include the
-   * stack trace for the cause (if present).
-   *
-   * @param  t       The {@code Throwable} for which to retrieve the stack
-   *                 trace.
-   * @param  buffer  The buffer to which the information should be appended.
-   */
   public static void getStackTrace(final Throwable t,
                                    final StringBuilder buffer)
   {
@@ -896,21 +633,11 @@ public final class StaticUtils
       getStackTrace(cause, buffer);
     }
     buffer.append(", revision=");
-    buffer.append(Version.REVISION_NUMBER);
     buffer.append(')');
   }
 
 
 
-  /**
-   * Returns a single-line string representation of the stack trace.  It will
-   * include a list of source files and line numbers (if available) for the
-   * stack trace.
-   *
-   * @param  elements  The stack trace.
-   *
-   * @return  A single-line string representation of the stack trace.
-   */
   public static String getStackTrace(final StackTraceElement[] elements)
   {
     final StringBuilder buffer = new StringBuilder();
@@ -919,15 +646,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Appends a single-line string representation of the stack trace to the given
-   * buffer.  It will include a list of source files and line numbers
-   * (if available) for the stack trace.
-   *
-   * @param  elements  The stack trace.
-   * @param  buffer  The buffer to which the information should be appended.
-   */
   public static void getStackTrace(final StackTraceElement[] elements,
                                    final StringBuilder buffer)
   {
@@ -954,23 +672,7 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a string representation of the provided {@code Throwable} object
-   * suitable for use in a message.  For runtime exceptions and errors, then a
-   * full stack trace for the exception will be provided.  For exception types
-   * defined in the LDAP SDK, then its {@code getExceptionMessage} method will
-   * be used to get the string representation.  For all other types of
-   * exceptions, then the standard string representation will be used.
-   * <BR><BR>
-   * For all types of exceptions, the message will also include the cause if one
-   * exists.
-   *
-   * @param  t  The {@code Throwable} for which to generate the exception
-   *            message.
-   *
-   * @return  A string representation of the provided {@code Throwable} object
-   *          suitable for use in a message.
-   */
+
   public static String getExceptionMessage(final Throwable t)
   {
     if (t == null)
@@ -1008,14 +710,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves the unqualified name (i.e., the name without package information)
-   * for the provided class.
-   *
-   * @param  c  The class for which to retrieve the unqualified name.
-   *
-   * @return  The unqualified name for the provided class.
-   */
   public static String getUnqualifiedClassName(final Class<?> c)
   {
     final String className     = c.getName();
@@ -1032,14 +726,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Encodes the provided date in generalized time format.
-   *
-   * @param  d  The date to be encoded in generalized time format.
-   *
-   * @return  The generalized time representation of the provided date.
-   */
   public static String encodeGeneralizedTime(final Date d)
   {
     SimpleDateFormat dateFormat = dateFormatters.get();
@@ -1055,22 +741,11 @@ public final class StaticUtils
 
 
 
-  /**
-   * Decodes the provided string as a timestamp in generalized time format.
-   *
-   * @param  t  The timestamp to be decoded.  It must not be {@code null}.
-   *
-   * @return  The {@code Date} object decoded from the provided timestamp.
-   *
-   * @throws  java.text.ParseException  If the provided string could not be decoded as a
-   *                          timestamp in generalized time format.
-   */
   public static Date decodeGeneralizedTime(final String t)
          throws ParseException
   {
     ensureNotNull(t);
 
-    // Extract the time zone information from the end of the value.
     int tzPos;
     final TimeZone tz;
     if (t.endsWith("Z"))
@@ -1094,9 +769,6 @@ public final class StaticUtils
       tz = TimeZone.getTimeZone("GMT" + t.substring(tzPos));
       if (tz.getRawOffset() == 0)
       {
-        // This is the default time zone that will be returned if the value
-        // cannot be parsed.  If it's valid, then it will end in "+0000" or
-        // "-0000".  Otherwise, it's invalid and GMT was just a fallback.
         if (! (t.endsWith("+0000") || t.endsWith("-0000")))
         {
           throw new ParseException(ERR_GENTIME_DECODE_CANNOT_PARSE_TZ.get(t),
@@ -1104,12 +776,6 @@ public final class StaticUtils
         }
       }
     }
-
-
-    // See if the timestamp has a sub-second portion.  Note that if there is a
-    // sub-second portion, then we may need to massage the value so that there
-    // are exactly three sub-second characters so that it can be interpreted as
-    // milliseconds.
     final String subSecFormatStr;
     final String trimmedTimestamp;
     int periodPos = t.lastIndexOf('.', tzPos);
@@ -1143,10 +809,6 @@ public final class StaticUtils
       trimmedTimestamp = t.substring(0, tzPos);
     }
 
-
-    // Look at where the period is (or would be if it existed) to see how many
-    // characters are in the integer portion.  This will give us what we need
-    // for the rest of the format string.
     final String formatStr;
     switch (periodPos)
     {
@@ -1165,8 +827,6 @@ public final class StaticUtils
     }
 
 
-    // We should finally be able to create an appropriate date format object
-    // to parse the trimmed version of the timestamp.
     final SimpleDateFormat dateFormat = new SimpleDateFormat(formatStr);
     dateFormat.setTimeZone(tz);
     dateFormat.setLenient(false);
@@ -1175,17 +835,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Trims only leading spaces from the provided string, leaving any trailing
-   * spaces intact.
-   *
-   * @param  s  The string to be processed.  It must not be {@code null}.
-   *
-   * @return  The original string if no trimming was required, or a new string
-   *          without leading spaces if the provided string had one or more.  It
-   *          may be an empty string if the provided string was an empty string
-   *          or contained only spaces.
-   */
   public static String trimLeading(final String s)
   {
     ensureNotNull(s);
@@ -1199,34 +848,20 @@ public final class StaticUtils
 
     if (nonSpacePos == 0)
     {
-      // There were no leading spaces.
       return s;
     }
     else if (nonSpacePos >= length)
     {
-      // There were no non-space characters.
       return "";
     }
     else
     {
-      // There were leading spaces, so return the string without them.
       return s.substring(nonSpacePos, length);
     }
   }
 
 
 
-  /**
-   * Trims only trailing spaces from the provided string, leaving any leading
-   * spaces intact.
-   *
-   * @param  s  The string to be processed.  It must not be {@code null}.
-   *
-   * @return  The original string if no trimming was required, or a new string
-   *          without trailing spaces if the provided string had one or more.
-   *          It may be an empty string if the provided string was an empty
-   *          string or contained only spaces.
-   */
   public static String trimTrailing(final String s)
   {
     ensureNotNull(s);
@@ -1240,41 +875,23 @@ public final class StaticUtils
 
     if (nonSpacePos < 0)
     {
-      // There were no non-space characters.
       return "";
     }
     else if (nonSpacePos == lastPos)
     {
-      // There were no trailing spaces.
+
       return s;
     }
     else
     {
-      // There were trailing spaces, so return the string without them.
       return s.substring(0, (nonSpacePos+1));
     }
   }
 
 
 
-  /**
-   * Wraps the contents of the specified line using the given width.  It will
-   * attempt to wrap at spaces to preserve words, but if that is not possible
-   * (because a single "word" is longer than the maximum width), then it will
-   * wrap in the middle of the word at the specified maximum width.
-   *
-   * @param  line      The line to be wrapped.  It must not be {@code null}.
-   * @param  maxWidth  The maximum width for lines in the resulting list.  A
-   *                   value less than or equal to zero will cause no wrapping
-   *                   to be performed.
-   *
-   * @return  A list of the wrapped lines.  It may be empty if the provided line
-   *          contained only spaces.
-   */
   public static List<String> wrapLine(final String line, final int maxWidth)
   {
-    // See if the provided string already contains line breaks.  If so, then
-    // treat it as multiple lines rather than a single line.
     final int breakPos = line.indexOf('\n');
     if (breakPos >= 0)
     {
@@ -1303,11 +920,8 @@ public final class StaticUtils
       final int spacePos = line.lastIndexOf(' ', wrapPos);
       if (spacePos > lastWrapPos)
       {
-        // We found a space in an acceptable location, so use it after trimming
-        // any trailing spaces.
         final String s = trimTrailing(line.substring(lastWrapPos, spacePos));
 
-        // Don't bother adding the line if it contained only spaces.
         if (s.length() > 0)
         {
           lineList.add(s);
@@ -1317,12 +931,9 @@ public final class StaticUtils
       }
       else
       {
-        // We didn't find any spaces, so we'll have to insert a hard break at
-        // the specified wrap column.
         lineList.add(line.substring(lastWrapPos, wrapPos));
       }
 
-      // Skip over any spaces before the next non-space character.
       while ((wrapPos < length) && (line.charAt(wrapPos) == ' '))
       {
         wrapPos++;
@@ -1332,8 +943,6 @@ public final class StaticUtils
       wrapPos += maxWidth;
       if (wrapPos >= length)
       {
-        // The last fragment can fit on the line, so we can handle that now and
-        // break.
         if (lastWrapPos >= length)
         {
           break;
@@ -1355,42 +964,12 @@ public final class StaticUtils
 
 
 
-  /**
-   * This method returns a form of the provided argument that is safe to
-   * use on the command line for the local platform. This method is provided as
-   * a convenience wrapper around {@link ExampleCommandLineArgument}.  Calling
-   * this method is equivalent to:
-   *
-   * <PRE>
-   *  return ExampleCommandLineArgument.getCleanArgument(s).getLocalForm();
-   * </PRE>
-   *
-   * For getting direct access to command line arguments that are safe to
-   * use on other platforms, call
-   * {@link ExampleCommandLineArgument#getCleanArgument}.
-   *
-   * @param  s  The string to be processed.  It must not be {@code null}.
-   *
-   * @return  A cleaned version of the provided string in a form that will allow
-   *          it to be displayed as the value of a command-line argument on.
-   */
   public static String cleanExampleCommandLineArgument(final String s)
   {
     return ExampleCommandLineArgument.getCleanArgument(s).getLocalForm();
   }
 
 
-
-  /**
-   * Retrieves a single string which is a concatenation of all of the provided
-   * strings.
-   *
-   * @param  a  The array of strings to concatenate.  It must not be
-   *            {@code null}.
-   *
-   * @return  A string containing a concatenation of all of the strings in the
-   *          provided array.
-   */
   public static String concatenateStrings(final String... a)
   {
     return concatenateStrings(null, null, "  ", null, null, a);
@@ -1398,50 +977,12 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a single string which is a concatenation of all of the provided
-   * strings.
-   *
-   * @param  l  The list of strings to concatenate.  It must not be
-   *            {@code null}.
-   *
-   * @return  A string containing a concatenation of all of the strings in the
-   *          provided list.
-   */
   public static String concatenateStrings(final List<String> l)
   {
     return concatenateStrings(null, null, "  ", null, null, l);
   }
 
 
-
-  /**
-   * Retrieves a single string which is a concatenation of all of the provided
-   * strings.
-   *
-   * @param  beforeList       A string that should be placed at the beginning of
-   *                          the list.  It may be {@code null} or empty if
-   *                          nothing should be placed at the beginning of the
-   *                          list.
-   * @param  beforeElement    A string that should be placed before each element
-   *                          in the list.  It may be {@code null} or empty if
-   *                          nothing should be placed before each element.
-   * @param  betweenElements  The separator that should be placed between
-   *                          elements in the list.  It may be {@code null} or
-   *                          empty if no separator should be placed between
-   *                          elements.
-   * @param  afterElement     A string that should be placed after each element
-   *                          in the list.  It may be {@code null} or empty if
-   *                          nothing should be placed after each element.
-   * @param  afterList        A string that should be placed at the end of the
-   *                          list.  It may be {@code null} or empty if nothing
-   *                          should be placed at the end of the list.
-   * @param  a                The array of strings to concatenate.  It must not
-   *                          be {@code null}.
-   *
-   * @return  A string containing a concatenation of all of the strings in the
-   *          provided list.
-   */
   public static String concatenateStrings(final String beforeList,
                                           final String beforeElement,
                                           final String betweenElements,
@@ -1455,33 +996,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Retrieves a single string which is a concatenation of all of the provided
-   * strings.
-   *
-   * @param  beforeList       A string that should be placed at the beginning of
-   *                          the list.  It may be {@code null} or empty if
-   *                          nothing should be placed at the beginning of the
-   *                          list.
-   * @param  beforeElement    A string that should be placed before each element
-   *                          in the list.  It may be {@code null} or empty if
-   *                          nothing should be placed before each element.
-   * @param  betweenElements  The separator that should be placed between
-   *                          elements in the list.  It may be {@code null} or
-   *                          empty if no separator should be placed between
-   *                          elements.
-   * @param  afterElement     A string that should be placed after each element
-   *                          in the list.  It may be {@code null} or empty if
-   *                          nothing should be placed after each element.
-   * @param  afterList        A string that should be placed at the end of the
-   *                          list.  It may be {@code null} or empty if nothing
-   *                          should be placed at the end of the list.
-   * @param  l                The list of strings to concatenate.  It must not
-   *                          be {@code null}.
-   *
-   * @return  A string containing a concatenation of all of the strings in the
-   *          provided list.
-   */
   public static String concatenateStrings(final String beforeList,
                                           final String beforeElement,
                                           final String betweenElements,
@@ -1527,18 +1041,6 @@ public final class StaticUtils
     return buffer.toString();
   }
 
-
-
-  /**
-   * Converts a duration in seconds to a string with a human-readable duration
-   * which may include days, hours, minutes, and seconds, to the extent that
-   * they are needed.
-   *
-   * @param  s  The number of seconds to be represented.
-   *
-   * @return  A string containing a human-readable representation of the
-   *          provided time.
-   */
   public static String secondsToHumanReadableDuration(final long s)
   {
     return millisToHumanReadableDuration(s * 1000L);
@@ -1546,16 +1048,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Converts a duration in seconds to a string with a human-readable duration
-   * which may include days, hours, minutes, and seconds, to the extent that
-   * they are needed.
-   *
-   * @param  m  The number of milliseconds to be represented.
-   *
-   * @return  A string containing a human-readable representation of the
-   *          provided time.
-   */
   public static String millisToHumanReadableDuration(final long m)
   {
     final StringBuilder buffer = new StringBuilder();
@@ -1649,14 +1141,7 @@ public final class StaticUtils
 
 
 
-  /**
-   * Converts the provided number of nanoseconds to milliseconds.
-   *
-   * @param  nanos  The number of nanoseconds to convert to milliseconds.
-   *
-   * @return  The number of milliseconds that most closely corresponds to the
-   *          specified number of nanoseconds.
-   */
+
   public static long nanosToMillis(final long nanos)
   {
     return Math.max(0L, Math.round(nanos / 1000000.0d));
@@ -1664,14 +1149,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Converts the provided number of milliseconds to nanoseconds.
-   *
-   * @param  millis  The number of milliseconds to convert to nanoseconds.
-   *
-   * @return  The number of nanoseconds that most closely corresponds to the
-   *          specified number of milliseconds.
-   */
   public static long millisToNanos(final long millis)
   {
     return Math.max(0L, (millis * 1000000L));
@@ -1679,16 +1156,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the provided string is a valid numeric OID.  A numeric
-   * OID must start and end with a digit, must have at least on period, must
-   * contain only digits and periods, and must not have two consecutive periods.
-   *
-   * @param  s  The string to examine.  It must not be {@code null}.
-   *
-   * @return  {@code true} if the provided string is a valid numeric OID, or
-   *          {@code false} if not.
-   */
   public static boolean isNumericOID(final String s)
   {
     boolean digitRequired = true;
@@ -1732,15 +1199,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Capitalizes the provided string.  The first character will be converted to
-   * uppercase, and the rest of the string will be left unaltered.
-   *
-   * @param  s  The string to be capitalized.
-   *
-   * @return  A capitalized version of the provided string.
-   */
   public static String capitalize(final String s)
   {
     if (s == null)
@@ -1770,15 +1228,6 @@ public final class StaticUtils
   }
 
 
-
-  /**
-   * Encodes the provided UUID to a byte array containing its 128-bit
-   * representation.
-   *
-   * @param  uuid  The UUID to be encoded.  It must not be {@code null}.
-   *
-   * @return  The byte array containing the 128-bit encoded UUID.
-   */
   public static byte[] encodeUUID(final UUID uuid)
   {
     final byte[] b = new byte[16];
@@ -1808,17 +1257,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Decodes the value of the provided byte array as a Java UUID.
-   *
-   * @param  b  The byte array to be decoded as a UUID.  It must not be
-   *            {@code null}.
-   *
-   * @return  The decoded UUID.
-   *
-   * @throws  java.text.ParseException  If the provided byte array cannot be parsed as a
-   *                         UUID.
-   */
   public static UUID decodeUUID(final byte[] b)
          throws ParseException
   {
@@ -1844,13 +1282,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Returns {@code true} if and only if the current process is running on
-   * a Windows-based operating system.
-   *
-   * @return  {@code true} if the current process is running on a Windows-based
-   *          operating system and {@code false} otherwise.
-   */
   public static boolean isWindows()
   {
     final String osName = toLowerCase(System.getProperty("os.name"));
@@ -1859,18 +1290,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Attempts to parse the contents of the provided string to an argument list
-   * (e.g., converts something like "--arg1 arg1value --arg2 --arg3 arg3value"
-   * to a list of "--arg1", "arg1value", "--arg2", "--arg3", "arg3value").
-   *
-   * @param  s  The string to be converted to an argument list.
-   *
-   * @return  The parsed argument list.
-   *
-   * @throws  java.text.ParseException  If a problem is encountered while attempting to
-   *                          parse the given string to an argument list.
-   */
   public static List<String> toArgumentList(final String s)
          throws ParseException
   {
@@ -1948,19 +1367,7 @@ public final class StaticUtils
 
 
 
-  /**
-   * Creates a modifiable list with all of the items of the provided array in
-   * the same order.  This method behaves much like {@code Arrays.asList},
-   * except that if the provided array is {@code null}, then it will return a
-   * {@code null} list rather than throwing an exception.
-   *
-   * @param  <T>  The type of item contained in the provided array.
-   *
-   * @param  array  The array of items to include in the list.
-   *
-   * @return  The list that was created, or {@code null} if the provided array
-   *          was {@code null}.
-   */
+
   public static <T> List<T> toList(final T[] array)
   {
     if (array == null)
@@ -1975,19 +1382,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Creates a modifiable list with all of the items of the provided array in
-   * the same order.  This method behaves much like {@code Arrays.asList},
-   * except that if the provided array is {@code null}, then it will return an
-   * empty list rather than throwing an exception.
-   *
-   * @param  <T>  The type of item contained in the provided array.
-   *
-   * @param  array  The array of items to include in the list.
-   *
-   * @return  The list that was created, or an empty list if the provided array
-   *          was {@code null}.
-   */
   public static <T> List<T> toNonNullList(final T[] array)
   {
     if (array == null)
@@ -2002,17 +1396,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether both of the provided objects are {@code null} or both
-   * are logically equal (using the {@code equals} method).
-   *
-   * @param  o1  The first object for which to make the determination.
-   * @param  o2  The second object for which to make the determination.
-   *
-   * @return  {@code true} if both objects are {@code null} or both are
-   *          logically equal, or {@code false} if only one of the objects is
-   *          {@code null} or they are not logically equal.
-   */
   public static boolean bothNullOrEqual(final Object o1, final Object o2)
   {
     if (o1 == null)
@@ -2029,19 +1412,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether both of the provided strings are {@code null} or both
-   * are logically equal ignoring differences in capitalization (using the
-   * {@code equalsIgnoreCase} method).
-   *
-   * @param  s1  The first string for which to make the determination.
-   * @param  s2  The second string for which to make the determination.
-   *
-   * @return  {@code true} if both strings are {@code null} or both are
-   *          logically equal ignoring differences in capitalization, or
-   *          {@code false} if only one of the objects is {@code null} or they
-   *          are not logically equal ignoring capitalization.
-   */
   public static boolean bothNullOrEqualIgnoreCase(final String s1,
                                                   final String s2)
   {
@@ -2059,18 +1429,6 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the provided string arrays have the same elements,
-   * ignoring the order in which they appear and differences in capitalization.
-   * It is assumed that neither array contains {@code null} strings, and that
-   * no string appears more than once in each array.
-   *
-   * @param  a1  The first array for which to make the determination.
-   * @param  a2  The second array for which to make the determination.
-   *
-   * @return  {@code true} if both arrays have the same set of strings, or
-   *          {@code false} if not.
-   */
   public static boolean stringsEqualIgnoreCaseOrderIndependent(
                              final String[] a1, final String[] a2)
   {
@@ -2110,20 +1468,7 @@ public final class StaticUtils
 
 
 
-  /**
-   * Indicates whether the provided arrays have the same elements, ignoring the
-   * order in which they appear.  It is assumed that neither array contains
-   * {@code null} elements, and that no element appears more than once in each
-   * array.
-   *
-   * @param  <T>  The type of element contained in the arrays.
-   *
-   * @param  a1  The first array for which to make the determination.
-   * @param  a2  The second array for which to make the determination.
-   *
-   * @return  {@code true} if both arrays have the same set of elements, or
-   *          {@code false} if not.
-   */
+
   public static <T> boolean arraysEqualOrderIndependent(final T[] a1,
                                                         final T[] a2)
   {

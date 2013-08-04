@@ -392,7 +392,6 @@ public final class Modification
       return false;
     }
 
-    // Look at the values using a byte-for-byte matching.
     for (final ASN1OctetString value : values)
     {
       boolean found = false;

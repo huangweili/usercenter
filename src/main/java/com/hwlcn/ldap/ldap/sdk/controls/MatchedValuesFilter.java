@@ -57,168 +57,56 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class MatchedValuesFilter
        implements Serializable
 {
-  /**
-   * The match type that will be used for equality match filters.
-   */
   public static final byte MATCH_TYPE_EQUALITY = (byte) 0xA3;
 
-
-
-  /**
-   * The match type that will be used for substring match filters.
-   */
   public static final byte MATCH_TYPE_SUBSTRINGS = (byte) 0xA4;
 
-
-
-  /**
-   * The match type that will be used for greater-or-equal match filters.
-   */
   public static final byte MATCH_TYPE_GREATER_OR_EQUAL = (byte) 0xA5;
 
-
-
-  /**
-   * The match type that will be used for less-or-equal match filters.
-   */
   public static final byte MATCH_TYPE_LESS_OR_EQUAL = (byte) 0xA6;
 
-
-
-  /**
-   * The match type that will be used for presence match filters.
-   */
   public static final byte MATCH_TYPE_PRESENT = (byte) 0x87;
 
-
-
-  /**
-   * The match type that will be used for approximate match filters.
-   */
   public static final byte MATCH_TYPE_APPROXIMATE = (byte) 0xA8;
 
-
-
-  /**
-   * The match type that will be used for extensible match filters.
-   */
   public static final byte MATCH_TYPE_EXTENSIBLE = (byte) 0xA9;
 
-
-
-  /**
-   * The BER type for the subInitial substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBINITIAL = (byte) 0x80;
 
-
-
-  /**
-   * The BER type for the subAny substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBANY = (byte) 0x81;
 
-
-
-  /**
-   * The BER type for the subFinal substring filter element.
-   */
   private static final byte SUBSTRING_TYPE_SUBFINAL = (byte) 0x82;
 
-
-
-  /**
-   * The BER type for the matching rule ID extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_MATCHING_RULE_ID = (byte) 0x81;
 
-
-
-  /**
-   * The BER type for the attribute name extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_ATTRIBUTE_NAME = (byte) 0x82;
 
-
-
-  /**
-   * The BER type for the match value extensible match filter element.
-   */
   private static final byte EXTENSIBLE_TYPE_MATCH_VALUE = (byte) 0x83;
 
-
-
-  /**
-   * An empty array that will be used if there are no subAny elements.
-   */
   private static final ASN1OctetString[] NO_SUB_ANY = new ASN1OctetString[0];
 
-
-
-  /**
-   * An empty array that will be used if there are no subAny elements.
-   */
   private static final String[] NO_SUB_ANY_STRINGS = NO_STRINGS;
 
-
-
-  /**
-   * An empty array that will be used if there are no subAny elements.
-   */
   private static final byte[][] NO_SUB_ANY_BYTES = new byte[0][];
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 8144732301100674661L;
 
 
-
-  // The name of the attribute type to include in this filter, if appropriate.
   private final ASN1OctetString assertionValue;
 
-  // The subFinal value for this filter, if appropriate.
   private final ASN1OctetString subFinalValue;
 
-  // The subInitial value for this filter, if appropriate.
   private final ASN1OctetString subInitialValue;
 
-  // The subAny values for this filter, if appropriate.
   private final ASN1OctetString[] subAnyValues;
 
-  // The filter type for this filter.
   private final byte matchType;
 
-  // The name of the attribute type to include in this filter, if appropriate.
   private final String attributeType;
 
-  // The matching rule ID for this filter, if appropriate.
   private final String matchingRuleID;
 
 
-
-  /**
-   * Creates a new matched values filter with the provided information.
-   *
-   * @param  matchType        The filter type for this filter.
-   * @param  attributeType    The name of the attribute type.  It may be
-   *                          {@code null} only for extensible match filters and
-   *                          only if a non-{@code null} matching rule ID is
-   *                          provided.
-   * @param  assertionValue   The assertion value for this filter.  It may only
-   *                          be {@code null} for substring and presence
-   *                          filters.
-   * @param  subInitialValue  The subInitial value for this filter.  It may only
-   *                          be provided for substring filters.
-   * @param  subAnyValues     The set of subAny values for this filter.  It may
-   *                          only be provided for substring filters.
-   * @param  subFinalValue    The subFinal value for this filter.  It may only
-   *                          be provided for substring filters.
-   * @param  matchingRuleID   The matching rule ID for this filter.  It may only
-   *                          be provided for extensible match filters.
-   */
   private MatchedValuesFilter(final byte matchType, final String attributeType,
                               final ASN1OctetString assertionValue,
                               final ASN1OctetString subInitialValue,
@@ -236,18 +124,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for equality matching with the provided
-   * information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created equality match filter.
-   */
   public static MatchedValuesFilter createEqualityFilter(
                                          final String attributeType,
                                          final String assertionValue)
@@ -260,18 +136,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for equality matching with the provided
-   * information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created equality match filter.
-   */
   public static MatchedValuesFilter createEqualityFilter(
                                          final String attributeType,
                                          final byte[] assertionValue)
@@ -284,23 +148,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for substring matching with the
-   * provided information.  At least one substring filter element must be
-   * provided.
-   *
-   * @param  attributeType    The attribute type for the filter.  It must not be
-   *                          {@code null}.
-   * @param  subInitialValue  The subInitial value for the filter, or
-   *                          {@code null} if there is no subInitial element.
-   * @param  subAnyValues     The set of subAny values for the filter, or
-   *                          {@code null} if there are no subAny elements.
-   * @param  subFinalValue    The subFinal value for the filter, or {@code null}
-   *                          if there is no subFinal element.
-   *
-   * @return  The created equality match filter.
-   */
   public static MatchedValuesFilter createSubstringFilter(
                                          final String attributeType,
                                          final String subInitialValue,
@@ -354,22 +201,6 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Creates a new matched values filter for substring matching with the
-   * provided information.  At least one substring filter element must be
-   * provided.
-   *
-   * @param  attributeType    The attribute type for the filter.  It must not be
-   *                          {@code null}.
-   * @param  subInitialValue  The subInitial value for the filter, or
-   *                          {@code null} if there is no subInitial element.
-   * @param  subAnyValues     The set of subAny values for the filter, or
-   *                          {@code null} if there are no subAny elements.
-   * @param  subFinalValue    The subFinal value for the filter, or {@code null}
-   *                          if there is no subFinal element.
-   *
-   * @return  The created equality match filter.
-   */
   public static MatchedValuesFilter createSubstringFilter(
                                          final String attributeType,
                                          final byte[] subInitialValue,
@@ -421,19 +252,6 @@ public final class MatchedValuesFilter
                                    subInitialOS, subAnyOS, subFinalOS, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for greater-or-equal matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created greater-or-equal match filter.
-   */
   public static MatchedValuesFilter createGreaterOrEqualFilter(
                                          final String attributeType,
                                          final String assertionValue)
@@ -446,18 +264,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for greater-or-equal matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created greater-or-equal match filter.
-   */
   public static MatchedValuesFilter createGreaterOrEqualFilter(
                                          final String attributeType,
                                          final byte[] assertionValue)
@@ -469,19 +275,6 @@ public final class MatchedValuesFilter
                                    NO_SUB_ANY, null, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for less-or-equal matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created less-or-equal match filter.
-   */
   public static MatchedValuesFilter createLessOrEqualFilter(
                                          final String attributeType,
                                          final String assertionValue)
@@ -493,19 +286,6 @@ public final class MatchedValuesFilter
                                    NO_SUB_ANY, null, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for less-or-equal matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created less-or-equal match filter.
-   */
   public static MatchedValuesFilter createLessOrEqualFilter(
                                          final String attributeType,
                                          final byte[] assertionValue)
@@ -517,17 +297,6 @@ public final class MatchedValuesFilter
                                    NO_SUB_ANY, null, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for presence matching with the provided
-   * information.
-   *
-   * @param  attributeType  The attribute type for the filter.  It must not be
-   *                        {@code null}.
-   *
-   * @return  The created present match filter.
-   */
   public static MatchedValuesFilter createPresentFilter(
                                          final String attributeType)
   {
@@ -537,19 +306,6 @@ public final class MatchedValuesFilter
                                    null, NO_SUB_ANY, null, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for approximate matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created approximate match filter.
-   */
   public static MatchedValuesFilter createApproximateFilter(
                                          final String attributeType,
                                          final String assertionValue)
@@ -561,19 +317,6 @@ public final class MatchedValuesFilter
                                    NO_SUB_ANY, null, null);
   }
 
-
-
-  /**
-   * Creates a new matched values filter for approximate matching with the
-   * provided information.
-   *
-   * @param  attributeType   The attribute type for the filter.  It must not be
-   *                         {@code null}.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created greater-or-equal match filter.
-   */
   public static MatchedValuesFilter createApproximateFilter(
                                          final String attributeType,
                                          final byte[] assertionValue)
@@ -586,21 +329,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for extensible matching with the
-   * provided information.  At least one of the attribute type and matching rule
-   * ID must be provided.
-   *
-   * @param  attributeType   The attribute type for the filter, or {@code null}
-   *                         if there is no attribute type.
-   * @param  matchingRuleID  The matching rule ID for the filter, or
-   *                         {@code null} if there is no matching rule ID.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created extensible match filter.
-   */
   public static MatchedValuesFilter createExtensibleMatchFilter(
                                          final String attributeType,
                                          final String matchingRuleID,
@@ -618,21 +346,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a new matched values filter for extensible matching with the
-   * provided information.  At least one of the attribute type and matching rule
-   * ID must be provided.
-   *
-   * @param  attributeType   The attribute type for the filter, or {@code null}
-   *                         if there is no attribute type.
-   * @param  matchingRuleID  The matching rule ID for the filter, or
-   *                         {@code null} if there is no matching rule ID.
-   * @param  assertionValue  The assertion value for the filter.  It must not be
-   *                         {@code null}.
-   *
-   * @return  The created extensible match filter.
-   */
   public static MatchedValuesFilter createExtensibleMatchFilter(
                                          final String attributeType,
                                          final String matchingRuleID,
@@ -649,20 +362,6 @@ public final class MatchedValuesFilter
                                    matchingRuleID);
   }
 
-
-
-  /**
-   * Creates a new matched values filter from the provided search filter, if
-   * possible.
-   *
-   * @param  filter  The search filter to use to create this matched values
-   *                 filter.
-   *
-   * @return  The search filter that corresponds to this matched values filter.
-   *
-   * @throws  LDAPException  If the provided search filter cannot be represented
-   *                         as a matched values filter.
-   */
   public static MatchedValuesFilter create(final Filter filter)
          throws LDAPException
   {
@@ -725,39 +424,18 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the match type for this matched values filter.
-   *
-   * @return  The match type for this matched values filter.
-   */
   public byte getMatchType()
   {
     return matchType;
   }
 
 
-
-  /**
-   * Retrieves the name of the attribute type for this matched values filter,
-   * if available.
-   *
-   * @return  The name of the attribute type for this matched values filter, or
-   *          {@code null} if there is none.
-   */
   public String getAttributeType()
   {
     return attributeType;
   }
 
 
-
-  /**
-   * Retrieves the string representation of the assertion value for this matched
-   * values filter, if available.
-   *
-   * @return  The string representation of the assertion value for this matched
-   *          values filter, or {@code null} if there is none.
-   */
   public String getAssertionValue()
   {
     if (assertionValue == null)
@@ -772,13 +450,6 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the binary representation of the assertion value for this matched
-   * values filter, if available.
-   *
-   * @return  The binary representation of the assertion value for this matched
-   *          values filter, or {@code null} if there is none.
-   */
   public byte[] getAssertionValueBytes()
   {
     if (assertionValue == null)
@@ -792,27 +463,11 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Retrieves raw assertion value for this matched values filter, if available.
-   *
-   * @return  The raw assertion value for this matched values filter, or
-   *          {@code null} if there is none.
-   */
   public ASN1OctetString getRawAssertionValue()
   {
     return assertionValue;
   }
 
-
-
-  /**
-   * Retrieves the string representation of the subInitial element for this
-   * matched values filter, if available.
-   *
-   * @return  The string representation of the subInitial element for this
-   *          matched values filter, or {@code null} if there is none.
-   */
   public String getSubInitialValue()
   {
     if (subInitialValue == null)
@@ -825,15 +480,6 @@ public final class MatchedValuesFilter
     }
   }
 
-
-
-  /**
-   * Retrieves the binary representation of the subInitial element for this
-   * matched values filter, if available.
-   *
-   * @return  The binary representation of the subInitial element for this
-   *          matched values filter, or {@code null} if there is none.
-   */
   public byte[] getSubInitialValueBytes()
   {
     if (subInitialValue == null)
@@ -846,15 +492,6 @@ public final class MatchedValuesFilter
     }
   }
 
-
-
-  /**
-   * Retrieves the raw subInitial element for this matched values filter, if
-   * available.
-   *
-   * @return  The raw subInitial element for this matched values filter, or
-   *          {@code null} if there is none.
-   */
   public ASN1OctetString getRawSubInitialValue()
   {
     return subInitialValue;
@@ -862,13 +499,6 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the string representations of the subAny elements for this
-   * matched values filter, if available.
-   *
-   * @return  The string representations of the subAny element for this matched
-   *          values filter, or an empty array if there are none.
-   */
   public String[] getSubAnyValues()
   {
     if (subAnyValues.length == 0)
@@ -889,13 +519,6 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the binary representations of the subAny elements for this
-   * matched values filter, if available.
-   *
-   * @return  The binary representations of the subAny element for this matched
-   *          values filter, or an empty array if there are none.
-   */
   public byte[][] getSubAnyValueBytes()
   {
     if (subAnyValues.length == 0)
@@ -915,14 +538,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Retrieves the raw subAny elements for this matched values filter, if
-   * available.
-   *
-   * @return  The raw subAny element for this matched values filter, or an empty
-   *          array if there are none.
-   */
   public ASN1OctetString[] getRawSubAnyValues()
   {
     return subAnyValues;
@@ -930,13 +545,6 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the string representation of the subFinal element for this
-   * matched values filter, if available.
-   *
-   * @return  The string representation of the subFinal element for this
-   *          matched values filter, or {@code null} if there is none.
-   */
   public String getSubFinalValue()
   {
     if (subFinalValue == null)
@@ -950,14 +558,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Retrieves the binary representation of the subFinal element for this
-   * matched values filter, if available.
-   *
-   * @return  The binary representation of the subFinal element for this matched
-   *          values filter, or {@code null} if there is none.
-   */
   public byte[] getSubFinalValueBytes()
   {
     if (subFinalValue == null)
@@ -970,15 +570,6 @@ public final class MatchedValuesFilter
     }
   }
 
-
-
-  /**
-   * Retrieves the raw subFinal element for this matched values filter, if
-   * available.
-   *
-   * @return  The raw subFinal element for this matched values filter, or
-   *          {@code null} if there is none.
-   */
   public ASN1OctetString getRawSubFinalValue()
   {
     return subFinalValue;
@@ -986,26 +577,12 @@ public final class MatchedValuesFilter
 
 
 
-  /**
-   * Retrieves the matching rule ID for this matched values filter, if
-   * available.
-   *
-   * @return  The matching rule ID for this matched values filter, or
-   *          {@code null} if there is none.
-   */
   public String getMatchingRuleID()
   {
     return matchingRuleID;
   }
 
 
-
-  /**
-   * Encodes this matched values filter for use in the matched values control.
-   *
-   * @return  The ASN.1 element containing the encoded representation of this
-   *          matched values filter.
-   */
   public ASN1Element encode()
   {
     switch (matchType)
@@ -1068,23 +645,12 @@ public final class MatchedValuesFilter
         return new ASN1Sequence(matchType, extElements);
 
       default:
-        // This should never happen.
         return null;
     }
   }
 
 
 
-  /**
-   * Decodes the provided ASN.1 element as a matched values filter.
-   *
-   * @param  element  The ASN.1 element to decode as a matched values filter.
-   *
-   * @return  The decoded matched values filter.
-   *
-   * @throws  LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a matched values filter.
-   */
   public static MatchedValuesFilter decode(final ASN1Element element)
          throws LDAPException
   {
@@ -1298,14 +864,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Creates a search filter that is the equivalent of this matched values
-   * filter.
-   *
-   * @return  A search filter that is the equivalent of this matched values
-   *          filter.
-   */
   public Filter toFilter()
   {
     switch (matchType)
@@ -1339,18 +897,11 @@ public final class MatchedValuesFilter
                     false, assertionValue.getValue());
 
       default:
-        // This should never happen.
         return null;
     }
   }
 
 
-
-  /**
-   * Retrieves a string representation of this matched values filter.
-   *
-   * @return  A string representation of this matched values filter.
-   */
   @Override()
   public String toString()
   {
@@ -1360,14 +911,6 @@ public final class MatchedValuesFilter
   }
 
 
-
-  /**
-   * Appends a string representation of this matched values filter to the
-   * provided buffer.
-   *
-   * @param  buffer  The buffer to which to append the string representation of
-   *                 this matched values filter.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append('(');

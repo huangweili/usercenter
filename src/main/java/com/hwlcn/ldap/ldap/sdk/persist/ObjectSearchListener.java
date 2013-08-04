@@ -30,49 +30,19 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
 
-/**
- * This interface defines a set of methods that provide access to objects
- * returned by the {@link com.hwlcn.ldap.ldap.sdk.persist.LDAPPersister} class in the course of performing a
- * search.
- *
- * @param  <T>  The type of object handled by this class.
- */
 @Extensible()
 @ThreadSafety(level=ThreadSafetyLevel.INTERFACE_NOT_THREADSAFE)
 public interface ObjectSearchListener<T>
 {
-  /**
-   * Indicates that the provided object was created from an entry retrieved from
-   * the directory server in the course of processing the search operation.
-   *
-   * @param  o  The object that has been decoded from the entry that was
-   *            returned.  It will never be {@code null}.
-   */
+
   void objectReturned(final T o);
 
 
 
-  /**
-   * Indicates that the provided entry was retrieved from the director server
-   * in the course of processing the search operation, but an error occurred
-   * while attempting to instantiate an object from it.
-   *
-   * @param  entry      The entry that was retrieved from the directory server
-   *                    but could not be decoded as an object.
-   * @param  exception  The exception that was encountered while trying to
-   *                    create and initialize an object from the provided entry.
-   */
+
   void unparsableEntryReturned(final SearchResultEntry entry,
                                final LDAPPersistException exception);
 
 
-
-  /**
-   * Indicates that the provided search result reference was retrieved from the
-   * directory server in the course of processing the search operation.
-   *
-   * @param  searchReference  The search result reference that has been
-   *                          retrieved from the server.
-   */
   void searchReferenceReturned(final SearchResultReference searchReference);
 }

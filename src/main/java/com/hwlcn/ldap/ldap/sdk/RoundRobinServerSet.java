@@ -226,8 +226,6 @@ public final class RoundRobinServerSet
         }
       }
 
-      // If we've gotten here, then we've failed to connect to any of the
-      // servers, so propagate the last exception to the caller.
       throw lastException;
     }
   }

@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -45,76 +26,26 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
-
-
-/**
- * This class provides an implementation of the entry change notification
- * control as defined in draft-ietf-ldapext-psearch.  It will be returned in
- * search result entries that match the criteria associated with a persistent
- * search (see the {@link PersistentSearchRequestControl} class) and have been
- * changed in a way associated with the registered change types for that search.
- * <BR><BR>
- * The information that can be included in an entry change notification control
- * includes:
- * <UL>
- *   <LI>A change type, which indicates the type of operation that was performed
- *       to trigger this entry change notification control.  It will be one of
- *       the values of the {@link com.hwlcn.ldap.ldap.sdk.controls.PersistentSearchChangeType} enum.</LI>
- *   <LI>An optional previous DN, which indicates the DN that the entry had
- *       before the associated operation was processed.  It will only be present
- *       if the associated operation was a modify DN operation.</LI>
- *   <LI>An optional change number, which may be used to retrieve additional
- *       information about the associated operation from the server.  This may
- *       not be available in all directory server implementations.</LI>
- * </UL>
- * Note that the entry change notification control should only be included in
- * search result entries that are associated with a search request that included
- * the persistent search request control, and only if that persistent search
- * request control had the {@code returnECs} flag set to {@code true} to
- * indicate that entry change notification controls should be included in
- * resulting entries.  Further, the entry change notification control will only
- * be included in entries that are returned as the result of a change in the
- * server and not any of the preliminary entries that may be returned if the
- * corresponding persistent search request had the {@code changesOnly} flag set
- * to {@code false}.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class EntryChangeNotificationControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.7) for the entry change notification
-   * control.
-   */
+
   public static final String ENTRY_CHANGE_NOTIFICATION_OID =
        "2.16.840.1.113730.3.4.7";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -1305357948140939303L;
 
+ private final long changeNumber;
 
-
-  // The change number for the change, if available.
-  private final long changeNumber;
-
-  // The change type for the change.
   private final PersistentSearchChangeType changeType;
-
-  // The previous DN of the entry, if applicable.
-  private final String previousDN;
+ private final String previousDN;
 
 
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   EntryChangeNotificationControl()
   {
     changeNumber = -1;
@@ -124,16 +55,6 @@ public final class EntryChangeNotificationControl
 
 
 
-  /**
-   * Creates a new entry change notification control with the provided
-   * information.  It will not be critical.
-   *
-   * @param  changeType    The change type for the change.  It must not be
-   *                       {@code null}.
-   * @param  previousDN    The previous DN of the entry, if applicable.
-   * @param  changeNumber  The change number to include in this control, or
-   *                       -1 if there should not be a change number.
-   */
   public EntryChangeNotificationControl(
               final PersistentSearchChangeType changeType,
               final String previousDN, final long changeNumber)
@@ -142,19 +63,6 @@ public final class EntryChangeNotificationControl
   }
 
 
-
-  /**
-   * Creates a new entry change notification control with the provided
-   * information.
-   *
-   * @param  changeType    The change type for the change.  It must not be
-   *                       {@code null}.
-   * @param  previousDN    The previous DN of the entry, if applicable.
-   * @param  changeNumber  The change number to include in this control, or
-   *                       -1 if there should not be a change number.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public EntryChangeNotificationControl(
               final PersistentSearchChangeType changeType,
               final String previousDN, final long changeNumber,
@@ -170,19 +78,6 @@ public final class EntryChangeNotificationControl
 
 
 
-  /**
-   * Creates a new entry change notification control with the provided
-   * information.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as an
-   *                         entry change notification control.
-   */
   public EntryChangeNotificationControl(final String oid,
                                         final boolean isCritical,
                                         final ASN1OctetString value)
@@ -275,10 +170,6 @@ public final class EntryChangeNotificationControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public EntryChangeNotificationControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -288,22 +179,6 @@ public final class EntryChangeNotificationControl
   }
 
 
-
-  /**
-   * Extracts an entry change notification control from the provided search
-   * result entry.
-   *
-   * @param  entry  The search result entry from which to retrieve the entry
-   *                change notification control.
-   *
-   * @return  The entry change notification control contained in the provided
-   *          search result entry, or {@code null} if the entry did not contain
-   *          an entry change notification control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the entry change notification control
-   *                         contained in the provided entry.
-   */
   public static EntryChangeNotificationControl
                      get(final SearchResultEntry entry)
          throws LDAPException
@@ -325,21 +200,6 @@ public final class EntryChangeNotificationControl
     }
   }
 
-
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  changeType    The change type for the change.  It must not be
-   *                       {@code null}.
-   * @param  previousDN    The previous DN of the entry, if applicable.
-   * @param  changeNumber  The change number to include in this control, or
-   *                       -1 if there should not be a change number.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(
                final PersistentSearchChangeType changeType,
                final String previousDN, final long changeNumber)
@@ -362,59 +222,30 @@ public final class EntryChangeNotificationControl
     return new ASN1OctetString(new ASN1Sequence(elementList).encode());
   }
 
-
-
-  /**
-   * Retrieves the change type for this entry change notification control.
-   *
-   * @return  The change type for this entry change notification control.
-   */
   public PersistentSearchChangeType getChangeType()
   {
     return changeType;
   }
 
 
-
-  /**
-   * Retrieves the previous DN for the entry, if applicable.
-   *
-   * @return  The previous DN for the entry, or {@code null} if there is none.
-   */
   public String getPreviousDN()
   {
     return previousDN;
   }
 
 
-
-  /**
-   * Retrieves the change number for the associated change, if available.
-   *
-   * @return  The change number for the associated change, or -1 if none was
-   *          provided.
-   */
   public long getChangeNumber()
   {
     return changeNumber;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_ENTRY_CHANGE_NOTIFICATION.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

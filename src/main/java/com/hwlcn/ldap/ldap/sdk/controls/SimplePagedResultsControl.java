@@ -18,7 +18,78 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
-
+/**
+ * This class provides an implementation of the simple paged results control as
+ * defined in <A HREF="http://www.ietf.org/rfc/rfc2696.txt">RFC 2696</A>.  It
+ * allows the client to iterate through a potentially large set of search
+ * results in subsets of a specified number of entries (i.e., "pages").
+ * <BR><BR>
+ * The same control encoding is used for both the request control sent by
+ * clients and the response control returned by the server.  It may contain
+ * two elements:
+ * <UL>
+ *   <LI>Size -- In a request control, this provides the requested page size,
+ *       which is the maximum number of entries that the server should return
+ *       in the next iteration of the search.  In a response control, it is an
+ *       estimate of the total number of entries that match the search
+ *       criteria.</LI>
+ *   <LI>Cookie -- A token which is used by the server to keep track of its
+ *       position in the set of search results.  The first request sent by the
+ *       client should not include a cookie, and the last response sent by the
+ *       server should not include a cookie.  For all other intermediate search
+ *       requests and responses,  the server will include a cookie value in its
+ *       response that the client should include in its next request.</LI>
+ * </UL>
+ * When the client wishes to use the paged results control, the first search
+ * request should include a version of the paged results request control that
+ * was created with a requested page size but no cookie.  The corresponding
+ * response from the server will include a version of the paged results control
+ * that may include an estimate of the total number of matching entries, and
+ * may also include a cookie.  The client should include this cookie in the
+ * next request (with the same set of search criteria) to retrieve the next page
+ * of results.  This process should continue until the response control returned
+ * by the server does not include a cookie, which indicates that the end of the
+ * result set has been reached.
+ * <BR><BR>
+ * Note that the simple paged results control is similar to the
+ * {@link VirtualListViewRequestControl} in that both allow the client to
+ * request that only a portion of the result set be returned at any one time.
+ * However, there are significant differences between them, including:
+ * <UL>
+ *   <LI>In order to use the virtual list view request control, it is also
+ *       necessary to use the {@link ServerSideSortRequestControl} to ensure
+ *       that the entries are sorted.  This is not a requirement for the
+ *       simple paged results control.</LI>
+ *   <LI>The simple paged results control may only be used to iterate
+ *       sequentially through the set of search results.  The virtual list view
+ *       control can retrieve pages out of order, can retrieve overlapping
+ *       pages, and can re-request pages that it had already retrieved.</LI>
+ * </UL>
+ * <H2>Example</H2>
+ * The following example demonstrates the use of the simple paged results
+ * control.  It will iterate through all users in the "Sales" department,
+ * retrieving up to 10 entries at a time:
+ * <PRE>
+ *   SearchRequest searchRequest =
+ *        new SearchRequest("dc=example,dc=com", SearchScope.SUB,"(ou=Sales)");
+ *   ASN1OctetString cookie = null;
+ *   do
+ *   {
+ *     searchRequest.setControls(
+ *          new Control[] { new SimplePagedResultsControl(10, cookie) });
+ *     SearchResult searchResult = connection.search(searchRequest);
+ *
+ *     // Do something with the entries that are returned.
+ *
+ *     cookie = null;
+ *     SimplePagedResultControl c = SimplePagedResultControl.get(searchResult);
+ *     if (c != null)
+ *     {
+ *       cookie = c.getCookie();
+ *     }
+ *   } while ((cookie != null) && (cookie.getValueLength() > 0));
+ * </PRE>
+ */
 
 
 @NotMutable()

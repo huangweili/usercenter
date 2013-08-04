@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -62,56 +42,21 @@ import static com.hwlcn.ldap.ldap.sdk.controls.ControlMessages.*;
 public final class PermissiveModifyRequestControl
        extends Control
 {
-  /**
-   * The OID (1.2.840.113556.1.4.1413) for the permissive modify request
-   * control.
-   */
   public static final String PERMISSIVE_MODIFY_REQUEST_OID =
        "1.2.840.113556.1.4.1413";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -2599039772002106760L;
 
-
-
-  /**
-   * Creates a new permissive modify request control.  The control will not be
-   * marked critical.
-   */
   public PermissiveModifyRequestControl()
   {
     super(PERMISSIVE_MODIFY_REQUEST_OID, false, null);
   }
 
-
-
-  /**
-   * Creates a new permissive modify request control.
-   *
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   */
   public PermissiveModifyRequestControl(final boolean isCritical)
   {
     super(PERMISSIVE_MODIFY_REQUEST_OID, isCritical, null);
   }
 
-
-
-  /**
-   * Creates a new permissive modify request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a permissive modify
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         permissive modify request control.
-   */
   public PermissiveModifyRequestControl(final Control control)
          throws LDAPException
   {
@@ -124,22 +69,12 @@ public final class PermissiveModifyRequestControl
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_PERMISSIVE_MODIFY_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

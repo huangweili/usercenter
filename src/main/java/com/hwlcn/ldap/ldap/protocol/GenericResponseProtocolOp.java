@@ -33,48 +33,22 @@ import static com.hwlcn.ldap.util.Validator.*;
 public abstract class GenericResponseProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The BER type for the referral URLs elements.
-   */
+
   public static final byte TYPE_REFERRALS = (byte) 0xA3;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 3837308973105414874L;
 
-
-
-  // The BER type for this response.
   private final byte type;
 
-  // The result code for this response.
   private final int resultCode;
 
-  // The referral URLs for this response.
   private final List<String> referralURLs;
 
-  // The diagnostic message for this response.
   private final String diagnosticMessage;
 
-  // The matched DN for this response.Static
   private final String matchedDN;
 
 
-
-  /**
-   * Creates a new instance of this response with the provided information.
-   *
-   * @param  type               The BER type for this response.
-   * @param  resultCode         The result code for this response.
-   * @param  matchedDN          The matched DN for this result, if available.
-   * @param  diagnosticMessage  The diagnostic message for this response, if
-   *                            available.
-   * @param  referralURLs       The list of referral URLs for this response, if
-   *                            available.
-   */
   protected GenericResponseProtocolOp(final byte type, final int resultCode,
                                     final String matchedDN,
                                     final String diagnosticMessage,
@@ -97,14 +71,6 @@ public abstract class GenericResponseProtocolOp
 
 
 
-  /**
-   * Creates a new response read from the provided ASN.1 stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the response.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         response.
-   */
   protected GenericResponseProtocolOp(final ASN1StreamReader reader)
             throws LDAPException
   {
@@ -160,71 +126,34 @@ public abstract class GenericResponseProtocolOp
   }
 
 
-
-  /**
-   * Retrieves the result code for this response.
-   *
-   * @return  The result code for this response.
-   */
   public final int getResultCode()
   {
     return resultCode;
   }
 
 
-
-  /**
-   * Retrieves the matched DN for this response, if any.
-   *
-   * @return  The matched DN for this response, or {@code null} if there is
-   *          no matched DN.
-   */
   public final String getMatchedDN()
   {
     return matchedDN;
   }
 
-
-
-  /**
-   * Retrieves the diagnostic message for this response, if any.
-   *
-   * @return  The diagnostic message for this response, or {@code null} if there
-   *          is no diagnostic message.
-   */
   public final String getDiagnosticMessage()
   {
     return diagnosticMessage;
   }
 
-
-
-  /**
-   * Retrieves the list of referral URLs for this response.
-   *
-   * @return  The list of referral URLs for this response, or an empty list
-   *          if there are no referral URLs.
-   */
   public final List<String> getReferralURLs()
   {
     return referralURLs;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return type;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public final void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence = buffer.beginSequence(type);
@@ -246,16 +175,6 @@ public abstract class GenericResponseProtocolOp
   }
 
 
-
-  /**
-   * Creates a new LDAP result object from this response protocol op.
-   *
-   * @param  controls  The set of controls to include in the LDAP result.  It
-   *                   may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The LDAP result that was created.
-   */
   public LDAPResult toLDAPResult(final Control... controls)
   {
     final String[] refs;
@@ -275,11 +194,6 @@ public abstract class GenericResponseProtocolOp
 
 
 
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public final String toString()
   {
@@ -289,10 +203,6 @@ public abstract class GenericResponseProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public final void toString(final StringBuilder buffer)
   {
     buffer.append("ResponseProtocolOp(type=");

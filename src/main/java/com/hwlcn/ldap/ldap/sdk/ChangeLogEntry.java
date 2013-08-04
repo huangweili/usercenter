@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk;
 
 
@@ -50,129 +30,50 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides a data structure for representing a changelog entry as
- * described in draft-good-ldap-changelog.  Changelog entries provide
- * information about a change (add, delete, modify, or modify DN) operation
- * that was processed in the directory server.  Changelog entries may be
- * parsed from entries, and they may be converted to LDIF change records or
- * processed as LDAP operations.
- */
 @NotExtensible()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public class ChangeLogEntry
        extends ReadOnlyEntry
 {
-  /**
-   * The name of the attribute that contains the change number that identifies
-   * the change and the order it was processed in the server.
-   */
+
   public static final String ATTR_CHANGE_NUMBER = "changeNumber";
 
-
-
-  /**
-   * The name of the attribute that contains the DN of the entry targeted by
-   * the change.
-   */
   public static final String ATTR_TARGET_DN = "targetDN";
 
-
-
-  /**
-   * The name of the attribute that contains the type of change made to the
-   * target entry.
-   */
   public static final String ATTR_CHANGE_TYPE = "changeType";
 
-
-
-  /**
-   * The name of the attribute used to hold a list of changes.  For an add
-   * operation, this will be an LDIF representation of the attributes that make
-   * up the entry.  For a modify operation, this will be an LDIF representation
-   * of the changes to the target entry.
-   */
   public static final String ATTR_CHANGES = "changes";
 
-
-
-  /**
-   * The name of the attribute used to hold the new RDN for a modify DN
-   * operation.
-   */
   public static final String ATTR_NEW_RDN = "newRDN";
 
 
-
-  /**
-   * The name of the attribute used to hold the flag indicating whether the old
-   * RDN value(s) should be removed from the target entry for a modify DN
-   * operation.
-   */
   public static final String ATTR_DELETE_OLD_RDN = "deleteOldRDN";
 
-
-
-  /**
-   * The name of the attribute used to hold the new superior DN for a modify DN
-   * operation.
-   */
   public static final String ATTR_NEW_SUPERIOR = "newSuperior";
 
 
-
-  /**
-   * The name of the attribute used to hold information about attributes from a
-   * deleted entry, if available.
-   */
   public static final String ATTR_DELETED_ENTRY_ATTRS = "deletedEntryAttrs";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -4018129098468341663L;
 
-
-
-  // Indicates whether to delete the old RDN value(s) in a modify DN operation.
   private final boolean deleteOldRDN;
 
-  // The change type for this changelog entry.
   private final ChangeType changeType;
 
-  // A list of the attributes for an add, or the deleted entry attributes for a
-  // delete operation.
   private final List<Attribute> attributes;
 
-  // A list of the modifications for a modify operation.
   private final List<Modification> modifications;
 
-  // The change number for the changelog entry.
   private final long changeNumber;
 
-  // The new RDN for a modify DN operation.
   private final String newRDN;
 
-  // The new superior DN for a modify DN operation.
   private final String newSuperior;
 
-  // The DN of the target entry.
   private final String targetDN;
 
-
-
-  /**
-   * Creates a new changelog entry from the provided entry.
-   *
-   * @param  entry  The entry from which to create this changelog entry.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided entry cannot be parsed as a
-   *                         changelog entry.
-   */
   public ChangeLogEntry(final Entry entry)
          throws LDAPException
   {
@@ -284,28 +185,13 @@ public class ChangeLogEntry
         break;
 
       default:
-        // This should never happen.
+
         throw new LDAPException(ResultCode.DECODING_ERROR,
              ERR_CHANGELOG_INVALID_CHANGE_TYPE.get(changeTypeAttr.getValue()));
     }
   }
 
 
-
-  /**
-   * Constructs a changelog entry from information contained in the provided
-   * LDIF change record.
-   *
-   * @param  changeNumber  The change number to use for the constructed
-   *                       changelog entry.
-   * @param  changeRecord  The LDIF change record with the information to
-   *                       include in the generated changelog entry.
-   *
-   * @return  The changelog entry constructed from the provided change record.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem is encountered while constructing the
-   *                         changelog entry.
-   */
   public static ChangeLogEntry constructChangeLogEntry(final long changeNumber,
                                     final LDIFChangeRecord changeRecord)
          throws LDAPException
@@ -322,9 +208,7 @@ public class ChangeLogEntry
     switch (changeRecord.getChangeType())
     {
       case ADD:
-        // The changes attribute should be an LDIF-encoded representation of the
-        // attributes from the entry, which is the LDIF representation of the
-        // entry without the first line (which contains the DN).
+
         final LDIFAddChangeRecord addRecord =
              (LDIFAddChangeRecord) changeRecord;
         final Entry addEntry = new Entry(addRecord.getDN(),
@@ -342,13 +226,9 @@ public class ChangeLogEntry
         break;
 
       case DELETE:
-        // No additional information is needed.
         break;
 
       case MODIFY:
-        // The changes attribute should be an LDIF-encoded representation of the
-        // modification, with the first two lines (the DN and changetype)
-        // removed.
         final String[] modLdifLines = changeRecord.toLDIF(0);
         final StringBuilder modLDIFBuffer = new StringBuilder();
         for (int i=2; i < modLdifLines.length; i++)
@@ -382,21 +262,6 @@ public class ChangeLogEntry
   }
 
 
-
-  /**
-   * Parses the attribute list from the specified attribute in a changelog
-   * entry.
-   *
-   * @param  entry     The entry containing the data to parse.
-   * @param  attrName  The name of the attribute from which to parse the
-   *                   attribute list.
-   * @param  targetDN  The DN of the target entry.
-   *
-   * @return  The parsed attribute list.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while parsing the attribute
-   *                         list.
-   */
   protected static List<Attribute> parseAddAttributeList(final Entry entry,
                                                          final String attrName,
                                                          final String targetDN)
@@ -438,25 +303,6 @@ public class ChangeLogEntry
     }
   }
 
-
-
-  /**
-   * Parses the list of deleted attributes from a changelog entry representing a
-   * delete operation.  The attribute is optional, so it may not be present at
-   * all, and there are two different encodings that we need to handle.  One
-   * encoding is the same as is used for the add attribute list, and the second
-   * is similar to the encoding used for the list of changes, except that it
-   * ends with a NULL byte (0x00).
-   *
-   * @param  entry     The entry containing the data to parse.
-   * @param  targetDN  The DN of the target entry.
-   *
-   * @return  The parsed deleted attribute list, or {@code null} if the
-   *          changelog entry does not include a deleted attribute list.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while parsing the deleted
-   *                         attribute list.
-   */
   private static List<Attribute> parseDeletedAttributeList(final Entry entry,
                                       final String targetDN)
           throws LDAPException
@@ -548,20 +394,6 @@ public class ChangeLogEntry
   }
 
 
-
-  /**
-   * Parses the modification list from a changelog entry representing a modify
-   * operation.
-   *
-   * @param  entry     The entry containing the data to parse.
-   * @param  targetDN  The DN of the target entry.
-   *
-   * @return  The parsed modification list, or {@code null} if the changelog
-   *          entry does not include any modifications.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If an error occurs while parsing the modification
-   *                         list.
-   */
   private static List<Modification> parseModificationList(final Entry entry,
                                                           final String targetDN)
           throws LDAPException
@@ -583,10 +415,6 @@ public class ChangeLogEntry
     ldifLines.add("dn: " + targetDN);
     ldifLines.add("changetype: modify");
 
-    // Even though it's a violation of the specification in
-    // draft-good-ldap-changelog, it appears that some servers (e.g., Sun DSEE)
-    // may terminate the changes value with a null character (\u0000).  If that
-    // is the case, then we'll need to strip it off before trying to parse it.
     final StringTokenizer tokenizer;
     if ((valueBytes.length > 0) && (valueBytes[valueBytes.length-1] == 0x00))
     {
@@ -624,50 +452,22 @@ public class ChangeLogEntry
     }
   }
 
-
-
-  /**
-   * Retrieves the change number for this changelog entry.
-   *
-   * @return  The change number for this changelog entry.
-   */
   public final long getChangeNumber()
   {
     return changeNumber;
   }
 
-
-
-  /**
-   * Retrieves the target DN for this changelog entry.
-   *
-   * @return  The target DN for this changelog entry.
-   */
   public final String getTargetDN()
   {
     return targetDN;
   }
 
 
-
-  /**
-   * Retrieves the change type for this changelog entry.
-   *
-   * @return  The change type for this changelog entry.
-   */
   public final ChangeType getChangeType()
   {
     return changeType;
   }
 
-
-
-  /**
-   * Retrieves the attribute list for an add changelog entry.
-   *
-   * @return  The attribute list for an add changelog entry, or {@code null} if
-   *          this changelog entry does not represent an add operation.
-   */
   public final List<Attribute> getAddAttributes()
   {
     if (changeType == ChangeType.ADD)
@@ -681,18 +481,6 @@ public class ChangeLogEntry
   }
 
 
-
-  /**
-   * Retrieves the list of deleted entry attributes for a delete changelog
-   * entry.  Note that this is a non-standard extension implemented by some
-   * types of servers and is not defined in draft-good-ldap-changelog and may
-   * not be provided by some servers.
-   *
-   * @return  The delete entry attribute list for a delete changelog entry, or
-   *          {@code null} if this changelog entry does not represent a delete
-   *          operation or no deleted entry attributes were included in the
-   *          changelog entry.
-   */
   public final List<Attribute> getDeletedEntryAttributes()
   {
     if (changeType == ChangeType.DELETE)
@@ -705,78 +493,26 @@ public class ChangeLogEntry
     }
   }
 
-
-
-  /**
-   * Retrieves the list of modifications for a modify changelog entry.  Note
-   * some directory servers may also include changes for modify DN change
-   * records if there were updates to operational attributes (e.g.,
-   * modifiersName and modifyTimestamp).
-   *
-   * @return  The list of modifications for a modify (or possibly modify DN)
-   *          changelog entry, or {@code null} if this changelog entry does
-   *          not represent a modify operation or a modify DN operation with
-   *          additional changes.
-   */
   public final List<Modification> getModifications()
   {
     return modifications;
   }
 
-
-
-  /**
-   * Retrieves the new RDN for a modify DN changelog entry.
-   *
-   * @return  The new RDN for a modify DN changelog entry, or {@code null} if
-   *          this changelog entry does not represent a modify DN operation.
-   */
   public final String getNewRDN()
   {
     return newRDN;
   }
 
-
-
-  /**
-   * Indicates whether the old RDN value(s) should be removed from the entry
-   * targeted by this modify DN changelog entry.
-   *
-   * @return  {@code true} if the old RDN value(s) should be removed from the
-   *          entry, or {@code false} if not or if this changelog entry does not
-   *          represent a modify DN operation.
-   */
   public final boolean deleteOldRDN()
   {
     return deleteOldRDN;
   }
 
-
-
-  /**
-   * Retrieves the new superior DN for a modify DN changelog entry.
-   *
-   * @return  The new superior DN for a modify DN changelog entry, or
-   *          {@code null} if there is no new superior DN, or if this changelog
-   *          entry does not represent a modify DN operation.
-   */
   public final String getNewSuperior()
   {
     return newSuperior;
   }
 
-
-
-  /**
-   * Retrieves the DN of the entry after the change has been processed.  For an
-   * add or modify operation, the new DN will be the same as the target DN.  For
-   * a modify DN operation, the new DN will be constructed from the original DN,
-   * the new RDN, and the new superior DN.  For a delete operation, it will be
-   * {@code null} because the entry will no longer exist.
-   *
-   * @return  The DN of the entry after the change has been processed, or
-   *          {@code null} if the entry no longer exists.
-   */
   public final String getNewDN()
   {
     switch (changeType)
@@ -786,7 +522,6 @@ public class ChangeLogEntry
         return targetDN;
 
       case MODIFY_DN:
-        // This will be handled below.
         break;
 
       case DELETE:
@@ -819,21 +554,11 @@ public class ChangeLogEntry
     }
     catch (final Exception e)
     {
-      // This should never happen.
       Debug.debugException(e);
       return null;
     }
   }
 
-
-
-  /**
-   * Retrieves an LDIF change record that is analogous to the operation
-   * represented by this changelog entry.
-   *
-   * @return  An LDIF change record that is analogous to the operation
-   *          represented by this changelog entry.
-   */
   public final LDIFChangeRecord toLDIFChangeRecord()
   {
     switch (changeType)
@@ -852,25 +577,11 @@ public class ChangeLogEntry
                                             newSuperior);
 
       default:
-        // This should never happen.
         return null;
     }
   }
 
 
-
-  /**
-   * Processes the operation represented by this changelog entry using the
-   * provided LDAP connection.
-   *
-   * @param  connection  The connection (or connection pool) to use to process
-   *                     the operation.
-   *
-   * @return  The result of processing the operation.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the operation could not be processed
-   *                         successfully.
-   */
   public final LDAPResult processChange(final LDAPInterface connection)
          throws LDAPException
   {
@@ -889,7 +600,6 @@ public class ChangeLogEntry
         return connection.modifyDN(targetDN, newRDN, deleteOldRDN, newSuperior);
 
       default:
-        // This should never happen.
         return null;
     }
   }

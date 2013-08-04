@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.persist;
 
 
@@ -39,63 +19,32 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a data structure that holds information about an
- * annotated getter method.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class GetterInfo
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 1578187843924054389L;
 
-
-
-  // Indicates whether the associated method value should be included in the
-  // entry created for an add operation.
   private final boolean includeInAdd;
 
-  // Indicates whether the associated method value should be considered for
-  // inclusion in the set of modifications used for modify operations.
   private final boolean includeInModify;
-
-  // Indicates whether the associated method value is part of the RDN.
   private final boolean includeInRDN;
 
-  // The class that contains the associated method.
   private final Class<?> containingClass;
 
-  // The filter usage for the associated method.
   private final FilterUsage filterUsage;
 
-  // The method with which this object is associated.
   private final Method method;
 
-  // The encoder used for this method.
   private final ObjectEncoder encoder;
 
-  // The name of the associated attribute type.
   private final String attributeName;
 
-  // The names of the object classes for the associated attribute.
   private final String[] objectClasses;
 
 
-
-  /**
-   * Creates a new getter info object from the provided method.
-   *
-   * @param  m  The method to use to create this object.
-   * @param  c  The class which holds the method.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while processing the
-   *                                given method.
-   */
   GetterInfo(final Method m, final Class<?> c)
        throws LDAPPersistException
   {
@@ -222,11 +171,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Retrieves the method with which this object is associated.
-   *
-   * @return  The method with which this object is associated.
-   */
   public Method getMethod()
   {
     return method;
@@ -234,12 +178,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Retrieves the class that is marked with the {@link LDAPObject} annotation
-   * and contains the associated field.
-   *
-   * @return  The class that contains the associated field.
-   */
   public Class<?> getContainingClass()
   {
     return containingClass;
@@ -247,15 +185,7 @@ public final class GetterInfo
 
 
 
-  /**
-   * Indicates whether the associated method value should be included in entries
-   * generated for add operations.  Note that the value returned from this
-   * method may be {@code true} even when the annotation has a value of
-   * {@code false} if the associated field is to be included in entry RDNs.
-   *
-   * @return  {@code true} if the associated method value should be included in
-   *          entries generated for add operations, or {@code false} if not.
-   */
+
   public boolean includeInAdd()
   {
     return includeInAdd;
@@ -263,17 +193,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Indicates whether the associated method value should be considered for
-   * inclusion in the set of modifications generated for modify operations.
-   * Note that the value returned from this method may be {@code false} even
-   * when the annotation have a value of {@code true} if the associated field is
-   * to be included in entry RDNs.
-   *
-   * @return  {@code true} if the associated method value should be considered
-   *          for inclusion in the set of modifications generated for modify
-   *          operations, or {@code false} if not.
-   */
   public boolean includeInModify()
   {
     return includeInModify;
@@ -281,25 +200,12 @@ public final class GetterInfo
 
 
 
-  /**
-   * Indicates whether the associated method value should be used to generate
-   * entry RDNs.
-   *
-   * @return  {@code true} if the associated method value should be used to
-   *          generate entry RDNs, or {@code false} if not.
-   */
   public boolean includeInRDN()
   {
     return includeInRDN;
   }
 
 
-
-  /**
-   * Retrieves the filter usage for the associated method.
-   *
-   * @return  The filter usage for the associated method.
-   */
   public FilterUsage getFilterUsage()
   {
     return filterUsage;
@@ -307,11 +213,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Retrieves the encoder that should be used for the associated method.
-   *
-   * @return  The encoder that should be used for the associated method.
-   */
   public ObjectEncoder getEncoder()
   {
     return encoder;
@@ -319,27 +220,12 @@ public final class GetterInfo
 
 
 
-  /**
-   * Retrieves the name of the LDAP attribute used to hold values for the
-   * associated method.
-   *
-   * @return  The name of the LDAP attribute used to hold values for the
-   *          associated method.
-   */
+
   public String getAttributeName()
   {
     return attributeName;
   }
 
-
-
-  /**
-   * Retrieves the names of the object classes containing the associated
-   * attribute.
-   *
-   * @return  The names of the object classes containing the associated
-   *          attribute.
-   */
   public String[] getObjectClasses()
   {
     return objectClasses;
@@ -347,18 +233,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Constructs a definition for an LDAP attribute type which may be added to
-   * the directory server schema to allow it to hold the value of the associated
-   * method.  Note that the object identifier used for the constructed attribute
-   * type definition is not required to be valid or unique.
-   *
-   * @return  The constructed attribute type definition.
-   *
-   * @throws  LDAPPersistException  If the object encoder does not support
-   *                                encoding values for the associated field
-   *                                type.
-   */
   AttributeTypeDefinition constructAttributeType()
        throws LDAPPersistException
   {
@@ -367,21 +241,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Constructs a definition for an LDAP attribute type which may be added to
-   * the directory server schema to allow it to hold the value of the associated
-   * method.  Note that the object identifier used for the constructed attribute
-   * type definition is not required to be valid or unique.
-   *
-   * @param  a  The OID allocator to use to generate the object identifier.  It
-   *            must not be {@code null}.
-   *
-   * @return  The constructed attribute type definition.
-   *
-   * @throws  LDAPPersistException  If the object encoder does not support
-   *                                encoding values for the associated method
-   *                                type.
-   */
   AttributeTypeDefinition constructAttributeType(final OIDAllocator a)
        throws LDAPPersistException
   {
@@ -390,19 +249,6 @@ public final class GetterInfo
 
 
 
-  /**
-   * Creates an attribute with the value returned by invoking the associated
-   * method on the provided object.
-   *
-   * @param  o  The object for which to invoke the associated method.
-   *
-   * @return  The attribute containing the encoded representation of the method
-   *          value, or {@code null} if the method returned {@code null}.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while encoding the
-   *                                value of the associated field for the
-   *                                provided object.
-   */
   Attribute encode(final Object o)
             throws LDAPPersistException
   {

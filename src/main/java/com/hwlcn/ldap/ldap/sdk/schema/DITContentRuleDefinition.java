@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.schema;
 
 
@@ -37,67 +17,34 @@ import static com.hwlcn.ldap.ldap.sdk.schema.SchemaMessages.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
-
-
-/**
- * This class provides a data structure that describes an LDAP DIT content rule
- * schema element.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class DITContentRuleDefinition
        extends SchemaElement
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 3224440505307817586L;
 
-
-
-  // Indicates whether this DIT content rule is declared obsolete.
   private final boolean isObsolete;
 
-  // The set of extensions for this DIT content rule.
   private final Map<String,String[]> extensions;
 
-  // The description for this DIT content rule.
   private final String description;
 
-  // The string representation of this DIT content rule.
   private final String ditContentRuleString;
 
-  // The OID of the structural object class with which this DIT content rule is
-  // associated.
   private final String oid;
 
-  // The names/OIDs of the allowed auxiliary classes.
   private final String[] auxiliaryClasses;
 
-  // The set of names for this DIT content rule.
   private final String[] names;
 
-  // The names/OIDs of the optional attributes.
   private final String[] optionalAttributes;
 
-  // The names/OIDs of the prohibited attributes.
   private final String[] prohibitedAttributes;
 
-  // The names/OIDs of the required attributes.
   private final String[] requiredAttributes;
 
-
-
-  /**
-   * Creates a new DIT content rule from the provided string representation.
-   *
-   * @param  s  The string representation of the DIT content rule to create,
-   *            using the syntax described in RFC 4512 section 4.1.6.  It must
-   *            not be {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a DIT
-   *                         content rule definition.
-   */
   public DITContentRuleDefinition(final String s)
          throws LDAPException
   {
@@ -105,7 +52,6 @@ public final class DITContentRuleDefinition
 
     ditContentRuleString = s.trim();
 
-    // The first character must be an opening parenthesis.
     final int length = ditContentRuleString.length();
     if (length == 0)
     {
@@ -120,18 +66,12 @@ public final class DITContentRuleDefinition
     }
 
 
-    // Skip over any spaces until we reach the start of the OID, then read the
-    // OID until we find the next space.
     int pos = skipSpaces(ditContentRuleString, 1, length);
 
     StringBuilder buffer = new StringBuilder();
     pos = readOID(ditContentRuleString, pos, length, buffer);
     oid = buffer.toString();
 
-
-    // Technically, DIT content elements are supposed to appear in a specific
-    // order, but we'll be lenient and allow remaining elements to come in any
-    // order.
     final ArrayList<String>    nameList = new ArrayList<String>(1);
     final ArrayList<String>    reqAttrs = new ArrayList<String>();
     final ArrayList<String>    optAttrs = new ArrayList<String>();
@@ -143,20 +83,14 @@ public final class DITContentRuleDefinition
 
     while (true)
     {
-      // Skip over any spaces until we find the next element.
       pos = skipSpaces(ditContentRuleString, pos, length);
 
-      // Read until we find the next space or the end of the string.  Use that
-      // token to figure out what to do next.
       final int tokenStartPos = pos;
       while ((pos < length) && (ditContentRuleString.charAt(pos) != ' '))
       {
         pos++;
       }
 
-      // It's possible that the token could be smashed right up against the
-      // closing parenthesis.  If that's the case, then extract just the token
-      // and handle the closing parenthesis the next time through.
       String token = ditContentRuleString.substring(tokenStartPos, pos);
       if ((token.length() > 1) && (token.endsWith(")")))
       {
@@ -167,8 +101,6 @@ public final class DITContentRuleDefinition
       final String lowerToken = toLowerCase(token);
       if (lowerToken.equals(")"))
       {
-        // This indicates that we're at the end of the value.  There should not
-        // be any more closing characters.
         if (pos < length)
         {
           throw new LDAPException(ResultCode.DECODING_ERROR,
@@ -326,39 +258,6 @@ public final class DITContentRuleDefinition
     extensions = Collections.unmodifiableMap(exts);
   }
 
-
-
-  /**
-   * Creates a new DIT content rule with the provided information.
-   *
-   * @param  oid                   The OID for the structural object class with
-   *                               which this DIT content rule is associated.
-   *                               It must not be {@code null}.
-   * @param  names                 The set of names for this DIT content rule.
-   *                               It may be {@code null} or empty if the DIT
-   *                               content rule should only be referenced by
-   *                               OID.
-   * @param  description           The description for this DIT content rule.
-   *                               It may be {@code null} if there is no
-   *                               description.
-   * @param  isObsolete            Indicates whether this DIT content rule is
-   *                               declared obsolete.
-   * @param  auxiliaryClasses      The names/OIDs of the auxiliary object
-   *                               classes that may be present in entries
-   *                               containing this DIT content rule.
-   * @param  requiredAttributes    The names/OIDs of the attributes which must
-   *                               be present in entries containing this DIT
-   *                               content rule.
-   * @param  optionalAttributes    The names/OIDs of the attributes which may be
-   *                               present in entries containing this DIT
-   *                               content rule.
-   * @param  prohibitedAttributes  The names/OIDs of the attributes which may
-   *                               not be present in entries containing this DIT
-   *                               content rule.
-   * @param  extensions            The set of extensions for this DIT content
-   *                               rule.  It may be {@code null} or empty if
-   *                               there should not be any extensions.
-   */
   public DITContentRuleDefinition(final String oid, final String[] names,
                                   final String description,
                                   final boolean isObsolete,
@@ -434,14 +333,6 @@ public final class DITContentRuleDefinition
   }
 
 
-
-  /**
-   * Constructs a string representation of this DIT content rule definition in
-   * the provided buffer.
-   *
-   * @param  buffer  The buffer in which to construct a string representation of
-   *                 this DIT content rule definition.
-   */
   private void createDefinitionString(final StringBuilder buffer)
   {
     buffer.append("( ");
@@ -600,42 +491,18 @@ public final class DITContentRuleDefinition
   }
 
 
-
-  /**
-   * Retrieves the OID for the structural object class associated with this
-   * DIT content rule.
-   *
-   * @return  The OID for the structural object class associated with this DIT
-   *          content rule.
-   */
   public String getOID()
   {
     return oid;
   }
 
 
-
-  /**
-   * Retrieves the set of names for this DIT content rule.
-   *
-   * @return  The set of names for this DIT content rule, or an empty array if
-   *          it does not have any names.
-   */
   public String[] getNames()
   {
     return names;
   }
 
 
-
-  /**
-   * Retrieves the primary name that can be used to reference this DIT content
-   * rule.  If one or more names are defined, then the first name will be used.
-   * Otherwise, the structural object class OID will be returned.
-   *
-   * @return  The primary name that can be used to reference this DIT content
-   *          rule.
-   */
   public String getNameOrOID()
   {
     if (names.length == 0)
@@ -649,17 +516,6 @@ public final class DITContentRuleDefinition
   }
 
 
-
-  /**
-   * Indicates whether the provided string matches the OID or any of the names
-   * for this DIT content rule.
-   *
-   * @param  s  The string for which to make the determination.  It must not be
-   *            {@code null}.
-   *
-   * @return  {@code true} if the provided string matches the OID or any of the
-   *          names for this DIT content rule, or {@code false} if not.
-   */
   public boolean hasNameOrOID(final String s)
   {
     for (final String name : names)
@@ -673,129 +529,49 @@ public final class DITContentRuleDefinition
     return s.equalsIgnoreCase(oid);
   }
 
-
-
-  /**
-   * Retrieves the description for this DIT content rule, if available.
-   *
-   * @return  The description for this DIT content rule, or {@code null} if
-   *          there is no description defined.
-   */
   public String getDescription()
   {
     return description;
   }
 
 
-
-  /**
-   * Indicates whether this DIT content rule is declared obsolete.
-   *
-   * @return  {@code true} if this DIT content rule is declared obsolete, or
-   *          {@code false} if it is not.
-   */
   public boolean isObsolete()
   {
     return isObsolete;
   }
 
 
-
-  /**
-   * Retrieves the names or OIDs of the auxiliary object classes that may be
-   * present in entries containing the structural class for this DIT content
-   * rule.
-   *
-   * @return  The names or OIDs of the auxiliary object classes that may be
-   *          present in entries containing the structural class for this DIT
-   *          content rule.
-   */
   public String[] getAuxiliaryClasses()
   {
     return auxiliaryClasses;
   }
 
-
-
-  /**
-   * Retrieves the names or OIDs of the attributes that are required to be
-   * present in entries containing the structural object class for this DIT
-   * content rule.
-   *
-   * @return  The names or OIDs of the attributes that are required to be
-   *          present in entries containing the structural object class for this
-   *          DIT content rule, or an empty array if there are no required
-   *          attributes.
-   */
   public String[] getRequiredAttributes()
   {
     return requiredAttributes;
   }
 
-
-
-  /**
-   * Retrieves the names or OIDs of the attributes that are optionally allowed
-   * to be present in entries containing the structural object class for this
-   * DIT content rule.
-   *
-   * @return  The names or OIDs of the attributes that are optionally allowed to
-   *          be present in entries containing the structural object class for
-   *          this DIT content rule, or an empty array if there are no required
-   *          attributes.
-   */
   public String[] getOptionalAttributes()
   {
     return optionalAttributes;
   }
 
-
-
-  /**
-   * Retrieves the names or OIDs of the attributes that are not allowed to be
-   * present in entries containing the structural object class for this DIT
-   * content rule.
-   *
-   * @return  The names or OIDs of the attributes that are not allowed to be
-   *          present in entries containing the structural object class for this
-   *          DIT content rule, or an empty array if there are no required
-   *          attributes.
-   */
   public String[] getProhibitedAttributes()
   {
     return prohibitedAttributes;
   }
 
-
-
-  /**
-   * Retrieves the set of extensions for this DIT content rule.  They will be
-   * mapped from the extension name (which should start with "X-") to the set of
-   * values for that extension.
-   *
-   * @return  The set of extensions for this DIT content rule.
-   */
   public Map<String,String[]> getExtensions()
   {
     return extensions;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
     return oid.hashCode();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -831,13 +607,6 @@ public final class DITContentRuleDefinition
   }
 
 
-
-  /**
-   * Retrieves a string representation of this DIT content rule definition, in
-   * the format described in RFC 4512 section 4.1.6.
-   *
-   * @return  A string representation of this DIT content rule definition.
-   */
   @Override()
   public String toString()
   {

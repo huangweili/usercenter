@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -51,70 +32,33 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides an implementation of a extended response protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class ExtendedResponseProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The BER type for the response OID element.
-   */
+
   public static final byte TYPE_RESPONSE_OID = (byte) 0x8A;
 
-
-
-  /**
-   * The BER type for the response value element.
-   */
   public static final byte TYPE_RESPONSE_VALUE = (byte) 0x8B;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -7757619031268544913L;
 
-
-
-  // The value for this extended response.
   private final ASN1OctetString responseValue;
 
-  // The result code for this extended response.
   private final int resultCode;
 
-  // The referral URLs for this extended response.
   private final List<String> referralURLs;
 
-  // The diagnostic message for this extended response.
   private final String diagnosticMessage;
 
-  // The matched DN for this extended response.
   private final String matchedDN;
 
-  // The OID for this extended response.
   private final String responseOID;
 
 
 
-  /**
-   * Creates a new instance of this extended response protocol op with the
-   * provided information.
-   *
-   * @param  resultCode         The result code for this response.
-   * @param  matchedDN          The matched DN for this response, if available.
-   * @param  diagnosticMessage  The diagnostic message for this response, if
-   *                            any.
-   * @param  referralURLs       The list of referral URLs for this response, if
-   *                            any.
-   * @param  responseOID        The response OID for this response, if any.
-   * @param  responseValue      The value for this response, if any.
-   */
   public ExtendedResponseProtocolOp(final int resultCode,
                                     final String matchedDN,
                                     final String diagnosticMessage,
@@ -148,14 +92,6 @@ public final class ExtendedResponseProtocolOp
   }
 
 
-
-  /**
-   * Creates a new extended response protocol op from the provided extended
-   * result object.
-   *
-   * @param  result  The extended result object to use to create this protocol
-   *                 op.
-   */
   public ExtendedResponseProtocolOp(final LDAPResult result)
   {
     resultCode        = result.getResultCode().intValue();
@@ -177,17 +113,6 @@ public final class ExtendedResponseProtocolOp
   }
 
 
-
-  /**
-   * Creates a new extended response protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the extended
-   *                 response.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         extended response.
-   */
   ExtendedResponseProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -265,12 +190,6 @@ public final class ExtendedResponseProtocolOp
   }
 
 
-
-  /**
-   * Retrieves the result code for this extended response.
-   *
-   * @return  The result code for this extended response.
-   */
   public int getResultCode()
   {
     return resultCode;
@@ -278,84 +197,42 @@ public final class ExtendedResponseProtocolOp
 
 
 
-  /**
-   * Retrieves the matched DN for this extended response, if any.
-   *
-   * @return  The matched DN for this extended response, or {@code null} if
-   *          there is no matched DN.
-   */
+
   public String getMatchedDN()
   {
     return matchedDN;
   }
 
 
-
-  /**
-   * Retrieves the diagnostic message for this extended response, if any.
-   *
-   * @return  The diagnostic message for this extended response, or {@code null}
-   *          if there is no diagnostic message.
-   */
   public String getDiagnosticMessage()
   {
     return diagnosticMessage;
   }
 
 
-
-  /**
-   * Retrieves the list of referral URLs for this extended response.
-   *
-   * @return  The list of referral URLs for this extended response, or an empty
-   *          list if there are no referral URLs.
-   */
   public List<String> getReferralURLs()
   {
     return referralURLs;
   }
 
 
-
-  /**
-   * Retrieves the OID for this extended response, if any.
-   *
-   * @return  The OID for this extended response, or {@code null} if there is no
-   *          response OID.
-   */
   public String getResponseOID()
   {
     return responseOID;
   }
 
 
-
-  /**
-   * Retrieves the value for this extended response, if any.
-   *
-   * @return  The value for this extended response, or {@code null} if there is
-   *          no response value.
-   */
   public ASN1OctetString getResponseValue()
   {
     return responseValue;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_EXTENDED_RESPONSE;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(6);
@@ -409,17 +286,6 @@ public final class ExtendedResponseProtocolOp
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 element as an extended response protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded extended response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         an extended response protocol op.
-   */
   public static ExtendedResponseProtocolOp decodeProtocolOp(
                                                 final ASN1Element element)
          throws LDAPException
@@ -511,9 +377,7 @@ public final class ExtendedResponseProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   public void writeTo(final ASN1Buffer buffer)
   {
     final ASN1BufferSequence opSequence =
@@ -548,15 +412,7 @@ public final class ExtendedResponseProtocolOp
 
 
 
-  /**
-   * Creates a extended result from this protocol op.
-   *
-   * @param  controls  The set of controls to include in the extended result.
-   *                   It may be empty or {@code null} if no controls should be
-   *                   included.
-   *
-   * @return  The extended result that was created.
-   */
+
   public ExtendedResult toExtendedResult(final Control... controls)
   {
     final String[] referralArray = new String[referralURLs.size()];
@@ -569,11 +425,6 @@ public final class ExtendedResponseProtocolOp
 
 
 
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -583,10 +434,6 @@ public final class ExtendedResponseProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("ExtendedResponseProtocolOp(resultCode=");

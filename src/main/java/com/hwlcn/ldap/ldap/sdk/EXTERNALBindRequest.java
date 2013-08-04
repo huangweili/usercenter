@@ -85,7 +85,6 @@ public final class EXTERNALBindRequest
   protected BindResult process(final LDAPConnection connection, final int depth)
             throws LDAPException
   {
-    // Create the LDAP message.
     messageID = connection.nextMessageID();
 
     final ASN1OctetString creds;

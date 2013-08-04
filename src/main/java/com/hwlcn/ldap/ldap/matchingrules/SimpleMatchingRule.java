@@ -1,23 +1,4 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.matchingrules;
 
 
@@ -30,29 +11,15 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 
 
-/**
- * This class provides a common matching rule framework that may be extended by
- * matching rule implementations in which equality, ordering, and substring
- * matching can all be made based on byte-for-byte comparisons of the normalized
- * value, for values that are considered acceptable by the
- * {@link com.hwlcn.ldap.ldap.matchingrules.MatchingRule#normalize} and {@link com.hwlcn.ldap.ldap.matchingrules.MatchingRule#normalizeSubstring}
- * methods.
- */
 @Extensible()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public abstract class SimpleMatchingRule
        extends MatchingRule
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -7221506185552250694L;
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean valuesMatch(final ASN1OctetString value1,
                              final ASN1OctetString value2)
@@ -63,9 +30,7 @@ public abstract class SimpleMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public boolean matchesSubstring(final ASN1OctetString value,
                                   final ASN1OctetString subInitial,
@@ -168,9 +133,6 @@ public abstract class SimpleMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int compareValues(final ASN1OctetString value1,
                            final ASN1OctetString value2)
@@ -195,9 +157,6 @@ public abstract class SimpleMatchingRule
       }
     }
 
-    // If we've gotten here, then it means that all of the bytes they had in
-    // common are the same.  At this point, the shorter of the two should be
-    // ordered first, or return zero if they're the same length.
     return normValue1.length - normValue2.length;
   }
 }

@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2007-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.experimental;
 
 
@@ -44,85 +25,32 @@ import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
-
-/**
- * This class provides an implementation of the password policy response control
- * as described in draft-behera-ldap-password-policy-10.  It may be used to
- * provide information related to a user's password policy.  It may include at
- * most one warning from the set of
- * {@link com.hwlcn.ldap.ldap.sdk.experimental.DraftBeheraLDAPPasswordPolicy10WarningType} values and at most one
- * error from the set of {@link com.hwlcn.ldap.ldap.sdk.experimental.DraftBeheraLDAPPasswordPolicy10ErrorType}
- * values.  See the documentation for those classes for more information on the
- * information that may be included.  See the
- * {@link com.hwlcn.ldap.ldap.sdk.experimental.DraftBeheraLDAPPasswordPolicy10RequestControl} documentation for an
- * example that demonstrates the use of the password policy request and response
- * controls.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
        extends Control
        implements DecodeableControl
 {
-  /**
-   * The OID (1.3.6.1.4.1.42.2.27.8.5.1) for the password policy response
-   * control.
-   */
+
   public static final String PASSWORD_POLICY_RESPONSE_OID =
        "1.3.6.1.4.1.42.2.27.8.5.1";
 
-
-
-  /**
-   * The BER type for the password policy warning element.
-   */
   private static final byte TYPE_WARNING = (byte) 0xA0;
 
-
-
-  /**
-   * The BER type for the password policy error element.
-   */
   private static final byte TYPE_ERROR = (byte) 0x81;
 
-
-
-  /**
-   * The BER type for the "time before expiration" warning element.
-   */
   private static final byte TYPE_TIME_BEFORE_EXPIRATION = (byte) 0x80;
 
-
-
-  /**
-   * The BER type for the "grace logins remaining" warning element.
-   */
   private static final byte TYPE_GRACE_LOGINS_REMAINING = (byte) 0x81;
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 1835830253434331833L;
 
-
-
-  // The password policy warning value, if applicable.
   private final int warningValue;
 
-  // The password policy error type, if applicable.
   private final DraftBeheraLDAPPasswordPolicy10ErrorType errorType;
 
-  // The password policy warning type, if applicable.
   private final DraftBeheraLDAPPasswordPolicy10WarningType warningType;
 
-
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.
-   */
   DraftBeheraLDAPPasswordPolicy10ResponseControl()
   {
     warningType  = null;
@@ -130,21 +58,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
     warningValue = -1;
   }
 
-
-
-  /**
-   * Creates a new password policy response control with the provided
-   * information.  It will not be critical.
-   *
-   * @param  warningType   The password policy warning type for this response
-   *                       control, or {@code null} if there should be no
-   *                       warning type.
-   * @param  warningValue  The value for the password policy warning type, or -1
-   *                       if there is no warning type.
-   * @param  errorType     The password policy error type for this response
-   *                       control, or {@code null} if there should be no error
-   *                       type.
-   */
   public DraftBeheraLDAPPasswordPolicy10ResponseControl(
               final DraftBeheraLDAPPasswordPolicy10WarningType warningType,
               final int warningValue,
@@ -153,23 +66,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
     this(warningType, warningValue, errorType, false);
   }
 
-
-
-  /**
-   * Creates a new password policy response control with the provided
-   * information.
-   *
-   * @param  warningType   The password policy warning type for this response
-   *                       control, or {@code null} if there should be no
-   *                       warning type.
-   * @param  warningValue  The value for the password policy warning type, or -1
-   *                       if there is no warning type.
-   * @param  errorType     The password policy error type for this response
-   *                       control, or {@code null} if there should be no error
-   *                       type.
-   * @param  isCritical    Indicates whether this control should be marked
-   *                       critical.
-   */
   public DraftBeheraLDAPPasswordPolicy10ResponseControl(
               final DraftBeheraLDAPPasswordPolicy10WarningType warningType,
               final int warningValue,
@@ -192,21 +88,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
     }
   }
 
-
-
-  /**
-   * Creates a new password policy response control with the provided
-   * information.
-   *
-   * @param  oid         The OID for the control.
-   * @param  isCritical  Indicates whether the control should be marked
-   *                     critical.
-   * @param  value       The encoded value for the control.  This may be
-   *                     {@code null} if no value was provided.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         password policy response control.
-   */
   public DraftBeheraLDAPPasswordPolicy10ResponseControl(final String oid,
               final boolean isCritical, final ASN1OctetString value)
          throws LDAPException
@@ -331,10 +212,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public DraftBeheraLDAPPasswordPolicy10ResponseControl
               decodeControl(final String oid, final boolean isCritical,
                             final ASN1OctetString value)
@@ -344,22 +221,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
          value);
   }
 
-
-
-  /**
-   * Extracts a password policy response control from the provided result.
-   *
-   * @param  result  The result from which to retrieve the password policy
-   *                 response control.
-   *
-   * @return  The password policy response control contained in the provided
-   *          result, or {@code null} if the result did not contain a password
-   *          policy response control.
-   *
-   * @throws  LDAPException  If a problem is encountered while attempting to
-   *                         decode the password policy response control
-   *                         contained in the provided result.
-   */
   public static DraftBeheraLDAPPasswordPolicy10ResponseControl get(
                      final LDAPResult result)
          throws LDAPException
@@ -382,19 +243,6 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
   }
 
 
-
-  /**
-   * Encodes the provided information as appropriate for use as the value of a
-   * password policy response control.
-   *
-   * @param  warningType   The warning type to use for the warning element, or
-   *                       {@code null} if there is not to be a warning element.
-   * @param  warningValue  The value to use for the warning element.
-   * @param  errorType     The error type to use for the error element, or
-   *                       {@code null} if there is not to be an error element.
-   *
-   * @return  The ASN.1 octet string containing the encoded control value.
-   */
   private static ASN1OctetString encodeValue(
        final DraftBeheraLDAPPasswordPolicy10WarningType warningType,
        final int warningValue,
@@ -428,64 +276,27 @@ public final class DraftBeheraLDAPPasswordPolicy10ResponseControl
     return new ASN1OctetString(new ASN1Sequence(valueElements).encode());
   }
 
-
-
-  /**
-   * Retrieves the warning type for this password policy response control, if
-   * available.
-   *
-   * @return  The warning type for this password policy response control, or
-   *          {@code null} if there is no warning type.
-   */
   public DraftBeheraLDAPPasswordPolicy10WarningType getWarningType()
   {
     return warningType;
   }
 
-
-
-  /**
-   * Retrieves the warning value for this password policy response control, if
-   * available.
-   *
-   * @return  The warning value for this password policy response control, or -1
-   *          if there is no warning type.
-   */
   public int getWarningValue()
   {
     return warningValue;
   }
 
-
-
-  /**
-   * Retrieves the error type for this password policy response control, if
-   * available.
-   *
-   * @return  The error type for this password policy response control, or
-   *          {@code null} if there is no error type.
-   */
   public DraftBeheraLDAPPasswordPolicy10ErrorType getErrorType()
   {
     return errorType;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_PW_POLICY_RESPONSE.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

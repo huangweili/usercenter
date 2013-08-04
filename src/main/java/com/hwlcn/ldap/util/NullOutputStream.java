@@ -26,7 +26,6 @@ public final class NullOutputStream
 
   public NullOutputStream()
   {
-    // No implementation is required.
   }
 
 
@@ -50,7 +49,6 @@ public final class NullOutputStream
   @Override()
   public void close()
   {
-    // No implementation is required.
   }
 
 
@@ -58,7 +56,6 @@ public final class NullOutputStream
   @Override()
   public void flush()
   {
-    // No implementation is required.
   }
 
 
@@ -66,7 +63,6 @@ public final class NullOutputStream
   @Override()
   public void write(final byte[] b)
   {
-    // No implementation is required.
   }
 
 

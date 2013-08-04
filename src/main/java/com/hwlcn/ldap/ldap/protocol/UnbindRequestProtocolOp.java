@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -37,44 +18,22 @@ import static com.hwlcn.ldap.ldap.protocol.ProtocolMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
-
-
-/**
- * This class provides an implementation of an LDAP unbind request protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class UnbindRequestProtocolOp
        implements ProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 1703200292192488474L;
 
 
 
-  /**
-   * Creates a new unbind request protocol op.
-   */
   public UnbindRequestProtocolOp()
   {
-    // No implementation required.
   }
 
 
-
-  /**
-   * Creates a new unbind request protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the unbind
-   *                 request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         unbind request.
-   */
   UnbindRequestProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -92,47 +51,24 @@ public final class UnbindRequestProtocolOp
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public byte getProtocolOpType()
   {
     return LDAPMessage.PROTOCOL_OP_TYPE_UNBIND_REQUEST;
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public void writeTo(final ASN1Buffer buffer)
   {
     buffer.addNull(LDAPMessage.PROTOCOL_OP_TYPE_UNBIND_REQUEST);
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     return new ASN1Null(LDAPMessage.PROTOCOL_OP_TYPE_UNBIND_REQUEST);
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 element as an unbind request protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded unbind request protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         an unbind request protocol op.
-   */
   public static UnbindRequestProtocolOp decodeProtocolOp(
                                              final ASN1Element element)
          throws LDAPException
@@ -152,12 +88,6 @@ public final class UnbindRequestProtocolOp
   }
 
 
-
-  /**
-   * Retrieves a string representation of this protocol op.
-   *
-   * @return  A string representation of this protocol op.
-   */
   @Override()
   public String toString()
   {
@@ -166,11 +96,6 @@ public final class UnbindRequestProtocolOp
     return buffer.toString();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("UnbindRequestProtocolOp()");

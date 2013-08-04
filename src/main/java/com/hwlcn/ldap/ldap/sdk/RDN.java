@@ -249,14 +249,12 @@ public final class RDN
 
     if (pos >= length)
     {
-      // It's a single-valued RDN, so we have everything that we need.
       attributeNames  = new String[] { attrName };
       attributeValues = new ASN1OctetString[] { value };
       return;
     }
 
-    // It's a multivalued RDN, so create temporary lists to hold the names and
-    // values.
+
     final ArrayList<String> nameList = new ArrayList<String>(5);
     final ArrayList<ASN1OctetString> valueList =
          new ArrayList<ASN1OctetString>(5);
@@ -282,7 +280,6 @@ public final class RDN
     int numValues = 1;
     while (pos < length)
     {
-      // Skip over any spaces between the plus sign and the attribute name.
       while ((pos < length) && (rdnString.charAt(pos) == ' '))
       {
         pos++;
@@ -300,7 +297,6 @@ public final class RDN
         pos++;
       }
 
-      // Skip over any spaces between the attribute name and the equal sign.
       attrName = rdnString.substring(attrStartPos, pos);
       if (attrName.length() == 0)
       {
@@ -315,20 +311,17 @@ public final class RDN
 
       if ((pos >= length) || (rdnString.charAt(pos) != '='))
       {
-        // We didn't find an equal sign.
-        throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
+
+         throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
                                 ERR_RDN_NO_EQUAL_SIGN.get(attrName));
       }
 
-      // The next character is the equal sign.  Skip it, and then skip over any
-      // spaces between it and the attribute value.
       pos++;
       while ((pos < length) && (rdnString.charAt(pos) == ' '))
       {
         pos++;
       }
 
-      // If we're at the end of the string, then it's not a valid RDN.
       if (pos >= length)
       {
         throw new LDAPException(ResultCode.INVALID_DN_SYNTAX,
@@ -336,28 +329,20 @@ public final class RDN
       }
 
 
-      // Look at the next character.  If it is an octothorpe (#), then the value
-      // must be hex-encoded.  Otherwise, it's a regular string (although
-      // possibly containing escaped or quoted characters).
       if (rdnString.charAt(pos) == '#')
       {
-        // It is a hex-encoded value, so we'll read until we find the end of the
-        // string or the first non-hex character, which must be either a space
-        // or a plus sign.
         final byte[] valueArray = readHexString(rdnString, ++pos);
         value = new ASN1OctetString(valueArray);
         pos += (valueArray.length * 2);
       }
       else
       {
-        // It is a string value, which potentially includes escaped characters.
         final StringBuilder buffer = new StringBuilder();
         pos = readValueString(rdnString, pos, buffer);
         value = new ASN1OctetString(buffer.toString());
       }
 
 
-      // Skip over any spaces until we find a plus sign or the end of the value.
       while ((pos < length) && (rdnString.charAt(pos) == ' '))
       {
         pos++;
@@ -489,7 +474,6 @@ hexLoop:
       switch (rdnString.charAt(pos++))
       {
         case '0':
-          // No action is required.
           break;
         case '1':
           hexByte |= 0x01;
@@ -784,7 +768,7 @@ valueLoop:
       switch (rdnString.charAt(pos++))
       {
         case '0':
-          // No action is required.
+
           break;
         case '1':
           b |= 0x01;

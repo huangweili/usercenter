@@ -1,23 +1,4 @@
-/*
- * Copyright 2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util;
 
 
@@ -27,15 +8,6 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-
-/**
- * This enum defines a set of message keys for messages in the
- * com.hwlcn.ldap.util package, which correspond to messages in the
- * ldap-ldapsdk-util.properties properties file.
- * <BR><BR>
- * This source file was generated from the properties file.
- * Do not edit it directly.
- */
 enum UtilityMessages
 {
   /**

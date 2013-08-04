@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldif;
 
 
@@ -85,21 +66,10 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class LDIFEntrySource
        extends EntrySource
 {
-  // Indicates whether this entry source has been closed.
   private final AtomicBoolean closed;
 
-  // The LDIF reader from which entries will be read.
   private final LDIFReader ldifReader;
 
-
-
-  /**
-   * Creates a new LDAP entry source that will obtain entries from the provided
-   * LDIF reader.
-   *
-   * @param  ldifReader  The LDIF reader from which to read entries.  It must
-   *                     not be {@code null}.
-   */
   public LDIFEntrySource(final LDIFReader ldifReader)
   {
     ensureNotNull(ldifReader);
@@ -109,11 +79,6 @@ public final class LDIFEntrySource
     closed = new AtomicBoolean(false);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public Entry nextEntry()
          throws EntrySourceException
@@ -155,10 +120,6 @@ public final class LDIFEntrySource
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void close()
   {

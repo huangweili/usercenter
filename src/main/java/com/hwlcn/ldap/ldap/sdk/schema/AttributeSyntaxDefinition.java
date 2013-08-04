@@ -1,23 +1,4 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.schema;
 
 
@@ -38,47 +19,24 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class provides a data structure that describes an LDAP attribute syntax
- * schema element.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class AttributeSyntaxDefinition
        extends SchemaElement
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 8593718232711987488L;
 
-
-
-  // The set of extensions for this attribute syntax.
   private final Map<String,String[]> extensions;
 
-  // The description for this attribute syntax.
   private final String description;
 
-  // The string representation of this attribute syntax.
   private final String attributeSyntaxString;
 
-  // The OID for this attribute syntax.
   private final String oid;
 
 
 
-  /**
-   * Creates a new attribute syntax from the provided string representation.
-   *
-   * @param  s  The string representation of the attribute syntax to create,
-   *            using the syntax described in RFC 4512 section 4.1.5.  It must
-   *            not be {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as an
-   *                         attribute syntax definition.
-   */
   public AttributeSyntaxDefinition(final String s)
          throws LDAPException
   {
@@ -86,7 +44,6 @@ public final class AttributeSyntaxDefinition
 
     attributeSyntaxString = s.trim();
 
-    // The first character must be an opening parenthesis.
     final int length = attributeSyntaxString.length();
     if (length == 0)
     {
@@ -101,8 +58,7 @@ public final class AttributeSyntaxDefinition
     }
 
 
-    // Skip over any spaces until we reach the start of the OID, then read the
-    // OID until we find the next space.
+
     int pos = skipSpaces(attributeSyntaxString, 1, length);
 
     StringBuilder buffer = new StringBuilder();
@@ -110,19 +66,13 @@ public final class AttributeSyntaxDefinition
     oid = buffer.toString();
 
 
-    // Technically, attribute syntax elements are supposed to appear in a
-    // specific order, but we'll be lenient and allow remaining elements to come
-    // in any order.
     String               descr = null;
     final Map<String,String[]> exts  = new LinkedHashMap<String,String[]>();
 
     while (true)
     {
-      // Skip over any spaces until we find the next element.
       pos = skipSpaces(attributeSyntaxString, pos, length);
 
-      // Read until we find the next space or the end of the string.  Use that
-      // token to figure out what to do next.
       final int tokenStartPos = pos;
       while ((pos < length) && (attributeSyntaxString.charAt(pos) != ' '))
       {
@@ -133,8 +83,6 @@ public final class AttributeSyntaxDefinition
       final String lowerToken = toLowerCase(token);
       if (lowerToken.equals(")"))
       {
-        // This indicates that we're at the end of the value.  There should not
-        // be any more closing characters.
         if (pos < length)
         {
           throw new LDAPException(ResultCode.DECODING_ERROR,
@@ -191,19 +139,6 @@ public final class AttributeSyntaxDefinition
     extensions  = Collections.unmodifiableMap(exts);
   }
 
-
-
-  /**
-   * Creates a new attribute syntax use with the provided information.
-   *
-   * @param  oid          The OID for this attribute syntax.  It must not be
-   *                      {@code null}.
-   * @param  description  The description for this attribute syntax.  It may be
-   *                      {@code null} if there is no description.
-   * @param  extensions   The set of extensions for this attribute syntax.  It
-   *                      may be {@code null} or empty if there should not be
-   *                      any extensions.
-   */
   public AttributeSyntaxDefinition(final String oid, final String description,
                                    final Map<String,String[]> extensions)
   {
@@ -226,15 +161,6 @@ public final class AttributeSyntaxDefinition
     attributeSyntaxString = buffer.toString();
   }
 
-
-
-  /**
-   * Constructs a string representation of this attribute syntax definition in
-   * the provided buffer.
-   *
-   * @param  buffer  The buffer in which to construct a string representation of
-   *                 this attribute syntax definition.
-   */
   private void createDefinitionString(final StringBuilder buffer)
   {
     buffer.append("( ");
@@ -278,12 +204,6 @@ public final class AttributeSyntaxDefinition
   }
 
 
-
-  /**
-   * Retrieves the OID for this attribute syntax.
-   *
-   * @return  The OID for this attribute syntax.
-   */
   public String getOID()
   {
     return oid;
@@ -291,12 +211,6 @@ public final class AttributeSyntaxDefinition
 
 
 
-  /**
-   * Retrieves the description for this attribute syntax, if available.
-   *
-   * @return  The description for this attribute syntax, or {@code null} if
-   *          there is no description defined.
-   */
   public String getDescription()
   {
     return description;
@@ -304,13 +218,7 @@ public final class AttributeSyntaxDefinition
 
 
 
-  /**
-   * Retrieves the set of extensions for this matching rule use.  They will be
-   * mapped from the extension name (which should start with "X-") to the set
-   * of values for that extension.
-   *
-   * @return  The set of extensions for this matching rule use.
-   */
+
   public Map<String,String[]> getExtensions()
   {
     return extensions;
@@ -318,9 +226,6 @@ public final class AttributeSyntaxDefinition
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -328,10 +233,6 @@ public final class AttributeSyntaxDefinition
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -358,12 +259,6 @@ public final class AttributeSyntaxDefinition
 
 
 
-  /**
-   * Retrieves a string representation of this attribute syntax, in the format
-   * described in RFC 4512 section 4.1.5.
-   *
-   * @return  A string representation of this attribute syntax definition.
-   */
   @Override()
   public String toString()
   {

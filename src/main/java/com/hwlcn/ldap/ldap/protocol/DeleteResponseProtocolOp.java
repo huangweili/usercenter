@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -44,33 +25,18 @@ import static com.hwlcn.ldap.ldap.protocol.ProtocolMessages.*;
 
 
 
-/**
- * This class provides an implementation of a delete response protocol op.
- */
+
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class DeleteResponseProtocolOp
        extends GenericResponseProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -7372719058693583245L;
 
 
 
-  /**
-   * Creates a new instance of this delete response protocol op with the
-   * provided information.
-   *
-   * @param  resultCode         The result code for this response.
-   * @param  matchedDN          The matched DN for this response, if available.
-   * @param  diagnosticMessage  The diagnostic message for this response, if
-   *                            any.
-   * @param  referralURLs       The list of referral URLs for this response, if
-   *                            any.
-   */
   public DeleteResponseProtocolOp(final int resultCode, final String matchedDN,
                                 final String diagnosticMessage,
                                 final List<String> referralURLs)
@@ -81,12 +47,6 @@ public final class DeleteResponseProtocolOp
 
 
 
-  /**
-   * Creates a new delete response protocol op from the provided LDAP result
-   * object.
-   *
-   * @param  result  The LDAP result object to use to create this protocol op.
-   */
   public DeleteResponseProtocolOp(final LDAPResult result)
   {
     super(LDAPMessage.PROTOCOL_OP_TYPE_DELETE_RESPONSE,
@@ -97,16 +57,7 @@ public final class DeleteResponseProtocolOp
 
 
 
-  /**
-   * Creates a new delete response protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the delete
-   *                 response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         delete response.
-   */
+
   DeleteResponseProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -115,9 +66,6 @@ public final class DeleteResponseProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(4);
@@ -161,16 +109,6 @@ public final class DeleteResponseProtocolOp
 
 
 
-  /**
-   * Decodes the provided ASN.1 element as a delete response protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded delete response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a delete response protocol op.
-   */
   public static DeleteResponseProtocolOp decodeProtocolOp(
                                               final ASN1Element element)
          throws LDAPException

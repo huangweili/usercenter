@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.schema;
 
 
@@ -39,62 +19,32 @@ import static com.hwlcn.ldap.util.Validator.*;
 
 
 
-/**
- * This class provides a data structure that describes an LDAP name form schema
- * element.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class NameFormDefinition
        extends SchemaElement
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -816231530223449984L;
 
-
-
-  // Indicates whether this name form is declared obsolete.
   private final boolean isObsolete;
 
-  // The set of extensions for this name form.
   private final Map<String,String[]> extensions;
 
-  // The description for this name form.
   private final String description;
 
-  // The string representation of this name form.
   private final String nameFormString;
 
-  // The OID for this name form.
   private final String oid;
 
-  // The set of names for this name form.
   private final String[] names;
 
-  // The name or OID of the structural object class with which this name form
-  // is associated.
   private final String structuralClass;
 
-  // The names/OIDs of the optional attributes.
   private final String[] optionalAttributes;
 
-  // The names/OIDs of the required attributes.
   private final String[] requiredAttributes;
 
-
-
-  /**
-   * Creates a new name form from the provided string representation.
-   *
-   * @param  s  The string representation of the name form to create, using the
-   *            syntax described in RFC 4512 section 4.1.7.2.  It must not be
-   *            {@code null}.
-   *
-   * @throws  LDAPException  If the provided string cannot be decoded as a name
-   *                         form definition.
-   */
   public NameFormDefinition(final String s)
          throws LDAPException
   {
@@ -102,7 +52,6 @@ public final class NameFormDefinition
 
     nameFormString = s.trim();
 
-    // The first character must be an opening parenthesis.
     final int length = nameFormString.length();
     if (length == 0)
     {
@@ -116,9 +65,6 @@ public final class NameFormDefinition
                                    nameFormString));
     }
 
-
-    // Skip over any spaces until we reach the start of the OID, then read the
-    // OID until we find the next space.
     int pos = skipSpaces(nameFormString, 1, length);
 
     StringBuilder buffer = new StringBuilder();
@@ -126,9 +72,6 @@ public final class NameFormDefinition
     oid = buffer.toString();
 
 
-    // Technically, name form elements are supposed to appear in a specific
-    // order, but we'll be lenient and allow remaining elements to come in any
-    // order.
     final ArrayList<String>    nameList = new ArrayList<String>(1);
     final ArrayList<String>    reqAttrs = new ArrayList<String>();
     final ArrayList<String>    optAttrs = new ArrayList<String>();
@@ -139,20 +82,15 @@ public final class NameFormDefinition
 
     while (true)
     {
-      // Skip over any spaces until we find the next element.
       pos = skipSpaces(nameFormString, pos, length);
 
-      // Read until we find the next space or the end of the string.  Use that
-      // token to figure out what to do next.
       final int tokenStartPos = pos;
       while ((pos < length) && (nameFormString.charAt(pos) != ' '))
       {
         pos++;
       }
 
-      // It's possible that the token could be smashed right up against the
-      // closing parenthesis.  If that's the case, then extract just the token
-      // and handle the closing parenthesis the next time through.
+
       String token = nameFormString.substring(tokenStartPos, pos);
       if ((token.length() > 1) && (token.endsWith(")")))
       {
@@ -163,8 +101,7 @@ public final class NameFormDefinition
       final String lowerToken = toLowerCase(token);
       if (lowerToken.equals(")"))
       {
-        // This indicates that we're at the end of the value.  There should not
-        // be any more closing characters.
+
         if (pos < length)
         {
           throw new LDAPException(ResultCode.DECODING_ERROR,
@@ -319,34 +256,6 @@ public final class NameFormDefinition
   }
 
 
-
-  /**
-   * Creates a new name form with the provided information.
-   *
-   * @param  oid                 The OID for this name form.  It must not be
-   *                             {@code null}.
-   * @param  names               The set of names for this name form.  It may
-   *                             be {@code null} or empty if the name form
-   *                             should only be referenced by OID.
-   * @param  description         The description for this name form.  It may be
-   *                             {@code null} if there is no description.
-   * @param  isObsolete          Indicates whether this name form is declared
-   *                             obsolete.
-   * @param  structuralClass     The name or OID of the structural object class
-   *                             with which this name form is associated.  It
-   *                             must not be {@code null}.
-   * @param  requiredAttributes  The names/OIDs of the attributes which must be
-   *                             present the RDN for entries with the associated
-   *                             structural class.  It must not be {@code null}
-   *                             or empty.
-   * @param  optionalAttributes  The names/OIDs of the attributes which may
-   *                             optionally be present in the RDN for entries
-   *                             with the associated structural class.  It may
-   *                             be {@code null} or empty
-   * @param  extensions          The set of extensions for this name form.  It
-   *                             may be {@code null} or empty if there should
-   *                             not be any extensions.
-   */
   public NameFormDefinition(final String oid, final String[] names,
                                final String description,
                                final boolean isObsolete,
@@ -396,15 +305,6 @@ public final class NameFormDefinition
     nameFormString = buffer.toString();
   }
 
-
-
-  /**
-   * Constructs a string representation of this name form definition in the
-   * provided buffer.
-   *
-   * @param  buffer  The buffer in which to construct a string representation of
-   *                 this name form definition.
-   */
   private void createDefinitionString(final StringBuilder buffer)
   {
     buffer.append("( ");
@@ -521,11 +421,6 @@ public final class NameFormDefinition
 
 
 
-  /**
-   * Retrieves the OID for this name form.
-   *
-   * @return  The OID for this name form.
-   */
   public String getOID()
   {
     return oid;
@@ -533,12 +428,6 @@ public final class NameFormDefinition
 
 
 
-  /**
-   * Retrieves the set of names for this name form.
-   *
-   * @return  The set of names for this name form, or an empty array if it does
-   *          not have any names.
-   */
   public String[] getNames()
   {
     return names;
@@ -546,13 +435,6 @@ public final class NameFormDefinition
 
 
 
-  /**
-   * Retrieves the primary name that can be used to reference this name form.
-   * If one or more names are defined, then the first name will be used.
-   * Otherwise, the OID will be returned.
-   *
-   * @return  The primary name that can be used to reference this name form.
-   */
   public String getNameOrOID()
   {
     if (names.length == 0)
@@ -566,17 +448,6 @@ public final class NameFormDefinition
   }
 
 
-
-  /**
-   * Indicates whether the provided string matches the OID or any of the names
-   * for this name form.
-   *
-   * @param  s  The string for which to make the determination.  It must not be
-   *            {@code null}.
-   *
-   * @return  {@code true} if the provided string matches the OID or any of the
-   *          names for this name form, or {@code false} if not.
-   */
   public boolean hasNameOrOID(final String s)
   {
     for (final String name : names)
@@ -590,96 +461,36 @@ public final class NameFormDefinition
     return s.equalsIgnoreCase(oid);
   }
 
-
-
-  /**
-   * Retrieves the description for this name form, if available.
-   *
-   * @return  The description for this name form, or {@code null} if there is no
-   *          description defined.
-   */
   public String getDescription()
   {
     return description;
   }
 
-
-
-  /**
-   * Indicates whether this name form is declared obsolete.
-   *
-   * @return  {@code true} if this name form is declared obsolete, or
-   *          {@code false} if it is not.
-   */
   public boolean isObsolete()
   {
     return isObsolete;
   }
 
-
-
-  /**
-   * Retrieves the name or OID of the structural object class associated with
-   * this name form.
-   *
-   * @return  The name or OID of the structural object class associated with
-   *          this name form.
-   */
   public String getStructuralClass()
   {
     return structuralClass;
   }
 
-
-
-  /**
-   * Retrieves the names or OIDs of the attributes that are required to be
-   * present in the RDN of entries with the associated structural object class.
-   *
-   * @return  The names or OIDs of the attributes that are required to be
-   *          present in the RDN of entries with the associated structural
-   *          object class.
-   */
   public String[] getRequiredAttributes()
   {
     return requiredAttributes;
   }
 
-
-
-  /**
-   * Retrieves the names or OIDs of the attributes that may optionally be
-   * present in the RDN of entries with the associated structural object class.
-   *
-   * @return  The names or OIDs of the attributes that may optionally be
-   *          present in the RDN of entries with the associated structural
-   *          object class, or an empty array if there are no optional
-   *          attributes.
-   */
   public String[] getOptionalAttributes()
   {
     return optionalAttributes;
   }
 
-
-
-  /**
-   * Retrieves the set of extensions for this name form.  They will be mapped
-   * from the extension name (which should start with "X-") to the set of values
-   * for that extension.
-   *
-   * @return  The set of extensions for this name form.
-   */
   public Map<String,String[]> getExtensions()
   {
     return extensions;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -687,10 +498,6 @@ public final class NameFormDefinition
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -723,13 +530,6 @@ public final class NameFormDefinition
   }
 
 
-
-  /**
-   * Retrieves a string representation of this name form definition, in the
-   * format described in RFC 4512 section 4.1.7.2.
-   *
-   * @return  A string representation of this name form definition.
-   */
   @Override()
   public String toString()
   {

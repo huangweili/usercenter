@@ -1,23 +1,3 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -71,49 +51,24 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class MatchedValuesRequestControl
        extends Control
 {
-  /**
-   * The OID (1.2.826.0.1.3344810.2.3) for the matched values request control.
-   */
+
   public static final String MATCHED_VALUES_REQUEST_OID =
        "1.2.826.0.1.3344810.2.3";
 
 
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 6799850686547208774L;
 
 
-
-  // The set of matched values filters for this control.
   private final MatchedValuesFilter[] filters;
 
 
 
-  /**
-   * Creates a new matched values request control with the provided set of
-   * filters.  It will not be be marked as critical.
-   *
-   * @param  filters  The set of filters to use for this control.  At least one
-   *                  filter must be provided.
-   */
+
   public MatchedValuesRequestControl(final MatchedValuesFilter... filters)
   {
     this(false, filters);
   }
 
-
-
-  /**
-   * Creates a new matched values request control with the provided criticality
-   * and set of filters.
-   *
-   * @param  isCritical  Indicates whether this control should be marked
-   *                     critical.
-   * @param  filters     The set of filters to use for this control.  At least
-   *                     one filter must be provided.
-   */
   public MatchedValuesRequestControl(final boolean isCritical,
                                      final MatchedValuesFilter... filters)
   {
@@ -124,16 +79,6 @@ public final class MatchedValuesRequestControl
 
 
 
-  /**
-   * Creates a new matched values request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a matched values
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         matched values request control.
-   */
   public MatchedValuesRequestControl(final Control control)
          throws LDAPException
   {
@@ -166,16 +111,6 @@ public final class MatchedValuesRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided set of filters into a value appropriate for use with
-   * the matched values control.
-   *
-   * @param  filters  The set of filters to include in the value.  It must not
-   *                  be {@code null} or empty.
-   *
-   * @return  The ASN.1 octet string containing the encoded control value.
-   */
   private static ASN1OctetString encodeValue(
                                       final MatchedValuesFilter[] filters)
   {
@@ -194,11 +129,6 @@ public final class MatchedValuesRequestControl
 
 
 
-  /**
-   * Retrieves the set of filters for this matched values request control.
-   *
-   * @return  The set of filters for this matched values request control.
-   */
   public MatchedValuesFilter[] getFilters()
   {
     return filters;
@@ -206,9 +136,6 @@ public final class MatchedValuesRequestControl
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
@@ -217,9 +144,6 @@ public final class MatchedValuesRequestControl
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

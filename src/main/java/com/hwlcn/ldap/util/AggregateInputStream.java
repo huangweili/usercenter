@@ -1,23 +1,4 @@
-/*
- * Copyright 2011-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2011-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util;
 
 
@@ -35,48 +16,19 @@ import java.util.Iterator;
 import static com.hwlcn.ldap.util.UtilityMessages.*;
 
 
-
-/**
- * This class provides an input stream implementation that can aggregate
- * multiple input streams.  When reading data from this input stream, it will
- * read from the first input stream until the end of it is reached, at point it
- * will close it and start reading from the next one, and so on until all input
- * streams have been exhausted.  Closing the aggregate input stream will cause
- * all remaining input streams to be closed.
- */
 @ThreadSafety(level=ThreadSafetyLevel.NOT_THREADSAFE)
 public final class AggregateInputStream
        extends InputStream
 {
-  // The currently-active input stream.
   private volatile InputStream activeInputStream;
 
-  // The iterator that will be used to access the input streams.
   private final Iterator<InputStream> streamIterator;
 
-
-
-  /**
-   * Creates a new aggregate input stream that will use the provided set of
-   * input streams.
-   *
-   * @param  inputStreams  The input streams to be used by this aggregate input
-   *                       stream.  It must not be {@code null}.
-   */
   public AggregateInputStream(final InputStream... inputStreams)
   {
     this(StaticUtils.toList(inputStreams));
   }
 
-
-
-  /**
-   * Creates a new aggregate input stream that will use the provided set of
-   * input streams.
-   *
-   * @param  inputStreams  The input streams to be used by this aggregate input
-   *                       stream.  It must not be {@code null}.
-   */
   public AggregateInputStream(
               final Collection<? extends InputStream> inputStreams)
   {
@@ -89,17 +41,6 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Creates a new aggregate input stream that will read data from the specified
-   * files.
-   *
-   * @param  files  The set of files to be read by this aggregate input stream.
-   *                It must not be {@code null}.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to
-   *                       create input streams for the provided files.
-   */
   public AggregateInputStream(final File... files)
          throws IOException
   {
@@ -148,17 +89,6 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Reads the next byte of data from the current active input stream, switching
-   * to the next input stream in the set if appropriate.
-   *
-   * @return  The next byte of data that was read, or -1 if all streams have
-   *          been exhausted.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to read
-   *                       data from an input stream.
-   */
   @Override()
   public int read()
          throws IOException
@@ -193,19 +123,6 @@ public final class AggregateInputStream
 
 
 
-  /**
-   * Reads data from the current active input stream into the provided array,
-   * switching to the next input stream in the set if appropriate.
-   *
-   * @param  b  The array into which the data read should be placed, starting
-   *            with an index of zero.  It must not be {@code null}.
-   *
-   * @return  The number of bytes read into the array, or -1 if all streams have
-   *          been exhausted.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to read
-   *                       data from an input stream.
-   */
   @Override()
   public int read(final byte[] b)
          throws IOException
@@ -215,21 +132,7 @@ public final class AggregateInputStream
 
 
 
-  /**
-   * Reads data from the current active input stream into the provided array,
-   * switching to the next input stream in the set if appropriate.
-   *
-   * @param  b    The array into which the data read should be placed.  It must
-   *              not be {@code null}.
-   * @param  off  The position in the array at which to start writing data.
-   * @param  len  The maximum number of bytes that may be read.
-   *
-   * @return  The number of bytes read into the array, or -1 if all streams have
-   *          been exhausted.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to read
-   *                       data from an input stream.
-   */
+
   @Override()
   public int read(final byte[] b, final int off, final int len)
          throws IOException
@@ -264,17 +167,6 @@ public final class AggregateInputStream
 
 
 
-  /**
-   * Attempts to skip and discard up to the specified number of bytes from the
-   * input stream.
-   *
-   * @param  n  The number of bytes to attempt to skip.
-   *
-   * @return  The number of bytes actually skipped.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to skip
-   *                       data from the input stream.
-   */
   @Override()
   public long skip(final long n)
          throws IOException
@@ -298,17 +190,6 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Retrieves an estimate of the number of bytes that can be read without
-   * blocking.
-   *
-   * @return  An estimate of the number of bytes that can be read without
-   *          blocking.
-   *
-   * @throws  java.io.IOException  If a problem is encountered while attempting to make
-   *                       the determination.
-   */
   @Override()
   public int available()
          throws IOException
@@ -332,15 +213,6 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Indicates whether this input stream supports the use of the {@code mark}
-   * and {@code reset} methods.  This implementation does not support that
-   * capability.
-   *
-   * @return  {@code false} to indicate that this input stream implementation
-   *          does not support the use of {@code mark} and {@code reset}.
-   */
   @Override()
   public boolean markSupported()
   {
@@ -348,29 +220,13 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Marks the current position in the input stream.  This input stream does not
-   * support this functionality, so no action will be taken.
-   *
-   * @param  readLimit  The maximum number of bytes that the caller may wish to
-   *                    read before being able to reset the stream.
-   */
   @Override()
   public void mark(final int readLimit)
   {
-    // No implementation is required.
   }
 
 
 
-  /**
-   * Attempts to reset the position of this input stream to the mark location.
-   * This implementation does not support {@code mark} and {@code reset}
-   * functionality, so this method will always throw an exception.
-   *
-   * @throws  java.io.IOException  To indicate that reset is not supported.
-   */
   @Override()
   public void reset()
          throws IOException
@@ -379,15 +235,6 @@ public final class AggregateInputStream
   }
 
 
-
-  /**
-   * Closes this input stream.  All associated input streams will be closed.
-   *
-   * @throws  java.io.IOException  If an exception was encountered while attempting to
-   *                       close any of the associated streams.  Note that even
-   *                       if an exception is encountered, an attempt will be
-   *                       made to close all streams.
-   */
   @Override()
   public void close()
          throws IOException

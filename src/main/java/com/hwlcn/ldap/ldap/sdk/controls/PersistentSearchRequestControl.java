@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.sdk.controls;
 
 
@@ -109,51 +89,17 @@ import static com.hwlcn.ldap.util.Validator.*;
 public final class PersistentSearchRequestControl
        extends Control
 {
-  /**
-   * The OID (2.16.840.1.113730.3.4.3) for the persistent search request
-   * control.
-   */
+
   public static final String PERSISTENT_SEARCH_REQUEST_OID =
        "2.16.840.1.113730.3.4.3";
 
-
-
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = 3532762682521779027L;
 
-
-
-  // Indicates whether the search should only return search result entries for
-  // changes made to entries matching the search criteria, or if existing
-  // entries already in the server should be returned as well.
   private final boolean changesOnly;
-
-  // Indicates whether search result entries returned as part of this persistent
-  // search should include the entry change notification control.
   private final boolean returnECs;
 
-  // The set of change types for which this persistent search control is
-  // registered.
   private final EnumSet<PersistentSearchChangeType> changeTypes;
 
-
-
-  /**
-   * Creates a new persistent search control with the provided information.  It
-   * will be marked critical.
-   *
-   * @param  changeType   The change type for which to register.  It must not be
-   *                      {@code null}.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   */
   public PersistentSearchRequestControl(
               final PersistentSearchChangeType changeType,
               final boolean changesOnly, final boolean returnECs)
@@ -167,22 +113,6 @@ public final class PersistentSearchRequestControl
     this.returnECs   = returnECs;
   }
 
-
-
-  /**
-   * Creates a new persistent search control with the provided information.  It
-   * will be marked critical.
-   *
-   * @param  changeTypes  The set of change types for which to register.  It
-   *                      must not be {@code null} or empty.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   */
   public PersistentSearchRequestControl(
               final Set<PersistentSearchChangeType> changeTypes,
               final boolean changesOnly, final boolean returnECs)
@@ -195,23 +125,6 @@ public final class PersistentSearchRequestControl
     this.returnECs   = returnECs;
   }
 
-
-
-  /**
-   * Creates a new persistent search control with the provided information.
-   *
-   * @param  changeType   The change type for which to register.  It must not be
-   *                      {@code null}.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   * @param  isCritical   Indicates whether the control should be marked
-   *                      critical.
-   */
   public PersistentSearchRequestControl(
               final PersistentSearchChangeType changeType,
               final boolean changesOnly, final boolean returnECs,
@@ -226,23 +139,6 @@ public final class PersistentSearchRequestControl
     this.returnECs   = returnECs;
   }
 
-
-
-  /**
-   * Creates a new persistent search control with the provided information.
-   *
-   * @param  changeTypes  The set of change types for which to register.  It
-   *                      must not be {@code null} or empty.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   * @param  isCritical   Indicates whether the control should be marked
-   *                      critical.
-   */
   public PersistentSearchRequestControl(
               final Set<PersistentSearchChangeType> changeTypes,
               final boolean changesOnly, final boolean returnECs,
@@ -256,18 +152,6 @@ public final class PersistentSearchRequestControl
     this.returnECs   = returnECs;
   }
 
-
-
-  /**
-   * Creates a new persistent search request control which is decoded from the
-   * provided generic control.
-   *
-   * @param  control  The generic control to be decoded as a persistent search
-   *                  request control.
-   *
-   * @throws  LDAPException  If the provided control cannot be decoded as a
-   *                         persistent search request control.
-   */
   public PersistentSearchRequestControl(final Control control)
          throws LDAPException
   {
@@ -300,25 +184,6 @@ public final class PersistentSearchRequestControl
     }
   }
 
-
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  changeType   The change type for which to register.  It must not be
-   *                      {@code null}.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(
                final PersistentSearchChangeType changeType,
                final boolean changesOnly, final boolean returnECs)
@@ -336,24 +201,6 @@ public final class PersistentSearchRequestControl
   }
 
 
-
-  /**
-   * Encodes the provided information into an octet string that can be used as
-   * the value for this control.
-   *
-   * @param  changeTypes  The set of change types for which to register.  It
-   *                      must not be {@code null} or empty.
-   * @param  changesOnly  Indicates whether the search should only return search
-   *                      result entries for changes made to entries matching
-   *                      the search criteria, or if existing matching entries
-   *                      in the server should be returned as well.
-   * @param  returnECs    Indicates whether the search result entries returned
-   *                      as part of this persistent search should include the
-   *                      entry change notification control.
-   *
-   * @return  An ASN.1 octet string that can be used as the value for this
-   *          control.
-   */
   private static ASN1OctetString encodeValue(
                final Set<PersistentSearchChangeType> changeTypes,
                final boolean changesOnly, final boolean returnECs)
@@ -373,68 +220,27 @@ public final class PersistentSearchRequestControl
     return new ASN1OctetString(new ASN1Sequence(elements).encode());
   }
 
-
-
-  /**
-   * Retrieves the set of change types for this persistent search request
-   * control.
-   *
-   * @return  The set of change types for this persistent search request
-   *          control.
-   */
   public Set<PersistentSearchChangeType> getChangeTypes()
   {
     return changeTypes;
   }
 
-
-
-  /**
-   * Indicates whether the search should only return search result entries for
-   * changes made to entries matching the search criteria, or if existing
-   * matching entries should be returned as well.
-   *
-   * @return  {@code true} if the search should only return search result
-   *          entries for changes matching the search criteria, or {@code false}
-   *          if it should also return existing entries that match the search
-   *          criteria.
-   */
   public boolean changesOnly()
   {
     return changesOnly;
   }
 
-
-
-  /**
-   * Indicates whether the search result entries returned as part of this
-   * persistent search should include the entry change notification control.
-   *
-   * @return  {@code true} if search result entries returned as part of this
-   *          persistent search should include the entry change notification
-   *          control, or {@code false} if not.
-   */
   public boolean returnECs()
   {
     return returnECs;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getControlName()
   {
     return INFO_CONTROL_NAME_PSEARCH_REQUEST.get();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {

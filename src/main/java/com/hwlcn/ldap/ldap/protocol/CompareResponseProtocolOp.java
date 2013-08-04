@@ -1,23 +1,3 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldap.protocol;
 
 
@@ -42,35 +22,18 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
 import static com.hwlcn.ldap.ldap.protocol.ProtocolMessages.*;
 
-
-
-/**
- * This class provides an implementation of a compare response protocol op.
- */
 @InternalUseOnly()
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class CompareResponseProtocolOp
        extends GenericResponseProtocolOp
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 3237778285010810669L;
 
 
 
-  /**
-   * Creates a new instance of this compare response protocol op with the
-   * provided information.
-   *
-   * @param  resultCode         The result code for this response.
-   * @param  matchedDN          The matched DN for this response, if available.
-   * @param  diagnosticMessage  The diagnostic message for this response, if
-   *                            any.
-   * @param  referralURLs       The list of referral URLs for this response, if
-   *                            any.
-   */
+
   public CompareResponseProtocolOp(final int resultCode, final String matchedDN,
                                  final String diagnosticMessage,
                                  final List<String> referralURLs)
@@ -81,12 +44,6 @@ public final class CompareResponseProtocolOp
 
 
 
-  /**
-   * Creates a new compare response protocol op from the provided LDAP result
-   * object.
-   *
-   * @param  result  The LDAP result object to use to create this protocol op.
-   */
   public CompareResponseProtocolOp(final LDAPResult result)
   {
     super(LDAPMessage.PROTOCOL_OP_TYPE_COMPARE_RESPONSE,
@@ -97,16 +54,7 @@ public final class CompareResponseProtocolOp
 
 
 
-  /**
-   * Creates a new compare response protocol op read from the provided ASN.1
-   * stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the compare
-   *                 response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If a problem occurs while reading or parsing the
-   *                         compare response.
-   */
+
   CompareResponseProtocolOp(final ASN1StreamReader reader)
        throws LDAPException
   {
@@ -115,9 +63,6 @@ public final class CompareResponseProtocolOp
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   public ASN1Element encodeProtocolOp()
   {
     final ArrayList<ASN1Element> elements = new ArrayList<ASN1Element>(4);
@@ -161,16 +106,6 @@ public final class CompareResponseProtocolOp
 
 
 
-  /**
-   * Decodes the provided ASN.1 element as a compare response protocol op.
-   *
-   * @param  element  The ASN.1 element to be decoded.
-   *
-   * @return  The decoded compare response protocol op.
-   *
-   * @throws  com.hwlcn.ldap.ldap.sdk.LDAPException  If the provided ASN.1 element cannot be decoded as
-   *                         a compare response protocol op.
-   */
   public static CompareResponseProtocolOp decodeProtocolOp(
                                                final ASN1Element element)
          throws LDAPException

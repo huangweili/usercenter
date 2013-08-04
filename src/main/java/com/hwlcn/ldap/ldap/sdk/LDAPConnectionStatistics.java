@@ -18,9 +18,6 @@ import com.hwlcn.ldap.util.ThreadSafetyLevel;
 public final class LDAPConnectionStatistics
        implements Serializable
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -1096417617572481790L;
 
 

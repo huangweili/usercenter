@@ -204,8 +204,6 @@ public class ExtendedRequest
       final long requestTime = System.nanoTime();
       connection.getConnectionStatistics().incrementNumExtendedRequests();
       connection.sendMessage(message);
-
-      // Wait for and process the response.
       final LDAPResponse response;
       try
       {

@@ -1,23 +1,4 @@
-/*
- * Copyright 2009-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2009-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.ldap.sdk.persist;
 
 
@@ -70,128 +51,20 @@ import static com.hwlcn.ldap.ldap.sdk.persist.PersistMessages.*;
 import static com.hwlcn.ldap.util.Debug.*;
 import static com.hwlcn.ldap.util.StaticUtils.*;
 
-
-
-/**
- * This class provides the default implementation of an {@link com.hwlcn.ldap.ldap.sdk.persist.ObjectEncoder}
- * object that will be used when encoding and decoding fields to be written to
- * or read from an LDAP directory server.
- * <BR><BR>
- * The following basic types will be supported, with the following encodings:
- * <UL>
- *   <LI>Any kind of enumeration -- Encoded using the name of the enum
- *       value</LI>
- *   <LI>{@code java.util.concurrent.atomic.AtomicInteger} -- Encoded using the
- *       string representation of the value</LI>
- *   <LI>{@code java.util.concurrent.atomic.AtomicLong} -- Encoded using the
- *       string representation of the value</LI>
- *   <LI>{@code java.math.BigDecimal} -- Encoded using the string representation
- *       of the value</LI>
- *   <LI>{@code java.math.BigInteger} -- Encoded using the string representation
- *       of the value</LI>
- *   <LI>{@code boolean} -- Encoded as either "TRUE" or "FALSE"</LI>
- *   <LI>{@code java.lang.Boolean} -- Encoded as either "TRUE" or "FALSE"</LI>
- *   <LI>{@code byte[]} -- Encoded as the raw bytes contained in the array</LI>
- *   <LI>{@code char[]} -- Encoded as a string containing the characters in the
- *       array</LI>
- *   <LI>{@code java.util.Date} -- Encoded using the generalized time
- *       syntax</LI>
- *   <LI>{@code com.hwlcn.ldap.ldap.sdk.DN} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code double} -- Encoded using the string representation of the
- *       value</LI>
- *   <LI>{@code java.lang.Double} -- Encoded using the string representation of
- *       the value</LI>
- *   <LI>{@code com.hwlcn.ldap.ldap.sdk.Filter} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code float} -- Encoded using the string representation of the
- *       value</LI>
- *   <LI>{@code java.lang.Float} -- Encoded using the string representation of
- *       the value</LI>
- *   <LI>{@code int} -- Encoded using the string representation of the
- *       value</LI>
- *   <LI>{@code java.lang.Integer} -- Encoded using the string representation of
- *       the value</LI>
- *   <LI>{@code com.hwlcn.ldap.ldap.sdk.LDAPURL} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code long} -- Encoded using the string representation of the
- *       value</LI>
- *   <LI>{@code java.lang.Long} -- Encoded using the string representation of
- *       the value</LI>
- *   <LI>{@code com.hwlcn.ldap.ldap.sdk.RDN} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code short} -- Encoded using the string representation of the
- *       value</LI>
- *   <LI>{@code java.lang.Short} -- Encoded using the string representation of
- *       the value</LI>
- *   <LI>{@code java.lang.String} -- Encoded using the value</LI>
- *   <LI>{@code java.lang.StringBuffer} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code java.lang.StringBuilder} -- Encoded using the string
- *       representation of the value</LI>
- *   <LI>{@code java.net.URI} -- Encoded using the string representation of the
- *       value.</LI>
- *   <LI>{@code java.net.URL} -- Encoded using the string representation of the
- *       value.</LI>
- *   <LI>{@code java.util.UUID} -- Encoded using the string representation of
- *       the value</LI>
- * </UL>
- * Serializable objects are also supported, in which case the raw bytes that
- * comprise the serialized representation will be used.  This may be
- * undesirable, because the value may only be interpretable by Java-based
- * clients.  If you wish to better control the encoding for serialized objects,
- * have them implement custom {@code writeObject}, {@code readObject}, and
- * {@code readObjectNoData} methods that use the desired encoding.  Alternately,
- * you may create a custom {@link com.hwlcn.ldap.ldap.sdk.persist.ObjectEncoder} implementation for that object
- * type, or use getter/setter methods that convert between string/byte[]
- * representations and the desired object types.
- * <BR><BR>
- * In addition, arrays of all of the above types are also supported, in which
- * case each element of the array will be a separate value in the corresponding
- * LDAP attribute.  Lists (including {@code ArrayList}, {@code LinkedList}, and
- * {@code CopyOnWriteArrayList}) and sets (including {@code HashSet},
- * {@code LinkedHashSet}, {@code TreeSet}, and {@code CopyOnWriteArraySet}) of
- * the above types are also supported.
- * <BR><BR>
- * Note that you should be careful when using primitive types, since they cannot
- * be unassigned and therefore will always have a value.  When using an LDAP
- * entry to initialize an object any fields with primitive types which are
- * associated with LDAP attributes not present in the entry will have the
- * default value assigned to them in the zero-argument constructor, or will have
- * the JVM-supplied default value if no value was assigned to it in the
- * constructor.  If the associated object is converted back to an LDAP entry,
- * then those fields will be included in the entry that is generated, even if
- * they were not present in the original entry.  To avoid this problem, you can
- * use the object types rather than the primitive types (e.g.,
- * {@code java.lang.Boolean} instead of the {@code boolean} primitive), in which
- * case any fields associated with attributes that are not present in the entry
- * being de-serialized will be explicitly set to {@code null}.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class DefaultObjectEncoder
        extends ObjectEncoder
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = -4566874784628920022L;
 
 
-
-  /**
-   * Creates a new instance of this encoder.
-   */
   public DefaultObjectEncoder()
   {
     super();
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean supportsType(final Type t)
   {
@@ -235,16 +108,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * Indicates whether this object encoder supports objects of the specified
-   * type.
-   *
-   * @param  c  The object type class for which to make the determination.
-   *
-   * @return  {@code true} if this object supports objects of the specified
-   *          type, or {@code false} if not.
-   */
   private static boolean supportsTypeInternal(final Class<?> c)
   {
     if (c.equals(AtomicInteger.class) ||
@@ -303,14 +166,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Indicates whether the provided type is a supported list type.
-   *
-   * @param  t  The type for which to make the determination.
-   *
-   * @return  {@code true} if the provided type is a supported list type, or
-   *          or {@code false}.
-   */
   private static boolean isSupportedListType(final Class<?> t)
   {
     return (t.equals(List.class) ||
@@ -321,15 +176,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Creates a new list of the specified type.
-   *
-   * @param  t     The type of list to create.
-   * @param  size  The number of values that will be included in the list.
-   *
-   * @return  The created list, or {@code null} if it is not a supported list
-   *          type.
-   */
   @SuppressWarnings("rawtypes")
   private static List<?> createList(final Class<?> t, final int size)
   {
@@ -351,14 +197,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Indicates whether the provided type is a supported set type.
-   *
-   * @param  t  The type for which to make the determination.
-   *
-   * @return  {@code true} if the provided type is a supported set type, or
-   *          or {@code false}.
-   */
   private static boolean isSupportedSetType(final Class<?> t)
   {
     return (t.equals(Set.class) ||
@@ -370,15 +208,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Creates a new set of the specified type.
-   *
-   * @param  t     The type of set to create.
-   * @param  size  The number of values that will be included in the set.
-   *
-   * @return  The created list, or {@code null} if it is not a supported set
-   *          type.
-   */
   @SuppressWarnings("rawtypes")
   private static Set<?> createSet(final Class<?> t, final int size)
   {
@@ -403,10 +232,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public AttributeTypeDefinition constructAttributeType(final Field f,
                                       final OIDAllocator a)
@@ -455,9 +280,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public AttributeTypeDefinition constructAttributeType(final Method m,
                                       final OIDAllocator a)
@@ -503,14 +325,7 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Retrieves the syntax that should be used for the specified object type.
-   *
-   * @param  t  The type for which to make the determination.
-   *
-   * @return  The syntax that should be used for the specified object type, or
-   *          {@code null} if it cannot be determined.
-   */
+
   private static String getSyntaxOID(final Class<?> t)
   {
     if (t.equals(BigDecimal.class) ||
@@ -542,10 +357,6 @@ public final class DefaultObjectEncoder
     }
     else if (t.equals(UUID.class))
     {
-      // Although "1.3.6.1.1.16.1" (which is the UUID syntax as defined in RFC
-      // 4530) might be more correct, some servers may not support this syntax
-      // since it is relatively new, so we'll fall back on the more
-      // widely-supported directory string syntax.
       return "1.3.6.1.4.1.1466.115.121.1.15";
     }
     else if (t.equals(DN.class) ||
@@ -586,11 +397,6 @@ public final class DefaultObjectEncoder
     return null;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean supportsMultipleValues(final Field field)
   {
@@ -598,10 +404,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean supportsMultipleValues(final Method method)
   {
@@ -616,14 +418,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Indicates whether the provided object type supports multiple values.
-   *
-   * @param  t  The type for which to make the determination.
-   *
-   * @return  {@code true} if the provided object type supports multiple values,
-   *          or {@code false} if not.
-   */
   private static boolean supportsMultipleValues(final TypeInfo t)
   {
     if (t.isArray())
@@ -639,10 +433,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public Attribute encodeFieldValue(final Field field, final Object value,
                                     final String name)
@@ -652,10 +442,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public Attribute encodeMethodValue(final Method method, final Object value,
                                      final String name)
@@ -666,19 +452,7 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Encodes the provided value to an LDAP attribute.
-   *
-   * @param  type   The type for the provided value.
-   * @param  value  The value for the field in the object to be encoded.
-   * @param  name   The name to use for the constructed attribute.
-   *
-   * @return  The attribute containing the encoded representation of the
-   *          provided field.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while attempting to
-   *                                construct an attribute for the field.
-   */
+
   private static Attribute encodeValue(final Type type, final Object value,
                                        final String name)
          throws LDAPPersistException
@@ -786,18 +560,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Encodes the contents of the provided array object.
-   *
-   * @param  arrayType      The component type of the array.
-   * @param  arrayObject    The array object to process.
-   * @param  attributeName  The name to use for the attribute to create.
-   *
-   * @return  The attribute containing the encoded array contents.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while trying to create
-   *                                the attribute.
-   */
   private static Attribute encodeArray(final Class<?> arrayType,
                                        final Object arrayObject,
                                        final String attributeName)
@@ -906,18 +668,7 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Encodes the contents of the provided collection.
-   *
-   * @param  genericType    The generic type of the collection.
-   * @param  collection     The collection to process.
-   * @param  attributeName  The name to use for the attribute to create.
-   *
-   * @return  The attribute containing the encoded collection contents.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while trying to create
-   *                                the attribute.
-   */
+
   private static Attribute encodeCollection(final Class<?> genericType,
                                             final Collection<?> collection,
                                             final String attributeName)
@@ -1027,10 +778,6 @@ public final class DefaultObjectEncoder
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void decodeField(final Field field, final Object object,
                           final Attribute attribute)
@@ -1142,9 +889,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void invokeSetter(final Method method, final Object object,
                            final Attribute attribute)
@@ -1263,19 +1007,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Creates an object of the specified type from the given attribute value.
-   *
-   * @param  t  The type of object to create.
-   * @param  a  The attribute to use to create the object.
-   * @param  p  The position in the set of values for the object to create.
-   *
-   * @return  The created object, or {@code null} if the provided type is not
-   *          supported.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while creating the
-   *                                object.
-   */
   @SuppressWarnings("unchecked")
   private static Object getValue(final Class<?> t, final Attribute a,
                                  final int p)
@@ -1512,16 +1243,6 @@ public final class DefaultObjectEncoder
 
 
 
-  /**
-   * Invokes the {@code add} method on the provided {@code List} or {@code Set}
-   * object.
-   *
-   * @param  l  The list or set on which to invoke the {@code add} method.
-   * @param  o  The object to add to the {@code List} or {@code Set} object.
-   *
-   * @throws  LDAPPersistException  If a problem occurs while attempting to
-   *                                invoke the {@code add} method.
-   */
   private static void invokeAdd(final Object l, final Object o)
           throws LDAPPersistException
   {

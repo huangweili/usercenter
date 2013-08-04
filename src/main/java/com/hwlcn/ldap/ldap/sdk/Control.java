@@ -63,8 +63,7 @@ public class Control
     }
     catch (Exception e)
     {
-      // This is expected in the minimal release, since it doesn't include any
-      // controls.
+
     }
 
     try
@@ -77,8 +76,6 @@ public class Control
     }
     catch (Exception e)
     {
-      // This is expected in the minimal release, since it doesn't include any
-      // controls.
     }
 
     try
@@ -91,9 +88,7 @@ public class Control
     }
     catch (Exception e)
     {
-      // This is expected in the open source release, since it doesn't contain
-      // the UnboundID-specific controls.  In that case, we'll try enable some
-      // additional experimental controls instead.
+
       try
       {
         final Class<?> experimentalControlHelperClass = Class.forName(
@@ -104,21 +99,11 @@ public class Control
       }
       catch (Exception e2)
       {
-        // This is expected in the minimal release, since it doesn't contain any
-        // controls.
       }
     }
   }
 
 
-
-  /**
-   * Creates a new empty control instance that is intended to be used only for
-   * decoding controls via the {@code DecodeableControl} interface.  All
-   * {@code DecodeableControl} objects must provide a default constructor that
-   * can be used to create an instance suitable for invoking the
-   * {@code decodeControl} method.
-   */
   protected Control()
   {
     oid        = null;
@@ -127,14 +112,6 @@ public class Control
   }
 
 
-
-  /**
-   * Creates a new control whose fields are initialized from the contents of the
-   * provided control.
-   *
-   * @param  control  The control whose information should be used to create
-   *                  this new control.
-   */
   protected Control(final Control control)
   {
     oid        = control.oid;
@@ -143,13 +120,6 @@ public class Control
   }
 
 
-
-  /**
-   * Creates a new control with the provided OID.  It will not be critical, and
-   * it will not have a value.
-   *
-   * @param  oid  The OID for this control.  It must not be {@code null}.
-   */
   public Control(final String oid)
   {
     ensureNotNull(oid);
@@ -160,15 +130,6 @@ public class Control
   }
 
 
-
-  /**
-   * Creates a new control with the provided OID and criticality.  It will not
-   * have a value.
-   *
-   * @param  oid         The OID for this control.  It must not be {@code null}.
-   * @param  isCritical  Indicates whether this control should be considered
-   *                     critical.
-   */
   public Control(final String oid, final boolean isCritical)
   {
     ensureNotNull(oid);
@@ -178,17 +139,6 @@ public class Control
     value           = null;
   }
 
-
-
-  /**
-   * Creates a new control with the provided information.
-   *
-   * @param  oid         The OID for this control.  It must not be {@code null}.
-   * @param  isCritical  Indicates whether this control should be considered
-   *                     critical.
-   * @param  value       The value for this control.  It may be {@code null} if
-   *                     there is no value.
-   */
   public Control(final String oid, final boolean isCritical,
                  final ASN1OctetString value)
   {
@@ -199,65 +149,27 @@ public class Control
     this.value      = value;
   }
 
-
-
-  /**
-   * Retrieves the OID for this control.
-   *
-   * @return  The OID for this control.
-   */
   public final String getOID()
   {
     return oid;
   }
 
-
-
-  /**
-   * Indicates whether this control should be considered critical.
-   *
-   * @return  {@code true} if this control should be considered critical, or
-   *          {@code false} if not.
-   */
   public final boolean isCritical()
   {
     return isCritical;
   }
 
-
-
-  /**
-   * Indicates whether this control has a value.
-   *
-   * @return  {@code true} if this control has a value, or {@code false} if not.
-   */
   public final boolean hasValue()
   {
     return (value != null);
   }
 
-
-
-  /**
-   * Retrieves the encoded value for this control.
-   *
-   * @return  The encoded value for this control, or {@code null} if there is no
-   *          value.
-   */
   public final ASN1OctetString getValue()
   {
     return value;
   }
 
 
-
-  /**
-   * Writes an ASN.1-encoded representation of this control to the provided
-   * ASN.1 stream writer.
-   *
-   * @param  writer  The ASN.1 stream writer to which the encoded representation
-   *                 should be written.
-   */
   public final void writeTo(final ASN1Buffer writer)
   {
     final ASN1BufferSequence controlSequence = writer.beginSequence();
@@ -277,13 +189,6 @@ public class Control
   }
 
 
-
-  /**
-   * Encodes this control to an ASN.1 sequence suitable for use in an LDAP
-   * message.
-   *
-   * @return  The encoded representation of this control.
-   */
   public final ASN1Sequence encode()
   {
     final ArrayList<ASN1Element> elementList = new ArrayList<ASN1Element>(3);
@@ -303,17 +208,6 @@ public class Control
   }
 
 
-
-  /**
-   * Reads an LDAP control from the provided ASN.1 stream reader.
-   *
-   * @param  reader  The ASN.1 stream reader from which to read the control.
-   *
-   * @return  The decoded control.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to read or
-   *                         parse the control.
-   */
   public static Control readFrom(final ASN1StreamReader reader)
          throws LDAPException
   {
@@ -357,17 +251,6 @@ public class Control
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 sequence as an LDAP control.
-   *
-   * @param  controlSequence  The ASN.1 sequence to be decoded.
-   *
-   * @return  The decoded control.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to decode the
-   *                         provided ASN.1 sequence as an LDAP control.
-   */
   public static Control decode(final ASN1Sequence controlSequence)
          throws LDAPException
   {
@@ -434,21 +317,6 @@ public class Control
   }
 
 
-
-  /**
-   * Decodes the provided ASN.1 sequence as an LDAP control.
-   *
-   * @param  oid         The OID for this control.  It must not be {@code null}.
-   * @param  isCritical  Indicates whether this control should be considered
-   *                     critical.
-   * @param  value       The value for this control.  It may be {@code null} if
-   *                     there is no value.
-   *
-   * @return  The decoded control.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to decode the
-   *                         provided ASN.1 sequence as an LDAP control.
-   */
   public static Control decode(final String oid, final boolean isCritical,
                                final ASN1OctetString value)
          throws LDAPException
@@ -473,15 +341,6 @@ public class Control
   }
 
 
-
-  /**
-   * Encodes the provided set of controls to an ASN.1 sequence suitable for
-   * inclusion in an LDAP message.
-   *
-   * @param  controls  The set of controls to be encoded.
-   *
-   * @return  An ASN.1 sequence containing the encoded set of controls.
-   */
   public static ASN1Sequence encodeControls(final Control[] controls)
   {
     final ASN1Sequence[] controlElements = new ASN1Sequence[controls.length];
@@ -493,19 +352,6 @@ public class Control
     return new ASN1Sequence(CONTROLS_TYPE, controlElements);
   }
 
-
-
-  /**
-   * Decodes the contents of the provided sequence as a set of controls.
-   *
-   * @param  controlSequence  The ASN.1 sequence containing the encoded set of
-   *                          controls.
-   *
-   * @return  The decoded set of controls.
-   *
-   * @throws  LDAPException  If a problem occurs while attempting to decode any
-   *                         of the controls.
-   */
   public static Control[] decodeControls(final ASN1Sequence controlSequence)
          throws LDAPException
   {
@@ -532,42 +378,18 @@ public class Control
   }
 
 
-
-  /**
-   * Registers the provided class to be used in an attempt to decode controls
-   * with the specified OID.
-   *
-   * @param  oid              The response control OID for which the provided
-   *                          class will be registered.
-   * @param  controlInstance  The control instance that should be used to decode
-   *                          controls with the provided OID.
-   */
   public static void registerDecodeableControl(final String oid,
                           final DecodeableControl controlInstance)
   {
     decodeableControlMap.put(oid, controlInstance);
   }
 
-
-
-  /**
-   * Deregisters the decodeable control class associated with the provided OID.
-   *
-   * @param  oid  The response control OID for which to deregister the
-   *              decodeable control class.
-   */
   public static void deregisterDecodeableControl(final String oid)
   {
     decodeableControlMap.remove(oid);
   }
 
 
-
-  /**
-   * Retrieves a hash code for this control.
-   *
-   * @return  A hash code for this control.
-   */
   @Override()
   public final int hashCode()
   {
@@ -588,15 +410,6 @@ public class Control
 
 
 
-  /**
-   * Indicates whether the provided object may be considered equal to this
-   * control.
-   *
-   * @param  o  The object for which to make the determination.
-   *
-   * @return  {@code true} if the provided object may be considered equal to
-   *          this control, or {@code false} if not.
-   */
   @Override()
   public final boolean equals(final Object o)
   {
@@ -651,28 +464,12 @@ public class Control
   }
 
 
-
-  /**
-   * Retrieves the user-friendly name for this control, if available.  If no
-   * user-friendly name has been defined, then the OID will be returned.
-   *
-   * @return  The user-friendly name for this control, or the OID if no
-   *          user-friendly name is available.
-   */
   public String getControlName()
   {
-    // By default, we will return the OID.  Subclasses should override this to
-    // provide the user-friendly name.
     return oid;
   }
 
 
-
-  /**
-   * Retrieves a string representation of this LDAP control.
-   *
-   * @return  A string representation of this LDAP control.
-   */
   @Override()
   public String toString()
   {
@@ -683,13 +480,6 @@ public class Control
 
 
 
-  /**
-   * Appends a string representation of this LDAP control to the provided
-   * buffer.
-   *
-   * @param  buffer  The buffer to which to append the string representation of
-   *                 this buffer.
-   */
   public void toString(final StringBuilder buffer)
   {
     buffer.append("Control(oid=");

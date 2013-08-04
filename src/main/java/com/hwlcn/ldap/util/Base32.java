@@ -1,23 +1,3 @@
-/*
- * Copyright 2012-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2012-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.util;
 
 
@@ -67,31 +47,18 @@ import static com.hwlcn.ldap.util.Validator.*;
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class Base32
 {
-  /**
-   * The set of characters in the base32 alphabet.
-   */
+
   private static final char[] BASE32_ALPHABET =
        ("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567").toCharArray();
 
 
-
-  /**
-   * Prevent this class from being instantiated.
-   */
   private Base32()
   {
-    // No implementation is required.
+
   }
 
 
 
-  /**
-   * Encodes the UTF-8 representation of the provided string in base32 format.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   *
-   * @return  The base32-encoded representation of the provided data.
-   */
   public static String encode(final String data)
   {
     ensureNotNull(data);
@@ -100,14 +67,6 @@ public final class Base32
   }
 
 
-
-  /**
-   * Encodes the provided data in base32 format.
-   *
-   * @param  data  The raw data to be encoded.  It must not be {@code null}.
-   *
-   * @return  The base32-encoded representation of the provided data.
-   */
   public static String encode(final byte[] data)
   {
     ensureNotNull(data);
@@ -118,15 +77,6 @@ public final class Base32
   }
 
 
-
-  /**
-   * Appends a base32-encoded version of the contents of the provided buffer
-   * (using a UTF-8 representation) to the given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final String data, final StringBuilder buffer)
   {
     ensureNotNull(data);
@@ -135,15 +85,6 @@ public final class Base32
   }
 
 
-
-  /**
-   * Appends a base32-encoded version of the contents of the provided buffer
-   * (using a UTF-8 representation) to the given buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final String data, final ByteStringBuffer buffer)
   {
     ensureNotNull(data);
@@ -151,34 +92,12 @@ public final class Base32
     encode(StaticUtils.getBytes(data), buffer);
   }
 
-
-
-  /**
-   * Appends a base32-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final StringBuilder buffer)
   {
     encodeInternal(data, 0, data.length, buffer);
   }
 
 
-
-  /**
-   * Appends a base32-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The array containing the raw data to be encoded.  It must
-   *                 not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final int off, final int length,
                             final StringBuilder buffer)
   {
@@ -187,31 +106,12 @@ public final class Base32
 
 
 
-  /**
-   * Appends a base32-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final ByteStringBuffer buffer)
   {
     encodeInternal(data, 0, data.length, buffer);
   }
 
 
-
-  /**
-   * Appends a base32-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   public static void encode(final byte[] data, final int off, final int length,
                             final ByteStringBuffer buffer)
   {
@@ -219,17 +119,6 @@ public final class Base32
   }
 
 
-
-  /**
-   * Appends a base32-encoded representation of the provided data to the given
-   * buffer.
-   *
-   * @param  data    The raw data to be encoded.  It must not be {@code null}.
-   * @param  off     The offset in the array at which the data to encode begins.
-   * @param  length  The number of bytes to be encoded.
-   * @param  buffer  The buffer to which the base32-encoded data is to be
-   *                 written.
-   */
   private static void encodeInternal(final byte[] data, final int off,
                                      final int length, final Appendable buffer)
   {
@@ -314,25 +203,12 @@ public final class Base32
     catch (final IOException ioe)
     {
       Debug.debugException(ioe);
-
-      // This should never happen.
       throw new RuntimeException(ioe.getMessage(), ioe);
     }
   }
 
 
 
-  /**
-   * Decodes the contents of the provided base32-encoded string.
-   *
-   * @param  data  The base32-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A byte array containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base32-encoded data.
-   */
   public static byte[] decode(final String data)
          throws ParseException
   {
@@ -487,8 +363,7 @@ public final class Base32
             switch (length - stringPos)
             {
               case 0:
-                // The string ended with a single equal sign, so there are
-                // four bytes left.
+
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 buffer.append((byte) ((longValue >> 16) & 0xFFL));
@@ -505,16 +380,12 @@ public final class Base32
                 return buffer.toByteArray();
 
               case 3:
-                // The string ended with four equal signs, so there are two
-                // bytes left.
                 longValue <<= 15;
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 buffer.append((byte) ((longValue >> 24) & 0xFFL));
                 return buffer.toByteArray();
 
               case 5:
-                // The string ended with six equal signs, so there is one byte
-                // left.
                 longValue <<= 25;
                 buffer.append((byte) ((longValue >> 32) & 0xFFL));
                 return buffer.toByteArray();
@@ -545,19 +416,7 @@ public final class Base32
 
 
 
-  /**
-   * Decodes the contents of the provided base32-encoded string to a string
-   * containing the raw data using the UTF-8 encoding.
-   *
-   * @param  data  The base32-encoded string to decode.  It must not be
-   *               {@code null}.
-   *
-   * @return  A string containing the decoded data.
-   *
-   * @throws  java.text.ParseException  If the contents of the provided string cannot be
-   *                          parsed as base32-encoded data using the UTF-8
-   *                          encoding.
-   */
+
   public static String decodeToString(final String data)
          throws ParseException
   {

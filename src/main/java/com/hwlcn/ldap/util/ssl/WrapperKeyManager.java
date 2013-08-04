@@ -1,23 +1,4 @@
-/*
- * Copyright 2008-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
+
 package com.hwlcn.ldap.util.ssl;
 
 
@@ -37,37 +18,16 @@ import com.hwlcn.core.annotation.NotExtensible;
 import com.hwlcn.core.annotation.ThreadSafety;
 import com.hwlcn.ldap.util.ThreadSafetyLevel;
 
-
-
-/**
- * This class provides an SSL key manager that may be used to wrap a provided
- * set of key managers.  It provides the ability to select the desired
- * certificate based on a given nickname.
- */
 @NotExtensible()
 @ThreadSafety(level=ThreadSafetyLevel.INTERFACE_THREADSAFE)
 public abstract class WrapperKeyManager
        extends X509ExtendedKeyManager
 {
-  // The nickname of the certificate that should be selected.
   private final String certificateAlias;
 
-  // The set of key managers that will be used to perform the processing.
   private final X509KeyManager[] keyManagers;
 
 
-
-  /**
-   * Creates a new instance of this wrapper key manager with the provided
-   * information.
-   *
-   * @param  keyManagers       The set of key managers to be wrapped.  It must
-   *                           not be {@code null} or empty, and it must contain
-   *                           only X509KeyManager instances.
-   * @param  certificateAlias  The nickname of the certificate that should be
-   *                           selected.  It may be {@code null} if any
-   *                           acceptable certificate found may be used.
-   */
   protected WrapperKeyManager(final KeyManager[] keyManagers,
                               final String certificateAlias)
   {
@@ -81,17 +41,6 @@ public abstract class WrapperKeyManager
   }
 
 
-
-  /**
-   * Creates a new instance of this wrapper key manager with the provided
-   * information.
-   *
-   * @param  keyManagers       The set of key managers to be wrapped.  It must
-   *                           not be {@code null} or empty.
-   * @param  certificateAlias  The nickname of the certificate that should be
-   *                           selected.  It may be {@code null} if any
-   *                           acceptable certificate found may be used.
-   */
   protected WrapperKeyManager(final X509KeyManager[] keyManagers,
                               final String certificateAlias)
   {
@@ -101,32 +50,12 @@ public abstract class WrapperKeyManager
 
 
 
-  /**
-   * Retrieves the nickname of the certificate that should be selected.
-   *
-   * @return  The nickname of the certificate that should be selected, or
-   *          {@code null} if any acceptable certificate found in the key store
-   *          may be used.
-   */
   public String getCertificateAlias()
   {
     return certificateAlias;
   }
 
 
-
-  /**
-   * Retrieves the nicknames of the client certificates of the specified type
-   * contained in the key store.
-   *
-   * @param  keyType  The key algorithm name for which to retrieve the available
-   *                  certificate nicknames.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   *
-   * @return  The nicknames of the client certificates, or {@code null} if none
-   *          were found in the key store.
-   */
   public final synchronized String[] getClientAliases(final String keyType,
                                           final Principal[] issuers)
   {
@@ -153,20 +82,6 @@ public abstract class WrapperKeyManager
   }
 
 
-
-  /**
-   * Retrieves the nickname of the certificate that a client should use to
-   * authenticate to a server.
-   *
-   * @param  keyType  The list of key algorithm names that may be used.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   * @param  socket   The socket to be used.  It may be {@code null} if the
-   *                  certificate may be for any socket.
-   *
-   * @return  The nickname of the certificate to use, or {@code null} if no
-   *          appropriate certificate is found.
-   */
   public final synchronized String chooseClientAlias(final String[] keyType,
                                         final Principal[] issuers,
                                         final Socket socket)
@@ -209,20 +124,6 @@ public abstract class WrapperKeyManager
   }
 
 
-
-  /**
-   * Retrieves the nickname of the certificate that a client should use to
-   * authenticate to a server.
-   *
-   * @param  keyType  The list of key algorithm names that may be used.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   * @param  engine   The SSL engine to be used.  It may be {@code null} if the
-   *                  certificate may be for any engine.
-   *
-   * @return  The nickname of the certificate to use, or {@code null} if no
-   *          appropriate certificate is found.
-   */
   @Override()
   public final synchronized String chooseEngineClientAlias(
                                         final String[] keyType,
@@ -280,19 +181,6 @@ public abstract class WrapperKeyManager
   }
 
 
-
-  /**
-   * Retrieves the nicknames of the server certificates of the specified type
-   * contained in the key store.
-   *
-   * @param  keyType  The key algorithm name for which to retrieve the available
-   *                  certificate nicknames.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   *
-   * @return  The nicknames of the server certificates, or {@code null} if none
-   *          were found in the key store.
-   */
   public final synchronized String[] getServerAliases(final String keyType,
                                           final Principal[] issuers)
   {
@@ -320,19 +208,6 @@ public abstract class WrapperKeyManager
 
 
 
-  /**
-   * Retrieves the nickname of the certificate that a server should use to
-   * authenticate to a client.
-   *
-   * @param  keyType  The key algorithm name that may be used.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   * @param  socket   The socket to be used.  It may be {@code null} if the
-   *                  certificate may be for any socket.
-   *
-   * @return  The nickname of the certificate to use, or {@code null} if no
-   *          appropriate certificate is found.
-   */
   public final synchronized String chooseServerAlias(final String keyType,
                                         final Principal[] issuers,
                                         final Socket socket)
@@ -373,19 +248,6 @@ public abstract class WrapperKeyManager
 
 
 
-  /**
-   * Retrieves the nickname of the certificate that a server should use to
-   * authenticate to a client.
-   *
-   * @param  keyType  The key algorithm name that may be used.
-   * @param  issuers  The list of acceptable issuer certificate subjects.  It
-   *                  may be {@code null} if any issuer may be used.
-   * @param  engine   The SSL engine to be used.  It may be {@code null} if the
-   *                  certificate may be for any engine.
-   *
-   * @return  The nickname of the certificate to use, or {@code null} if no
-   *          appropriate certificate is found.
-   */
   @Override()
   public final synchronized String chooseEngineServerAlias(final String keyType,
                                         final Principal[] issuers,
@@ -440,16 +302,6 @@ public abstract class WrapperKeyManager
 
 
 
-  /**
-   * Retrieves the certificate chain for the certificate with the given
-   * nickname.
-   *
-   * @param  alias  The nickname of the certificate for which to retrieve the
-   *                certificate chain.
-   *
-   * @return  The certificate chain for the certificate with the given nickname,
-   *          or {@code null} if the requested certificate cannot be found.
-   */
   public final synchronized X509Certificate[] getCertificateChain(
                                                    final String alias)
   {
@@ -467,15 +319,6 @@ public abstract class WrapperKeyManager
 
 
 
-  /**
-   * Retrieves the private key for the specified certificate.
-   *
-   * @param  alias  The nickname of the certificate for which to retrieve the
-   *                private key.
-   *
-   * @return  The private key for the requested certificate, or {@code null} if
-   *          the requested certificate cannot be found.
-   */
   public final synchronized PrivateKey getPrivateKey(final String alias)
   {
     for (final X509KeyManager m : keyManagers)

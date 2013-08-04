@@ -30,114 +30,61 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 
 
 
-/**
- * This class provides an implementation of a matching rule that performs
- * byte-for-byte matching.
- */
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class OctetStringMatchingRule
        extends AcceptAllSimpleMatchingRule
 {
-  /**
-   * The singleton instance that will be returned from the {@code getInstance}
-   * method.
-   */
+
   private static final OctetStringMatchingRule INSTANCE =
        new OctetStringMatchingRule();
 
-
-
-  /**
-   * The name for the octetStringMatch equality matching rule.
-   */
   public static final String EQUALITY_RULE_NAME = "octetStringMatch";
 
 
-
-  /**
-   * The name for the octetStringMatch equality matching rule, formatted in all
-   * lowercase characters.
-   */
   static final String LOWER_EQUALITY_RULE_NAME =
        toLowerCase(EQUALITY_RULE_NAME);
 
 
 
-  /**
-   * The OID for the octetStringMatch equality matching rule.
-   */
   public static final String EQUALITY_RULE_OID = "2.5.13.17";
 
 
 
-  /**
-   * The name for the octetStringOrderingMatch ordering matching rule.
-   */
   public static final String ORDERING_RULE_NAME = "octetStringOrderingMatch";
 
 
 
-  /**
-   * The name for the octetStringOrderingMatch ordering matching rule, formatted
-   * in all lowercase characters.
-   */
   static final String LOWER_ORDERING_RULE_NAME =
        toLowerCase(ORDERING_RULE_NAME);
 
 
 
-  /**
-   * The OID for the octetStringOrderingMatch ordering matching rule.
-   */
+
   public static final String ORDERING_RULE_OID = "2.5.13.18";
 
 
-
-  /**
-   * The name for the octetStringSubstringsMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_NAME = "octetStringSubstringsMatch";
 
 
 
-  /**
-   * The name for the octetStringSubstringsMatch substring matching rule,
-   * formatted in all lowercase characters.
-   */
   static final String LOWER_SUBSTRING_RULE_NAME =
        toLowerCase(SUBSTRING_RULE_NAME);
 
 
-
-  /**
-   * The OID for the octetStringSubstringMatch substring matching rule.
-   */
   public static final String SUBSTRING_RULE_OID = "2.5.13.19";
 
 
 
-  /**
-   * The serial version UID for this serializable class.
-   */
   private static final long serialVersionUID = -5655018388491186342L;
 
 
 
-  /**
-   * Creates a new instance of this octet string matching rule.
-   */
   public OctetStringMatchingRule()
   {
-    // No implementation is required.
   }
 
 
 
-  /**
-   * Retrieves a singleton instance of this matching rule.
-   *
-   * @return  A singleton instance of this matching rule.
-   */
   public static OctetStringMatchingRule getInstance()
   {
     return INSTANCE;
@@ -145,9 +92,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getEqualityMatchingRuleName()
   {
@@ -156,9 +100,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getEqualityMatchingRuleOID()
   {
@@ -167,9 +108,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getOrderingMatchingRuleName()
   {
@@ -178,9 +116,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getOrderingMatchingRuleOID()
   {
@@ -189,9 +124,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String getSubstringMatchingRuleName()
   {
@@ -200,9 +132,7 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
+
   @Override()
   public String getSubstringMatchingRuleOID()
   {
@@ -211,9 +141,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ASN1OctetString normalize(final ASN1OctetString value)
   {
@@ -222,9 +149,6 @@ public final class OctetStringMatchingRule
 
 
 
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ASN1OctetString normalizeSubstring(final ASN1OctetString value,
                                             final byte substringType)

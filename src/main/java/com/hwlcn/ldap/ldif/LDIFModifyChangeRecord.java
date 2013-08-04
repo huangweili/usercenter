@@ -1,23 +1,3 @@
-/*
- * Copyright 2007-2013 UnboundID Corp.
- * All Rights Reserved.
- */
-/*
- * Copyright (C) 2008-2013 UnboundID Corp.
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License (GPLv2 only)
- * or the terms of the GNU Lesser General Public License (LGPLv2.1 only)
- * as published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, see <http://www.gnu.org/licenses>.
- */
 package com.hwlcn.ldap.ldif;
 
 
@@ -43,39 +23,16 @@ import static com.hwlcn.ldap.util.StaticUtils.*;
 import static com.hwlcn.ldap.util.Validator.*;
 
 
-
-/**
- * This class defines an LDIF modify change record, which can be used to
- * represent an LDAP modify request.  See the documentation for the
- * {@link com.hwlcn.ldap.ldif.LDIFChangeRecord} class for an example demonstrating the process for
- * interacting with LDIF change records.
- */
 @NotMutable()
 @ThreadSafety(level=ThreadSafetyLevel.COMPLETELY_THREADSAFE)
 public final class LDIFModifyChangeRecord
        extends LDIFChangeRecord
 {
-  /**
-   * The serial version UID for this serializable class.
-   */
+
   private static final long serialVersionUID = 6317289692291736272L;
 
-
-
-  // The set of modifications for this modify change record.
   private final Modification[] modifications;
 
-
-
-  /**
-   * Creates a new LDIF modify change record with the provided DN and set of
-   * modifications.
-   *
-   * @param  dn             The DN for this LDIF add change record.  It must not
-   *                        be {@code null}.
-   * @param  modifications  The set of modifications for this LDIF modify change
-   *                        record.  It must not be {@code null} or empty.
-   */
   public LDIFModifyChangeRecord(final String dn,
                                 final Modification... modifications)
   {
@@ -88,17 +45,6 @@ public final class LDIFModifyChangeRecord
     this.modifications = modifications;
   }
 
-
-
-  /**
-   * Creates a new LDIF modify change record with the provided DN and set of
-   * modifications.
-   *
-   * @param  dn             The DN for this LDIF add change record.  It must not
-   *                        be {@code null}.
-   * @param  modifications  The set of modifications for this LDIF modify change
-   *                        record.  It must not be {@code null} or empty.
-   */
   public LDIFModifyChangeRecord(final String dn,
                                 final List<Modification> modifications)
   {
@@ -112,14 +58,6 @@ public final class LDIFModifyChangeRecord
     modifications.toArray(this.modifications);
   }
 
-
-
-  /**
-   * Creates a new LDIF modify change record from the provided modify request.
-   *
-   * @param  modifyRequest  The modify request to use to create this LDIF modify
-   *                        change record.  It must not be {@code null}.
-   */
   public LDIFModifyChangeRecord(final ModifyRequest modifyRequest)
   {
     super(modifyRequest.getDN());
@@ -135,45 +73,22 @@ public final class LDIFModifyChangeRecord
   }
 
 
-
-  /**
-   * Retrieves the set of modifications for this modify change record.
-   *
-   * @return  The set of modifications for this modify change record.
-   */
   public Modification[] getModifications()
   {
     return modifications;
   }
 
-
-
-  /**
-   * Creates a modify request from this LDIF modify change record.
-   *
-   * @return  The modify request created from this LDIF modify change record.
-   */
   public ModifyRequest toModifyRequest()
   {
     return new ModifyRequest(getDN(), modifications);
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public ChangeType getChangeType()
   {
     return ChangeType.MODIFY;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public LDAPResult processChange(final LDAPInterface connection)
          throws LDAPException
@@ -182,10 +97,6 @@ public final class LDIFModifyChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public String[] toLDIF(final int wrapColumn)
   {
@@ -214,7 +125,6 @@ public final class LDIFModifyChangeRecord
           ldifLines.add("increment: " + attrName);
           break;
         default:
-          // This should never happen.
           continue;
       }
 
@@ -240,10 +150,6 @@ public final class LDIFModifyChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIF(final ByteStringBuffer buffer, final int wrapColumn)
   {
@@ -302,10 +208,6 @@ public final class LDIFModifyChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toLDIFString(final StringBuilder buffer, final int wrapColumn)
   {
@@ -345,7 +247,6 @@ public final class LDIFModifyChangeRecord
           buffer.append(EOL);
           break;
         default:
-          // This should never happen.
           continue;
       }
 
@@ -363,11 +264,6 @@ public final class LDIFModifyChangeRecord
     }
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public int hashCode()
   {
@@ -391,10 +287,6 @@ public final class LDIFModifyChangeRecord
   }
 
 
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public boolean equals(final Object o)
   {
@@ -447,11 +339,6 @@ public final class LDIFModifyChangeRecord
     return true;
   }
 
-
-
-  /**
-   * {@inheritDoc}
-   */
   @Override()
   public void toString(final StringBuilder buffer)
   {
